@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const preloadPromises = [];
     
     const loadingMessages = [
-        "جاري تحضير الصفحات...",
         "لا تقلق.. سترى القصة في اقرب وقت",
         "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
         "لماذا لا تصلي على حبيبك محمد حتى ينتهي التحميل؟",
@@ -32,13 +31,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         "هل تعلم ان قولك سبحان الله وبحمده يغرس لك نخلة في الجنة؟"
     ];
 
-    let msgIndex = 0;
-    setInterval(() => {
-        msgIndex = (msgIndex + 1) % loadingMessages.length;
-        document.querySelectorAll('.page-loading-text').forEach(el => {
-            el.textContent = loadingMessages[msgIndex];
-        });
-    }, 5000);
+    function startRotatingText(element) {
+        let msgIndex = Math.floor(Math.random() * loadingMessages.length);
+        
+        function rotate() {
+            element.style.opacity = '0';
+            setTimeout(() => {
+                if(!element.parentElement) return; // Stop if removed
+                element.textContent = loadingMessages[msgIndex];
+                msgIndex = (msgIndex + 1) % loadingMessages.length;
+                element.style.opacity = '1';
+            }, 500);
+        }
+        
+        setTimeout(() => {
+            rotate();
+            setInterval(rotate, 10000);
+        }, 6000);
+    }
     
     // Create HTML elements for each page
     reversedPages.forEach((url, i) => {
@@ -66,9 +76,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         pageContent.innerHTML = `
             <div class="page-loading-spinner">
                 <div class="spinner small"></div>
-                <p class="page-loading-text">${loadingMessages[msgIndex]}</p>
+                <p class="page-loading-text">جاري تحضير الصفحات...</p>
             </div>
         `;
+        startRotatingText(pageContent.querySelector('.page-loading-text'));
         
         const img = document.createElement('img');
         img.className = 'page-image';
@@ -103,12 +114,47 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Change loading text initially
-    loadingEl.querySelector('p').classList.add('page-loading-text');
+    const initLoadText = loadingEl.querySelector('p');
+    initLoadText.classList.add('page-loading-text');
+    initLoadText.textContent = 'جاري تحضير الصفحات...';
+    startRotatingText(initLoadText);
     
     // Wait for the first 5 pages to actually download
     await Promise.all(preloadPromises);
 
     let flipBook;
+
+    // Sizer Logic
+    function resizeSizer() {
+        const sizer = document.querySelector('.flipbook-sizer');
+        if (!sizer) return;
+        
+        const isMob = window.innerWidth <= 768;
+        const ratio = isMob ? 800 / 1131 : 1600 / 1131;
+        
+        const padX = isMob ? 20 : 80;
+        const padY = isMob ? 100 : 120;
+        
+        const availW = containerEl.clientWidth - padX;
+        const availH = containerEl.clientHeight - padY;
+        
+        if (availW <= 0 || availH <= 0) return;
+
+        let w = availW;
+        let h = w / ratio;
+        if (h > availH) {
+            h = availH;
+            w = h * ratio;
+        }
+        
+        sizer.style.width = Math.floor(w) + 'px';
+        sizer.style.height = Math.floor(h) + 'px';
+        
+        if (flipBook) flipBook.update();
+    }
+    window.addEventListener('resize', resizeSizer);
+    resizeSizer(); // Apply initial sizing before init
+
     try {
         // Initialize PageFlip
         flipBook = new St.PageFlip(bookEl, {

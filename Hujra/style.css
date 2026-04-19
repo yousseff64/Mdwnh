@@ -22,6 +22,7 @@ body {
     height: 100dvh;
     display: flex;
     flex-direction: column;
+    overscroll-behavior: none; /* Prevent pull-to-refresh and browser swipe navigation */
 }
 
 /* Navigation Bar */
@@ -74,7 +75,8 @@ body {
     width: 100%;
     height: calc(100vh - 67px);
     height: calc(100dvh - 67px);
-    padding: 20px 0 80px 0; /* Added padding to prevent overlapping with controls */
+    padding: 0; /* JS will handle padding calculations */
+    touch-action: none; /* CRITICAL: Prevents entire page from moving on touch drag */
 }
 
 /* Loading State */
@@ -116,19 +118,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 40px;
     opacity: 0;
     transition: opacity 0.8s ease;
 }
 
 .flipbook-sizer {
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 1600 / 1131; /* Desktop Landscape Aspect Ratio */
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* JS will set exact width and height to prevent scaling issues */
 }
 
 .flipbook {
@@ -160,6 +158,7 @@ body {
     font-size: 0.8rem;
     text-align: center;
     padding: 0 10px;
+    transition: opacity 0.5s ease;
 }
 
 /* Page Styles */
@@ -297,10 +296,7 @@ body {
         padding: 10px 0 60px 0;
     }
     .container {
-        padding: 0 10px;
-    }
-    .flipbook-sizer {
-        aspect-ratio: 800 / 1131; /* Mobile Portrait Aspect Ratio */
+        padding: 0;
     }
     .bottom-controls {
         bottom: 10px;
