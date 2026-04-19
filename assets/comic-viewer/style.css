@@ -379,7 +379,7 @@ body {
 }
 
 .mobile-only {
-    display: none;
+    display: none !important;
 }
 
 .container.zoom-active .flipbook-sizer {
@@ -394,6 +394,6 @@ body {
 
 /* Responsive */
     .mobile-only {
-        display: flex;
+        display: flex !important;
     }
 }

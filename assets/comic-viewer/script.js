@@ -158,6 +158,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Wait for the first 5 pages to actually download
     await Promise.all(preloadPromises);
+    
+    // Background load EVERYTHING else sequentially
+    backgroundLoadAll();
 
     let flipBook;
 
@@ -169,11 +172,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isMob = window.innerWidth <= 768;
         const ratio = isMob ? 800 / 1131 : 1600 / 1131;
         
-        const padX = isMob ? 0 : 40;
-        const padY = isMob ? 60 : 100;
+        const padX = isMob ? 0 : 20;
+        const padY = 0; // Remove top gap entirely for better fit
         
         const availW = containerEl.clientWidth - padX;
-        const availH = containerEl.clientHeight - padY;
+        // Subtract height of controls (approx 75px) to prevent overlap on desktop
+        const availH = containerEl.clientHeight - (isMob ? 80 : 75);
         
         if (availW <= 0 || availH <= 0) return;
 
@@ -423,36 +427,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Zoom Logic
+    // Zoom Logic REMOVED per request (Keeping isZoomed flag for internal checks if needed)
     let isZoomed = false;
     let zoomScale = 1.5;
-    const btnZoom = document.getElementById('btn-zoom');
     const sizer = document.querySelector('.flipbook-sizer');
+    // zoom button listener removed
     
-    btnZoom.addEventListener('click', () => {
-        isZoomed = !isZoomed;
-        if (isZoomed) {
-            sizer.classList.add('zoomed');
-            containerEl.classList.add('zoom-active');
-            bookEl.style.pointerEvents = 'none'; // Disable flip interaction while zoomed
-            sizer.style.transform = `scale(${zoomScale})`;
-            btnZoom.style.color = 'var(--accent)';
-            
-            // Re-center on zoom
-            setTimeout(() => {
-                containerEl.scrollLeft = (sizer.offsetWidth * zoomScale - containerEl.offsetWidth) / 2;
-                containerEl.scrollTop = (sizer.offsetHeight * zoomScale - containerEl.offsetHeight) / 2;
-            }, 300);
-        } else {
-            sizer.classList.remove('zoomed');
-            containerEl.classList.remove('zoom-active');
-            bookEl.style.pointerEvents = 'auto';
-            sizer.style.transform = 'scale(1)';
-            btnZoom.style.color = '';
-        }
-    });
-
-    // Panning logic for Zoom
+    // Panning logic for Zoom (Pinch support)
     let isPanning = false;
     let panStartX, panStartY, scrollStartX, scrollStartY;
 
@@ -498,6 +479,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     containerEl.addEventListener('touchend', () => isPanning = false);
 
     // Helpers
+    async function backgroundLoadAll() {
+        const allImgs = document.querySelectorAll('.page-image');
+        // Sequentially load to avoid saturating network
+        for (let img of allImgs) {
+            if (img.dataset.src) {
+                await new Promise((resolve) => {
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                        const parent = img.closest('.page-content');
+                        if (parent) {
+                            const sp = parent.querySelector('.page-loading-spinner');
+                            if (sp) sp.style.display = 'none';
+                        }
+                        resolve();
+                    };
+                    img.onerror = () => resolve();
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                });
+            }
+        }
+    }
+
     function lazyLoadImages(currentIndex) {
         const allImgs = document.querySelectorAll('.page-image');
         for (let i = 0; i < allImgs.length; i++) {
