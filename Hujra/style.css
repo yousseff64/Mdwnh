@@ -1,0 +1,229 @@
+:root {
+    --bg-color: #0a0a0c;
+    --nav-bg: rgba(10, 10, 12, 0.85);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a5;
+    --accent: #d8b068;
+    --font-main: 'Rubik', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Bar */
+.flipbook-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.btn-back:hover {
+    color: var(--text-primary);
+}
+
+.logo img {
+    height: 35px;
+    object-fit: contain;
+}
+
+.book-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+}
+
+/* Main Wrapper */
+.flipbook-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: calc(100dvh - 67px);
+}
+
+/* Loading State */
+.loading-state {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    z-index: 50;
+    transition: opacity 0.5s ease;
+}
+
+.loading-state p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Flipbook Container */
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.flipbook {
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border-radius: 4px;
+}
+
+/* Page Styles */
+.page {
+    background-color: #111;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.page-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+}
+
+.page-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.page-image.loaded {
+    opacity: 1;
+}
+
+.page.--page-hard {
+    background-color: #000;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* Controls */
+.bottom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(20, 20, 25, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+.bottom-controls.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--accent);
+}
+
+.page-counter {
+    font-size: 0.95rem;
+    font-weight: 500;
+    min-width: 60px;
+    text-align: center;
+    direction: ltr;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .flipbook-nav {
+        padding: 0.75rem 1rem;
+    }
+    .book-title {
+        display: none;
+    }
+    .container {
+        padding: 10px;
+    }
+    .bottom-controls {
+        bottom: 10px;
+        padding: 0.5rem 1rem;
+        gap: 1rem;
+    }
+}
