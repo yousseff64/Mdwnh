@@ -228,8 +228,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                     if (offsetPixels !== 0 && offsetIndex === 0) {
                         const dragProgress = Math.abs(offsetPixels) / width;
-                        rotY = (offsetPixels > 0 ? 1 : -1) * (dragProgress * 15);
-                        scale = 1 - (dragProgress * 0.05);
+                        rotY = (offsetPixels > 0 ? 1 : -1) * (dragProgress * 45); // Amplified 300%
+                        scale = 1 - (dragProgress * 0.15); // More pronounced scale
                         p.style.zIndex = 2;
                     } else if (offsetIndex === 0) {
                         p.style.zIndex = 2;
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     function updateZoomTransform() {
         if (window.isZoomed) {
-            sizerEl.style.transform = `translate(${panX}px, ${panY}px) scale(2)`;
+            sizerEl.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`;
         } else {
             sizerEl.style.transform = `translate(0px, 0px) scale(1)`;
             panX = 0;
@@ -355,15 +355,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     zoomBtn.addEventListener('click', () => {
         window.isZoomed = !window.isZoomed;
-        sizerEl.style.transition = 'transform 0.3s ease';
+        sizerEl.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
         
         if (window.isZoomed) {
-            // Zoom out icon
-            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/><path d="M10.344 11.758a.5.5 0 0 0 .707 0l3.905-3.905a.5.5 0 0 0-.708-.708L10.344 11.05a.5.5 0 0 0 0 .708z"/><path fill-rule="evenodd" d="M3 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/></svg>`;
+            // Zoom out icon (Filled)
+            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 7a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1h3z"/><path d="M15.708 14.293L12.5 11.086A6.5 6.5 0 1 0 11.086 12.5l3.207 3.207a1 1 0 0 0 1.415-1.414zM2 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z"/></svg>`;
             containerEl.classList.add('zoomed');
         } else {
-            // Zoom in icon
-            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/><path d="M10.344 11.758a.5.5 0 0 0 .707 0l3.905-3.905a.5.5 0 0 0-.708-.708L10.344 11.05a.5.5 0 0 0 0 .708z"/><path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 .5-.5z"/></svg>`;
+            // Zoom in icon (Filled)
+            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M15.708 14.293L12.5 11.086A6.5 6.5 0 1 0 11.086 12.5l3.207 3.207a1 1 0 0 0 1.415-1.414zM2 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0zM6.5 4a.5.5 0 0 1 .5.5V6h1.5a.5.5 0 0 1 0 1H7v1.5a.5.5 0 0 1-1 0V7H4.5a.5.5 0 0 1 0-1H6V4.5a.5.5 0 0 1 .5-.5z"/></svg>`;
             containerEl.classList.remove('zoomed');
         }
         updateZoomTransform();
@@ -374,51 +374,60 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Panning & Intercept Logic
-    ['mousedown', 'touchstart', 'pointerdown'].forEach(evt => {
-        containerEl.addEventListener(evt, (e) => {
-            if (!window.isZoomed) return;
-            e.stopPropagation(); 
-            isPanning = true;
-            
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            
-            panStartX = clientX - panX;
-            panStartY = clientY - panY;
-        }, {capture: true, passive: false});
-    });
+    function handleStart(e) {
+        if (!window.isZoomed) return;
+        
+        // Ensure we stop standard behavior
+        isPanning = true;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        panStartX = clientX - panX;
+        panStartY = clientY - panY;
+        
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+    }
 
-    ['mousemove', 'touchmove', 'pointermove'].forEach(evt => {
-        window.addEventListener(evt, (e) => {
-            if (!window.isZoomed || !isPanning) return;
+    function handleMove(e) {
+        if (!window.isZoomed || !isPanning) return;
+        
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        let newX = clientX - panStartX;
+        let newY = clientY - panStartY;
+        
+        // Dynamic bounds based on scaled size (2.5x)
+        const limitX = sizerEl.clientWidth * 0.75;
+        const limitY = sizerEl.clientHeight * 0.75;
+        
+        panX = Math.max(-limitX, Math.min(limitX, newX));
+        panY = Math.max(-limitY, Math.min(limitY, newY));
+        
+        updateZoomTransform();
+        
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function handleEnd(e) {
+        if (window.isZoomed && isPanning) {
+            isPanning = false;
             e.stopPropagation();
-            if (e.cancelable) e.preventDefault();
-            
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            
-            let newX = clientX - panStartX;
-            let newY = clientY - panStartY;
-            
-            // Limit pan bounds so image doesn't get lost
-            const limitX = sizerEl.clientWidth / 2;
-            const limitY = sizerEl.clientHeight / 2;
-            
-            panX = Math.max(-limitX, Math.min(limitX, newX));
-            panY = Math.max(-limitY, Math.min(limitY, newY));
-            
-            updateZoomTransform();
-        }, {capture: true, passive: false});
-    });
+        }
+    }
 
-    ['mouseup', 'touchend', 'pointerup', 'touchcancel'].forEach(evt => {
-        window.addEventListener(evt, (e) => {
-            if (window.isZoomed && isPanning) {
-                isPanning = false;
-                e.stopPropagation();
-            }
-        }, {capture: true});
-    });    
+    // Attach to both container for start and window for move/end
+    containerEl.addEventListener('mousedown', handleStart, {capture: true});
+    containerEl.addEventListener('touchstart', handleStart, {capture: true, passive: false});
+
+    window.addEventListener('mousemove', handleMove, {capture: true, passive: false});
+    window.addEventListener('touchmove', handleMove, {capture: true, passive: false});
+
+    window.addEventListener('mouseup', handleEnd, {capture: true});
+    window.addEventListener('touchend', handleEnd, {capture: true});
+    window.addEventListener('touchcancel', handleEnd, {capture: true});    
             
         } catch (e) {
             console.error("PageFlip init error:", e);
