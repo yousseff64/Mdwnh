@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const db = typeof firebase !== 'undefined' ? firebase.database() : null;
     let hasCountedView = false;
     
+    if (window.FORCE_VERTICAL) {
+        document.body.classList.add('force-vertical');
+    }
+    
     // Discover pages dynamically
     const pages = await discoverPages(basePath);
     
@@ -164,6 +168,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let flipBook;
 
+    // Fullscreen Logic
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    if (btnFullscreen) {
+        btnFullscreen.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        });
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            document.body.classList.add('fullscreen-active');
+        } else {
+            document.body.classList.remove('fullscreen-active');
+        }
+        setTimeout(resizeSizer, 200);
+    });
+
     // Sizer Logic
     function resizeSizer() {
         const sizer = document.querySelector('.flipbook-sizer');
@@ -172,12 +201,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isMob = window.innerWidth <= 768;
         const ratio = isMob ? 800 / 1131 : 1600 / 1131;
         
-        const padX = isMob ? 0 : 20;
-        const padY = 0; // Remove top gap entirely for better fit
+        const padX = isMob ? 0 : 40;
+        const padY = 0;
         
         const availW = containerEl.clientWidth - padX;
-        // Subtract height of controls (approx 75px) to prevent overlap on desktop
-        const availH = containerEl.clientHeight - (isMob ? 80 : 75);
+        // Increase safety margin for desktop to avoid overlap with controls bar
+        // If forced vertical, we don't need a large margin as it's scrollable
+        const margin = (isMob || window.FORCE_VERTICAL) ? 80 : 160;
+        const availH = containerEl.clientHeight - margin;
         
         if (availW <= 0 || availH <= 0) return;
 
@@ -196,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('resize', resizeSizer);
     resizeSizer(); // Apply initial sizing before init
 
-    if (isMobile) {
+    if (isMobile || window.FORCE_VERTICAL) {
         // Custom Mobile Slider Engine
         bookEl.classList.add('mobile-slider');
         let mobileCurrentIndex = reversedPages.length - 1; // Start at Arabic cover
@@ -211,25 +242,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateMobileCounter();
         }, 500);
 
-        let mobileMode = 'vertical'; // Default as requested
-        const btnMode = document.getElementById('btn-mode');
-        
-        if (mobileMode === 'vertical') {
+        if (isMobile || window.FORCE_VERTICAL) {
+            // Forced Vertical Mode
             containerEl.classList.add('vertical-mode');
-            // Force lazy load for all images in vertical mode
             lazyLoadAllVertical();
         }
-
-        btnMode.addEventListener('click', () => {
-            mobileMode = (mobileMode === 'vertical') ? 'swipe' : 'vertical';
-            if (mobileMode === 'vertical') {
-                containerEl.classList.add('vertical-mode');
-                lazyLoadAllVertical();
-            } else {
-                containerEl.classList.remove('vertical-mode');
-                updateMobilePages(0);
-            }
-        });
 
         function lazyLoadAllVertical() {
             const allImgs = document.querySelectorAll('.page-image');
@@ -569,41 +586,42 @@ async function checkExistsFast(url) {
 
 async function discoverPages(basePath) {
     let index = 1;
-    const pages = [];
-    let foundAll = false;
-    
-    // Batch process to be fast but not overwhelming
-    while (!foundAll) {
+    const discovered = [];
+    const maxConcurrent = 5;
+    const pattern = window.PAGE_PATTERN || 'صفحة{n}.png';
+
+    while (true) {
         const batch = [];
-        for (let i = 0; i < 4; i++) { 
+        for (let i = 0; i < maxConcurrent; i++) {
             const pageNum = index + i;
+            let fileName = pattern.replace('{n}', pageNum);
+            
+            // Handle common padding for "Page_01" or "_Page_1" style
+            if (pattern.includes('{0n}')) {
+                fileName = pattern.replace('{0n}', pageNum.toString().padStart(2, '0'));
+            } else if (pattern.includes('Page_')) {
+                const paddedNum = pageNum.toString().padStart(2, '0');
+                fileName = pattern.replace('{n}', paddedNum);
+            }
+
             batch.push(
-                checkExistsFast(`${basePath}صفحة${pageNum}.png`)
-                .then(exists => ({ pageNum, exists }))
+                checkExistsFast(`${basePath}${fileName}`).then(exists => exists ? `${basePath}${fileName}` : null)
             );
         }
-        
+
         const results = await Promise.all(batch);
-        results.sort((a, b) => a.pageNum - b.pageNum);
-        
-        for (const res of results) {
-            if (res.exists) {
-                pages.push(`${basePath}صفحة${res.pageNum}.png`);
-            } else {
-                foundAll = true;
-                break;
-            }
-        }
-        index += 4;
-        
-        if (index > 200) foundAll = true; // Failsafe
+        const foundInBatch = results.filter(r => r !== null);
+        discovered.push(...foundInBatch);
+
+        if (foundInBatch.length < maxConcurrent) break;
+        if (index > 500) break; // Hard limit
+        index += maxConcurrent;
     }
-    
-    return pages;
+    return discovered;
 }
 
 // Sound Effect Logic
-const flipAudio = new Audio('/assets/comic-viewer/Page flip.mp3');
+const flipAudio = new Audio('../assets/comic-viewer/Page flip.mp3');
 function playFlipSound() {
     try {
         flipAudio.currentTime = 0;
