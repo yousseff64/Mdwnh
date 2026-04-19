@@ -13,31 +13,78 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    const isMobile = window.innerWidth <= 768;
+    
     // Emulate RTL by reversing the pages. 
-    // In LTR, the last page is on the Left side, which matches the position of a front cover in Arabic books.
-    const reversedPages = [...pages].reverse();
+    // On desktop, we pad with 'empty' to force 2-page spread behavior without the jarring showCover snap.
+    const reversedPages = isMobile ? [...pages].reverse() : ['empty', ...[...pages].reverse(), 'empty'];
     
     // Array to track eager image loading
     const preloadPromises = [];
+    
+    const loadingMessages = [
+        "جاري تحضير الصفحات...",
+        "لا تقلق.. سترى القصة في اقرب وقت",
+        "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
+        "لماذا لا تصلي على حبيبك محمد حتى ينتهي التحميل؟",
+        "لماذا لا تستغفر ربك حتى ينتهي التحميل؟",
+        "ربما السيد عجيب يعرف الحل؟",
+        "هل تعلم ان قولك سبحان الله وبحمده يغرس لك نخلة في الجنة؟"
+    ];
+
+    let msgIndex = 0;
+    setInterval(() => {
+        msgIndex = (msgIndex + 1) % loadingMessages.length;
+        document.querySelectorAll('.page-loading-text').forEach(el => {
+            el.textContent = loadingMessages[msgIndex];
+        });
+    }, 5000);
     
     // Create HTML elements for each page
     reversedPages.forEach((url, i) => {
         const pageDiv = document.createElement('div');
         pageDiv.className = 'page';
         
+        if (url === 'empty') {
+            pageDiv.classList.add('page-empty');
+            pageDiv.style.backgroundColor = 'transparent';
+            pageDiv.style.boxShadow = 'none';
+            pageDiv.style.border = 'none';
+            bookEl.appendChild(pageDiv);
+            return;
+        }
+
+        // Make the first and last physical pages hard (covers)
+        if (i === 0 || i === reversedPages.length - 1) {
+            pageDiv.classList.add('--page-hard');
+        }
+        
         const pageContent = document.createElement('div');
         pageContent.className = 'page-content';
+        
+        // Add Loading Spinner HTML
+        pageContent.innerHTML = `
+            <div class="page-loading-spinner">
+                <div class="spinner small"></div>
+                <p class="page-loading-text">${loadingMessages[msgIndex]}</p>
+            </div>
+        `;
         
         const img = document.createElement('img');
         img.className = 'page-image';
         
-        // The Arabic cover (Page 1) is at the END of this reversed array.
-        // We eagerly load the last 5 items of the array, which correspond to Arabic pages 1, 2, 3, 4, 5.
-        const actualPageNum = reversedPages.length - i;
+        // Calculate actual page number
+        const offset = isMobile ? 0 : 1;
+        const arrIndex = i - offset;
+        const actualPageNum = pages.length - arrIndex;
+        
+        // Eagerly load the last 5 items of the comic (Arabic pages 1 to 5)
         if (actualPageNum <= 5) {
             const loadPromise = new Promise((resolve) => {
                 img.onload = () => {
                     img.classList.add('loaded');
+                    const sp = pageContent.querySelector('.page-loading-spinner');
+                    if(sp) sp.style.display = 'none';
                     resolve();
                 };
                 img.onerror = () => resolve(); // prevent infinite hang if image fails
@@ -55,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         bookEl.appendChild(pageDiv);
     });
 
-    // Change loading text to indicate downloading
-    loadingEl.querySelector('p').textContent = 'جاري تحميل الصور الأولية...';
+    // Change loading text initially
+    loadingEl.querySelector('p').classList.add('page-loading-text');
     
     // Wait for the first 5 pages to actually download
     await Promise.all(preloadPromises);
@@ -67,17 +114,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         flipBook = new St.PageFlip(bookEl, {
             width: 800,
             height: 1131, // Standard comic proportion
-            size: "stretch", // reverted to stretch as fit is invalid
+            size: "stretch", 
             minWidth: 315,
             maxWidth: 1000,
             minHeight: 420,
             maxHeight: 1350,
-            maxShadowOpacity: 0.9, // darker, more realistic shadows
-            showCover: true,
+            maxShadowOpacity: 0.9,
+            showCover: false, // Prevent the book from physically snapping left/right
             mobileScrollSupport: false,
             usePortrait: true,
-            flippingTime: 450, // 100% faster (buttery smooth and snappy)
-            startPage: reversedPages.length - 1 // Start at the correct page immediately without snapping
+            flippingTime: 450, 
+            startPage: isMobile ? reversedPages.length - 1 : reversedPages.length - 2
         });
 
         flipBook.loadFromHTML(document.querySelectorAll('.page'));
@@ -95,15 +142,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("PageFlip init error:", e);
         loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
     }
-
-    // Sync Aspect Ratio with PageFlip Orientation
-    flipBook.on('changeOrientation', (e) => {
-        if (e.data === 'portrait') {
-            bookEl.style.aspectRatio = '800 / 1131';
-        } else {
-            bookEl.style.aspectRatio = '1600 / 1131';
-        }
-    });
 
     // Flip Event
     flipBook.on('flip', (e) => {
@@ -135,14 +173,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Helpers
     function lazyLoadImages(currentIndex) {
         const allImgs = document.querySelectorAll('.page-image');
-        // Load images within a range to ensure smooth reading
         for (let i = 0; i < allImgs.length; i++) {
             if (Math.abs(i - currentIndex) <= 4) {
                 const img = allImgs[i];
                 if (img.dataset.src) {
                     img.src = img.dataset.src;
                     img.removeAttribute('data-src');
-                    img.onload = () => img.classList.add('loaded');
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                        const parent = img.closest('.page-content');
+                        if(parent) {
+                            const sp = parent.querySelector('.page-loading-spinner');
+                            if(sp) sp.style.display = 'none';
+                        }
+                    };
                 }
             }
         }
@@ -152,19 +196,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         const currentIndex = book.getCurrentPageIndex(); 
         const isLandscape = book.getOrientation() === 'landscape';
         
-        let actualLeft = totalPages - currentIndex; 
+        // Remove empty pages from calculation
+        const actualTotal = isMobile ? totalPages : totalPages - 2;
+        const offset = isMobile ? 0 : 1;
+        
+        if (reversedPages[currentIndex] === 'empty') return;
+        
+        let arrIndex = currentIndex - offset;
+        let actualLeft = actualTotal - arrIndex; 
         let displayStr = `${actualLeft}`;
         
         if (isLandscape && currentIndex < totalPages - 1 && currentIndex > 0) {
             const rightPageIdx = currentIndex + 1;
-            if (rightPageIdx < totalPages) {
-                const actualRight = totalPages - rightPageIdx;
+            if (reversedPages[rightPageIdx] !== 'empty' && rightPageIdx < totalPages) {
+                const arrRight = rightPageIdx - offset;
+                const actualRight = actualTotal - arrRight;
                 displayStr = `${actualRight} - ${actualLeft}`;
             }
         }
 
         document.getElementById('page-current').textContent = displayStr;
-        document.getElementById('page-total').textContent = totalPages;
+        document.getElementById('page-total').textContent = actualTotal;
     }
 });
 
