@@ -89,8 +89,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const arrIndex = i - offset;
         const actualPageNum = pages.length - arrIndex;
         
-        // Eagerly load the last 5 items of the comic (Arabic pages 1 to 5)
-        if (actualPageNum <= 5) {
+        // Eagerly load the last 3 items of the comic
+        if (actualPageNum <= 3) {
             const loadPromise = new Promise((resolve) => {
                 img.onload = () => {
                     img.classList.add('loaded');
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let currentX = 0;
 
         bookEl.addEventListener('touchstart', e => {
-            if (e.touches.length > 1) return;
+            if (e.touches.length > 1 || window.isZoomed) return;
             isDragging = true;
             startX = e.touches[0].clientX;
             bookEl.classList.remove('animating');
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, {passive: true});
 
         bookEl.addEventListener('touchmove', e => {
-            if (!isDragging) return;
+            if (!isDragging || window.isZoomed) return;
             currentX = e.touches[0].clientX - startX;
             
             if (mobileCurrentIndex === 0 && currentX > 0) currentX *= 0.3; 
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, {passive: true});
 
         bookEl.addEventListener('touchend', e => {
-            if (!isDragging) return;
+            if (!isDragging || window.isZoomed) return;
             isDragging = false;
             bookEl.classList.add('animating');
             
@@ -213,14 +213,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         function updateMobilePages(offsetPixels) {
             const allPages = bookEl.querySelectorAll('.page');
+            const width = bookEl.clientWidth;
             allPages.forEach((p, i) => {
                 const offsetIndex = i - mobileCurrentIndex;
                 if (Math.abs(offsetIndex) > 1) {
                     p.style.display = 'none';
+                    p.style.zIndex = 0;
                 } else {
                     p.style.display = 'block';
                     const basePercent = offsetIndex * 100;
-                    p.style.transform = `translateX(calc(${basePercent}% + ${offsetPixels}px))`;
+                    
+                    let rotY = 0;
+                    let scale = 1;
+                    
+                    if (offsetPixels !== 0 && offsetIndex === 0) {
+                        const dragProgress = Math.abs(offsetPixels) / width;
+                        rotY = (offsetPixels > 0 ? 1 : -1) * (dragProgress * 15);
+                        scale = 1 - (dragProgress * 0.05);
+                        p.style.zIndex = 2;
+                    } else if (offsetIndex === 0) {
+                        p.style.zIndex = 2;
+                    } else {
+                        p.style.zIndex = 1;
+                    }
+                    
+                    p.style.transform = `translateX(calc(${basePercent}% + ${offsetPixels}px)) rotateY(${rotY}deg) scale(${scale})`;
                 }
             });
             if (offsetPixels === 0) lazyLoadImages(mobileCurrentIndex);
@@ -233,7 +250,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Button Controls for Mobile
-        document.getElementById('btn-next').addEventListener('click', () => {
+        // In Arabic, btn-prev (Left Arrow) goes to Next Page (index--)
+        document.getElementById('btn-prev').addEventListener('click', () => {
             if (mobileCurrentIndex > 0) {
                 bookEl.classList.add('animating');
                 mobileCurrentIndex--;
@@ -243,7 +261,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        document.getElementById('btn-prev').addEventListener('click', () => {
+        // In Arabic, btn-next (Right Arrow) goes to Prev Page (index++)
+        document.getElementById('btn-next').addEventListener('click', () => {
             if (mobileCurrentIndex < reversedPages.length - 1) {
                 bookEl.classList.add('animating');
                 mobileCurrentIndex++;
@@ -302,13 +321,104 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             
             // Keyboard Controls
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') {
-                    flipBook.flipPrev(); // Right arrow -> Next Arabic Page
-                } else if (e.key === 'ArrowLeft') {
-                    flipBook.flipNext(); // Left arrow -> Prev Arabic Page
-                }
-            });
+    document.addEventListener('keydown', (e) => {
+        if (window.isZoomed) return;
+        if (e.key === 'ArrowRight') {
+            if (isMobile) document.getElementById('btn-next').click();
+            else if (flipBook) flipBook.flipPrev();
+        } else if (e.key === 'ArrowLeft') {
+            if (isMobile) document.getElementById('btn-prev').click();
+            else if (flipBook) flipBook.flipNext();
+        }
+    });
+    
+    // Zoom & Pan System
+    window.isZoomed = false;
+    let panX = 0;
+    let panY = 0;
+    let panStartX = 0;
+    let panStartY = 0;
+    let isPanning = false;
+
+    const zoomBtn = document.getElementById('btn-zoom');
+    const sizerEl = document.querySelector('.flipbook-sizer');
+    
+    function updateZoomTransform() {
+        if (window.isZoomed) {
+            sizerEl.style.transform = `translate(${panX}px, ${panY}px) scale(2)`;
+        } else {
+            sizerEl.style.transform = `translate(0px, 0px) scale(1)`;
+            panX = 0;
+            panY = 0;
+        }
+    }
+
+    zoomBtn.addEventListener('click', () => {
+        window.isZoomed = !window.isZoomed;
+        sizerEl.style.transition = 'transform 0.3s ease';
+        
+        if (window.isZoomed) {
+            // Zoom out icon
+            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/><path d="M10.344 11.758a.5.5 0 0 0 .707 0l3.905-3.905a.5.5 0 0 0-.708-.708L10.344 11.05a.5.5 0 0 0 0 .708z"/><path fill-rule="evenodd" d="M3 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/></svg>`;
+            containerEl.classList.add('zoomed');
+        } else {
+            // Zoom in icon
+            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/><path d="M10.344 11.758a.5.5 0 0 0 .707 0l3.905-3.905a.5.5 0 0 0-.708-.708L10.344 11.05a.5.5 0 0 0 0 .708z"/><path fill-rule="evenodd" d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 .5-.5z"/></svg>`;
+            containerEl.classList.remove('zoomed');
+        }
+        updateZoomTransform();
+        
+        setTimeout(() => {
+            sizerEl.style.transition = ''; 
+        }, 300);
+    });
+
+    // Panning & Intercept Logic
+    ['mousedown', 'touchstart', 'pointerdown'].forEach(evt => {
+        containerEl.addEventListener(evt, (e) => {
+            if (!window.isZoomed) return;
+            e.stopPropagation(); 
+            isPanning = true;
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            panStartX = clientX - panX;
+            panStartY = clientY - panY;
+        }, {capture: true, passive: false});
+    });
+
+    ['mousemove', 'touchmove', 'pointermove'].forEach(evt => {
+        window.addEventListener(evt, (e) => {
+            if (!window.isZoomed || !isPanning) return;
+            e.stopPropagation();
+            if (e.cancelable) e.preventDefault();
+            
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            let newX = clientX - panStartX;
+            let newY = clientY - panStartY;
+            
+            // Limit pan bounds so image doesn't get lost
+            const limitX = sizerEl.clientWidth / 2;
+            const limitY = sizerEl.clientHeight / 2;
+            
+            panX = Math.max(-limitX, Math.min(limitX, newX));
+            panY = Math.max(-limitY, Math.min(limitY, newY));
+            
+            updateZoomTransform();
+        }, {capture: true, passive: false});
+    });
+
+    ['mouseup', 'touchend', 'pointerup', 'touchcancel'].forEach(evt => {
+        window.addEventListener(evt, (e) => {
+            if (window.isZoomed && isPanning) {
+                isPanning = false;
+                e.stopPropagation();
+            }
+        }, {capture: true});
+    });    
             
         } catch (e) {
             console.error("PageFlip init error:", e);

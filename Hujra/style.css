@@ -120,6 +120,15 @@ body {
     justify-content: center;
     opacity: 0;
     transition: opacity 0.8s ease;
+    cursor: default;
+}
+
+.container.zoomed {
+    cursor: grab;
+}
+
+.container.zoomed:active {
+    cursor: grabbing;
 }
 
 .flipbook-sizer {
@@ -141,6 +150,7 @@ body {
     position: relative;
     overflow: hidden;
     background: #000;
+    perspective: 1200px;
 }
 
 .mobile-slider .page {
@@ -150,6 +160,7 @@ body {
     width: 100%;
     height: 100%;
     will-change: transform;
+    transform-origin: center right;
 }
 
 .mobile-slider.animating .page {
