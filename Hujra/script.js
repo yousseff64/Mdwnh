@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // In LTR, the last page is on the Left side, which matches the position of a front cover in Arabic books.
     const reversedPages = [...pages].reverse();
     
+    // Array to track eager image loading
+    const preloadPromises = [];
+    
     // Create HTML elements for each page
     reversedPages.forEach((url, i) => {
         const pageDiv = document.createElement('div');
@@ -34,11 +37,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         img.className = 'page-image';
         
         // The Arabic cover (Page 1) is at the END of this reversed array.
-        // We eagerly load the last 4 items of the array, which correspond to Arabic pages 1, 2, 3, 4.
+        // We eagerly load the last 5 items of the array, which correspond to Arabic pages 1, 2, 3, 4, 5.
         const actualPageNum = reversedPages.length - i;
-        if (actualPageNum <= 4) {
+        if (actualPageNum <= 5) {
+            const loadPromise = new Promise((resolve) => {
+                img.onload = () => {
+                    img.classList.add('loaded');
+                    resolve();
+                };
+                img.onerror = () => resolve(); // prevent infinite hang if image fails
+            });
+            preloadPromises.push(loadPromise);
             img.src = url;
-            img.onload = () => img.classList.add('loaded');
         } else {
             img.dataset.src = url; // Lazy load the rest
         }
@@ -49,6 +59,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         pageDiv.appendChild(pageContent);
         bookEl.appendChild(pageDiv);
     });
+
+    // Change loading text to indicate downloading
+    loadingEl.querySelector('p').textContent = 'جاري تحميل الصور الأولية...';
+    
+    // Wait for the first 5 pages to actually download
+    await Promise.all(preloadPromises);
 
     let flipBook;
     try {
@@ -65,7 +81,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             showCover: true,
             mobileScrollSupport: false,
             usePortrait: true,
-            flippingTime: 450 // 100% faster (buttery smooth and snappy)
+            flippingTime: 450, // 100% faster (buttery smooth and snappy)
+            startPage: reversedPages.length - 1 // Start at the correct page immediately without snapping
         });
 
         flipBook.loadFromHTML(document.querySelectorAll('.page'));
@@ -77,10 +94,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             containerEl.style.opacity = '1';
             controlsEl.classList.remove('hidden');
             
-        // Turn immediately to the last LTR page (which is the Arabic cover)
-        flipBook.turnToPage(reversedPages.length - 1);
-        updatePageCounter(flipBook, reversedPages.length);
-    }, 500);
+            updatePageCounter(flipBook, reversedPages.length);
+        }, 500);
     } catch (e) {
         console.error("PageFlip init error:", e);
         loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
