@@ -50,39 +50,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         bookEl.appendChild(pageDiv);
     });
 
-    // Initialize PageFlip
-    const flipBook = new St.PageFlip(bookEl, {
-        width: 800,
-        height: 1131, // Standard comic proportion
-        size: "stretch",
-        minWidth: 315,
-        maxWidth: 1000,
-        minHeight: 420,
-        maxHeight: 1350,
-        maxShadowOpacity: 0.5,
-        showCover: true,
-        mobileScrollSupport: false,
-        usePortrait: true
-    });
+    let flipBook;
+    try {
+        // Initialize PageFlip
+        flipBook = new St.PageFlip(bookEl, {
+            width: 800,
+            height: 1131, // Standard comic proportion
+            size: "stretch", // reverted to stretch as fit is invalid
+            minWidth: 315,
+            maxWidth: 1000,
+            minHeight: 420,
+            maxHeight: 1350,
+            maxShadowOpacity: 0.9, // darker, more realistic shadows
+            showCover: true,
+            mobileScrollSupport: false,
+            usePortrait: true,
+            flippingTime: 450 // 100% faster (buttery smooth and snappy)
+        });
 
-    flipBook.loadFromHTML(document.querySelectorAll('.page'));
-    
-    // Smooth transition from loading to viewer
-    loadingEl.style.opacity = '0';
-    setTimeout(() => {
-        loadingEl.style.display = 'none';
-        containerEl.style.opacity = '1';
-        controlsEl.classList.remove('hidden');
+        flipBook.loadFromHTML(document.querySelectorAll('.page'));
         
+        // Smooth transition from loading to viewer
+        loadingEl.style.opacity = '0';
+        setTimeout(() => {
+            loadingEl.style.display = 'none';
+            containerEl.style.opacity = '1';
+            controlsEl.classList.remove('hidden');
+            
         // Turn immediately to the last LTR page (which is the Arabic cover)
         flipBook.turnToPage(reversedPages.length - 1);
         updatePageCounter(flipBook, reversedPages.length);
     }, 500);
+    } catch (e) {
+        console.error("PageFlip init error:", e);
+        loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
+    }
 
     // Flip Event
     flipBook.on('flip', (e) => {
         lazyLoadImages(e.data);
         updatePageCounter(flipBook, reversedPages.length);
+        playFlipSound();
     });
 
     // Navigation Controls
@@ -190,4 +198,13 @@ async function discoverPages(basePath) {
     }
     
     return pages;
+}
+
+// Sound Effect Logic
+const flipAudio = new Audio('Page flip.mp3');
+function playFlipSound() {
+    try {
+        flipAudio.currentTime = 0;
+        flipAudio.play().catch(() => {});
+    } catch(e) {}
 }

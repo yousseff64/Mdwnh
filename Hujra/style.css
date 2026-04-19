@@ -72,7 +72,9 @@ body {
     justify-content: center;
     position: relative;
     width: 100%;
+    height: calc(100vh - 67px);
     height: calc(100dvh - 67px);
+    padding: 20px 0 80px 0; /* Added padding to prevent overlapping with controls */
 }
 
 /* Loading State */
@@ -114,12 +116,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 0 40px;
     opacity: 0;
     transition: opacity 0.8s ease;
 }
 
 .flipbook {
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 1600 / 1131; /* Desktop Landscape Aspect Ratio */
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     border-radius: 4px;
 }
@@ -210,6 +215,43 @@ body {
     direction: ltr;
 }
 
+/* Swipe Indicator */
+.swipe-indicator {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+    pointer-events: none;
+    flex-direction: column;
+    align-items: center;
+    color: var(--accent);
+    opacity: 0.8;
+    animation: fadeOut 3s forwards 3s; /* fades out after 3 seconds */
+}
+
+.hand-icon {
+    animation: swipeRight 1.5s infinite ease-in-out;
+    margin-bottom: 8px;
+}
+
+.swipe-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+@keyframes swipeRight {
+    0% { transform: translateX(-20px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(20px); opacity: 0; }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .flipbook-nav {
@@ -218,12 +260,21 @@ body {
     .book-title {
         display: none;
     }
+    .flipbook-wrapper {
+        padding: 10px 0 60px 0;
+    }
     .container {
-        padding: 10px;
+        padding: 0 10px;
+    }
+    .flipbook {
+        aspect-ratio: 800 / 1131; /* Mobile Portrait Aspect Ratio */
     }
     .bottom-controls {
         bottom: 10px;
         padding: 0.5rem 1rem;
         gap: 1rem;
+    }
+    .swipe-indicator {
+        display: flex;
     }
 }
