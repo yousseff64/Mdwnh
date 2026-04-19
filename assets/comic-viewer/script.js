@@ -1,9 +1,29 @@
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyATzvkgxTYVKZcOEeLjkJpupw56TLeIjXU",
+  authDomain: "mdwnhviewer.firebaseapp.com",
+  databaseURL: "https://mdwnhviewer-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mdwnhviewer",
+  storageBucket: "mdwnhviewer.firebasestorage.app",
+  messagingSenderId: "384065085258",
+  appId: "1:384065085258:web:35911a6e9b28015657ebb3",
+  measurementId: "G-Z2GTGYBSMS"
+};
+
+// Initialize Firebase
+if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(firebaseConfig);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const basePath = window.COMIC_PATH || '../باب الحجرة/';
     const loadingEl = document.getElementById('loading');
     const containerEl = document.querySelector('.container');
     const bookEl = document.getElementById('book');
     const controlsEl = document.getElementById('controls');
+    const comicId = window.COMIC_ID || 'unknown';
+    const db = typeof firebase !== 'undefined' ? firebase.database() : null;
+    let hasCountedView = false;
     
     // Discover pages dynamically
     const pages = await discoverPages(basePath);
@@ -11,6 +31,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (pages.length === 0) {
         loadingEl.innerHTML = `<p style="color: #ff5555;">لم يتم العثور على صفحات في المجلد "${basePath}".</p>`;
         return;
+    }
+
+    // View Count Logic
+    if (db) {
+        const viewRef = db.ref('comics/' + comicId + '/views');
+        viewRef.on('value', (snapshot) => {
+            const count = snapshot.val() || 0;
+            const viewDisplay = document.getElementById('view-count');
+            if (viewDisplay) viewDisplay.textContent = count.toLocaleString();
+        });
+    }
+
+    function incrementView() {
+        if (!db || hasCountedView) return;
+        hasCountedView = true;
+        const viewRef = db.ref('comics/' + comicId + '/views');
+        viewRef.transaction((currentViews) => (currentViews || 0) + 1);
     }
 
     const isMobile = window.innerWidth <= 768;
@@ -132,8 +169,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isMob = window.innerWidth <= 768;
         const ratio = isMob ? 800 / 1131 : 1600 / 1131;
         
-        const padX = isMob ? 20 : 80;
-        const padY = isMob ? 100 : 120;
+        const padX = isMob ? 0 : 40;
+        const padY = isMob ? 60 : 100;
         
         const availW = containerEl.clientWidth - padX;
         const availH = containerEl.clientHeight - padY;
@@ -169,6 +206,55 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateMobilePages(0);
             updateMobileCounter();
         }, 500);
+
+        let mobileMode = 'vertical'; // Default as requested
+        const btnMode = document.getElementById('btn-mode');
+        
+        if (mobileMode === 'vertical') {
+            containerEl.classList.add('vertical-mode');
+            // Force lazy load for all images in vertical mode
+            lazyLoadAllVertical();
+        }
+
+        btnMode.addEventListener('click', () => {
+            mobileMode = (mobileMode === 'vertical') ? 'swipe' : 'vertical';
+            if (mobileMode === 'vertical') {
+                containerEl.classList.add('vertical-mode');
+                lazyLoadAllVertical();
+            } else {
+                containerEl.classList.remove('vertical-mode');
+                updateMobilePages(0);
+            }
+        });
+
+        function lazyLoadAllVertical() {
+            const allImgs = document.querySelectorAll('.page-image');
+            allImgs.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                        const sp = img.closest('.page-content').querySelector('.page-loading-spinner');
+                        if (sp) sp.style.display = 'none';
+                    };
+                }
+            });
+            incrementView(); // Always count view in vertical mode if they open it? 
+            // Wait, request said "makes it past 6th page".
+            // For vertical mode, we'll check scroll position.
+        }
+
+        if (mobileMode === 'vertical') {
+            containerEl.addEventListener('scroll', () => {
+                if (mobileMode !== 'vertical') return;
+                const scrollPos = containerEl.scrollTop;
+                const pageHeight = window.innerHeight;
+                if (scrollPos > pageHeight * 5) { // Roughly page 6
+                    incrementView();
+                }
+            });
+        }
 
         let isDragging = false;
         let startX = 0;
@@ -209,6 +295,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             updateMobilePages(0);
             updateMobileCounter();
+            
+            // View counting for swipe mode
+            if (mobileCurrentIndex > 5) incrementView();
         });
 
         function updateMobilePages(offsetPixels) {
@@ -301,6 +390,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 playFlipSound();
                 updatePageCounter(flipBook, reversedPages.length);
                 lazyLoadImages(e.data);
+                
+                // View counting for desktop
+                const currentPage = flipBook.getCurrentPageIndex();
+                if (currentPage > 6) incrementView();
             });
 
             // Button Controls for Desktop

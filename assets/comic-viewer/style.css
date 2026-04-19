@@ -57,11 +57,28 @@ body {
     object-fit: contain;
 }
 
+.header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
 .book-title {
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--accent);
     letter-spacing: 0.5px;
+    line-height: 1;
+}
+
+.view-stats {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.8;
 }
 
 /* Main Wrapper */
@@ -122,11 +139,67 @@ body {
     transition: opacity 0.8s ease;
 }
 
+/* Vertical Mode (Webtoon Style) */
+.container.vertical-mode {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.container.vertical-mode .flipbook-sizer {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+}
+
+.container.vertical-mode #book {
+    width: 100% !important;
+    height: auto !important;
+    box-shadow: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.container.vertical-mode ~ .bottom-controls #btn-prev,
+.container.vertical-mode ~ .bottom-controls #btn-next,
+.container.vertical-mode ~ .bottom-controls .page-counter {
+    display: none;
+}
+
+.container.vertical-mode .page {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    transform: none !important;
+    display: block !important;
+    border: none;
+    margin-bottom: 2px;
+}
+
+.container.vertical-mode .page-content {
+    height: auto;
+}
+
+.container.vertical-mode .page-image {
+    height: auto;
+    object-fit: contain;
+}
+
+.container.vertical-mode .page-empty,
+.container.vertical-mode .page-loading-spinner {
+    display: none !important;
+}
+
 .flipbook-sizer {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* JS will set exact width and height to prevent scaling issues */
+    /* JS will set exact width and height */
 }
 
 .flipbook {
@@ -259,6 +332,10 @@ body {
     color: var(--accent);
 }
 
+.view-stats svg {
+    margin-top: 1px;
+}
+
 .page-counter {
     font-size: 0.95rem;
     font-weight: 500;
@@ -301,68 +378,22 @@ body {
     white-space: nowrap;
 }
 
+.mobile-only {
+    display: none;
+}
+
 .container.zoom-active .flipbook-sizer {
     margin: auto;
     transition: transform 0.3s ease;
 }
 
-/* Swipe Indicator */
+/* Swipe Indicator REMOVED as per request */
 .swipe-indicator {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 200;
-    pointer-events: none;
-    flex-direction: column;
-    align-items: center;
-    color: var(--accent);
-    opacity: 0.8;
-    animation: fadeOut 3s forwards 3s; /* fades out after 3 seconds */
-}
-
-.hand-icon {
-    animation: swipeRight 1.5s infinite ease-in-out;
-    margin-bottom: 8px;
-}
-
-.swipe-text {
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-
-@keyframes swipeRight {
-    0% { transform: translateX(-20px); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateX(20px); opacity: 0; }
-}
-
-@keyframes fadeOut {
-    to { opacity: 0; visibility: hidden; }
+    display: none !important;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-    .flipbook-nav {
-        padding: 0.75rem 1rem;
-    }
-    .book-title {
-        display: none;
-    }
-    .flipbook-wrapper {
-        padding: 10px 0 60px 0;
-    }
-    .container {
-        padding: 0;
-    }
-    .bottom-controls {
-        bottom: 10px;
-        padding: 0.5rem 1rem;
-        gap: 1rem;
-    }
-    .swipe-indicator {
+    .mobile-only {
         display: flex;
     }
 }
