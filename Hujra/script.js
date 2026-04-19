@@ -155,66 +155,166 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('resize', resizeSizer);
     resizeSizer(); // Apply initial sizing before init
 
-    try {
-        // Initialize PageFlip
-        flipBook = new St.PageFlip(bookEl, {
-            width: 800,
-            height: 1131, // Standard comic proportion
-            size: "stretch", 
-            minWidth: 315,
-            maxWidth: 1000,
-            minHeight: 420,
-            maxHeight: 1350,
-            maxShadowOpacity: 0.9,
-            showCover: false, // Prevent the book from physically snapping left/right
-            mobileScrollSupport: false,
-            usePortrait: true,
-            flippingTime: 450, 
-            startPage: isMobile ? reversedPages.length - 1 : reversedPages.length - 2
-        });
-
-        flipBook.loadFromHTML(document.querySelectorAll('.page'));
+    if (isMobile) {
+        // Custom Mobile Slider Engine
+        bookEl.classList.add('mobile-slider');
+        let mobileCurrentIndex = reversedPages.length - 1; // Start at Arabic cover
         
-        // Smooth transition from loading to viewer
         loadingEl.style.opacity = '0';
         setTimeout(() => {
             loadingEl.style.display = 'none';
             containerEl.style.opacity = '1';
             controlsEl.classList.remove('hidden');
             
-            updatePageCounter(flipBook, reversedPages.length);
+            updateMobilePages(0);
+            updateMobileCounter();
         }, 500);
-    } catch (e) {
-        console.error("PageFlip init error:", e);
-        loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
-    }
 
-    // Flip Event
-    flipBook.on('flip', (e) => {
-        lazyLoadImages(e.data);
-        updatePageCounter(flipBook, reversedPages.length);
-        playFlipSound();
-    });
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
 
-    // Navigation Controls
-    document.getElementById('btn-prev').addEventListener('click', () => {
-        // Arabic Next Page is LTR Prev Page
-        flipBook.flipPrev();
-    });
+        bookEl.addEventListener('touchstart', e => {
+            if (e.touches.length > 1) return;
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            bookEl.classList.remove('animating');
+            currentX = 0;
+        }, {passive: true});
 
-    document.getElementById('btn-next').addEventListener('click', () => {
-        // Arabic Prev Page is LTR Next Page
-        flipBook.flipNext();
-    });
+        bookEl.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            currentX = e.touches[0].clientX - startX;
+            
+            if (mobileCurrentIndex === 0 && currentX > 0) currentX *= 0.3; 
+            if (mobileCurrentIndex === reversedPages.length - 1 && currentX < 0) currentX *= 0.3;
+            
+            updateMobilePages(currentX);
+        }, {passive: true});
 
-    // Keyboard Controls
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') {
-            flipBook.flipPrev(); // Right arrow -> Next Arabic Page
-        } else if (e.key === 'ArrowLeft') {
-            flipBook.flipNext(); // Left arrow -> Prev Arabic Page
+        bookEl.addEventListener('touchend', e => {
+            if (!isDragging) return;
+            isDragging = false;
+            bookEl.classList.add('animating');
+            
+            const threshold = bookEl.clientWidth * 0.15; 
+            
+            if (currentX > threshold && mobileCurrentIndex > 0) {
+                mobileCurrentIndex--;
+                playFlipSound();
+            } else if (currentX < -threshold && mobileCurrentIndex < reversedPages.length - 1) {
+                mobileCurrentIndex++;
+                playFlipSound();
+            }
+            
+            updateMobilePages(0);
+            updateMobileCounter();
+        });
+
+        function updateMobilePages(offsetPixels) {
+            const allPages = bookEl.querySelectorAll('.page');
+            allPages.forEach((p, i) => {
+                const offsetIndex = i - mobileCurrentIndex;
+                if (Math.abs(offsetIndex) > 1) {
+                    p.style.display = 'none';
+                } else {
+                    p.style.display = 'block';
+                    const basePercent = offsetIndex * 100;
+                    p.style.transform = `translateX(calc(${basePercent}% + ${offsetPixels}px))`;
+                }
+            });
+            if (offsetPixels === 0) lazyLoadImages(mobileCurrentIndex);
         }
-    });
+
+        function updateMobileCounter() {
+            const actualLeft = reversedPages.length - mobileCurrentIndex;
+            document.getElementById('page-current').textContent = actualLeft;
+            document.getElementById('page-total').textContent = reversedPages.length;
+        }
+
+        // Button Controls for Mobile
+        document.getElementById('btn-next').addEventListener('click', () => {
+            if (mobileCurrentIndex > 0) {
+                bookEl.classList.add('animating');
+                mobileCurrentIndex--;
+                updateMobilePages(0);
+                updateMobileCounter();
+                playFlipSound();
+            }
+        });
+
+        document.getElementById('btn-prev').addEventListener('click', () => {
+            if (mobileCurrentIndex < reversedPages.length - 1) {
+                bookEl.classList.add('animating');
+                mobileCurrentIndex++;
+                updateMobilePages(0);
+                updateMobileCounter();
+                playFlipSound();
+            }
+        });
+
+    } else {
+        // Desktop St.PageFlip Engine
+        try {
+            // Initialize PageFlip
+            flipBook = new St.PageFlip(bookEl, {
+                width: 800,
+                height: 1131, // Standard comic proportion
+                size: "stretch", 
+                minWidth: 315,
+                maxWidth: 1000,
+                minHeight: 420,
+                maxHeight: 1350,
+                maxShadowOpacity: 0.9,
+                showCover: false, // Prevent the book from physically snapping left/right
+                mobileScrollSupport: false,
+                usePortrait: false,
+                flippingTime: 450, 
+                startPage: reversedPages.length - 2
+            });
+
+            flipBook.loadFromHTML(document.querySelectorAll('.page'));
+            
+            // Smooth transition from loading to viewer
+            loadingEl.style.opacity = '0';
+            setTimeout(() => {
+                loadingEl.style.display = 'none';
+                containerEl.style.opacity = '1';
+                controlsEl.classList.remove('hidden');
+                
+                updatePageCounter(flipBook, reversedPages.length);
+            }, 500);
+
+            // Flip Event
+            flipBook.on('flip', (e) => {
+                playFlipSound();
+                updatePageCounter(flipBook, reversedPages.length);
+                lazyLoadImages(e.data);
+            });
+
+            // Button Controls for Desktop
+            document.getElementById('btn-prev').addEventListener('click', () => {
+                flipBook.flipPrev();
+            });
+
+            document.getElementById('btn-next').addEventListener('click', () => {
+                flipBook.flipNext();
+            });
+            
+            // Keyboard Controls
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    flipBook.flipPrev(); // Right arrow -> Next Arabic Page
+                } else if (e.key === 'ArrowLeft') {
+                    flipBook.flipNext(); // Left arrow -> Prev Arabic Page
+                }
+            });
+            
+        } catch (e) {
+            console.error("PageFlip init error:", e);
+            loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
+        }
+    }
 
     // Helpers
     function lazyLoadImages(currentIndex) {
@@ -239,12 +339,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function updatePageCounter(book, totalPages) {
+        if (!book) return;
         const currentIndex = book.getCurrentPageIndex(); 
-        const isLandscape = book.getOrientation() === 'landscape';
         
-        // Remove empty pages from calculation
-        const actualTotal = isMobile ? totalPages : totalPages - 2;
-        const offset = isMobile ? 0 : 1;
+        // Desktop is always landscape since we disabled usePortrait
+        const actualTotal = totalPages - 2; // remove empty padding
+        const offset = 1;
         
         if (reversedPages[currentIndex] === 'empty') return;
         
@@ -252,7 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let actualLeft = actualTotal - arrIndex; 
         let displayStr = `${actualLeft}`;
         
-        if (isLandscape && currentIndex < totalPages - 1 && currentIndex > 0) {
+        if (currentIndex < totalPages - 1 && currentIndex > 0) {
             const rightPageIdx = currentIndex + 1;
             if (reversedPages[rightPageIdx] !== 'empty' && rightPageIdx < totalPages) {
                 const arrRight = rightPageIdx - offset;
