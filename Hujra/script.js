@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const arrIndex = i - offset;
         const actualPageNum = pages.length - arrIndex;
         
-        // Eagerly load the last 3 items of the comic
+        // Eagerly load the last 3 items of the comic (Arabic pages 1 to 3)
         if (actualPageNum <= 3) {
             const loadPromise = new Promise((resolve) => {
                 img.onload = () => {
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let currentX = 0;
 
         bookEl.addEventListener('touchstart', e => {
-            if (e.touches.length > 1 || window.isZoomed) return;
+            if (isZoomed || e.touches.length > 1) return;
             isDragging = true;
             startX = e.touches[0].clientX;
             bookEl.classList.remove('animating');
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, {passive: true});
 
         bookEl.addEventListener('touchmove', e => {
-            if (!isDragging || window.isZoomed) return;
+            if (!isDragging) return;
             currentX = e.touches[0].clientX - startX;
             
             if (mobileCurrentIndex === 0 && currentX > 0) currentX *= 0.3; 
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, {passive: true});
 
         bookEl.addEventListener('touchend', e => {
-            if (!isDragging || window.isZoomed) return;
+            if (!isDragging) return;
             isDragging = false;
             bookEl.classList.add('animating');
             
@@ -213,31 +213,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         function updateMobilePages(offsetPixels) {
             const allPages = bookEl.querySelectorAll('.page');
-            const width = bookEl.clientWidth;
+            const width = bookEl.clientWidth || window.innerWidth;
             allPages.forEach((p, i) => {
                 const offsetIndex = i - mobileCurrentIndex;
                 if (Math.abs(offsetIndex) > 1) {
                     p.style.display = 'none';
-                    p.style.zIndex = 0;
                 } else {
                     p.style.display = 'block';
                     const basePercent = offsetIndex * 100;
                     
-                    let rotY = 0;
-                    let scale = 1;
+                    // Add papery flippy feel (subtle rotation and scale)
+                    const progress = Math.abs(offsetPixels / width);
+                    const rotation = (offsetPixels / width) * 10; // Max 10 degrees
+                    const scale = 1 - (progress * 0.05); // Slight scale down
                     
-                    if (offsetPixels !== 0 && offsetIndex === 0) {
-                        const dragProgress = Math.abs(offsetPixels) / width;
-                        rotY = (offsetPixels > 0 ? 1 : -1) * (dragProgress * 45); // Amplified 300%
-                        scale = 1 - (dragProgress * 0.15); // More pronounced scale
-                        p.style.zIndex = 2;
-                    } else if (offsetIndex === 0) {
-                        p.style.zIndex = 2;
-                    } else {
-                        p.style.zIndex = 1;
-                    }
-                    
-                    p.style.transform = `translateX(calc(${basePercent}% + ${offsetPixels}px)) rotateY(${rotY}deg) scale(${scale})`;
+                    p.style.transform = `translateX(calc(${basePercent}% + ${offsetPixels}px)) rotate(${rotation}deg) scale(${scale})`;
                 }
             });
             if (offsetPixels === 0) lazyLoadImages(mobileCurrentIndex);
@@ -249,9 +239,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('page-total').textContent = reversedPages.length;
         }
 
-        // Button Controls for Mobile
-        // In Arabic, btn-prev (Left Arrow) goes to Next Page (index--)
+        // Button Controls for Mobile (Fixed Inversion for RTL)
         document.getElementById('btn-prev').addEventListener('click', () => {
+            if (isZoomed) return;
+            // In Arabic RTL, the Left Arrow (btn-prev) goes FORWARD in the story
             if (mobileCurrentIndex > 0) {
                 bookEl.classList.add('animating');
                 mobileCurrentIndex--;
@@ -261,8 +252,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        // In Arabic, btn-next (Right Arrow) goes to Prev Page (index++)
         document.getElementById('btn-next').addEventListener('click', () => {
+            if (isZoomed) return;
+            // In Arabic RTL, the Right Arrow (btn-next) goes BACKWARD in the story
             if (mobileCurrentIndex < reversedPages.length - 1) {
                 bookEl.classList.add('animating');
                 mobileCurrentIndex++;
@@ -313,127 +305,104 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Button Controls for Desktop
             document.getElementById('btn-prev').addEventListener('click', () => {
+                if (isZoomed) return;
                 flipBook.flipPrev();
             });
 
             document.getElementById('btn-next').addEventListener('click', () => {
+                if (isZoomed) return;
                 flipBook.flipNext();
             });
             
             // Keyboard Controls
-    document.addEventListener('keydown', (e) => {
-        if (window.isZoomed) return;
-        if (e.key === 'ArrowRight') {
-            if (isMobile) document.getElementById('btn-next').click();
-            else if (flipBook) flipBook.flipPrev();
-        } else if (e.key === 'ArrowLeft') {
-            if (isMobile) document.getElementById('btn-prev').click();
-            else if (flipBook) flipBook.flipNext();
-        }
-    });
-    
-    // Zoom & Pan System
-    window.isZoomed = false;
-    let panX = 0;
-    let panY = 0;
-    let panStartX = 0;
-    let panStartY = 0;
-    let isPanning = false;
-
-    const zoomBtn = document.getElementById('btn-zoom');
-    const sizerEl = document.querySelector('.flipbook-sizer');
-    
-    function updateZoomTransform() {
-        if (window.isZoomed) {
-            sizerEl.style.transform = `translate(${panX}px, ${panY}px) scale(2.5)`;
-        } else {
-            sizerEl.style.transform = `translate(0px, 0px) scale(1)`;
-            panX = 0;
-            panY = 0;
-        }
-    }
-
-    zoomBtn.addEventListener('click', () => {
-        window.isZoomed = !window.isZoomed;
-        sizerEl.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
-        
-        if (window.isZoomed) {
-            // Zoom out icon (Filled)
-            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 7a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1h3z"/><path d="M15.708 14.293L12.5 11.086A6.5 6.5 0 1 0 11.086 12.5l3.207 3.207a1 1 0 0 0 1.415-1.414zM2 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z"/></svg>`;
-            containerEl.classList.add('zoomed');
-        } else {
-            // Zoom in icon (Filled)
-            zoomBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M15.708 14.293L12.5 11.086A6.5 6.5 0 1 0 11.086 12.5l3.207 3.207a1 1 0 0 0 1.415-1.414zM2 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0zM6.5 4a.5.5 0 0 1 .5.5V6h1.5a.5.5 0 0 1 0 1H7v1.5a.5.5 0 0 1-1 0V7H4.5a.5.5 0 0 1 0-1H6V4.5a.5.5 0 0 1 .5-.5z"/></svg>`;
-            containerEl.classList.remove('zoomed');
-        }
-        updateZoomTransform();
-        
-        setTimeout(() => {
-            sizerEl.style.transition = ''; 
-        }, 300);
-    });
-
-    // Panning & Intercept Logic
-    function handleStart(e) {
-        if (!window.isZoomed) return;
-        
-        // Ensure we stop standard behavior
-        isPanning = true;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        
-        panStartX = clientX - panX;
-        panStartY = clientY - panY;
-        
-        if (e.cancelable) e.preventDefault();
-        e.stopPropagation();
-    }
-
-    function handleMove(e) {
-        if (!window.isZoomed || !isPanning) return;
-        
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        
-        let newX = clientX - panStartX;
-        let newY = clientY - panStartY;
-        
-        // Dynamic bounds based on scaled size (2.5x)
-        const limitX = sizerEl.clientWidth * 0.75;
-        const limitY = sizerEl.clientHeight * 0.75;
-        
-        panX = Math.max(-limitX, Math.min(limitX, newX));
-        panY = Math.max(-limitY, Math.min(limitY, newY));
-        
-        updateZoomTransform();
-        
-        if (e.cancelable) e.preventDefault();
-        e.stopPropagation();
-    }
-
-    function handleEnd(e) {
-        if (window.isZoomed && isPanning) {
-            isPanning = false;
-            e.stopPropagation();
-        }
-    }
-
-    // Attach to both container for start and window for move/end
-    containerEl.addEventListener('mousedown', handleStart, {capture: true});
-    containerEl.addEventListener('touchstart', handleStart, {capture: true, passive: false});
-
-    window.addEventListener('mousemove', handleMove, {capture: true, passive: false});
-    window.addEventListener('touchmove', handleMove, {capture: true, passive: false});
-
-    window.addEventListener('mouseup', handleEnd, {capture: true});
-    window.addEventListener('touchend', handleEnd, {capture: true});
-    window.addEventListener('touchcancel', handleEnd, {capture: true});    
+            document.addEventListener('keydown', (e) => {
+                if (isZoomed) return;
+                if (e.key === 'ArrowRight') {
+                    flipBook.flipPrev(); // Right arrow -> Next Arabic Page
+                } else if (e.key === 'ArrowLeft') {
+                    flipBook.flipNext(); // Left arrow -> Prev Arabic Page
+                }
+            });
             
         } catch (e) {
             console.error("PageFlip init error:", e);
             loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
         }
     }
+
+    // Zoom Logic
+    let isZoomed = false;
+    let zoomScale = 1.5;
+    const btnZoom = document.getElementById('btn-zoom');
+    const sizer = document.querySelector('.flipbook-sizer');
+    
+    btnZoom.addEventListener('click', () => {
+        isZoomed = !isZoomed;
+        if (isZoomed) {
+            sizer.classList.add('zoomed');
+            containerEl.classList.add('zoom-active');
+            bookEl.style.pointerEvents = 'none'; // Disable flip interaction while zoomed
+            sizer.style.transform = `scale(${zoomScale})`;
+            btnZoom.style.color = 'var(--accent)';
+            
+            // Re-center on zoom
+            setTimeout(() => {
+                containerEl.scrollLeft = (sizer.offsetWidth * zoomScale - containerEl.offsetWidth) / 2;
+                containerEl.scrollTop = (sizer.offsetHeight * zoomScale - containerEl.offsetHeight) / 2;
+            }, 300);
+        } else {
+            sizer.classList.remove('zoomed');
+            containerEl.classList.remove('zoom-active');
+            bookEl.style.pointerEvents = 'auto';
+            sizer.style.transform = 'scale(1)';
+            btnZoom.style.color = '';
+        }
+    });
+
+    // Panning logic for Zoom
+    let isPanning = false;
+    let panStartX, panStartY, scrollStartX, scrollStartY;
+
+    const startPan = (x, y) => {
+        if (!isZoomed) return;
+        isPanning = true;
+        panStartX = x - containerEl.offsetLeft;
+        panStartY = y - containerEl.offsetTop;
+        scrollStartX = containerEl.scrollLeft;
+        scrollStartY = containerEl.scrollTop;
+    };
+
+    const movePan = (x, y) => {
+        if (!isPanning || !isZoomed) return;
+        const curX = x - containerEl.offsetLeft;
+        const curY = y - containerEl.offsetTop;
+        const walkX = (curX - panStartX);
+        const walkY = (curY - panStartY);
+        containerEl.scrollLeft = scrollStartX - walkX;
+        containerEl.scrollTop = scrollStartY - walkY;
+    };
+
+    containerEl.addEventListener('mousedown', (e) => startPan(e.pageX, e.pageY));
+    window.addEventListener('mouseup', () => isPanning = false);
+    window.addEventListener('mousemove', (e) => {
+        if (isPanning) e.preventDefault();
+        movePan(e.pageX, e.pageY);
+    });
+
+    containerEl.addEventListener('touchstart', (e) => {
+        if (isZoomed && e.touches.length === 1) {
+            startPan(e.touches[0].pageX, e.touches[0].pageY);
+        }
+    }, {passive: false});
+
+    containerEl.addEventListener('touchmove', (e) => {
+        if (isPanning && isZoomed && e.touches.length === 1) {
+            e.preventDefault();
+            movePan(e.touches[0].pageX, e.touches[0].pageY);
+        }
+    }, {passive: false});
+
+    containerEl.addEventListener('touchend', () => isPanning = false);
 
     // Helpers
     function lazyLoadImages(currentIndex) {

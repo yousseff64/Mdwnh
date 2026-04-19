@@ -76,7 +76,7 @@ body {
     height: calc(100vh - 67px);
     height: calc(100dvh - 67px);
     padding: 0; /* JS will handle padding calculations */
-    touch-action: none; /* CRITICAL: Prevents entire page from moving on touch drag */
+    touch-action: pan-x pan-y pinch-zoom; /* Allow panning and pinching while blocking browser swipe-back */
 }
 
 /* Loading State */
@@ -120,15 +120,6 @@ body {
     justify-content: center;
     opacity: 0;
     transition: opacity 0.8s ease;
-    cursor: default;
-}
-
-.container.zoomed {
-    cursor: grab;
-}
-
-.container.zoomed:active {
-    cursor: grabbing;
 }
 
 .flipbook-sizer {
@@ -150,7 +141,6 @@ body {
     position: relative;
     overflow: hidden;
     background: #000;
-    perspective: 1200px;
 }
 
 .mobile-slider .page {
@@ -160,7 +150,6 @@ body {
     width: 100%;
     height: 100%;
     will-change: transform;
-    transform-origin: center right;
 }
 
 .mobile-slider.animating .page {
@@ -276,6 +265,45 @@ body {
     min-width: 60px;
     text-align: center;
     direction: ltr;
+}
+
+.btn-zoom {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-zoom:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--accent);
+}
+
+.flipbook-sizer.zoomed {
+    cursor: grab;
+    z-index: 150;
+}
+
+.flipbook-sizer.zoomed:active {
+    cursor: grabbing;
+}
+
+.container.zoom-active {
+    overflow: auto;
+    display: block; /* Allow scrolling */
+    white-space: nowrap;
+}
+
+.container.zoom-active .flipbook-sizer {
+    margin: auto;
+    transition: transform 0.3s ease;
 }
 
 /* Swipe Indicator */
