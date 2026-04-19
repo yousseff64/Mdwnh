@@ -25,11 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const pageDiv = document.createElement('div');
         pageDiv.className = 'page';
         
-        // Make the first and last physical pages hard (covers)
-        if (i === 0 || i === reversedPages.length - 1) {
-            pageDiv.classList.add('--page-hard');
-        }
-        
         const pageContent = document.createElement('div');
         pageContent.className = 'page-content';
         
@@ -100,6 +95,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("PageFlip init error:", e);
         loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
     }
+
+    // Sync Aspect Ratio with PageFlip Orientation
+    flipBook.on('changeOrientation', (e) => {
+        if (e.data === 'portrait') {
+            bookEl.style.aspectRatio = '800 / 1131';
+        } else {
+            bookEl.style.aspectRatio = '1600 / 1131';
+        }
+    });
 
     // Flip Event
     flipBook.on('flip', (e) => {
