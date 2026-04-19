@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const basePath = '../باب الحجرة/';
+    const basePath = window.COMIC_PATH || '../باب الحجرة/';
     const loadingEl = document.getElementById('loading');
     const containerEl = document.querySelector('.container');
     const bookEl = document.getElementById('book');
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pages = await discoverPages(basePath);
     
     if (pages.length === 0) {
-        loadingEl.innerHTML = '<p style="color: #ff5555;">لم يتم العثور على صفحات. يرجى التأكد من وجود مجلد "باب الحجرة" والصور داخله بتسمية "صفحة1.png" وهكذا.</p>';
+        loadingEl.innerHTML = `<p style="color: #ff5555;">لم يتم العثور على صفحات في المجلد "${basePath}".</p>`;
         return;
     }
 
@@ -506,7 +506,7 @@ async function discoverPages(basePath) {
 }
 
 // Sound Effect Logic
-const flipAudio = new Audio('Page flip.mp3');
+const flipAudio = new Audio('/assets/comic-viewer/Page flip.mp3');
 function playFlipSound() {
     try {
         flipAudio.currentTime = 0;
