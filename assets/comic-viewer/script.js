@@ -279,8 +279,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             containerEl.classList.remove('vertical-mode');
 
-            // For flipbook: build full page list with empty pads (L-to-R in DOM)
-            const allOrdered = ['empty', ...pages, 'empty'];
+            // For flipbook: build full page list with empty pads (reversed for RTL)
+            const allOrdered = ['empty', ...[...pages].reverse(), 'empty'];
             const loadedMap = loadedImagesMap;
 
             allOrdered.forEach((url, i) => {
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     mobileScrollSupport: false,
                     usePortrait: false,
                     flippingTime: 450,
-                    startPage: 1
+                    startPage: totalPages - 2
                 });
                 flipBook.loadFromHTML(document.querySelectorAll('.page'));
                 flipBook.on('flip', e => {
