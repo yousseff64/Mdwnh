@@ -56,46 +56,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadingMessages = [
         "لا تقلق.. سترى القصة في اقرب وقت",
         "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
-        "لماذا لا تصل على حبيبك محمد حتى ينتهي التحميل؟",
+        "لماذا لا تصلي على حبيبك محمد حتى ينتهي التحميل؟",
         "لماذا لا تستغفر ربك حتى ينتهي التحميل؟",
         "ربما السيد عجيب يعرف الحل؟",
         "هل تعلم ان قولك سبحان اللّٰه وبحمده يغرس لك نخلة في الجنة؟"
     ];
 
-    function startRotatingText(element) {
+    function startRotatingText(element, delay = 5000) {
         if (!element) return;
         let msgIndex = Math.floor(Math.random() * loadingMessages.length);
         
-        // Initial text (جاري تحضير الصفحات) stays for 5 seconds
         setTimeout(() => {
-            // Only start if still loading
-            const isVisible = window.getComputedStyle(loadingEl).display !== 'none';
-            if (isVisible) {
-                const cycle = () => {
-                    if (window.getComputedStyle(loadingEl).display === 'none') return;
+            if (element.parentElement) {
+                element.style.opacity = '0';
+                setTimeout(() => {
+                    element.textContent = loadingMessages[msgIndex];
+                    element.style.opacity = '1';
                     
-                    element.style.opacity = '0';
-                    setTimeout(() => {
-                        if (window.getComputedStyle(loadingEl).display === 'none') return;
-                        element.textContent = loadingMessages[msgIndex];
-                        element.style.opacity = '1';
-                        msgIndex = (msgIndex + 1) % loadingMessages.length;
-                    }, 500);
-                };
-                
-                cycle(); // Show first message immediately after 5s
-                setInterval(cycle, 10000); // Rotate every 10s
+                    setInterval(() => {
+                        if (element.parentElement) {
+                            element.style.opacity = '0';
+                            setTimeout(() => {
+                                msgIndex = (msgIndex + 1) % loadingMessages.length;
+                                element.textContent = loadingMessages[msgIndex];
+                                element.style.opacity = '1';
+                            }, 500);
+                        }
+                    }, 10000);
+                }, 500);
             }
-        }, 5000);
+        }, delay);
     }
 
     // --- Core Functions ---
 
     function renderPages(mode) {
         const sizer = document.querySelector('.flipbook-sizer');
-        if (sizer) {
-            sizer.innerHTML = '<div id="book" class="flipbook"></div>';
-        }
+        if (sizer) sizer.innerHTML = '<div id="book" class="flipbook"></div>';
         
         const bookEl = document.getElementById('book');
         if (!bookEl) return null;
@@ -120,16 +117,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             const pageContent = document.createElement('div');
             pageContent.className = 'page-content';
-            pageContent.innerHTML = `<div class="page-loading-spinner"><div class="spinner small"></div></div>`;
+            
+            // Create Page Spinner with Loading Text
+            const spWrap = document.createElement('div');
+            spWrap.className = 'page-loading-spinner';
+            spWrap.innerHTML = `
+                <div class="spinner"></div>
+                <p class="page-loading-text">جاري تحضير الصفحة...</p>
+            `;
+            pageContent.appendChild(spWrap);
+            startRotatingText(spWrap.querySelector('.page-loading-text'), 3000);
             
             const img = document.createElement('img');
             img.className = 'page-image';
+            
+            // Story page number (Arabic 1 is at the end of reversedPages)
+            const storyPageNum = mode === 'flipbook' ? (pages.length - (i - 1)) : (pages.length - i);
+            img.dataset.storyNum = storyPageNum;
             img.dataset.src = url;
             
             img.onload = () => {
                 img.classList.add('loaded');
-                const sp = pageContent.querySelector('.page-loading-spinner');
-                if(sp) sp.style.display = 'none';
+                spWrap.style.display = 'none';
             };
 
             img.onerror = () => {
@@ -148,26 +157,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function initViewer(mode) {
         currentViewMode = mode;
-        
         if (flipBook) {
-            try { 
-                flipBook.destroy(); 
-            } catch(e) { console.warn("Flipbook destroy error:", e); }
+            try { flipBook.destroy(); } catch(e) {}
             flipBook = null;
         }
 
         const bookEl = renderPages(mode);
         if (!bookEl) return;
 
-        containerEl.style.opacity = '1';
-        
         if (mode === 'vertical') {
             containerEl.classList.add('vertical-mode');
-            lazyLoadAll();
-            incrementView(); 
             containerEl.scrollTop = 0;
+            
+            // Sequential Loading
+            const allImgs = Array.from(document.querySelectorAll('.page-image'));
+            // Sort by story number ascending (1, 2, 3...)
+            const sortedImgs = allImgs.sort((a, b) => a.dataset.storyNum - b.dataset.storyNum);
+            
+            // Load first 5 pages before showing viewer
+            const first5 = sortedImgs.slice(0, 5);
+            await loadBatchSequentially(first5);
+            
+            // Show Viewer
+            hideLoadingScreen();
+            
+            // Continue loading the rest sequentially
+            loadBatchSequentially(sortedImgs.slice(5)).then(() => {
+                finalIntegrityCheck();
+            });
+
+            incrementView(); 
         } else {
             containerEl.classList.remove('vertical-mode');
+            // For flipbook, we need most pages ready for a good experience, but we'll try to show it after 5
+            const allImgs = Array.from(document.querySelectorAll('.page-image'));
+            const sortedImgs = allImgs.sort((a, b) => a.dataset.storyNum - b.dataset.storyNum);
+            
+            const first5 = sortedImgs.slice(0, 5);
+            await loadBatchSequentially(first5);
+            hideLoadingScreen();
+
             try {
                 const totalPages = pages.length + 2;
                 flipBook = new St.PageFlip(bookEl, {
@@ -190,39 +219,60 @@ document.addEventListener('DOMContentLoaded', async () => {
                 flipBook.on('flip', (e) => {
                     playFlipSound();
                     updatePageCounter(flipBook, totalPages);
-                    lazyLoadAround(e.data);
-                    if (flipBook.getCurrentPageIndex() > 6) incrementView();
+                    const idx = e.data;
+                    // Trigger immediate load for the flipped page if not yet loaded
+                    const flippedImg = document.querySelectorAll('.page-image')[idx];
+                    if (flippedImg && flippedImg.dataset.src && !flippedImg.src) {
+                        flippedImg.src = flippedImg.dataset.src;
+                    }
                 });
                 
                 updatePageCounter(flipBook, totalPages);
-                lazyLoadAround(totalPages - 2);
             } catch (e) {
                 console.error("Flipbook init error:", e);
             }
+            
+            // Continue background loading
+            loadBatchSequentially(sortedImgs.slice(5)).then(() => {
+                finalIntegrityCheck();
+            });
         }
         
         setTimeout(resizeSizer, 100);
     }
 
-    function lazyLoadAll() {
-        const allImgs = document.querySelectorAll('.page-image');
-        allImgs.forEach(img => {
+    async function loadBatchSequentially(imgArray) {
+        for (const img of imgArray) {
             if (img.dataset.src && !img.src) {
-                img.src = img.dataset.src;
-            }
-        });
-    }
-
-    function lazyLoadAround(index) {
-        const allImgs = document.querySelectorAll('.page-image');
-        for (let i = 0; i < allImgs.length; i++) {
-            if (Math.abs(i - index) <= 4) {
-                const img = allImgs[i];
-                if (img.dataset.src && !img.src) {
+                await new Promise((resolve) => {
+                    img.onload = () => resolve();
+                    img.onerror = () => resolve();
                     img.src = img.dataset.src;
-                }
+                });
             }
         }
+    }
+
+    function hideLoadingScreen() {
+        if (loadingEl.style.display === 'none') return;
+        loadingEl.style.opacity = '0';
+        setTimeout(() => {
+            loadingEl.style.display = 'none';
+            containerEl.style.opacity = '1';
+            controlsEl.classList.remove('hidden');
+        }, 500);
+    }
+
+    function finalIntegrityCheck() {
+        // Run every 5 seconds after full load to ensure stability
+        setInterval(() => {
+            const allImgs = document.querySelectorAll('.page-image');
+            allImgs.forEach(img => {
+                if (img.dataset.src && (!img.complete || img.naturalWidth === 0)) {
+                    img.src = img.dataset.src + '?integrity=' + Date.now();
+                }
+            });
+        }, 5000);
     }
 
     // --- Controls Logic ---
@@ -330,52 +380,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     window.addEventListener('resize', resizeSizer);
 
-    setInterval(() => {
-        const allImgs = document.querySelectorAll('.page-image');
-        allImgs.forEach(img => {
-            if (img.dataset.src && (!img.complete || img.naturalWidth === 0)) {
-                if (img.src) {
-                    img.src = img.dataset.src + '?check=' + Date.now();
-                } else if (currentViewMode === 'vertical') {
-                    img.src = img.dataset.src;
-                }
-            }
-        });
-    }, 3000);
-
+    // Initial Loading Messages
     const initLoadText = loadingEl.querySelector('p');
-    startRotatingText(initLoadText);
+    startRotatingText(initLoadText, 5000);
 
-    setTimeout(async () => {
-        await initViewer('vertical');
-        loadingEl.style.opacity = '0';
-        setTimeout(() => {
-            loadingEl.style.display = 'none';
-            containerEl.style.opacity = '1';
-            controlsEl.classList.remove('hidden');
-        }, 500);
-    }, 1000);
-
-    function updatePageCounter(book, totalPages) {
-        if (!book) return;
-        const currentIndex = book.getCurrentPageIndex(); 
-        const actualTotal = totalPages - 2; 
-        const offset = 1;
-        
-        let arrIndex = currentIndex - offset;
-        let actualLeft = actualTotal - arrIndex; 
-        let displayStr = `${actualLeft}`;
-        
-        if (currentIndex < totalPages - 1 && currentIndex > 0) {
-            const rightPageIdx = currentIndex + 1;
-            if (rightPageIdx < totalPages - 1) {
-                const actualRight = actualTotal - (rightPageIdx - offset);
-                displayStr = `${actualRight} - ${actualLeft}`;
-            }
-        }
-        document.getElementById('page-current').textContent = displayStr;
-        document.getElementById('page-total').textContent = actualTotal;
-    }
+    // Start Viewer as soon as discovery is done
+    initViewer('vertical');
 });
 
 function checkExistsFast(url) {
@@ -390,7 +400,7 @@ function checkExistsFast(url) {
 async function discoverPages(basePath) {
     let index = 1;
     const discovered = [];
-    const maxConcurrent = 5;
+    const maxConcurrent = 10; // Faster discovery
     const pattern = window.PAGE_PATTERN || 'صفحة{n}.png';
 
     while (true) {
