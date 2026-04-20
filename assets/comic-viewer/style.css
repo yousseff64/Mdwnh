@@ -22,10 +22,10 @@ body {
     height: 100dvh;
     display: flex;
     flex-direction: column;
-    overscroll-behavior: none; /* Prevent pull-to-refresh and browser swipe navigation */
+    overscroll-behavior: none;
 }
 
-/* Navigation Bar */
+/* ── Navigation Bar ───────────────────────────────────────────────────────── */
 .flipbook-nav {
     display: flex;
     align-items: center;
@@ -47,15 +47,9 @@ body {
     font-size: 0.95rem;
     transition: color 0.3s ease;
 }
+.btn-back:hover { color: var(--text-primary); }
 
-.btn-back:hover {
-    color: var(--text-primary);
-}
-
-.logo img {
-    height: 35px;
-    object-fit: contain;
-}
+.logo img { height: 35px; object-fit: contain; }
 
 .header-center {
     display: flex;
@@ -80,8 +74,9 @@ body {
     gap: 4px;
     opacity: 0.8;
 }
+.view-stats svg { margin-top: 1px; }
 
-/* Main Wrapper */
+/* ── Main Wrapper ─────────────────────────────────────────────────────────── */
 .flipbook-wrapper {
     flex: 1;
     display: flex;
@@ -92,11 +87,11 @@ body {
     width: 100%;
     height: calc(100vh - 67px);
     height: calc(100dvh - 67px);
-    padding: 0; /* JS will handle padding calculations */
-    touch-action: pan-x pan-y pinch-zoom; /* Allow panning and pinching while blocking browser swipe-back */
+    padding: 0;
+    touch-action: pan-x pan-y pinch-zoom;
 }
 
-/* Loading State */
+/* ── Splash Loading Screen ────────────────────────────────────────────────── */
 .loading-state {
     position: absolute;
     top: 50%;
@@ -108,13 +103,19 @@ body {
     gap: 1rem;
     z-index: 50;
     transition: opacity 0.5s ease;
+    text-align: center;
+    padding: 0 2rem;
 }
 
 .loading-state p {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    min-height: 2em;        /* prevent layout shift during message swap */
+    transition: opacity 0.5s ease;
 }
 
+/* ── Spinner ──────────────────────────────────────────────────────────────── */
 .spinner {
     width: 40px;
     height: 40px;
@@ -122,25 +123,29 @@ body {
     border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    flex-shrink: 0;
+}
+.spinner.small {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Flipbook Container */
+/* ── Main Container ───────────────────────────────────────────────────────── */
 .container {
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: flex-start; /* Align to top */
+    align-items: flex-start;
     justify-content: center;
-    padding-top: 10px; /* Small gap from navbar */
+    padding-top: 10px;
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.6s ease;
 }
 
-/* Vertical Mode (Webtoon Style) */
+/* ── Vertical / Webtoon Mode ──────────────────────────────────────────────── */
 .container.vertical-mode {
     display: block;
     overflow-y: auto;
@@ -149,8 +154,8 @@ body {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     height: 100%;
+    padding-bottom: 60px;
 }
-
 
 .container.vertical-mode .flipbook-sizer {
     width: 92% !important;
@@ -169,8 +174,111 @@ body {
     flex-direction: column-reverse;
 }
 
+/* Pages in vertical mode */
+.container.vertical-mode .page {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    transform: none !important;
+    display: block !important;
+    border: none;
+    margin-bottom: 2px;
+}
 
-/* Controls Auto-Hide & Toggle Styles */
+.container.vertical-mode .page-content {
+    height: auto;
+    position: relative;
+    min-height: 40px;
+}
+
+.container.vertical-mode .page-image {
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* ── Per-page Loading Spinner ─────────────────────────────────────────────── */
+/* Shown while an individual page image is loading (inline, not overlay) */
+.page-loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem 1rem;
+    width: 100%;
+    min-height: 200px;
+}
+
+/* In vertical mode, show spinners for individual pages */
+.container.vertical-mode .page-loading-spinner {
+    display: flex; /* NOT none – user sees spinner while page is loading */
+}
+
+/* Empty placeholder pages never need a spinner */
+.container.vertical-mode .page-empty {
+    display: none !important;
+}
+
+.page-loading-text {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 1.5;
+    transition: opacity 0.5s ease;
+    min-height: 1.3em;
+}
+
+/* ── Page Styles ──────────────────────────────────────────────────────────── */
+.page {
+    background-color: #111;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.page-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+}
+
+.page-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.page-image.loaded { opacity: 1; }
+
+.page.--page-hard {
+    background-color: #000;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+/* ── Flipbook Sizer ───────────────────────────────────────────────────────── */
+.flipbook-sizer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flipbook {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border-radius: 4px;
+}
+
+/* ── Bottom Controls (Desktop only) ──────────────────────────────────────── */
 .bottom-controls {
     position: absolute;
     bottom: 20px;
@@ -179,28 +287,38 @@ body {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    background: rgba(20, 20, 25, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(20, 20, 25, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 0.75rem 1.5rem;
     border-radius: 50px;
     border: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     z-index: 100;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    /* Slide up/down transition */
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity  0.4s ease;
 }
 
+/* Hides the bar below the fold */
 .bottom-controls.hidden-auto {
     transform: translate(-50%, 100px);
     opacity: 0;
     pointer-events: none;
 }
 
+/* Initial hidden state before viewer is ready */
 .bottom-controls.hidden {
     opacity: 0;
     pointer-events: none;
 }
 
+/* Completely hide on mobile */
+@media screen and (max-width: 768px) {
+    .bottom-controls { display: none !important; }
+}
+
+/* ── View Mode Toggle Buttons ─────────────────────────────────────────────── */
 .view-mode-toggle {
     display: flex;
     align-items: center;
@@ -217,188 +335,23 @@ body {
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.8rem;
+    font-family: var(--font-main);
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
 }
-
 .btn-toggle:hover {
     background: rgba(255,255,255,0.1);
     color: var(--text-primary);
 }
-
 .btn-toggle.active {
     background: var(--accent);
     color: #000;
     border-color: var(--accent);
+    font-weight: 600;
 }
 
-@media screen and (max-width: 768px) {
-    .bottom-controls {
-        display: none !important;
-    }
-    
-    .container.vertical-mode {
-        padding-bottom: 0;
-    }
-}
-
-
-body.force-vertical .container.vertical-mode {
-    padding-bottom: 50px;
-}
-
-body.force-vertical .container.vertical-mode .flipbook-sizer {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-
-.container.vertical-mode .page {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: auto !important;
-    transform: none !important;
-    display: block !important;
-    border: none;
-    margin-bottom: 2px;
-}
-
-.container.vertical-mode .page-content {
-    height: auto;
-}
-
-.container.vertical-mode .page-image {
-    height: auto;
-    object-fit: contain;
-}
-
-.container.vertical-mode .page-empty {
-    display: none !important;
-}
-
-/* Per-page loading overlay in vertical mode */
-.container.vertical-mode .page-loading-spinner {
-    display: flex !important;
-    position: relative;
-    width: 100%;
-    min-height: 300px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    background: rgba(10, 10, 12, 0.6);
-    padding: 2rem;
-}
-
-.container.vertical-mode .page-loading-spinner.done {
-    display: none !important;
-}
-
-.flipbook-sizer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* JS will set exact width and height */
-}
-
-.flipbook {
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    border-radius: 4px;
-}
-
-/* Custom Mobile Swipe Engine */
-.mobile-slider {
-    position: relative;
-    overflow: hidden;
-    background: #000;
-}
-
-.mobile-slider .page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    will-change: transform;
-}
-
-.mobile-slider.animating .page {
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* Page Loading Spinner */
-.page-loading-spinner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    z-index: 10;
-}
-
-.spinner.small {
-    width: 24px;
-    height: 24px;
-    border-width: 2px;
-}
-
-.page-loading-text {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 0 20px;
-    transition: opacity 0.5s ease;
-    max-width: 380px;
-    line-height: 1.6;
-}
-
-/* Page Styles */
-.page {
-    background-color: #111;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-
-.page-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-}
-
-.page-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    user-select: none;
-    -webkit-user-drag: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.page-image.loaded {
-    opacity: 1;
-}
-
-.page.--page-hard {
-    background-color: #000;
-    border: 2px solid rgba(255,255,255,0.1);
-}
-
-/* Controls */
-.bottom-controls.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-
+/* ── Icon Buttons ─────────────────────────────────────────────────────────── */
 .btn-icon {
     background: none;
     border: none;
@@ -412,14 +365,9 @@ body.force-vertical .container.vertical-mode .flipbook-sizer {
     border-radius: 50%;
     transition: background 0.2s, color 0.2s;
 }
-
 .btn-icon:hover {
     background: rgba(255,255,255,0.1);
     color: var(--accent);
-}
-
-.view-stats svg {
-    margin-top: 1px;
 }
 
 .page-counter {
@@ -430,82 +378,36 @@ body.force-vertical .container.vertical-mode .flipbook-sizer {
     direction: ltr;
 }
 
-.btn-zoom {
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    transition: background 0.2s, color 0.2s;
-}
-
-.btn-zoom:hover {
-    background: rgba(255,255,255,0.1);
-    color: var(--accent);
-}
-
-.flipbook-sizer.zoomed {
-    cursor: grab;
-    z-index: 150;
-}
-
-.flipbook-sizer.zoomed:active {
-    cursor: grabbing;
-}
-
-.container.zoom-active {
-    overflow: auto;
-    display: block; /* Allow scrolling */
-    white-space: nowrap;
-}
-
-.mobile-only {
-    display: none !important;
-}
-
-.desktop-only {
-    display: flex !important;
-}
+/* ── Desktop / Mobile visibility helpers ─────────────────────────────────── */
+.mobile-only  { display: none !important; }
+.desktop-only { display: flex !important; }
 
 @media screen and (max-width: 768px) {
-    .desktop-only {
-        display: none !important;
-    }
+    .desktop-only { display: none !important; }
 }
-
 @media screen and (min-width: 769px) {
-    .mobile-only {
-        display: none !important;
-    }
+    .mobile-only { display: none !important; }
 }
 
-/* Fullscreen Mode Styles */
-body.fullscreen-active .flipbook-nav {
-    display: none !important;
-}
-
+/* ── Fullscreen ───────────────────────────────────────────────────────────── */
+body.fullscreen-active .flipbook-nav { display: none !important; }
 body.fullscreen-active .flipbook-wrapper {
     height: 100vh !important;
     height: 100dvh !important;
 }
 
+/* ── Zoom (kept for compatibility) ───────────────────────────────────────── */
+.flipbook-sizer.zoomed { cursor: grab; z-index: 150; }
+.flipbook-sizer.zoomed:active { cursor: grabbing; }
+.container.zoom-active {
+    overflow: auto;
+    display: block;
+    white-space: nowrap;
+}
 .container.zoom-active .flipbook-sizer {
     margin: auto;
     transition: transform 0.3s ease;
 }
 
-/* Swipe Indicator REMOVED as per request */
-.swipe-indicator {
-    display: none !important;
-}
-
-/* Responsive */
-    .mobile-only {
-        display: flex !important;
-    }
-}
+/* ── Swipe indicator removed ─────────────────────────────────────────────── */
+.swipe-indicator { display: none !important; }
