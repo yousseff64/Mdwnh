@@ -42,37 +42,29 @@ function startMessageRotator(textEl, startDelay = 5000) {
 
 // ─── Page URL Generation ──────────────────────────────────────────────────────
 function buildFileName(pattern, n) {
-    if (pattern.includes('{0n}')) {
-        return pattern.replace('{0n}', n.toString().padStart(2, '0'));
-    }
+    if (pattern.includes('{0n}')) return pattern.replace('{0n}', n.toString().padStart(2, '0'));
     return pattern.replace('{n}', n);
 }
 
 function generatePageUrls(basePath, count) {
-    // Fast path: generate all URLs directly when count is known
     const pattern = window.PAGE_PATTERN || 'صفحة{n}.png';
     const urls = [];
-    for (let n = 1; n <= count; n++) {
-        urls.push(basePath + buildFileName(pattern, n));
-    }
+    for (let n = 1; n <= count; n++) urls.push(basePath + buildFileName(pattern, n));
     return urls;
 }
 
 async function discoverPages(basePath) {
-    // Slow fallback: probe for pages when count is unknown
     let index = 1;
     const discovered = [];
     const BATCH = 10;
     const pattern = window.PAGE_PATTERN || 'صفحة{n}.png';
-
     while (true) {
         const batch = [];
         for (let i = 0; i < BATCH; i++) {
-            const n = index + i;
-            const url = basePath + buildFileName(pattern, n);
+            const url = basePath + buildFileName(pattern, index + i);
             batch.push(new Promise(res => {
                 const img = new Image();
-                img.onload  = () => res(url);
+                img.onload = () => res(url);
                 img.onerror = () => res(null);
                 img.src = url;
             }));
@@ -87,12 +79,30 @@ async function discoverPages(basePath) {
     return discovered;
 }
 
+// ─── Load a single URL → returns the loaded <img> element ────────────────────
+function loadSingleImage(url) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload  = () => resolve(img);
+        img.onerror = () => {
+            // Retry once on error
+            setTimeout(() => {
+                const img2 = new Image();
+                img2.onload  = () => resolve(img2);
+                img2.onerror = () => resolve(img); // give up, still resolve
+                img2.src = url + '?r=' + Date.now();
+            }, 3000);
+        };
+        img.src = url;
+    });
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
-    const basePath   = window.COMIC_PATH || '../باب الحجرة/';
-    const comicId    = window.COMIC_ID   || 'unknown';
-    const loadingEl  = document.getElementById('loading');
-    const loadTextEl = loadingEl?.querySelector('p');
+    const basePath    = window.COMIC_PATH || '../باب الحجرة/';
+    const comicId     = window.COMIC_ID   || 'unknown';
+    const loadingEl   = document.getElementById('loading');
+    const loadTextEl  = loadingEl?.querySelector('p');
     const containerEl = document.querySelector('.container');
     const controlsEl  = document.getElementById('controls');
     const db = typeof firebase !== 'undefined' ? firebase.database() : null;
@@ -101,10 +111,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentViewMode = 'vertical';
     let flipBook = null;
     let hasCountedView = false;
-    // imgMap: url → <img element>, rebuilt on every DOM switch
-    const imgMap = new Map();
+    // Store all loaded images in reading order for mode switching
+    const loadedImages = []; // [{ url, img }]
 
-    // ── Firebase view counter ────────────────────────────────────────────────
+    // ── Firebase ─────────────────────────────────────────────────────────────
     if (db) {
         db.ref('comics/' + comicId + '/views').on('value', snap => {
             const el = document.getElementById('view-count');
@@ -117,38 +127,81 @@ document.addEventListener('DOMContentLoaded', async () => {
         db.ref('comics/' + comicId + '/views').transaction(v => (v || 0) + 1);
     }
 
-    // ── Start splash messages ────────────────────────────────────────────────
+    // ── Splash messages ──────────────────────────────────────────────────────
     if (loadTextEl) {
         loadTextEl.style.transition = 'opacity 0.5s ease';
         startMessageRotator(loadTextEl, 5000);
     }
 
-    // ── Get page list (instant if PAGE_COUNT set, otherwise probe) ───────────
-    let pages;
-    if (window.PAGE_COUNT && window.PAGE_COUNT > 0) {
-        pages = generatePageUrls(basePath, window.PAGE_COUNT);
-    } else {
-        pages = await discoverPages(basePath);
-    }
+    // ── Get page list ────────────────────────────────────────────────────────
+    const pages = window.PAGE_COUNT > 0
+        ? generatePageUrls(basePath, window.PAGE_COUNT)
+        : await discoverPages(basePath);
 
     if (pages.length === 0) {
         if (loadingEl) loadingEl.innerHTML = `<p style="color:#ff5555;">لم يتم العثور على صفحات.</p>`;
         return;
     }
 
-    // ── Build DOM with spinners, images have NO src yet ──────────────────────
-    buildBookDOM('vertical', pages);
-
-    containerEl.classList.add('vertical-mode');
-
-    // ── Load first 3 pages immediately in parallel ────────────────────────────
-    // (reading order = reversed array, so last 3 in pages[] = first 3 in story)
+    // Reading order = reversed (Arabic: page 1 is last in array)
     const readOrder = [...pages].reverse();
+
+    // ── Set up the book container ─────────────────────────────────────────────
+    containerEl.classList.add('vertical-mode');
+    const sizer = document.querySelector('.flipbook-sizer');
+    if (sizer) sizer.innerHTML = '<div id="book" class="flipbook"></div>';
+    const bookEl = document.getElementById('book');
+
+    // ── Helper: create a page div with a spinner placeholder ─────────────────
+    function createPagePlaceholder(url) {
+        const pageDiv = document.createElement('div');
+        pageDiv.className = 'page';
+        pageDiv.dataset.url = url;
+
+        const spinnerWrap = document.createElement('div');
+        spinnerWrap.className = 'page-loading-spinner';
+        const spinEl = document.createElement('div');
+        spinEl.className = 'spinner small';
+        const txtEl = document.createElement('p');
+        txtEl.className = 'page-loading-text';
+        txtEl.textContent = 'جاري تجهيز الصفحة..';
+        spinnerWrap.appendChild(spinEl);
+        spinnerWrap.appendChild(txtEl);
+
+        const stopRot = startMessageRotator(txtEl, 5000);
+
+        const pageContent = document.createElement('div');
+        pageContent.className = 'page-content';
+        pageContent.appendChild(spinnerWrap);
+
+        pageDiv.appendChild(pageContent);
+        return { pageDiv, pageContent, spinnerWrap, stopRot };
+    }
+
+    // ── Helper: swap placeholder spinner → actual image ───────────────────────
+    function finalizePageDiv(pageContent, spinnerWrap, stopRot, img) {
+        stopRot();
+        img.className = 'page-image loaded';
+        img.style.opacity = '1';
+        pageContent.appendChild(img);
+        spinnerWrap.style.display = 'none';
+    }
+
+    // ── Progressive loading: show spinner, load image, swap in ────────────────
+    async function loadAndAppendPage(url) {
+        const { pageDiv, pageContent, spinnerWrap, stopRot } = createPagePlaceholder(url);
+        bookEl.appendChild(pageDiv); // spinner visible immediately
+
+        const img = await loadSingleImage(url);
+        loadedImages.push({ url, img });
+        finalizePageDiv(pageContent, spinnerWrap, stopRot, img);
+    }
+
+    // ── Load first 3 pages simultaneously, show reader ────────────────────────
     const FIRST_N = Math.min(3, readOrder.length);
+    await Promise.all(readOrder.slice(0, FIRST_N).map(url => loadAndAppendPage(url)));
 
-    await Promise.all(readOrder.slice(0, FIRST_N).map(url => triggerLoad(url)));
-
-    // ── Hide splash and show reader ───────────────────────────────────────────
+    // Hide splash
     if (loadingEl) {
         loadingEl.style.opacity = '0';
         setTimeout(() => { loadingEl.style.display = 'none'; }, 500);
@@ -157,138 +210,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (controlsEl) controlsEl.classList.remove('hidden');
     incrementView();
 
-    // ── Load remaining pages one-by-one in background ────────────────────────
+    // ── Load remaining pages ONE BY ONE ──────────────────────────────────────
     (async () => {
         for (const url of readOrder.slice(FIRST_N)) {
-            await triggerLoad(url);
+            await loadAndAppendPage(url);
         }
-        // Final integrity check 2s after all done
+        // After all done, run integrity check
         setTimeout(runIntegrityCheck, 2000);
     })();
 
-    // Integrity check every 8s as safety net
-    setInterval(runIntegrityCheck, 8000);
+    // Safety net every 10s
+    setInterval(runIntegrityCheck, 10000);
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  DOM builder — completely recreates #book each time
-    // ─────────────────────────────────────────────────────────────────────────
-    function buildBookDOM(mode, pageList) {
-        imgMap.clear();
-        const sizer = document.querySelector('.flipbook-sizer');
-        if (sizer) sizer.innerHTML = '<div id="book" class="flipbook"></div>';
-        const bk = document.getElementById('book');
-        if (!bk) return null;
-
-        const ordered = mode === 'flipbook'
-            ? ['empty', ...[...pageList].reverse(), 'empty']
-            : [...pageList].reverse();
-
-        ordered.forEach((url, i) => {
-            const pageDiv = document.createElement('div');
-            pageDiv.className = 'page';
-
-            if (url === 'empty') {
-                pageDiv.classList.add('page-empty');
-                bk.appendChild(pageDiv);
-                return;
-            }
-
-            if (mode === 'flipbook' && (i === 0 || i === ordered.length - 1)) {
-                pageDiv.classList.add('--page-hard');
-            }
-
-            // Per-page spinner
-            const spinnerWrap = document.createElement('div');
-            spinnerWrap.className = 'page-loading-spinner';
-            const spinEl = document.createElement('div');
-            spinEl.className = 'spinner small';
-            const txtEl = document.createElement('p');
-            txtEl.className = 'page-loading-text';
-            txtEl.textContent = 'جاري تجهيز الصفحة..';
-            spinnerWrap.appendChild(spinEl);
-            spinnerWrap.appendChild(txtEl);
-
-            // Each page rotates messages after 5s of waiting
-            const stopRot = startMessageRotator(txtEl, 5000);
-
-            const pageContent = document.createElement('div');
-            pageContent.className = 'page-content';
-
-            const img = document.createElement('img');
-            img.className = 'page-image';
-            img._comicUrl = url;      // Store URL as JS property (no data attr)
-            img._attempted = false;   // Track whether we've started loading it
-
-            img.onload = () => {
-                img.classList.add('loaded');
-                img._attempted = true;
-                stopRot();
-                spinnerWrap.style.display = 'none';
-            };
-            img.onerror = () => {
-                img._attempted = true;
-                setTimeout(() => {
-                    // Retry with cache-buster
-                    img.src = url + '?r=' + Date.now();
-                }, 4000);
-            };
-
-            // Register in map
-            imgMap.set(url, img);
-
-            pageContent.appendChild(spinnerWrap);
-            pageContent.appendChild(img);
-            pageDiv.appendChild(pageContent);
-            bk.appendChild(pageDiv);
-        });
-
-        return bk;
-    }
-
-    // ── Trigger load for one URL, await completion ────────────────────────────
-    function triggerLoad(url) {
-        return new Promise(resolve => {
-            const img = imgMap.get(url);
-            if (!img) { resolve(); return; }
-            if (img.classList.contains('loaded')) { resolve(); return; }
-
-            const cleanup = () => {
-                img.removeEventListener('load',  onLoad);
-                img.removeEventListener('error', onError);
-            };
-            const onLoad  = () => { cleanup(); resolve(); };
-            const onError = () => { cleanup(); resolve(); }; // don't stall the queue
-
-            img.addEventListener('load',  onLoad);
-            img.addEventListener('error', onError);
-
-            // Only set src if not already set
-            if (!img.src || img.src === window.location.href) {
-                img._attempted = true;
-                img.src = url;
-            }
-        });
-    }
-
-    // ── Integrity check — only retry images that WERE attempted but failed ────
+    // ── Integrity check: retry any page-image that failed ────────────────────
     function runIntegrityCheck() {
-        imgMap.forEach((img, url) => {
-            if (!img._attempted) return; // not yet queued, skip
-            const broken = !img.classList.contains('loaded') ||
-                           !img.complete ||
-                           img.naturalWidth === 0;
-            if (broken) {
-                img.classList.remove('loaded');
-                const sp = img.closest('.page-content')?.querySelector('.page-loading-spinner');
-                if (sp) sp.style.display = '';
+        document.querySelectorAll('.page-image').forEach(img => {
+            if (!img.complete || img.naturalWidth === 0) {
+                const url = img.src.split('?')[0];
                 img.src = url + '?check=' + Date.now();
             }
         });
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  Mode switching
-    // ─────────────────────────────────────────────────────────────────────────
+    // ── Mode switching ────────────────────────────────────────────────────────
     async function switchMode(mode) {
         if (currentViewMode === mode) return;
         currentViewMode = mode;
@@ -298,8 +242,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             flipBook = null;
         }
 
-        // Rebuild DOM + repopulate imgMap
-        const bk = buildBookDOM(mode, pages);
+        // Rebuild book from already-loaded images
+        const sizerEl = document.querySelector('.flipbook-sizer');
+        if (sizerEl) sizerEl.innerHTML = '<div id="book" class="flipbook"></div>';
+        const bk = document.getElementById('book');
         if (!bk) return;
 
         containerEl.style.opacity = '1';
@@ -307,16 +253,78 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (mode === 'vertical') {
             containerEl.classList.add('vertical-mode');
             containerEl.scrollTop = 0;
-            // Load all pages right away (they've been seen before)
-            for (const url of [...pages].reverse()) {
-                const img = imgMap.get(url);
-                if (img && !img.src) {
-                    img._attempted = true;
-                    img.src = url;
+
+            // Re-add all loaded pages in reading order
+            loadedImages.forEach(({ url, img }) => {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'page';
+                const pageContent = document.createElement('div');
+                pageContent.className = 'page-content';
+                const clone = img.cloneNode();
+                clone.className = 'page-image loaded';
+                clone.style.opacity = '1';
+                clone.src = url;
+                pageContent.appendChild(clone);
+                pageDiv.appendChild(pageContent);
+                bk.appendChild(pageDiv);
+            });
+
+            // Add spinner placeholders for pages not yet loaded
+            const loadedUrls = new Set(loadedImages.map(d => d.url));
+            readOrder.forEach(url => {
+                if (!loadedUrls.has(url)) {
+                    const { pageDiv } = createPagePlaceholder(url);
+                    bk.appendChild(pageDiv);
                 }
-            }
+            });
+
         } else {
             containerEl.classList.remove('vertical-mode');
+
+            // For flipbook: build full page list with empty pads
+            const allOrdered = ['empty', ...[...pages].reverse(), 'empty'];
+            const loadedMap = new Map(loadedImages.map(d => [d.url, d.img]));
+
+            allOrdered.forEach((url, i) => {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'page';
+
+                if (url === 'empty') {
+                    pageDiv.classList.add('page-empty');
+                    bk.appendChild(pageDiv);
+                    return;
+                }
+                if (i === 0 || i === allOrdered.length - 1) pageDiv.classList.add('--page-hard');
+
+                const pageContent = document.createElement('div');
+                pageContent.className = 'page-content';
+
+                if (loadedMap.has(url)) {
+                    const clone = loadedMap.get(url).cloneNode();
+                    clone.className = 'page-image loaded';
+                    clone.style.opacity = '1';
+                    clone.src = url;
+                    pageContent.appendChild(clone);
+                } else {
+                    // Spinner for pages not yet loaded
+                    const spinnerWrap = document.createElement('div');
+                    spinnerWrap.className = 'page-loading-spinner';
+                    spinnerWrap.innerHTML = '<div class="spinner small"></div>';
+                    const imgEl = document.createElement('img');
+                    imgEl.className = 'page-image';
+                    imgEl.onload = () => {
+                        imgEl.classList.add('loaded');
+                        spinnerWrap.style.display = 'none';
+                    };
+                    imgEl.src = url;
+                    pageContent.appendChild(spinnerWrap);
+                    pageContent.appendChild(imgEl);
+                }
+
+                pageDiv.appendChild(pageContent);
+                bk.appendChild(pageDiv);
+            });
+
             try {
                 const totalPages = pages.length + 2;
                 flipBook = new St.PageFlip(bk, {
@@ -335,34 +343,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 flipBook.on('flip', e => {
                     playFlipSound();
                     updatePageCounter(flipBook, totalPages);
-                    loadAround(e.data);
                     if (flipBook.getCurrentPageIndex() > 6) incrementView();
                 });
                 updatePageCounter(flipBook, totalPages);
-                // Load first 10 pages around start immediately
-                loadAround(totalPages - 2, 10);
-                // Then load rest sequentially
-                (async () => {
-                    for (const url of [...pages].reverse()) {
-                        await triggerLoad(url);
-                    }
-                })();
             } catch(e) { console.error('Flipbook init:', e); }
         }
         setTimeout(resizeSizer, 100);
     }
 
-    // ── Load images around a given index ─────────────────────────────────────
-    function loadAround(index, radius = 4) {
-        document.querySelectorAll('.page-image').forEach((img, i) => {
-            if (Math.abs(i - index) <= radius && img._comicUrl && !img.src) {
-                img._attempted = true;
-                img.src = img._comicUrl;
-            }
-        });
-    }
-
-    // ── Mode toggle buttons ───────────────────────────────────────────────────
+    // ── Toggle buttons ────────────────────────────────────────────────────────
     if (comicId !== 'ghailam' && controlsEl) {
         const wrap = document.createElement('div');
         wrap.className = 'view-mode-toggle';
@@ -383,7 +372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // ── Auto-hide controls on desktop (50px threshold) ────────────────────────
+    // ── Auto-hide controls (50px threshold) ──────────────────────────────────
     let controlsTimer, lastMX = 0, lastMY = 0;
     if (!isMobile && controlsEl) {
         document.addEventListener('mousemove', e => {
@@ -419,13 +408,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const availH = containerEl.clientHeight - 160;
         let w = availW, h = w / ratio;
         if (h > availH) { h = availH; w = h * ratio; }
-        sizer.style.width  = Math.floor(w) + 'px';
+        sizer.style.width = Math.floor(w) + 'px';
         sizer.style.height = Math.floor(h) + 'px';
         if (flipBook) flipBook.update();
     }
     window.addEventListener('resize', resizeSizer);
 
-    // ── Page counter for flipbook mode ────────────────────────────────────────
+    // ── Page counter ──────────────────────────────────────────────────────────
     function updatePageCounter(book, totalPages) {
         if (!book) return;
         const ci = book.getCurrentPageIndex();
@@ -436,10 +425,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const ri = ci + 1;
             if (ri < totalPages - 1) display = `${total - (ri - offset)} - ${left}`;
         }
-        document.getElementById('page-current')?.setAttribute !== undefined &&
-            (document.getElementById('page-current').textContent = display);
-        document.getElementById('page-total') &&
-            (document.getElementById('page-total').textContent = total);
+        const cur = document.getElementById('page-current');
+        const tot = document.getElementById('page-total');
+        if (cur) cur.textContent = display;
+        if (tot) tot.textContent = total;
     }
 });
 

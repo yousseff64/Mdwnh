@@ -199,27 +199,28 @@ body {
 }
 
 /* ── Per-page Loading Spinner ─────────────────────────────────────────────── */
-/* Shown while an individual page image is loading (inline, not overlay) */
 .page-loading-spinner {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    padding: 2rem 1rem;
     width: 100%;
-    min-height: 200px;
+    aspect-ratio: 3 / 4;      /* Comic page proportion */
+    background: #0e0e10;
+    min-height: 300px;
 }
 
-/* In vertical mode, show spinners for individual pages */
+/* In vertical mode, show spinners for individual pages (NOT hidden) */
 .container.vertical-mode .page-loading-spinner {
-    display: flex; /* NOT none – user sees spinner while page is loading */
+    display: flex;
 }
 
 /* Empty placeholder pages never need a spinner */
 .container.vertical-mode .page-empty {
     display: none !important;
 }
+
 
 .page-loading-text {
     color: var(--text-secondary);
