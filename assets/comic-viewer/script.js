@@ -143,8 +143,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Reading order (reversed as requested)
-    const readOrder = [...pages].reverse();
+    // Reading order (Forward: Page 1 to Page N)
+    const readOrder = [...pages];
 
     // ── Set up the book container ─────────────────────────────────────────────
     containerEl.classList.add('vertical-mode');
