@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Reading order = reversed (Arabic: page 1 is last in array)
+    // Reading order (reversed as requested)
     const readOrder = [...pages].reverse();
 
     // ── Set up the book container ─────────────────────────────────────────────
@@ -197,8 +197,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         finalizePageDiv(pageContent, spinnerWrap, stopRot, img);
     }
 
-    // ── Load first 3 pages simultaneously, show reader ────────────────────────
-    const FIRST_N = Math.min(3, readOrder.length);
+    // ── Load first 5 pages simultaneously, show reader ────────────────────────
+    const FIRST_N = Math.min(5, readOrder.length);
     await Promise.all(readOrder.slice(0, FIRST_N).map(url => loadAndAppendPage(url)));
 
     // Hide splash
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             containerEl.classList.remove('vertical-mode');
 
-            // For flipbook: build full page list with empty pads
+            // For flipbook: build full page list with empty pads (reversed for RTL)
             const allOrdered = ['empty', ...[...pages].reverse(), 'empty'];
             const loadedMap = new Map(loadedImages.map(d => [d.url, d.img]));
 
