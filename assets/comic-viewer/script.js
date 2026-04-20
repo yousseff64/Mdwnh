@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentViewMode = 'vertical';
     let flipBook = null;
     let hasCountedView = false;
-    // Store all loaded images in reading order for mode switching
-    const loadedImages = []; // [{ url, img }]
+    // Store all loaded images by URL for instant retrieval
+    const loadedImagesMap = new Map(); // url -> img
 
     // ── Firebase ─────────────────────────────────────────────────────────────
     if (db) {
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Reading order (Forward: Page 1 to Page N)
+    // Canonical reading order (1.png = start)
     const readOrder = [...pages];
 
     // ── Set up the book container ─────────────────────────────────────────────
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         bookEl.appendChild(pageDiv); // spinner visible immediately
 
         const img = await loadSingleImage(url);
-        loadedImages.push({ url, img });
+        loadedImagesMap.set(url, img);
         finalizePageDiv(pageContent, spinnerWrap, stopRot, img);
     }
 
@@ -254,25 +254,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             containerEl.classList.add('vertical-mode');
             containerEl.scrollTop = 0;
 
-            // Re-add all loaded pages in reading order
-            loadedImages.forEach(({ url, img }) => {
-                const pageDiv = document.createElement('div');
-                pageDiv.className = 'page';
-                const pageContent = document.createElement('div');
-                pageContent.className = 'page-content';
-                const clone = img.cloneNode();
-                clone.className = 'page-image loaded';
-                clone.style.opacity = '1';
-                clone.src = url;
-                pageContent.appendChild(clone);
-                pageDiv.appendChild(pageContent);
-                bk.appendChild(pageDiv);
-            });
-
-            // Add spinner placeholders for pages not yet loaded
-            const loadedUrls = new Set(loadedImages.map(d => d.url));
+            // Re-add all pages in the canonical reading order
             readOrder.forEach(url => {
-                if (!loadedUrls.has(url)) {
+                if (loadedImagesMap.has(url)) {
+                    const img = loadedImagesMap.get(url);
+                    const pageDiv = document.createElement('div');
+                    pageDiv.className = 'page';
+                    const pageContent = document.createElement('div');
+                    pageContent.className = 'page-content';
+                    const clone = img.cloneNode();
+                    clone.className = 'page-image loaded';
+                    clone.style.opacity = '1';
+                    clone.src = url;
+                    pageContent.appendChild(clone);
+                    pageDiv.appendChild(pageContent);
+                    bk.appendChild(pageDiv);
+                } else {
+                    // Not loaded yet? Add a placeholder
                     const { pageDiv } = createPagePlaceholder(url);
                     bk.appendChild(pageDiv);
                 }
@@ -281,9 +279,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             containerEl.classList.remove('vertical-mode');
 
-            // For flipbook: build full page list with empty pads (reversed for RTL)
-            const allOrdered = ['empty', ...[...pages].reverse(), 'empty'];
-            const loadedMap = new Map(loadedImages.map(d => [d.url, d.img]));
+            // For flipbook: build full page list with empty pads (L-to-R in DOM)
+            const allOrdered = ['empty', ...pages, 'empty'];
+            const loadedMap = loadedImagesMap;
 
             allOrdered.forEach((url, i) => {
                 const pageDiv = document.createElement('div');
@@ -337,7 +335,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     mobileScrollSupport: false,
                     usePortrait: false,
                     flippingTime: 450,
-                    startPage: totalPages - 2
+                    startPage: 1
                 });
                 flipBook.loadFromHTML(document.querySelectorAll('.page'));
                 flipBook.on('flip', e => {
