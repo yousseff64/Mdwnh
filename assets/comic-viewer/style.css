@@ -274,8 +274,25 @@ body.force-vertical .container.vertical-mode .flipbook-sizer {
     object-fit: contain;
 }
 
-.container.vertical-mode .page-empty,
+.container.vertical-mode .page-empty {
+    display: none !important;
+}
+
+/* Per-page loading overlay in vertical mode */
 .container.vertical-mode .page-loading-spinner {
+    display: flex !important;
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: rgba(10, 10, 12, 0.6);
+    padding: 2rem;
+}
+
+.container.vertical-mode .page-loading-spinner.done {
     display: none !important;
 }
 
@@ -320,26 +337,24 @@ body.force-vertical .container.vertical-mode .flipbook-sizer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     z-index: 10;
-    width: 100%;
-    height: 100%;
-    background: #000;
 }
 
 .spinner.small {
-    width: 40px;
-    height: 40px;
-    border-width: 3px;
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
 }
-
 
 .page-loading-text {
     color: var(--text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     text-align: center;
-    padding: 0 10px;
+    padding: 0 20px;
     transition: opacity 0.5s ease;
+    max-width: 380px;
+    line-height: 1.6;
 }
 
 /* Page Styles */
