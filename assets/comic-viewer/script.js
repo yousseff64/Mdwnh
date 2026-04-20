@@ -56,29 +56,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadingMessages = [
         "لا تقلق.. سترى القصة في اقرب وقت",
         "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
-        "لماذا لا تصلي على حبيبك محمد حتى ينتهي التحميل؟",
+        "لماذا لا تصل على حبيبك محمد حتى ينتهي التحميل؟",
         "لماذا لا تستغفر ربك حتى ينتهي التحميل؟",
         "ربما السيد عجيب يعرف الحل؟",
-        "هل تعلم ان قولك سبحان الله وبحمده يغرس لك نخلة في الجنة؟"
+        "هل تعلم ان قولك سبحان اللّٰه وبحمده يغرس لك نخلة في الجنة؟"
     ];
 
     function startRotatingText(element) {
         if (!element) return;
         let msgIndex = Math.floor(Math.random() * loadingMessages.length);
-        element.style.opacity = '0';
+        
+        // Initial text (جاري تحضير الصفحات) stays for 5 seconds
         setTimeout(() => {
-            if (loadingEl.style.display !== 'none') {
-                element.textContent = loadingMessages[msgIndex];
-                element.style.opacity = '1';
-                setInterval(() => {
-                    if (loadingEl.style.display === 'none') return;
+            // Only start if still loading
+            const isVisible = window.getComputedStyle(loadingEl).display !== 'none';
+            if (isVisible) {
+                const cycle = () => {
+                    if (window.getComputedStyle(loadingEl).display === 'none') return;
+                    
                     element.style.opacity = '0';
                     setTimeout(() => {
-                        msgIndex = (msgIndex + 1) % loadingMessages.length;
+                        if (window.getComputedStyle(loadingEl).display === 'none') return;
                         element.textContent = loadingMessages[msgIndex];
                         element.style.opacity = '1';
+                        msgIndex = (msgIndex + 1) % loadingMessages.length;
                     }, 500);
-                }, 10000);
+                };
+                
+                cycle(); // Show first message immediately after 5s
+                setInterval(cycle, 10000); // Rotate every 10s
             }
         }, 5000);
     }
@@ -86,7 +92,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Core Functions ---
 
     function renderPages(mode) {
-        // Find the sizer and RECREATE the book element to purge library changes
         const sizer = document.querySelector('.flipbook-sizer');
         if (sizer) {
             sizer.innerHTML = '<div id="book" class="flipbook"></div>';
