@@ -153,7 +153,9 @@ body {
 
 
 .container.vertical-mode .flipbook-sizer {
-    width: 100% !important;
+    width: 92% !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
     height: auto !important;
     display: block;
 }
@@ -166,6 +168,7 @@ body {
     display: flex;
     flex-direction: column-reverse;
 }
+
 
 /* Controls Auto-Hide & Toggle Styles */
 .bottom-controls {
@@ -246,9 +249,10 @@ body.force-vertical .container.vertical-mode {
 }
 
 body.force-vertical .container.vertical-mode .flipbook-sizer {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 0 auto;
 }
+
 
 .container.vertical-mode .page {
     position: relative !important;

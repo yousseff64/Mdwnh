@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const basePath = window.COMIC_PATH || '../باب الحجرة/';
     const loadingEl = document.getElementById('loading');
     const containerEl = document.querySelector('.container');
-    const bookEl = document.getElementById('book');
     const controlsEl = document.getElementById('controls');
     const comicId = window.COMIC_ID || 'unknown';
     const db = typeof firebase !== 'undefined' ? firebase.database() : null;
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const isMobile = window.innerWidth <= 768;
-    let currentViewMode = 'vertical'; // Default to vertical as requested
+    let currentViewMode = 'vertical'; 
     let flipBook = null;
 
     const loadingMessages = [
@@ -66,22 +65,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     function startRotatingText(element) {
         if (!element) return;
         let msgIndex = Math.floor(Math.random() * loadingMessages.length);
-        function rotate() {
-            element.style.opacity = '0';
-            setTimeout(() => {
-                if(!element.parentElement) return; 
+        element.style.opacity = '0';
+        setTimeout(() => {
+            if (loadingEl.style.display !== 'none') {
                 element.textContent = loadingMessages[msgIndex];
-                msgIndex = (msgIndex + 1) % loadingMessages.length;
                 element.style.opacity = '1';
-            }, 500);
-        }
-        setInterval(rotate, 10000);
+                setInterval(() => {
+                    if (loadingEl.style.display === 'none') return;
+                    element.style.opacity = '0';
+                    setTimeout(() => {
+                        msgIndex = (msgIndex + 1) % loadingMessages.length;
+                        element.textContent = loadingMessages[msgIndex];
+                        element.style.opacity = '1';
+                    }, 500);
+                }, 10000);
+            }
+        }, 5000);
     }
 
     // --- Core Functions ---
 
     function renderPages(mode) {
-        bookEl.innerHTML = '';
+        // Find the sizer and RECREATE the book element to purge library changes
+        const sizer = document.querySelector('.flipbook-sizer');
+        if (sizer) {
+            sizer.innerHTML = '<div id="book" class="flipbook"></div>';
+        }
+        
+        const bookEl = document.getElementById('book');
+        if (!bookEl) return null;
+
         const reversedPages = mode === 'flipbook' 
             ? ['empty', ...[...pages].reverse(), 'empty']
             : [...pages].reverse();
@@ -102,16 +115,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             const pageContent = document.createElement('div');
             pageContent.className = 'page-content';
-            
-            pageContent.innerHTML = `
-                <div class="page-loading-spinner">
-                    <div class="spinner small"></div>
-                </div>
-            `;
+            pageContent.innerHTML = `<div class="page-loading-spinner"><div class="spinner small"></div></div>`;
             
             const img = document.createElement('img');
             img.className = 'page-image';
-            img.alt = `صفحة ${pages.length - i}`;
             img.dataset.src = url;
             
             img.onload = () => {
@@ -120,7 +127,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if(sp) sp.style.display = 'none';
             };
 
-            // Retry logic on error
             img.onerror = () => {
                 setTimeout(() => {
                     if (img.dataset.src) img.src = img.dataset.src + '?retry=' + Date.now();
@@ -131,21 +137,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             pageDiv.appendChild(pageContent);
             bookEl.appendChild(pageDiv);
         });
+        
+        return bookEl;
     }
 
     async function initViewer(mode) {
         currentViewMode = mode;
-        renderPages(mode);
+        
+        if (flipBook) {
+            try { 
+                flipBook.destroy(); 
+            } catch(e) { console.warn("Flipbook destroy error:", e); }
+            flipBook = null;
+        }
+
+        const bookEl = renderPages(mode);
+        if (!bookEl) return;
+
+        containerEl.style.opacity = '1';
         
         if (mode === 'vertical') {
             containerEl.classList.add('vertical-mode');
-            bookEl.classList.remove('mobile-slider');
-            if (flipBook) {
-                flipBook.destroy();
-                flipBook = null;
-            }
             lazyLoadAll();
-            incrementView(); // Simple view count for vertical
+            incrementView(); 
+            containerEl.scrollTop = 0;
         } else {
             containerEl.classList.remove('vertical-mode');
             try {
@@ -180,7 +195,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error("Flipbook init error:", e);
             }
         }
-        resizeSizer();
+        
+        setTimeout(resizeSizer, 100);
     }
 
     function lazyLoadAll() {
@@ -206,7 +222,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Controls Logic ---
 
-    // Toggle View Mode Button
     if (comicId !== 'ghailam') {
         const toggleContainer = document.createElement('div');
         toggleContainer.className = 'view-mode-toggle';
@@ -233,8 +248,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Auto-hide Controls (Desktop Only)
     let controlsTimer;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
     if (!isMobile) {
-        const showControls = () => {
+        const showControls = (e) => {
+            const dist = Math.hypot(e.pageX - lastMouseX, e.pageY - lastMouseY);
+            if (dist < 50) return; 
+
+            lastMouseX = e.pageX;
+            lastMouseY = e.pageY;
+
             controlsEl.classList.remove('hidden-auto');
             clearTimeout(controlsTimer);
             controlsTimer = setTimeout(() => {
@@ -243,11 +267,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         document.addEventListener('mousemove', showControls);
-        document.addEventListener('mousedown', showControls);
-        containerEl.addEventListener('scroll', showControls);
+        document.addEventListener('mousedown', (e) => {
+            lastMouseX = e.pageX;
+            lastMouseY = e.pageY;
+            showControls(e);
+        });
     }
 
-    // Desktop Buttons
     document.getElementById('btn-prev').addEventListener('click', () => {
         if (flipBook) flipBook.flipPrev();
     });
@@ -256,7 +282,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (flipBook) flipBook.flipNext();
     });
 
-    // Fullscreen
     const btnFullscreen = document.getElementById('btn-fullscreen');
     if (btnFullscreen) {
         btnFullscreen.addEventListener('click', () => {
@@ -273,14 +298,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(resizeSizer, 200);
     });
 
-    // --- Sizer ---
     function resizeSizer() {
         const sizer = document.querySelector('.flipbook-sizer');
-        if (!sizer || currentViewMode === 'vertical') {
-            if (sizer) {
-                sizer.style.width = '100%';
-                sizer.style.height = 'auto';
-            }
+        if (!sizer) return;
+
+        if (currentViewMode === 'vertical') {
+            sizer.style.width = ''; 
+            sizer.style.height = '';
             return;
         }
         
@@ -301,28 +325,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     window.addEventListener('resize', resizeSizer);
 
-    // --- Continuous Check ---
     setInterval(() => {
         const allImgs = document.querySelectorAll('.page-image');
         allImgs.forEach(img => {
             if (img.dataset.src && (!img.complete || img.naturalWidth === 0)) {
-                // If it should be loaded but isn't
                 if (img.src) {
-                    // It tried and failed or is stuck
                     img.src = img.dataset.src + '?check=' + Date.now();
                 } else if (currentViewMode === 'vertical') {
-                    // In vertical mode everything should be loading
                     img.src = img.dataset.src;
                 }
             }
         });
     }, 3000);
 
-    // Initial Start
     const initLoadText = loadingEl.querySelector('p');
     startRotatingText(initLoadText);
 
-    // Give a small delay to show loading state
     setTimeout(async () => {
         await initViewer('vertical');
         loadingEl.style.opacity = '0';
@@ -333,7 +351,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 500);
     }, 1000);
 
-    // Helper functions
     function updatePageCounter(book, totalPages) {
         if (!book) return;
         const currentIndex = book.getCurrentPageIndex(); 
@@ -388,13 +405,7 @@ async function discoverPages(basePath) {
         }
         const results = await Promise.all(batch);
         const foundInBatch = results.filter(r => r !== null);
-        
-        // We found something, add it
         discovered.push(...foundInBatch);
-        
-        // If we didn't find the full batch, it might mean we hit the end
-        // BUT discovery can be flaky with Image() if loading is slow.
-        // However, this logic usually works for local files.
         if (foundInBatch.length < maxConcurrent) break;
         if (index > 500) break; 
         index += maxConcurrent;
@@ -409,4 +420,3 @@ function playFlipSound() {
         flipAudio.play().catch(() => {});
     } catch(e) {}
 }
-
