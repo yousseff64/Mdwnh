@@ -25,10 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const db = typeof firebase !== 'undefined' ? firebase.database() : null;
     let hasCountedView = false;
     
-    if (window.FORCE_VERTICAL) {
-        document.body.classList.add('force-vertical');
-    }
-    
     // Discover pages dynamically
     const pages = await discoverPages(basePath);
     
@@ -55,14 +51,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const isMobile = window.innerWidth <= 768;
-    
-    // Emulate RTL by reversing the pages. 
-    // On desktop, we pad with 'empty' to force 2-page spread behavior without the jarring showCover snap.
-    const reversedPages = isMobile ? [...pages].reverse() : ['empty', ...[...pages].reverse(), 'empty'];
-    
-    // Array to track eager image loading
-    const preloadPromises = [];
-    
+    let currentViewMode = 'vertical'; // Default to vertical as requested
+    let flipBook = null;
+
     const loadingMessages = [
         "لا تقلق.. سترى القصة في اقرب وقت",
         "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
@@ -73,145 +64,230 @@ document.addEventListener('DOMContentLoaded', async () => {
     ];
 
     function startRotatingText(element) {
+        if (!element) return;
         let msgIndex = Math.floor(Math.random() * loadingMessages.length);
-        
         function rotate() {
             element.style.opacity = '0';
             setTimeout(() => {
-                if(!element.parentElement) return; // Stop if removed
+                if(!element.parentElement) return; 
                 element.textContent = loadingMessages[msgIndex];
                 msgIndex = (msgIndex + 1) % loadingMessages.length;
                 element.style.opacity = '1';
             }, 500);
         }
-        
-        setTimeout(() => {
-            rotate();
-            setInterval(rotate, 10000);
-        }, 6000);
+        setInterval(rotate, 10000);
     }
-    
-    // Create HTML elements for each page
-    reversedPages.forEach((url, i) => {
-        const pageDiv = document.createElement('div');
-        pageDiv.className = 'page';
-        
-        if (url === 'empty') {
-            pageDiv.classList.add('page-empty');
-            pageDiv.style.backgroundColor = 'transparent';
-            pageDiv.style.boxShadow = 'none';
-            pageDiv.style.border = 'none';
-            bookEl.appendChild(pageDiv);
-            return;
-        }
 
-        // Make the first and last physical pages hard (covers)
-        if (i === 0 || i === reversedPages.length - 1) {
-            pageDiv.classList.add('--page-hard');
-        }
+    // --- Core Functions ---
+
+    function renderPages(mode) {
+        bookEl.innerHTML = '';
+        const reversedPages = mode === 'flipbook' 
+            ? ['empty', ...[...pages].reverse(), 'empty']
+            : [...pages].reverse();
+
+        reversedPages.forEach((url, i) => {
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'page';
+            
+            if (url === 'empty') {
+                pageDiv.classList.add('page-empty');
+                bookEl.appendChild(pageDiv);
+                return;
+            }
+
+            if (mode === 'flipbook' && (i === 0 || i === reversedPages.length - 1)) {
+                pageDiv.classList.add('--page-hard');
+            }
+            
+            const pageContent = document.createElement('div');
+            pageContent.className = 'page-content';
+            
+            pageContent.innerHTML = `
+                <div class="page-loading-spinner">
+                    <div class="spinner small"></div>
+                </div>
+            `;
+            
+            const img = document.createElement('img');
+            img.className = 'page-image';
+            img.alt = `صفحة ${pages.length - i}`;
+            img.dataset.src = url;
+            
+            img.onload = () => {
+                img.classList.add('loaded');
+                const sp = pageContent.querySelector('.page-loading-spinner');
+                if(sp) sp.style.display = 'none';
+            };
+
+            // Retry logic on error
+            img.onerror = () => {
+                setTimeout(() => {
+                    if (img.dataset.src) img.src = img.dataset.src + '?retry=' + Date.now();
+                }, 3000);
+            };
+
+            pageContent.appendChild(img);
+            pageDiv.appendChild(pageContent);
+            bookEl.appendChild(pageDiv);
+        });
+    }
+
+    async function initViewer(mode) {
+        currentViewMode = mode;
+        renderPages(mode);
         
-        const pageContent = document.createElement('div');
-        pageContent.className = 'page-content';
-        
-        // Add Loading Spinner HTML
-        pageContent.innerHTML = `
-            <div class="page-loading-spinner">
-                <div class="spinner small"></div>
-                <p class="page-loading-text">جاري تحضير الصفحات...</p>
-            </div>
-        `;
-        startRotatingText(pageContent.querySelector('.page-loading-text'));
-        
-        const img = document.createElement('img');
-        img.className = 'page-image';
-        
-        // Calculate actual page number
-        const offset = isMobile ? 0 : 1;
-        const arrIndex = i - offset;
-        const actualPageNum = pages.length - arrIndex;
-        
-        // Eagerly load the last 3 items of the comic (Arabic pages 1 to 3)
-        if (actualPageNum <= 3) {
-            const loadPromise = new Promise((resolve) => {
-                img.onload = () => {
-                    img.classList.add('loaded');
-                    const sp = pageContent.querySelector('.page-loading-spinner');
-                    if(sp) sp.style.display = 'none';
-                    resolve();
-                };
-                img.onerror = () => resolve(); // prevent infinite hang if image fails
-            });
-            preloadPromises.push(loadPromise);
-            img.src = url;
+        if (mode === 'vertical') {
+            containerEl.classList.add('vertical-mode');
+            bookEl.classList.remove('mobile-slider');
+            if (flipBook) {
+                flipBook.destroy();
+                flipBook = null;
+            }
+            lazyLoadAll();
+            incrementView(); // Simple view count for vertical
         } else {
-            img.dataset.src = url; // Lazy load the rest
+            containerEl.classList.remove('vertical-mode');
+            try {
+                const totalPages = pages.length + 2;
+                flipBook = new St.PageFlip(bookEl, {
+                    width: 800,
+                    height: 1131,
+                    size: "stretch",
+                    minWidth: 315,
+                    maxWidth: 1000,
+                    minHeight: 420,
+                    maxHeight: 1350,
+                    maxShadowOpacity: 0.9,
+                    showCover: false,
+                    mobileScrollSupport: false,
+                    usePortrait: false,
+                    flippingTime: 450,
+                    startPage: totalPages - 2
+                });
+                flipBook.loadFromHTML(document.querySelectorAll('.page'));
+                
+                flipBook.on('flip', (e) => {
+                    playFlipSound();
+                    updatePageCounter(flipBook, totalPages);
+                    lazyLoadAround(e.data);
+                    if (flipBook.getCurrentPageIndex() > 6) incrementView();
+                });
+                
+                updatePageCounter(flipBook, totalPages);
+                lazyLoadAround(totalPages - 2);
+            } catch (e) {
+                console.error("Flipbook init error:", e);
+            }
         }
-        
-        img.alt = `صفحة ${actualPageNum}`;
-        
-        pageContent.appendChild(img);
-        pageDiv.appendChild(pageContent);
-        bookEl.appendChild(pageDiv);
+        resizeSizer();
+    }
+
+    function lazyLoadAll() {
+        const allImgs = document.querySelectorAll('.page-image');
+        allImgs.forEach(img => {
+            if (img.dataset.src && !img.src) {
+                img.src = img.dataset.src;
+            }
+        });
+    }
+
+    function lazyLoadAround(index) {
+        const allImgs = document.querySelectorAll('.page-image');
+        for (let i = 0; i < allImgs.length; i++) {
+            if (Math.abs(i - index) <= 4) {
+                const img = allImgs[i];
+                if (img.dataset.src && !img.src) {
+                    img.src = img.dataset.src;
+                }
+            }
+        }
+    }
+
+    // --- Controls Logic ---
+
+    // Toggle View Mode Button
+    if (comicId !== 'ghailam') {
+        const toggleContainer = document.createElement('div');
+        toggleContainer.className = 'view-mode-toggle';
+        toggleContainer.innerHTML = `
+            <button id="btn-mode-vertical" class="btn-toggle active">رأسي</button>
+            <button id="btn-mode-flip" class="btn-toggle">3D</button>
+        `;
+        controlsEl.appendChild(toggleContainer);
+
+        document.getElementById('btn-mode-vertical').addEventListener('click', () => {
+            if (currentViewMode === 'vertical') return;
+            document.getElementById('btn-mode-vertical').classList.add('active');
+            document.getElementById('btn-mode-flip').classList.remove('active');
+            initViewer('vertical');
+        });
+
+        document.getElementById('btn-mode-flip').addEventListener('click', () => {
+            if (currentViewMode === 'flipbook') return;
+            document.getElementById('btn-mode-flip').classList.add('active');
+            document.getElementById('btn-mode-vertical').classList.remove('active');
+            initViewer('flipbook');
+        });
+    }
+
+    // Auto-hide Controls (Desktop Only)
+    let controlsTimer;
+    if (!isMobile) {
+        const showControls = () => {
+            controlsEl.classList.remove('hidden-auto');
+            clearTimeout(controlsTimer);
+            controlsTimer = setTimeout(() => {
+                controlsEl.classList.add('hidden-auto');
+            }, 2000);
+        };
+
+        document.addEventListener('mousemove', showControls);
+        document.addEventListener('mousedown', showControls);
+        containerEl.addEventListener('scroll', showControls);
+    }
+
+    // Desktop Buttons
+    document.getElementById('btn-prev').addEventListener('click', () => {
+        if (flipBook) flipBook.flipPrev();
     });
 
-    // Change loading text initially
-    const initLoadText = loadingEl.querySelector('p');
-    initLoadText.classList.add('page-loading-text');
-    initLoadText.textContent = 'جاري تحضير الصفحات...';
-    startRotatingText(initLoadText);
-    
-    // Wait for the first 5 pages to actually download
-    await Promise.all(preloadPromises);
-    
-    // Background load EVERYTHING else sequentially
-    backgroundLoadAll();
+    document.getElementById('btn-next').addEventListener('click', () => {
+        if (flipBook) flipBook.flipNext();
+    });
 
-    let flipBook;
-
-    // Fullscreen Logic
+    // Fullscreen
     const btnFullscreen = document.getElementById('btn-fullscreen');
     if (btnFullscreen) {
         btnFullscreen.addEventListener('click', () => {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Error: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen();
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                document.exitFullscreen();
             }
         });
     }
 
     document.addEventListener('fullscreenchange', () => {
-        if (document.fullscreenElement) {
-            document.body.classList.add('fullscreen-active');
-        } else {
-            document.body.classList.remove('fullscreen-active');
-        }
+        document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
         setTimeout(resizeSizer, 200);
     });
 
-    // Sizer Logic
+    // --- Sizer ---
     function resizeSizer() {
         const sizer = document.querySelector('.flipbook-sizer');
-        if (!sizer) return;
+        if (!sizer || currentViewMode === 'vertical') {
+            if (sizer) {
+                sizer.style.width = '100%';
+                sizer.style.height = 'auto';
+            }
+            return;
+        }
         
-        const isMob = window.innerWidth <= 768;
-        const ratio = isMob ? 800 / 1131 : 1600 / 1131;
+        const ratio = 1600 / 1131;
+        const availW = containerEl.clientWidth - 40;
+        const availH = containerEl.clientHeight - 160;
         
-        const padX = isMob ? 0 : 40;
-        const padY = 0;
-        
-        const availW = containerEl.clientWidth - padX;
-        // Increase safety margin for desktop to avoid overlap with controls bar
-        // If forced vertical, we don't need a large margin as it's scrollable
-        const margin = (isMob || window.FORCE_VERTICAL) ? 80 : 160;
-        const availH = containerEl.clientHeight - margin;
-        
-        if (availW <= 0 || availH <= 0) return;
-
         let w = availW;
         let h = w / ratio;
         if (h > availH) {
@@ -221,334 +297,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         sizer.style.width = Math.floor(w) + 'px';
         sizer.style.height = Math.floor(h) + 'px';
-        
         if (flipBook) flipBook.update();
     }
     window.addEventListener('resize', resizeSizer);
-    resizeSizer(); // Apply initial sizing before init
 
-    if (isMobile || window.FORCE_VERTICAL) {
-        // Custom Mobile Slider Engine
-        bookEl.classList.add('mobile-slider');
-        let mobileCurrentIndex = reversedPages.length - 1; // Start at Arabic cover
-        
+    // --- Continuous Check ---
+    setInterval(() => {
+        const allImgs = document.querySelectorAll('.page-image');
+        allImgs.forEach(img => {
+            if (img.dataset.src && (!img.complete || img.naturalWidth === 0)) {
+                // If it should be loaded but isn't
+                if (img.src) {
+                    // It tried and failed or is stuck
+                    img.src = img.dataset.src + '?check=' + Date.now();
+                } else if (currentViewMode === 'vertical') {
+                    // In vertical mode everything should be loading
+                    img.src = img.dataset.src;
+                }
+            }
+        });
+    }, 3000);
+
+    // Initial Start
+    const initLoadText = loadingEl.querySelector('p');
+    startRotatingText(initLoadText);
+
+    // Give a small delay to show loading state
+    setTimeout(async () => {
+        await initViewer('vertical');
         loadingEl.style.opacity = '0';
         setTimeout(() => {
             loadingEl.style.display = 'none';
             containerEl.style.opacity = '1';
             controlsEl.classList.remove('hidden');
-            
-            updateMobilePages(0);
-            updateMobileCounter();
         }, 500);
+    }, 1000);
 
-        if (isMobile || window.FORCE_VERTICAL) {
-            // Forced Vertical Mode
-            containerEl.classList.add('vertical-mode');
-            lazyLoadAllVertical();
-        }
-
-        function lazyLoadAllVertical() {
-            const allImgs = document.querySelectorAll('.page-image');
-            allImgs.forEach(img => {
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    img.onload = () => {
-                        img.classList.add('loaded');
-                        const sp = img.closest('.page-content').querySelector('.page-loading-spinner');
-                        if (sp) sp.style.display = 'none';
-                    };
-                }
-            });
-            incrementView(); // Always count view in vertical mode if they open it? 
-            // Wait, request said "makes it past 6th page".
-            // For vertical mode, we'll check scroll position.
-        }
-
-        if (mobileMode === 'vertical') {
-            containerEl.addEventListener('scroll', () => {
-                if (mobileMode !== 'vertical') return;
-                const scrollPos = containerEl.scrollTop;
-                const pageHeight = window.innerHeight;
-                if (scrollPos > pageHeight * 5) { // Roughly page 6
-                    incrementView();
-                }
-            });
-        }
-
-        let isDragging = false;
-        let startX = 0;
-        let currentX = 0;
-
-        bookEl.addEventListener('touchstart', e => {
-            if (isZoomed || e.touches.length > 1) return;
-            isDragging = true;
-            startX = e.touches[0].clientX;
-            bookEl.classList.remove('animating');
-            currentX = 0;
-        }, {passive: true});
-
-        bookEl.addEventListener('touchmove', e => {
-            if (!isDragging) return;
-            currentX = e.touches[0].clientX - startX;
-            
-            if (mobileCurrentIndex === 0 && currentX > 0) currentX *= 0.3; 
-            if (mobileCurrentIndex === reversedPages.length - 1 && currentX < 0) currentX *= 0.3;
-            
-            updateMobilePages(currentX);
-        }, {passive: true});
-
-        bookEl.addEventListener('touchend', e => {
-            if (!isDragging) return;
-            isDragging = false;
-            bookEl.classList.add('animating');
-            
-            const threshold = bookEl.clientWidth * 0.15; 
-            
-            if (currentX > threshold && mobileCurrentIndex > 0) {
-                mobileCurrentIndex--;
-                playFlipSound();
-            } else if (currentX < -threshold && mobileCurrentIndex < reversedPages.length - 1) {
-                mobileCurrentIndex++;
-                playFlipSound();
-            }
-            
-            updateMobilePages(0);
-            updateMobileCounter();
-            
-            // View counting for swipe mode
-            if (mobileCurrentIndex > 5) incrementView();
-        });
-
-        function updateMobilePages(offsetPixels) {
-            const allPages = bookEl.querySelectorAll('.page');
-            const width = bookEl.clientWidth || window.innerWidth;
-            allPages.forEach((p, i) => {
-                const offsetIndex = i - mobileCurrentIndex;
-                if (Math.abs(offsetIndex) > 1) {
-                    p.style.display = 'none';
-                } else {
-                    p.style.display = 'block';
-                    const basePercent = offsetIndex * 100;
-                    
-                    // Add papery flippy feel (subtle rotation and scale)
-                    const progress = Math.abs(offsetPixels / width);
-                    const rotation = (offsetPixels / width) * 10; // Max 10 degrees
-                    const scale = 1 - (progress * 0.05); // Slight scale down
-                    
-                    p.style.transform = `translateX(calc(${basePercent}% + ${offsetPixels}px)) rotate(${rotation}deg) scale(${scale})`;
-                }
-            });
-            if (offsetPixels === 0) lazyLoadImages(mobileCurrentIndex);
-        }
-
-        function updateMobileCounter() {
-            const actualLeft = reversedPages.length - mobileCurrentIndex;
-            document.getElementById('page-current').textContent = actualLeft;
-            document.getElementById('page-total').textContent = reversedPages.length;
-        }
-
-        // Button Controls for Mobile (Fixed Inversion for RTL)
-        document.getElementById('btn-prev').addEventListener('click', () => {
-            if (isZoomed) return;
-            // In Arabic RTL, the Left Arrow (btn-prev) goes FORWARD in the story
-            if (mobileCurrentIndex > 0) {
-                bookEl.classList.add('animating');
-                mobileCurrentIndex--;
-                updateMobilePages(0);
-                updateMobileCounter();
-                playFlipSound();
-            }
-        });
-
-        document.getElementById('btn-next').addEventListener('click', () => {
-            if (isZoomed) return;
-            // In Arabic RTL, the Right Arrow (btn-next) goes BACKWARD in the story
-            if (mobileCurrentIndex < reversedPages.length - 1) {
-                bookEl.classList.add('animating');
-                mobileCurrentIndex++;
-                updateMobilePages(0);
-                updateMobileCounter();
-                playFlipSound();
-            }
-        });
-
-    } else {
-        // Desktop St.PageFlip Engine
-        try {
-            // Initialize PageFlip
-            flipBook = new St.PageFlip(bookEl, {
-                width: 800,
-                height: 1131, // Standard comic proportion
-                size: "stretch", 
-                minWidth: 315,
-                maxWidth: 1000,
-                minHeight: 420,
-                maxHeight: 1350,
-                maxShadowOpacity: 0.9,
-                showCover: false, // Prevent the book from physically snapping left/right
-                mobileScrollSupport: false,
-                usePortrait: false,
-                flippingTime: 450, 
-                startPage: reversedPages.length - 2
-            });
-
-            flipBook.loadFromHTML(document.querySelectorAll('.page'));
-            
-            // Smooth transition from loading to viewer
-            loadingEl.style.opacity = '0';
-            setTimeout(() => {
-                loadingEl.style.display = 'none';
-                containerEl.style.opacity = '1';
-                controlsEl.classList.remove('hidden');
-                
-                updatePageCounter(flipBook, reversedPages.length);
-            }, 500);
-
-            // Flip Event
-            flipBook.on('flip', (e) => {
-                playFlipSound();
-                updatePageCounter(flipBook, reversedPages.length);
-                lazyLoadImages(e.data);
-                
-                // View counting for desktop
-                const currentPage = flipBook.getCurrentPageIndex();
-                if (currentPage > 6) incrementView();
-            });
-
-            // Button Controls for Desktop
-            document.getElementById('btn-prev').addEventListener('click', () => {
-                if (isZoomed) return;
-                flipBook.flipPrev();
-            });
-
-            document.getElementById('btn-next').addEventListener('click', () => {
-                if (isZoomed) return;
-                flipBook.flipNext();
-            });
-            
-            // Keyboard Controls
-            document.addEventListener('keydown', (e) => {
-                if (isZoomed) return;
-                if (e.key === 'ArrowRight') {
-                    flipBook.flipPrev(); // Right arrow -> Next Arabic Page
-                } else if (e.key === 'ArrowLeft') {
-                    flipBook.flipNext(); // Left arrow -> Prev Arabic Page
-                }
-            });
-            
-        } catch (e) {
-            console.error("PageFlip init error:", e);
-            loadingEl.innerHTML = '<p style="color: #ff5555;">حدث خطأ أثناء تحميل الصفحات.</p>';
-        }
-    }
-
-    // Zoom Logic REMOVED per request (Keeping isZoomed flag for internal checks if needed)
-    let isZoomed = false;
-    let zoomScale = 1.5;
-    const sizer = document.querySelector('.flipbook-sizer');
-    // zoom button listener removed
-    
-    // Panning logic for Zoom (Pinch support)
-    let isPanning = false;
-    let panStartX, panStartY, scrollStartX, scrollStartY;
-
-    const startPan = (x, y) => {
-        if (!isZoomed) return;
-        isPanning = true;
-        panStartX = x - containerEl.offsetLeft;
-        panStartY = y - containerEl.offsetTop;
-        scrollStartX = containerEl.scrollLeft;
-        scrollStartY = containerEl.scrollTop;
-    };
-
-    const movePan = (x, y) => {
-        if (!isPanning || !isZoomed) return;
-        const curX = x - containerEl.offsetLeft;
-        const curY = y - containerEl.offsetTop;
-        const walkX = (curX - panStartX);
-        const walkY = (curY - panStartY);
-        containerEl.scrollLeft = scrollStartX - walkX;
-        containerEl.scrollTop = scrollStartY - walkY;
-    };
-
-    containerEl.addEventListener('mousedown', (e) => startPan(e.pageX, e.pageY));
-    window.addEventListener('mouseup', () => isPanning = false);
-    window.addEventListener('mousemove', (e) => {
-        if (isPanning) e.preventDefault();
-        movePan(e.pageX, e.pageY);
-    });
-
-    containerEl.addEventListener('touchstart', (e) => {
-        if (isZoomed && e.touches.length === 1) {
-            startPan(e.touches[0].pageX, e.touches[0].pageY);
-        }
-    }, {passive: false});
-
-    containerEl.addEventListener('touchmove', (e) => {
-        if (isPanning && isZoomed && e.touches.length === 1) {
-            e.preventDefault();
-            movePan(e.touches[0].pageX, e.touches[0].pageY);
-        }
-    }, {passive: false});
-
-    containerEl.addEventListener('touchend', () => isPanning = false);
-
-    // Helpers
-    async function backgroundLoadAll() {
-        const allImgs = document.querySelectorAll('.page-image');
-        // Sequentially load to avoid saturating network
-        for (let img of allImgs) {
-            if (img.dataset.src) {
-                await new Promise((resolve) => {
-                    img.onload = () => {
-                        img.classList.add('loaded');
-                        const parent = img.closest('.page-content');
-                        if (parent) {
-                            const sp = parent.querySelector('.page-loading-spinner');
-                            if (sp) sp.style.display = 'none';
-                        }
-                        resolve();
-                    };
-                    img.onerror = () => resolve();
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                });
-            }
-        }
-    }
-
-    function lazyLoadImages(currentIndex) {
-        const allImgs = document.querySelectorAll('.page-image');
-        for (let i = 0; i < allImgs.length; i++) {
-            if (Math.abs(i - currentIndex) <= 4) {
-                const img = allImgs[i];
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    img.onload = () => {
-                        img.classList.add('loaded');
-                        const parent = img.closest('.page-content');
-                        if(parent) {
-                            const sp = parent.querySelector('.page-loading-spinner');
-                            if(sp) sp.style.display = 'none';
-                        }
-                    };
-                }
-            }
-        }
-    }
-
+    // Helper functions
     function updatePageCounter(book, totalPages) {
         if (!book) return;
         const currentIndex = book.getCurrentPageIndex(); 
-        
-        // Desktop is always landscape since we disabled usePortrait
-        const actualTotal = totalPages - 2; // remove empty padding
+        const actualTotal = totalPages - 2; 
         const offset = 1;
-        
-        if (reversedPages[currentIndex] === 'empty') return;
         
         let arrIndex = currentIndex - offset;
         let actualLeft = actualTotal - arrIndex; 
@@ -556,32 +346,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (currentIndex < totalPages - 1 && currentIndex > 0) {
             const rightPageIdx = currentIndex + 1;
-            if (reversedPages[rightPageIdx] !== 'empty' && rightPageIdx < totalPages) {
-                const arrRight = rightPageIdx - offset;
-                const actualRight = actualTotal - arrRight;
+            if (rightPageIdx < totalPages - 1) {
+                const actualRight = actualTotal - (rightPageIdx - offset);
                 displayStr = `${actualRight} - ${actualLeft}`;
             }
         }
-
         document.getElementById('page-current').textContent = displayStr;
         document.getElementById('page-total').textContent = actualTotal;
     }
 });
 
-// Dynamic Discovery Logic
-async function checkExistsFast(url) {
-    try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return response.ok;
-    } catch (e) {
-        // Fallback for file:// protocol or servers blocking HEAD
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = url;
-        });
-    }
+function checkExistsFast(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
 }
 
 async function discoverPages(basePath) {
@@ -595,32 +376,32 @@ async function discoverPages(basePath) {
         for (let i = 0; i < maxConcurrent; i++) {
             const pageNum = index + i;
             let fileName = pattern.replace('{n}', pageNum);
-            
-            // Handle common padding for "Page_01" or "_Page_1" style
             if (pattern.includes('{0n}')) {
                 fileName = pattern.replace('{0n}', pageNum.toString().padStart(2, '0'));
             } else if (pattern.includes('Page_')) {
                 const paddedNum = pageNum.toString().padStart(2, '0');
                 fileName = pattern.replace('{n}', paddedNum);
             }
-
             batch.push(
                 checkExistsFast(`${basePath}${fileName}`).then(exists => exists ? `${basePath}${fileName}` : null)
             );
         }
-
         const results = await Promise.all(batch);
         const foundInBatch = results.filter(r => r !== null);
+        
+        // We found something, add it
         discovered.push(...foundInBatch);
-
+        
+        // If we didn't find the full batch, it might mean we hit the end
+        // BUT discovery can be flaky with Image() if loading is slow.
+        // However, this logic usually works for local files.
         if (foundInBatch.length < maxConcurrent) break;
-        if (index > 500) break; // Hard limit
+        if (index > 500) break; 
         index += maxConcurrent;
     }
     return discovered;
 }
 
-// Sound Effect Logic
 const flipAudio = new Audio('../assets/comic-viewer/Page flip.mp3');
 function playFlipSound() {
     try {
@@ -628,3 +409,4 @@ function playFlipSound() {
         flipAudio.play().catch(() => {});
     } catch(e) {}
 }
+
