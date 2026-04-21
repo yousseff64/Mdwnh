@@ -140,6 +140,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         incrementEntry();
     }
 
+    // Track a "view" only after 20 seconds of being on the page
+    setTimeout(() => {
+        incrementView();
+    }, 20000);
+
     // ── Splash messages ──────────────────────────────────────────────────────
     if (loadTextEl) {
         loadTextEl.style.transition = 'opacity 0.5s ease';
@@ -221,7 +226,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     containerEl.style.opacity = '1';
     if (controlsEl) controlsEl.classList.remove('hidden');
-    incrementView();
 
     // ── Load remaining pages ONE BY ONE ──────────────────────────────────────
     (async () => {
@@ -354,7 +358,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 flipBook.on('flip', e => {
                     playFlipSound();
                     updatePageCounter(flipBook, totalPages);
-                    if (flipBook.getCurrentPageIndex() > 6) incrementView();
                 });
                 updatePageCounter(flipBook, totalPages);
             } catch(e) { console.error('Flipbook init:', e); }
