@@ -134,8 +134,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
     }
 
-    // Track the initial entry
-    incrementEntry();
+    // Track the initial entry only if NOT coming from the internal /comics/ selection page
+    const referrer = document.referrer.toLowerCase();
+    if (!referrer.includes('/comics/')) {
+        incrementEntry();
+    }
 
     // ── Splash messages ──────────────────────────────────────────────────────
     if (loadTextEl) {
