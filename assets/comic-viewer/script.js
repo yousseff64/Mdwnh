@@ -124,8 +124,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     function incrementView() {
         if (!db || hasCountedView) return;
         hasCountedView = true;
-        db.ref('comics/' + comicId + '/views').transaction(v => (v || 0) + 1);
+        const viewRef = db.ref('comics/' + comicId + '/views');
+        viewRef.transaction((currentViews) => (currentViews || 0) + 1);
     }
+
+    function incrementEntry() {
+        if (!db) return;
+        const entryRef = db.ref('comics/' + comicId + '/entries');
+        entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
+    }
+
+    // Track the initial entry
+    incrementEntry();
 
     // ── Splash messages ──────────────────────────────────────────────────────
     if (loadTextEl) {
