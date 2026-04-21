@@ -11,31 +11,54 @@ const firebaseConfig = {
 };
 if (typeof firebase !== 'undefined') firebase.initializeApp(firebaseConfig);
 
-// ─── Loading Messages ─────────────────────────────────────────────────────────
-const LOADING_MESSAGES = [
-    "لا تقلق.. سترى القصة في اقرب وقت",
-    "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
+const INITIAL_MESSAGES = [
+    "جاري التحضير...",
+    "اذكر ربك...",
     "لماذا لا تصل على حبيبك محمد حتى ينتهي التحميل؟",
     "لماذا لا تستغفر ربك حتى ينتهي التحميل؟",
+    "هل تعلم ان قولك سبحان اللّٰه وبحمده يغرس لك نخلة في الجنة؟",
+    "لا تقلق. سترى القصة في اقرب وقت"
+];
+const DELAYED_MESSAGES = [
+    "يستغرق الأمر اكثر من المتوقع.. هل قام ليمو بتخريبه؟",
     "ربما السيد عجيب يعرف الحل؟",
-    "هل تعلم ان قولك سبحان اللّٰه وبحمده يغرس لك نخلة في الجنة؟"
+    "عليك تحسين سرعة انترنتك يا رجل...",
+    "حتى انا شعرت بالملل.. ربما عليك أن تذكر الله حتى ينتهي التحميل؟"
 ];
 
 function startMessageRotator(textEl, startDelay = 5000) {
     if (!textEl) return () => {};
-    let idx = 0, stopped = false, timer;
+    let count = 0, stopped = false, timer;
+    let usedMessages = [];
+
+    const getNextMessage = () => {
+        let pool = INITIAL_MESSAGES;
+        if (count >= 2) {
+            pool = INITIAL_MESSAGES.concat(DELAYED_MESSAGES);
+        }
+        
+        // Filter out the last message to avoid immediate repetition
+        const currentText = textEl.textContent;
+        const available = pool.filter(m => m !== currentText);
+        return available[Math.floor(Math.random() * available.length)];
+    };
+
     const fadeToNext = () => {
         if (stopped) return;
         textEl.style.transition = 'opacity 0.5s ease';
         textEl.style.opacity = '0';
         setTimeout(() => {
             if (stopped) return;
-            textEl.textContent = LOADING_MESSAGES[idx % LOADING_MESSAGES.length];
-            idx++;
+            textEl.textContent = getNextMessage();
+            count++;
             textEl.style.opacity = '1';
-            timer = setTimeout(fadeToNext, 10000);
+            timer = setTimeout(fadeToNext, 5000); // 5 seconds rotation
         }, 500);
     };
+
+    // Set initial random message
+    textEl.textContent = INITIAL_MESSAGES[Math.floor(Math.random() * INITIAL_MESSAGES.length)];
+    
     timer = setTimeout(fadeToNext, startDelay);
     return () => { stopped = true; clearTimeout(timer); };
 }
@@ -135,10 +158,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Track the initial entry only if NOT coming from the internal /comics/ selection page
+    // Track the initial entry only if NOT coming from the internal /comics/ selection page
     const referrer = document.referrer.toLowerCase();
     if (!referrer.includes('/comics/')) {
         incrementEntry();
     }
+
+    // Security: Disable right-click
+    document.addEventListener('contextmenu', e => e.preventDefault());
 
     // Track a "view" only after 20 seconds of being on the page
     setTimeout(() => {
@@ -236,8 +263,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(runIntegrityCheck, 2000);
     })();
 
-    // Safety net every 10s
-    setInterval(runIntegrityCheck, 10000);
+    // Safety net every 5s for better stability
+    setInterval(runIntegrityCheck, 5000);
 
     // ── Integrity check: retry any page-image that failed ────────────────────
     function runIntegrityCheck() {
@@ -370,8 +397,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const wrap = document.createElement('div');
         wrap.className = 'view-mode-toggle';
         wrap.innerHTML = `
-            <button id="btn-mode-vertical" class="btn-toggle active">رأسي</button>
-            <button id="btn-mode-flip" class="btn-toggle">3D</button>
+            <button id="btn-mode-vertical" class="btn-toggle active">راسي</button>
+            <button id="btn-mode-flip" class="btn-toggle">تقليب</button>
+            <div class="controls-separator"></div>
         `;
         controlsEl.appendChild(wrap);
         document.getElementById('btn-mode-vertical').addEventListener('click', () => {
@@ -418,8 +446,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!sizer) return;
         if (currentViewMode === 'vertical') { sizer.style.width = ''; sizer.style.height = ''; return; }
         const ratio = 1600 / 1131;
-        const availW = containerEl.clientWidth - 40;
-        const availH = containerEl.clientHeight - 160;
+        const isFS = !!document.fullscreenElement;
+        const availW = containerEl.clientWidth - (isFS ? 20 : 40);
+        const availH = containerEl.clientHeight - (isFS ? 80 : 160);
         let w = availW, h = w / ratio;
         if (h > availH) { h = availH; w = h * ratio; }
         sizer.style.width = Math.floor(w) + 'px';

@@ -160,7 +160,9 @@ body {
 }
 
 .footer img {
-    height: 40px;
+    height: 45px;
+    filter: brightness(0) invert(1);
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
