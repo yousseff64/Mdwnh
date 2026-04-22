@@ -587,6 +587,13 @@ section {
     color: var(--color-teal);
 }
 
+.nav-comics-link {
+    background: linear-gradient(135deg, #fff 0%, #d8b068 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600 !important;
+}
+
 .btn.small {
     padding: 8px 20px;
     font-size: 0.9rem;
