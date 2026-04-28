@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إحصائيات – MDWN Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="../Circle Logo.png" type="image/png">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --black:   #121212;
+            --raisin:  #262626;
+            --surface: #2e2e2e;
+            --border:  rgba(250,249,247,0.08);
+            --snow:    #faf9f7;
+            --muted:   rgba(250,249,247,0.45);
+            --blue:    #086fb6;
+            --teal:    #3bb9ab;
+            --yellow:  #f4c82b;
+            --red:     #f04e3a;
+            --font:    'Rubik', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--black);
+            color: var(--snow);
+            font-family: var(--font);
+            min-height: 100vh;
+            direction: rtl;
+            line-height: 1.6;
+        }
+
+        /* ───────────────── LOGIN ───────────────── */
+        #login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            background: var(--black);
+        }
+
+        .login-card {
+            background: var(--raisin);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+        }
+
+        .login-icon-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-icon-dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+        }
+
+        .login-card h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+            color: var(--snow);
+        }
+
+        .login-card p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .pin-input {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            direction: ltr;
+        }
+
+        .pin-digit {
+            width: 58px; height: 66px;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+            color: var(--snow);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: var(--font);
+            -webkit-text-security: disc;
+        }
+
+        .pin-digit:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(8,111,182,0.25);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--blue);
+            color: var(--snow);
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-login:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        .login-error {
+            color: var(--red);
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            min-height: 1.2em;
+        }
+
+        /* ───────────────── DASHBOARD ───────────────── */
+        #dashboard { display: none; min-height: 100vh; }
+
+        .dash-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2.5rem;
+            background: var(--raisin);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dash-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .brand-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .brand-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--snow);
+        }
+
+        .brand-sub {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(59,185,171,0.12);
+            border: 1px solid rgba(59,185,171,0.3);
+            border-radius: 99px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--teal);
+            font-weight: 500;
+        }
+
+        .live-dot {
+            width: 7px; height: 7px;
+            background: var(--teal);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .btn-logout {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            border-radius: 10px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+        /* ───────────────── BODY ───────────────── */
+        .dash-body {
+            padding: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ── Summary Row ── */
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .summary-card {
+            background: var(--raisin);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .summary-card:hover { border-color: rgba(250,249,247,0.18); }
+
+        .sum-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .si-blue   { background: rgba(8,111,182,0.18); }
+        .si-teal   { background: rgba(59,185,171,0.18); }
+        .si-yellow { background: rgba(244,200,43,0.18); }
+
+        .sum-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 0.3rem;
+        }
+
+        .sum-val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .sv-blue   { color: var(--blue); }
+        .sv-teal   { color: var(--teal); }
+        .sv-yellow { color: var(--yellow); }
+
+        /* ── Section title ── */
+        .section-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Comic Cards ── */
+        .comics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        .comic-stat-card {
+            background: var(--raisin);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .comic-stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(250,249,247,0.18);
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-color-bar {
+            width: 4px;
+            height: 42px;
+            border-radius: 99px;
+            flex-shrink: 0;
+        }
+
+        .card-emoji { font-size: 1.5rem; }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--snow);
+        }
+
+        .card-id {
+            font-size: 0.73rem;
+            color: var(--muted);
+            direction: ltr;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        .card-body {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.83rem;
+        }
+
+        .stat-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-feature-settings: 'tnum';
+        }
+
+        .stat-bar-wrap {
+            height: 5px;
+            background: var(--surface);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .stat-bar {
+            height: 100%;
+            border-radius: 99px;
+            transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .conversion-badge {
+            margin-top: 0.25rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 12px;
+            background: var(--surface);
+            font-size: 0.8rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .conversion-pct {
+            font-weight: 700;
+            color: var(--yellow);
+        }
+
+        /* Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface) 25%, var(--raisin) 50%, var(--surface) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 6px;
+            height: 1.8rem;
+            width: 70px;
+            display: inline-block;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.78rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .summary-row, .comics-grid { grid-template-columns: 1fr; }
+            .dash-header { padding: 1rem 1.25rem; }
+            .dash-body   { padding: 1.5rem 1.25rem; }
+            .live-badge  { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ──────────── LOGIN ──────────── -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="login-icon-row">
+            <div class="login-icon-dot" style="background:var(--blue)"></div>
+            <div class="login-icon-dot" style="background:var(--teal)"></div>
+            <div class="login-icon-dot" style="background:var(--yellow)"></div>
+            <div class="login-icon-dot" style="background:var(--red)"></div>
+        </div>
+        <h1>إحصائيات</h1>
+        <p>أدخل رمز الوصول للمتابعة</p>
+
+        <div class="pin-input">
+            <input class="pin-digit" id="d1" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
+            <input class="pin-digit" id="d2" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
+            <input class="pin-digit" id="d3" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
+            <input class="pin-digit" id="d4" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
+        </div>
+
+        <button class="btn-login" onclick="checkPassword()">دخول</button>
+        <div class="login-error" id="login-error"></div>
+    </div>
+</div>
+
+<!-- ──────────── DASHBOARD ──────────── -->
+<div id="dashboard">
+    <header class="dash-header">
+        <div class="dash-brand">
+            <div class="brand-dots">
+                <div class="brand-dot" style="background:var(--blue)"></div>
+                <div class="brand-dot" style="background:var(--teal)"></div>
+                <div class="brand-dot" style="background:var(--yellow)"></div>
+                <div class="brand-dot" style="background:var(--red)"></div>
+            </div>
+            <div>
+                <div class="brand-name">إحصائيات · MDWN Studio</div>
+                <div class="brand-sub">قصصنا المصورة</div>
+            </div>
+        </div>
+
+        <div class="live-badge">
+            <div class="live-dot"></div>
+            مباشر
+        </div>
+
+        <button class="btn-logout" onclick="logout()">خروج</button>
+    </header>
+
+    <div class="dash-body">
+
+        <!-- Totals -->
+        <div class="summary-row">
+            <div class="summary-card">
+                <div class="sum-icon si-blue">👁️</div>
+                <div>
+                    <div class="sum-label">إجمالي المشاهدات</div>
+                    <div class="sum-val sv-blue" id="total-views"><div class="skeleton"></div></div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="sum-icon si-teal">🔗</div>
+                <div>
+                    <div class="sum-label">إجمالي الزيارات الخارجية</div>
+                    <div class="sum-val sv-teal" id="total-entries"><div class="skeleton"></div></div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="sum-icon si-yellow">📚</div>
+                <div>
+                    <div class="sum-label">القصص المنشورة</div>
+                    <div class="sum-val sv-yellow">3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Per-comic -->
+        <div class="section-title">أداء كل قصة</div>
+        <div class="comics-grid" id="comics-grid"></div>
+
+        <div class="last-updated" id="last-updated">جاري التحميل…</div>
+    </div>
+</div>
+
+<script>
+// ── Firebase ──────────────────────────────────────────────────────────────────
+const firebaseConfig = {
+    apiKey: "AIzaSyATzvkgxTYVKZcOEeLjkJpupw56TLeIjXU",
+    authDomain: "mdwnhviewer.firebaseapp.com",
+    databaseURL: "https://mdwnhviewer-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "mdwnhviewer",
+    storageBucket: "mdwnhviewer.firebasestorage.app",
+    messagingSenderId: "384065085258",
+    appId: "1:384065085258:web:35911a6e9b28015657ebb3",
+    measurementId: "G-Z2GTGYBSMS"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ── Config ────────────────────────────────────────────────────────────────────
+const COMICS = [
+    { id: 'hujra',    name: 'باب الحجرة',    emoji: '🚪', color: '#086fb6' },
+    { id: 'samrqand', name: 'قضية سمرقند',   emoji: '⚖️', color: '#3bb9ab' },
+    { id: 'ghailam',  name: 'القرد والغيلم', emoji: '🐒', color: '#f4c82b' },
+];
+
+// ── PIN ───────────────────────────────────────────────────────────────────────
+const PASSWORD = '1445';
+
+document.querySelectorAll('.pin-digit').forEach((el, i, all) => {
+    el.addEventListener('input', () => {
+        el.value = el.value.replace(/\D/g, '').slice(-1);
+        if (el.value && i < all.length - 1) all[i + 1].focus();
+        if (i === all.length - 1 && el.value) checkPassword();
+    });
+    el.addEventListener('keydown', e => {
+        if (e.key === 'Backspace' && !el.value && i > 0) all[i - 1].focus();
+    });
+});
+document.getElementById('d1').focus();
+
+function checkPassword() {
+    const entered = ['d1','d2','d3','d4'].map(id => document.getElementById(id).value).join('');
+    if (entered === PASSWORD) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadData();
+    } else {
+        const errEl = document.getElementById('login-error');
+        errEl.textContent = 'رمز خاطئ. حاول مرة أخرى.';
+        ['d1','d2','d3','d4'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('d1').focus();
+        setTimeout(() => errEl.textContent = '', 2500);
+    }
+}
+
+function logout() {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    ['d1','d2','d3','d4'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('d1').focus();
+}
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+function loadData() {
+    const grid = document.getElementById('comics-grid');
+    grid.innerHTML = '';
+    COMICS.forEach(c => {
+        const card = buildCard(c, null, null, 1);
+        card.id = 'card-' + c.id;
+        grid.appendChild(card);
+    });
+
+    COMICS.forEach(comic => {
+        db.ref('comics/' + comic.id).on('value', snap => {
+            const data    = snap.val() || {};
+            const views   = data.views   || 0;
+            const entries = data.entries || 0;
+
+            // Get max across all known values for bar scale
+            let maxVal = 1;
+            COMICS.forEach(c => {
+                const el = document.getElementById('card-' + c.id);
+                if (el) {
+                    maxVal = Math.max(maxVal,
+                        parseInt(el.dataset.views   || 0),
+                        parseInt(el.dataset.entries || 0));
+                }
+            });
+            maxVal = Math.max(maxVal, views, entries);
+
+            const newCard = buildCard(comic, views, entries, maxVal);
+            newCard.id = 'card-' + comic.id;
+            document.getElementById('card-' + comic.id)?.replaceWith(newCard);
+
+            // Update totals
+            let tv = 0, te = 0;
+            COMICS.forEach(c => {
+                const el = document.getElementById('card-' + c.id);
+                if (el) { tv += parseInt(el.dataset.views||0); te += parseInt(el.dataset.entries||0); }
+            });
+            document.getElementById('total-views').textContent   = tv.toLocaleString('ar');
+            document.getElementById('total-entries').textContent = te.toLocaleString('ar');
+            document.getElementById('last-updated').textContent  =
+                'آخر تحديث: ' + new Date().toLocaleTimeString('ar-SA');
+        });
+    });
+}
+
+function buildCard(comic, views, entries, maxVal) {
+    const card = document.createElement('div');
+    card.className   = 'comic-stat-card';
+    card.dataset.views   = views   ?? 0;
+    card.dataset.entries = entries ?? 0;
+
+    const vPct = views   !== null ? Math.round((views   / maxVal) * 100) : 0;
+    const ePct = entries !== null ? Math.round((entries / maxVal) * 100) : 0;
+
+    const convPct = (views !== null && entries > 0)
+        ? Math.round((views / entries) * 100) + '%'
+        : entries === 0 && views !== null ? '—' : '…';
+
+    card.innerHTML = `
+        <div class="card-header">
+            <div class="card-color-bar" style="background:${comic.color}"></div>
+            <div class="card-emoji">${comic.emoji}</div>
+            <div>
+                <div class="card-title">${comic.name}</div>
+                <div class="card-id">${comic.id}</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div>
+                <div class="stat-row">
+                    <span class="stat-label">
+                        <span class="stat-dot" style="background:#086fb6"></span>
+                        مشاهدات (٢٠ ث+)
+                    </span>
+                    <span class="stat-value" style="color:#086fb6">
+                        ${views !== null ? views.toLocaleString('ar') : '<span class="skeleton"></span>'}
+                    </span>
+                </div>
+                <div class="stat-bar-wrap">
+                    <div class="stat-bar" style="width:${vPct}%;background:#086fb6"></div>
+                </div>
+            </div>
+            <div>
+                <div class="stat-row">
+                    <span class="stat-label">
+                        <span class="stat-dot" style="background:#3bb9ab"></span>
+                        زيارات خارجية
+                    </span>
+                    <span class="stat-value" style="color:#3bb9ab">
+                        ${entries !== null ? entries.toLocaleString('ar') : '<span class="skeleton"></span>'}
+                    </span>
+                </div>
+                <div class="stat-bar-wrap">
+                    <div class="stat-bar" style="width:${ePct}%;background:#3bb9ab"></div>
+                </div>
+            </div>
+            <div class="conversion-badge">
+                <span>معدل التحويل (زيارة ← مشاهدة)</span>
+                <span class="conversion-pct">${convPct}</span>
+            </div>
+        </div>
+    `;
+    return card;
+}
+</script>
+</body>
+</html>
