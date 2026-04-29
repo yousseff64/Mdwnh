@@ -23,7 +23,7 @@ const PROJECTS = [
   },
   {
     id: 'maannabi-motion',
-    name: 'مع النبي',
+    name: 'مع النبي (موشن)',
     banner: 'موشن مع النبي.png',
     tags: ['موشن', 'مونتاج'],
     link: ''
@@ -121,7 +121,7 @@ const PROJECTS = [
   },
   {
     id: 'maannabi-montage',
-    name: 'مع النبي',
+    name: 'مع النبي (مونتاج)',
     banner: 'مونتاج مع النبي.png',
     tags: ['مونتاج'],
     link: ''
@@ -151,6 +151,7 @@ let selectedCards   = new Set();
 let selectionMode   = false;
 let msgInterval     = null;
 let currentSound    = null;
+let picksForDisplay = [];
 
 // ── DOM Refs ───────────────────────────────────────────────
 const phaseSelection = document.getElementById('phase-selection');
@@ -162,9 +163,16 @@ const loadingText    = document.getElementById('loading-text');
 const cardsGrid      = document.getElementById('cards-grid');
 const btnWantSame    = document.getElementById('btn-want-same');
 const btnRestart     = document.getElementById('btn-restart');
-const selectOverlay  = document.getElementById('select-overlay');
+const resultsTitle  = document.getElementById('results-title');
+const selectOverlay  = null; // removed from HTML
+const mainActions    = document.getElementById('main-actions');
+const selectionActions = document.getElementById('selection-actions');
 const btnConfirm     = document.getElementById('btn-confirm-select');
 const btnCancel      = document.getElementById('btn-cancel-select');
+const contactModal   = document.getElementById('contact-modal');
+const btnWaChoice    = document.getElementById('btn-whatsapp-choice');
+const btnMailChoice  = document.getElementById('btn-email-choice');
+const btnModalClose  = document.getElementById('btn-modal-close');
 
 // ── Tag Selection ──────────────────────────────────────────
 tagsCloud.querySelectorAll('.tag-pill').forEach(pill => {
@@ -284,8 +292,14 @@ function startLoading() {
     msgInterval = setInterval(() => {
       textEl.style.opacity = '0';
       setTimeout(updateRandomMsg, 600);
-    }, 3000);
+    }, 2000);
   }, 1100);
+
+  // ⚡ Fade out background orbs after 2 seconds
+  setTimeout(() => {
+    const bgOrbs = document.querySelector('.bg-orbs');
+    if (bgOrbs) bgOrbs.style.opacity = '0';
+  }, 2000);
 
   // Step 4 — after exactly 5 seconds reveal results
   const totalDelay = 5000;
@@ -295,8 +309,17 @@ function startLoading() {
     currentSound.pause();
     currentSound.currentTime = 0;
   }
-  currentSound = new Audio('thinking sound.mp3');
+  const sounds = ['thinking sound.mp3', 'thinking sound 2.mp3', 'thinking sound 3.mp3'];
+  const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+  currentSound = new Audio(randomSound);
   currentSound.play().catch(e => console.log("Audio play failed:", e));
+
+  // 🖼️ Pre-load results
+  prepareResults();
+  picksForDisplay.forEach(proj => {
+    const img = new Image();
+    img.src = BANNER_BASE + proj.banner;
+  });
 
   setTimeout(() => {
     clearInterval(msgInterval);
@@ -320,7 +343,7 @@ function showLoadingMsg(msg) {
 }
 
 // ── Results ────────────────────────────────────────────────
-function showResults() {
+function prepareResults() {
   // Filter projects by selected tags
   const matched = PROJECTS.filter(p =>
     p.tags.some(t => selectedTags.has(t))
@@ -339,11 +362,13 @@ function showResults() {
   const picks = shuffled.slice(0, 3);
 
   // Fallback: if nothing matched, pick 3 random
-  const display = picks.length > 0
+  picksForDisplay = picks.length > 0
     ? picks
     : PROJECTS.sort(() => Math.random() - 0.5).slice(0, 3);
+}
 
-  buildCards(display);
+function showResults() {
+  buildCards(picksForDisplay);
   showPhase(phaseResults);
 }
 
@@ -396,8 +421,9 @@ window.watchProject = watchProject;
 // ── "أريد مثله" flow ──────────────────────────────────────
 btnWantSame.addEventListener('click', () => {
   selectionMode = true;
-  selectOverlay.classList.remove('hidden');
-  btnWantSame.style.display = 'none';
+  fadeTitle('اختر مشاريعك المفضلة');
+  mainActions.classList.add('hidden');
+  selectionActions.classList.remove('hidden');
   cardsGrid.classList.add('selection-mode');
 });
 
@@ -405,9 +431,10 @@ btnCancel.addEventListener('click', cancelSelection);
 
 function cancelSelection() {
   selectionMode = false;
+  fadeTitle('وجدنا لك هذا!');
   selectedCards.clear();
-  selectOverlay.classList.add('hidden');
-  btnWantSame.style.display = '';
+  selectionActions.classList.add('hidden');
+  mainActions.classList.remove('hidden');
   cardsGrid.classList.remove('selection-mode');
   cardsGrid.querySelectorAll('.project-card').forEach(c => {
     c.classList.remove('card-selected');
@@ -438,20 +465,43 @@ function updateConfirmBtn() {
 
 btnConfirm.addEventListener('click', () => {
   if (selectedCards.size === 0) return;
+  contactModal.classList.remove('hidden');
+});
 
+btnModalClose.addEventListener('click', () => {
+  contactModal.classList.add('hidden');
+});
+
+btnMailChoice.addEventListener('click', () => {
+  sendRequest('email');
+  contactModal.classList.add('hidden');
+});
+
+btnWaChoice.addEventListener('click', () => {
+  sendRequest('whatsapp');
+  contactModal.classList.add('hidden');
+});
+
+function sendRequest(type) {
   const names   = Array.from(selectedCards).join(' / ');
   const quoted  = Array.from(selectedCards).map(n => `"${n}"`).join(' و ');
-  const subject = encodeURIComponent(`مهتم بمشروع مثل: ${names}`);
-  const body = encodeURIComponent(
-`السلام عليكم ورحمه الله وبركاته
+  
+  if (type === 'email') {
+    const rawSubject = `مهتم بمشروع مثل: ${names}`;
+    const rawBody = `السلام عليكم ورحمه الله وبركاته
 
 اعجبني ${quoted} من مشاريعكم! وأريد العمل على شيء مثله
 
-اليكم التفاصيل والميزانية المقترحة`
-  );
-  const mailto = `mailto:hello@mdwn.info?subject=${subject}&body=${body}`;
-  window.location.href = mailto;
-});
+اليكم التفاصيل والميزانية المقترحة`;
+    const mailto = `mailto:hello@mdwn.info?subject=${encodeURIComponent(rawSubject)}&body=${encodeURIComponent(rawBody)}`;
+    window.location.href = mailto;
+  } else {
+    // WhatsApp logic: No heading, single row
+    const waText = `السلام عليكم ورحمه الله وبركاته، اعجبني ${quoted} من مشاريعكم! وأريد العمل على شيء مثله، اليكم التفاصيل والميزانية المقترحة`;
+    const waUrl = `https://wa.me/966534223414?text=${encodeURIComponent(waText)}`;
+    window.open(waUrl, '_blank');
+  }
+}
 
 // ── Restart ────────────────────────────────────────────────
 btnRestart.addEventListener('click', () => {
@@ -472,10 +522,16 @@ btnRestart.addEventListener('click', () => {
   btnContinue.classList.remove('enabled');
   cardsGrid.innerHTML = '';
   cardsGrid.classList.remove('selection-mode');
-  selectOverlay.classList.add('hidden');
-  btnWantSame.style.display = '';
+  fadeTitle('وجدنا لك هذا!');
+  
+  // Reset action groups
+  mainActions.classList.remove('hidden');
+  selectionActions.classList.add('hidden');
 
   // ⚡ Restore inline styles set by startLoading animation
+  const bgOrbs = document.querySelector('.bg-orbs');
+  if (bgOrbs) bgOrbs.style.opacity = '';
+
   const dotsRowEl = document.getElementById('dots-row');
   dotsRowEl.style.opacity = '';
   dotsRowEl.style.transition = '';
@@ -511,4 +567,12 @@ function showPhase(target) {
       target.classList.add('fade-in');
     });
   });
+}
+
+function fadeTitle(newText) {
+  resultsTitle.style.opacity = '0';
+  setTimeout(() => {
+    resultsTitle.textContent = newText;
+    resultsTitle.style.opacity = '1';
+  }, 300);
 }

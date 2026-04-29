@@ -91,7 +91,7 @@
         <div class="dot dot-3"></div>
         <div class="dot dot-4"></div>
       </div>
-      <h2 class="results-title">وجدنا لك هذا!</h2>
+      <h2 class="results-title" id="results-title">وجدنا لك هذا!</h2>
       <p class="results-sub">إليك أفضل ما يتناسب مع اختياراتك</p>
     </div>
 
@@ -100,18 +100,37 @@
       <!-- Populated by JS -->
     </div>
 
-    <!-- "أريد مثله" button -->
+    <!-- Action Buttons -->
     <div class="results-actions">
-      <button class="btn-want-same" id="btn-want-same">أريد مثله! 🚀</button>
-      <button class="btn-restart" id="btn-restart">← ابحث مجدداً</button>
+      <!-- Main Actions Group -->
+      <div id="main-actions" class="actions-group">
+        <button class="btn-want-same" id="btn-want-same">أريد مثله! 🚀</button>
+        <button class="btn-restart" id="btn-restart">← ابحث مجدداً</button>
+      </div>
+
+      <!-- Selection Actions Group (shown instead of main actions when selection mode is active) -->
+      <div id="selection-actions" class="actions-group hidden">
+        <div class="selection-btns-row">
+          <button class="btn-confirm-select" id="btn-confirm-select" disabled>تأكيد الاختيار ✉️</button>
+          <button class="btn-cancel-select" id="btn-cancel-select">إلغاء</button>
+        </div>
+      </div>
     </div>
 
-    <!-- Selection confirm overlay (hidden until btn-want-same clicked) -->
-    <div class="select-overlay hidden" id="select-overlay">
-      <div class="select-overlay-inner">
-        <p class="select-hint">اختر المشروع (أو المشاريع) التي تعجبك</p>
-        <button class="btn-confirm-select" id="btn-confirm-select" disabled>تأكيد الاختيار ✉️</button>
-        <button class="btn-cancel-select" id="btn-cancel-select">إلغاء</button>
+    <!-- Contact Choice Modal -->
+    <div class="contact-modal hidden" id="contact-modal">
+      <div class="contact-modal-content">
+        <h3>كيف تود التواصل معنا؟</h3>
+        <p>اختر الوسيلة التي تناسبك لإرسال طلبك</p>
+        <div class="contact-options">
+          <button class="btn-contact-option whatsapp" id="btn-whatsapp-choice">
+            واتساب 💬
+          </button>
+          <button class="btn-contact-option email" id="btn-email-choice">
+            بريد إلكتروني ✉️
+          </button>
+        </div>
+        <button class="btn-modal-close" id="btn-modal-close">إغلاق</button>
       </div>
     </div>
 
