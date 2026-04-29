@@ -1,0 +1,514 @@
+/* ============================================================
+   MDWNH STUDIO — Projects Browser
+   Smart-looking AI project filter (tag-based under the hood)
+   ============================================================ */
+
+// ── Project Data ───────────────────────────────────────────
+const BANNER_BASE = '../Our Projects/Project Banners/';
+
+const PROJECTS = [
+  {
+    id: 'ghayam',
+    name: 'فيلم غمام',
+    banner: 'انيميشن فيلم غمام.png',
+    tags: ['انيميشن'],
+    link: ''
+  },
+  {
+    id: 'maallah-anim',
+    name: 'مع الله',
+    banner: 'انيميشن مع الله.png',
+    tags: ['انيميشن'],
+    link: ''
+  },
+  {
+    id: 'maannabi-motion',
+    name: 'مع النبي',
+    banner: 'موشن مع النبي.png',
+    tags: ['موشن', 'مونتاج'],
+    link: ''
+  },
+  {
+    id: 'ananas',
+    name: 'اناناس',
+    banner: ' مونتاج- موشن اناناس.png',
+    tags: ['موشن', 'مونتاج'],
+    link: ''
+  },
+  {
+    id: 'yaghilam',
+    name: 'يا غلام',
+    banner: 'مونتاج يا غلام.png',
+    tags: ['مونتاج', 'تصوير'],
+    link: ''
+  },
+  {
+    id: 'harason',
+    name: 'الحراساثون',
+    banner: 'تصوير الحراساثون.png',
+    tags: ['تصوير'],
+    link: ''
+  },
+  {
+    id: 'risha',
+    name: 'ريشة - نادي الاعتماد',
+    banner: 'تصوير ريشة - نادي الاعتماد الرياضي.png',
+    tags: ['تصوير'],
+    link: ''
+  },
+  {
+    id: 'bab',
+    name: 'باب الحجرة',
+    banner: 'رسم باب الحجرة.png',
+    tags: ['كوميكس'],
+    link: ''
+  },
+  {
+    id: 'samarqand',
+    name: 'قضية سمرقند',
+    banner: 'رسم سمرقند.png',
+    tags: ['كوميكس'],
+    link: ''
+  },
+  {
+    id: 'daralez',
+    name: 'دار العز',
+    banner: 'هوية بصرية دار العز.png',
+    tags: ['هوية'],
+    link: ''
+  },
+  {
+    id: 'salammaknoon',
+    name: 'سلام مكنون',
+    banner: 'هوية بصرية سلام مكنون.png',
+    tags: ['هوية'],
+    link: ''
+  },
+  {
+    id: 'makashdana',
+    name: 'مكشدانة',
+    banner: 'هوية بصرية مكشدانة.png',
+    tags: ['هوية'],
+    link: ''
+  },
+  {
+    id: 'asma',
+    name: 'اسمى',
+    banner: 'تقرير اسمى.png',
+    tags: ['تقرير'],
+    link: ''
+  },
+  {
+    id: 'milaf',
+    name: 'ميلاف',
+    banner: 'تقرير ميلاف.png',
+    tags: ['تقرير'],
+    link: ''
+  },
+  {
+    id: 'dalilak',
+    name: 'دليلك',
+    banner: 'تصميم دليلك.png',
+    tags: ['تصميم'],
+    link: ''
+  },
+  {
+    id: 'maallah-motion',
+    name: 'مع الله (موشن)',
+    banner: 'موشن مع الله.png',
+    tags: ['موشن'],
+    link: ''
+  },
+  {
+    id: 'maannabi-montage',
+    name: 'مع النبي',
+    banner: 'مونتاج مع النبي.png',
+    tags: ['مونتاج'],
+    link: ''
+  },
+  {
+    id: 'yaghilam-photo',
+    name: 'يا غلام',
+    banner: 'تصوير يا غلام.png',
+    tags: ['تصوير'],
+    link: ''
+  }
+];
+
+// Loading messages
+const LOADING_MSGS = [
+  'جاري البحث في مشاريعنا...',
+  'ستجد شيء يعجبك باذن الله...',
+  'انتظر قليلاً.. جاري البحث',
+  'أحسنت الاختيار.. جاري البحث..',
+  '....',
+  '... يتم البحث'
+];
+
+// ── State ──────────────────────────────────────────────────
+let selectedTags    = new Set();
+let selectedCards   = new Set();
+let selectionMode   = false;
+let msgInterval     = null;
+let currentSound    = null;
+
+// ── DOM Refs ───────────────────────────────────────────────
+const phaseSelection = document.getElementById('phase-selection');
+const phaseLoading   = document.getElementById('phase-loading');
+const phaseResults   = document.getElementById('phase-results');
+const tagsCloud      = document.getElementById('tags-cloud');
+const btnContinue    = document.getElementById('btn-continue');
+const loadingText    = document.getElementById('loading-text');
+const cardsGrid      = document.getElementById('cards-grid');
+const btnWantSame    = document.getElementById('btn-want-same');
+const btnRestart     = document.getElementById('btn-restart');
+const selectOverlay  = document.getElementById('select-overlay');
+const btnConfirm     = document.getElementById('btn-confirm-select');
+const btnCancel      = document.getElementById('btn-cancel-select');
+
+// ── Tag Selection ──────────────────────────────────────────
+tagsCloud.querySelectorAll('.tag-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const tag = pill.dataset.tag;
+    if (selectedTags.has(tag)) {
+      selectedTags.delete(tag);
+      pill.classList.remove('selected');
+    } else {
+      selectedTags.add(tag);
+      pill.classList.add('selected');
+    }
+    // Enable/disable continue
+    if (selectedTags.size > 0) {
+      btnContinue.disabled = false;
+      btnContinue.classList.add('enabled');
+    } else {
+      btnContinue.disabled = true;
+      btnContinue.classList.remove('enabled');
+    }
+  });
+});
+
+// ── Continue → Loading ─────────────────────────────────────
+btnContinue.addEventListener('click', () => {
+  startLoading();
+});
+
+function startLoading() {
+  const dotsRow = document.getElementById('dots-row');
+  const origDots = dotsRow.querySelectorAll('.dot');
+  const colors   = ['#f04e3a','#f4c82b','#3bb9ab','#086fb6'];
+  const R        = 36; // orbit radius px
+
+  // --- Build fixed overlay ---
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;background:rgba(26,26,26,0);transition:background 0.5s;';
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => { overlay.style.background = 'rgba(26,26,26,0.98)'; });
+
+  // Mirror each dot's position into overlay
+  const cx = window.innerWidth  / 2;
+  const cy = window.innerHeight / 2;
+
+  const ovDots = Array.from(origDots).map((orig, i) => {
+    const rect = orig.getBoundingClientRect();
+    const d = document.createElement('div');
+    Object.assign(d.style, {
+      position:'absolute', width:'16px', height:'16px',
+      borderRadius:'50%', background: colors[i],
+      left: (rect.left + rect.width/2  - 8) + 'px',
+      top:  (rect.top  + rect.height/2 - 8) + 'px',
+      transition: 'left 0.75s cubic-bezier(0.34,1.2,0.64,1), top 0.75s cubic-bezier(0.34,1.2,0.64,1)',
+      willChange: 'transform, left, top',
+    });
+    overlay.appendChild(d);
+    return d;
+  });
+
+  // Hide originals + fade selection content
+  dotsRow.style.opacity = '0';
+  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue'].forEach(sel => {
+    const el = phaseSelection.querySelector(sel);
+    if (el) { el.style.transition = 'opacity 0.35s'; el.style.opacity = '0'; }
+  });
+
+  // Step 1 — converge to orbit positions (100ms)
+  const angles = [0, 90, 180, 270];
+  setTimeout(() => {
+    ovDots.forEach((d, i) => {
+      const rad = angles[i] * Math.PI / 180;
+      d.style.left = (cx + R * Math.cos(rad) - 8) + 'px';
+      d.style.top  = (cy + R * Math.sin(rad) - 8) + 'px';
+    });
+  }, 100);
+
+  // Step 2 — switch to CSS orbit animation (860ms = 100 + 750 + small buffer)
+  // Runs immediately after position transition completes → seamless spin start
+  setTimeout(() => {
+    ovDots.forEach((d, i) => {
+      d.style.transition = 'none';
+      d.style.left = (cx - 8) + 'px';
+      d.style.top  = (cy - 8) + 'px';
+      d.style.transformOrigin = '8px 8px';
+      d.style.animation = 'ovOrbit 1.8s linear infinite';
+      d.style.animationDelay = (-i * 0.45) + 's';
+    });
+  }, 860);
+
+  // Step 3 — loading text below orbit (1100ms)
+  const textEl = document.createElement('p');
+  Object.assign(textEl.style, {
+    position:'absolute', top: (cy + 58) + 'px', left:'0', right:'0',
+    textAlign:'center', fontFamily:"'Rubik',sans-serif",
+    fontSize:'1.15rem', fontWeight:'500',
+    color:'rgba(250,249,247,0.55)', opacity:'0', transition:'opacity 0.6s',
+  });
+  overlay.appendChild(textEl);
+
+  const showMsg = (msg) => {
+    textEl.textContent = msg;
+    requestAnimationFrame(() => requestAnimationFrame(() => { textEl.style.opacity = '1'; }));
+  };
+
+  setTimeout(() => {
+    let lastIndex = -1;
+    const updateRandomMsg = () => {
+      let msgIndex;
+      do {
+        msgIndex = Math.floor(Math.random() * LOADING_MSGS.length);
+      } while (msgIndex === lastIndex && LOADING_MSGS.length > 1);
+      lastIndex = msgIndex;
+      showMsg(LOADING_MSGS[msgIndex]);
+    };
+
+    updateRandomMsg();
+    msgInterval = setInterval(() => {
+      textEl.style.opacity = '0';
+      setTimeout(updateRandomMsg, 600);
+    }, 3000);
+  }, 1100);
+
+  // Step 4 — after exactly 5 seconds reveal results
+  const totalDelay = 5000;
+
+  // 🔊 Audio
+  if (currentSound) {
+    currentSound.pause();
+    currentSound.currentTime = 0;
+  }
+  currentSound = new Audio('thinking sound.mp3');
+  currentSound.play().catch(e => console.log("Audio play failed:", e));
+
+  setTimeout(() => {
+    clearInterval(msgInterval);
+    overlay.style.transition = 'opacity 0.6s';
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.remove();
+      dotsRow.style.opacity = '';
+      showResults();
+    }, 600);
+  }, totalDelay);
+}
+
+function showLoadingMsg(msg) {
+  loadingText.textContent = msg;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      loadingText.classList.add('visible');
+    });
+  });
+}
+
+// ── Results ────────────────────────────────────────────────
+function showResults() {
+  // Filter projects by selected tags
+  const matched = PROJECTS.filter(p =>
+    p.tags.some(t => selectedTags.has(t))
+  );
+
+  // Deduplicate by name (pick first occurrence)
+  const seen = new Set();
+  const unique = matched.filter(p => {
+    if (seen.has(p.name)) return false;
+    seen.add(p.name);
+    return true;
+  });
+
+  // Shuffle and pick 3
+  const shuffled = unique.sort(() => Math.random() - 0.5);
+  const picks = shuffled.slice(0, 3);
+
+  // Fallback: if nothing matched, pick 3 random
+  const display = picks.length > 0
+    ? picks
+    : PROJECTS.sort(() => Math.random() - 0.5).slice(0, 3);
+
+  buildCards(display);
+  showPhase(phaseResults);
+}
+
+function buildCards(projects) {
+  cardsGrid.innerHTML = '';
+  selectedCards.clear();
+  updateConfirmBtn();
+
+  projects.forEach(proj => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.dataset.id   = proj.id;
+    card.dataset.name = proj.name;
+
+    const bannerSrc  = BANNER_BASE + proj.banner;
+    const tagLabels  = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', كوميكس:'كوميكس', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم' };
+    const tagsHTML   = proj.tags.map(t => `<span class="card-tag tag-${t}">${tagLabels[t] || t}</span>`).join('');
+
+    card.innerHTML = `
+      <div class="card-banner-wrap">
+        <img class="card-banner"
+             src="${bannerSrc}"
+             alt="${proj.name}"
+             loading="lazy">
+      </div>
+      <div class="card-body">
+        <div class="card-name">${proj.name}</div>
+        <div class="card-tags">${tagsHTML}</div>
+        <button class="btn-watch" onclick="watchProject('${proj.id}','${proj.link}')">مشاهدة</button>
+      </div>
+    `;
+
+    card.addEventListener('click', (e) => {
+      if (!selectionMode) return;
+      if (e.target.classList.contains('btn-watch')) return;
+      toggleCardSelection(card, proj);
+    });
+
+    cardsGrid.appendChild(card);
+  });
+}
+
+// ── Watch project ──────────────────────────────────────────
+function watchProject(id, link) {
+  if (link) window.open(link, '_blank');
+  // else: do nothing for now, links added later
+}
+window.watchProject = watchProject;
+
+// ── "أريد مثله" flow ──────────────────────────────────────
+btnWantSame.addEventListener('click', () => {
+  selectionMode = true;
+  selectOverlay.classList.remove('hidden');
+  btnWantSame.style.display = 'none';
+  cardsGrid.classList.add('selection-mode');
+});
+
+btnCancel.addEventListener('click', cancelSelection);
+
+function cancelSelection() {
+  selectionMode = false;
+  selectedCards.clear();
+  selectOverlay.classList.add('hidden');
+  btnWantSame.style.display = '';
+  cardsGrid.classList.remove('selection-mode');
+  cardsGrid.querySelectorAll('.project-card').forEach(c => {
+    c.classList.remove('card-selected');
+  });
+  updateConfirmBtn();
+}
+
+function toggleCardSelection(card, proj) {
+  if (selectedCards.has(proj.name)) {
+    selectedCards.delete(proj.name);
+    card.classList.remove('card-selected');
+  } else {
+    selectedCards.add(proj.name);
+    card.classList.add('card-selected');
+  }
+  updateConfirmBtn();
+}
+
+function updateConfirmBtn() {
+  if (selectedCards.size > 0) {
+    btnConfirm.classList.add('active');
+    btnConfirm.disabled = false;
+  } else {
+    btnConfirm.classList.remove('active');
+    btnConfirm.disabled = true;
+  }
+}
+
+btnConfirm.addEventListener('click', () => {
+  if (selectedCards.size === 0) return;
+
+  const names   = Array.from(selectedCards).join(' / ');
+  const quoted  = Array.from(selectedCards).map(n => `"${n}"`).join(' و ');
+  const subject = encodeURIComponent(`مهتم بمشروع مثل: ${names}`);
+  const body = encodeURIComponent(
+`السلام عليكم ورحمه الله وبركاته
+
+اعجبني ${quoted} من مشاريعكم! وأريد العمل على شيء مثله
+
+اليكم التفاصيل والميزانية المقترحة`
+  );
+  const mailto = `mailto:hello@mdwn.info?subject=${subject}&body=${body}`;
+  window.location.href = mailto;
+});
+
+// ── Restart ────────────────────────────────────────────────
+btnRestart.addEventListener('click', () => {
+  // Reset state
+  selectedTags.clear();
+  selectedCards.clear();
+  selectionMode = false;
+  clearInterval(msgInterval);
+  if (currentSound) {
+    currentSound.pause();
+    currentSound.currentTime = 0;
+    currentSound = null;
+  }
+
+  // Reset UI
+  tagsCloud.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('selected'));
+  btnContinue.disabled = true;
+  btnContinue.classList.remove('enabled');
+  cardsGrid.innerHTML = '';
+  cardsGrid.classList.remove('selection-mode');
+  selectOverlay.classList.add('hidden');
+  btnWantSame.style.display = '';
+
+  // ⚡ Restore inline styles set by startLoading animation
+  const dotsRowEl = document.getElementById('dots-row');
+  dotsRowEl.style.opacity = '';
+  dotsRowEl.style.transition = '';
+  ['.main-title', '.main-subtitle', '.tags-cloud', '.btn-continue'].forEach(sel => {
+    const el = phaseSelection.querySelector(sel);
+    if (el) { el.style.opacity = ''; el.style.transition = ''; }
+  });
+
+  showPhase(phaseSelection);
+});
+
+// ── Phase Switcher ─────────────────────────────────────────
+function showPhase(target) {
+  const allPhases = [phaseSelection, phaseLoading, phaseResults];
+  
+  // Hide others instantly but keep target hidden for a frame
+  allPhases.forEach(p => {
+    if (p !== target) {
+      p.style.display = 'none';
+      p.classList.remove('active-phase', 'fade-in');
+    }
+  });
+
+  // Reset scroll BEFORE showing target to avoid jump
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  target.style.display = 'flex';
+  target.classList.add('active-phase');
+
+  // Trigger fade-in on next frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      target.classList.add('fade-in');
+    });
+  });
+}

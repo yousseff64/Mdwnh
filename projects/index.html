@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مشاريعنا | مدونة ستوديو</title>
+  <meta name="description" content="تصفح أعمال مدونة ستوديو واكتشف المشروع الذي يناسبك بمساعدة نظامنا الذكي">
+  <link rel="icon" href="../Circle Logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="projects.css">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo-link">
+        <img src="../logo.png" alt="مدونة ستوديو" class="nav-logo">
+      </a>
+      <a href="../" class="nav-back">← الرئيسية</a>
+    </div>
+  </nav>
+
+  <!-- ===== PHASE 1: SELECTION ===== -->
+  <section id="phase-selection" class="phase active-phase">
+
+    <!-- Animated background -->
+    <div class="bg-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="orb orb-4"></div>
+    </div>
+
+    <!-- 4 thinking dots -->
+    <div class="dots-row" id="dots-row">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+      <div class="dot dot-4"></div>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="main-title">أنا أريد....</h1>
+    <p class="main-subtitle">اختر ما يعجبك وسنجد لك أفضل أعمالنا</p>
+
+    <!-- Tag pills -->
+    <div class="tags-cloud" id="tags-cloud">
+      <button class="tag-pill" data-tag="انيميشن">🎨 انيميشن</button>
+      <button class="tag-pill" data-tag="موشن">✨ موشن جرافكس</button>
+      <button class="tag-pill" data-tag="مونتاج">🎬 مونتاج</button>
+      <button class="tag-pill" data-tag="تصوير">📷 تصوير</button>
+      <button class="tag-pill" data-tag="كوميكس">💬 كوميكس</button>
+      <button class="tag-pill" data-tag="هوية">🖌️ هوية بصرية</button>
+      <button class="tag-pill" data-tag="تقرير">📋 تقرير</button>
+      <button class="tag-pill" data-tag="تصميم">🎭 تصميم</button>
+    </div>
+
+    <!-- Continue button -->
+    <button class="btn-continue" id="btn-continue" disabled>متابعة →</button>
+
+  </section>
+
+  <!-- ===== PHASE 2: LOADING ===== -->
+  <section id="phase-loading" class="phase">
+
+    <!-- Spinning circle of dots -->
+    <div class="loading-ring" id="loading-ring">
+      <div class="ring-dot ring-dot-1"></div>
+      <div class="ring-dot ring-dot-2"></div>
+      <div class="ring-dot ring-dot-3"></div>
+      <div class="ring-dot ring-dot-4"></div>
+    </div>
+
+    <!-- Rotating loading text -->
+    <div class="loading-text-wrap">
+      <p class="loading-text" id="loading-text"></p>
+    </div>
+
+  </section>
+
+  <!-- ===== PHASE 3: RESULTS ===== -->
+  <section id="phase-results" class="phase">
+
+    <div class="results-header">
+      <div class="dots-row small" id="dots-row-results">
+        <div class="dot dot-1"></div>
+        <div class="dot dot-2"></div>
+        <div class="dot dot-3"></div>
+        <div class="dot dot-4"></div>
+      </div>
+      <h2 class="results-title">وجدنا لك هذا!</h2>
+      <p class="results-sub">إليك أفضل ما يتناسب مع اختياراتك</p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="cards-grid" id="cards-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- "أريد مثله" button -->
+    <div class="results-actions">
+      <button class="btn-want-same" id="btn-want-same">أريد مثله! 🚀</button>
+      <button class="btn-restart" id="btn-restart">← ابحث مجدداً</button>
+    </div>
+
+    <!-- Selection confirm overlay (hidden until btn-want-same clicked) -->
+    <div class="select-overlay hidden" id="select-overlay">
+      <div class="select-overlay-inner">
+        <p class="select-hint">اختر المشروع (أو المشاريع) التي تعجبك</p>
+        <button class="btn-confirm-select" id="btn-confirm-select" disabled>تأكيد الاختيار ✉️</button>
+        <button class="btn-cancel-select" id="btn-cancel-select">إلغاء</button>
+      </div>
+    </div>
+
+  </section>
+
+  <script src="projects.js"></script>
+</body>
+</html>
