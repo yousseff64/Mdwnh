@@ -425,6 +425,7 @@ btnWantSame.addEventListener('click', () => {
   mainActions.classList.add('hidden');
   selectionActions.classList.remove('hidden');
   cardsGrid.classList.add('selection-mode');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 btnCancel.addEventListener('click', cancelSelection);
@@ -466,6 +467,7 @@ function updateConfirmBtn() {
 btnConfirm.addEventListener('click', () => {
   if (selectedCards.size === 0) return;
   contactModal.classList.remove('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 btnModalClose.addEventListener('click', () => {
