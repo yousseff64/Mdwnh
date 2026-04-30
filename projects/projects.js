@@ -499,7 +499,32 @@ function sendRequest(type) {
 
 // ── Restart ────────────────────────────────────────────────
 btnRestart.addEventListener('click', () => {
-  window.location.reload();
+  // Soft reset state without hard browser reload
+  selectedTags.clear();
+  selectedCards.clear();
+  selectionMode = false;
+  
+  // Clear grids
+  cardsGrid.innerHTML = '';
+  browseSearch.value = '';
+  renderBrowseGrid();
+
+  // Reset UI elements that were faded out
+  const dotsRow = phaseSelection.querySelector('.dots-row');
+  if (dotsRow) dotsRow.style.opacity = '1';
+  
+  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue','.hero-separator','.btn-hero-browse','.browse-section'].forEach(sel => {
+    const el = phaseSelection.querySelector(sel);
+    if (el) el.style.opacity = '1';
+  });
+
+  // Reset actions buttons visibility
+  mainActions.classList.remove('hidden');
+  selectionActions.classList.add('hidden');
+  cardsGrid.classList.remove('selection-mode');
+
+  // Back to start
+  showPhase(phaseSelection);
 });
 
 // ── Phase Switcher ─────────────────────────────────────────
@@ -538,29 +563,6 @@ function fadeTitle(newText) {
 
 // ── Browse Logic ──────────────────────────────────────────
 function initBrowse() {
-  // Extract all unique tags from PROJECTS
-  const allTags = new Set();
-  PROJECTS.forEach(p => p.tags.forEach(t => allTags.add(t)));
-  
-  // Render tag pills for browse section
-  browseTagsCloud.innerHTML = '';
-  allTags.forEach(tag => {
-    const btn = document.createElement('button');
-    btn.className = 'tag-pill';
-    btn.textContent = tag;
-    btn.onclick = () => {
-      if (browseFilters.has(tag)) {
-        browseFilters.delete(tag);
-        btn.classList.remove('selected');
-      } else {
-        browseFilters.add(tag);
-        btn.classList.add('selected');
-      }
-      renderBrowseGrid();
-    };
-    browseTagsCloud.appendChild(btn);
-  });
-
   renderBrowseGrid();
 }
 
@@ -568,9 +570,7 @@ function renderBrowseGrid() {
   const query = browseSearch.value.toLowerCase().trim();
   
   const filtered = PROJECTS.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(query);
-    const matchesTags = browseFilters.size === 0 || p.tags.some(t => browseFilters.has(t));
-    return matchesSearch && matchesTags;
+    return p.name.toLowerCase().includes(query);
   });
 
   allProjectsGrid.innerHTML = '';
@@ -594,11 +594,6 @@ function renderBrowseGrid() {
     allProjectsGrid.appendChild(card);
   });
 }
-
-btnFilterToggle.addEventListener('click', () => {
-  browseTagsWrap.classList.toggle('hidden');
-  btnFilterToggle.classList.toggle('active');
-});
 
 browseSearch.addEventListener('input', renderBrowseGrid);
 
