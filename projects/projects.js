@@ -116,7 +116,7 @@ const PROJECTS = [
     id: 'mashaer-yateem',
     name: 'مشاعر يتيم',
     banner: 'انيميشن مشاعر يتيم.png',
-    tags: ['رسم', 'مونتاج'],
+    tags: ['رسم'],
     link: 'https://www.youtube.com/watch?si=Q-ch3v0bzWUfBrHb&v=LV0ljvjeYA8&feature=youtu.be'
   },
   {
