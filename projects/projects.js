@@ -39,7 +39,7 @@ const PROJECTS = [
     id: 'samarqand',
     name: 'قضية سمرقند',
     banner: 'رسم سمرقند.png',
-    tags: ['كوميكس'],
+    tags: ['رسم'],
     link: 'https://mdwn.studio/Samrqand/'
   },
   {
@@ -67,7 +67,7 @@ const PROJECTS = [
     id: 'bab',
     name: 'باب الحجرة',
     banner: 'رسم باب الحجرة.png',
-    tags: ['كوميكس'],
+    tags: ['رسم'],
     link: 'https://mdwn.studio/Hujra/'
   },
   {
@@ -111,6 +111,27 @@ const PROJECTS = [
     banner: 'انيميشن فيلم غمام.png',
     tags: ['انيميشن'],
     link: 'https://drive.google.com/file/d/11aCcpOXRfU7hC7aGPmASY5IUqV_V31ix/view?usp=share_link'
+  },
+  {
+    id: 'mashaer-yateem',
+    name: 'مشاعر يتيم',
+    banner: 'انيميشن مشاعر يتيم.png',
+    tags: ['رسم', 'مونتاج'],
+    link: 'https://www.youtube.com/watch?si=Q-ch3v0bzWUfBrHb&v=LV0ljvjeYA8&feature=youtu.be'
+  },
+  {
+    id: 'maanabi-motion',
+    name: 'مع النبي',
+    banner: 'موشن مع النبي.png',
+    tags: ['موشن'],
+    link: 'https://drive.google.com/file/d/1mf1NzPyyJbGfWtSOLEneZKJHIOZKvnGj/view?usp=share_link'
+  },
+  {
+    id: 'maanabi-edit',
+    name: 'مع النبي',
+    banner: 'مونتاج مع النبي.png',
+    tags: ['مونتاج'],
+    link: 'https://drive.google.com/file/d/1NFOyBJreTm_yQOFwlCXzRAOcshID3h-L/view?usp=share_link'
   }
 ];
 
@@ -599,7 +620,7 @@ function renderBrowseGrid() {
     const card = document.createElement('div');
     card.className = 'project-card';
     
-    const tagLabels = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', كوميكس:'كوميكس', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم' };
+    const tagLabels = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', رسم:'رسم', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم' };
     const tagsHTML  = proj.tags.map(t => `<span class="card-tag tag-${t}">${tagLabels[t] || t}</span>`).join('');
 
     card.innerHTML = `
