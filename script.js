@@ -1171,4 +1171,60 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(updateMarquee);
     }
 
+    // ================= Projects Promo Sparks =================
+    const sparksContainer = document.querySelector('.sparks-container');
+    const tastyBtn = document.querySelector('.btn-tasty');
+    const colors = ['#f04e3a', '#f4c82b', '#3bb9ab', '#086fb6'];
+
+    if (sparksContainer && tastyBtn) {
+        let mouseX = 0;
+        let mouseY = 0;
+
+        tastyBtn.addEventListener('mousemove', (e) => {
+            const rect = tastyBtn.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        function createPromoSpark() {
+            const spark = document.createElement('div');
+            spark.classList.add('promo-spark');
+            
+            // Random color from brand palette
+            spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Position at mouse
+            spark.style.left = `${mouseX}px`;
+            spark.style.top = `${mouseY}px`;
+            
+            // Random direction
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 40 + Math.random() * 80;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+            
+            spark.style.setProperty('--tx', `${tx}px`);
+            spark.style.setProperty('--ty', `${ty}px`);
+            
+            // Random size
+            const size = 2 + Math.random() * 4;
+            spark.style.width = `${size}px`;
+            spark.style.height = `${size}px`;
+
+            sparksContainer.appendChild(spark);
+            
+            setTimeout(() => {
+                spark.remove();
+            }, 1500);
+        }
+
+        let sparkInterval;
+        tastyBtn.addEventListener('mouseenter', () => {
+            sparkInterval = setInterval(createPromoSpark, 60);
+        });
+        tastyBtn.addEventListener('mouseleave', () => {
+            clearInterval(sparkInterval);
+        });
+    }
+
 }); // End DOMContentLoaded

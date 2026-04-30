@@ -54,14 +54,14 @@ const PROJECTS = [
     name: 'اسمى',
     banner: 'تقرير اسمى.png',
     tags: ['موشن', 'مونتاج', 'تقرير'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1eVx9LMkE6VpkPiiNnb9w_3nKdYOhxt-y/view?usp=share_link'
   },
   {
     id: 'milaf',
     name: 'ميلاف',
     banner: 'تقرير ميلاف.png',
     tags: ['موشن', 'مونتاج'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1htEUt3tei4vWJweCZmdbMMn-zayVnGwO/view?usp=sharing'
   },
   {
     id: 'bab',
@@ -72,7 +72,7 @@ const PROJECTS = [
   },
   {
     id: 'harason',
-    name: 'الحراثاسون للدراسة الأمنية',
+    name: 'الحراساثون للدراسات الأمنية',
     banner: 'تصوير الحراساثون.png',
     tags: ['تصوير', 'مونتاج', 'تقرير'],
     link: 'https://drive.google.com/file/d/1AKPFm-08Zm8y3W_brVrSOJwtQ1pyCnRz/view?usp=share_link'
@@ -116,12 +116,12 @@ const PROJECTS = [
 
 // Loading messages
 const LOADING_MSGS = [
-  'جاري تحليل اختياراتك...',
   'ستجد ما يسرك بإذن الله...',
   'انتظر قليلاً...',
   'أحسنت الاختيار...',
   'لحظات فقط...',
-  'نجهز لك الأفضل...'
+  '🌱✨انتظر...',
+  '🚀🚀 انتظر..'
 ];
 
 // ── State ──────────────────────────────────────────────────
@@ -131,6 +131,26 @@ let selectionMode   = false;
 let msgInterval     = null;
 let currentSound    = null;
 let picksForDisplay = [];
+
+// ================= Lenis Smooth Scroll =================
+const lenis = new Lenis({
+  duration: 1.0,
+  easing: (t) => --t * t * t + 1,
+  orientation: 'vertical',
+  gestureOrientation: 'vertical',
+  smoothWheel: true,
+  wheelMultiplier: 1.25,
+  smoothTouch: false,
+  touchMultiplier: 2.5,
+  infinite: false,
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
 
 // ── DOM Refs ───────────────────────────────────────────────
 const phaseSelection = document.getElementById('phase-selection');
@@ -151,10 +171,8 @@ const contactModal   = document.getElementById('contact-modal');
 const btnWaChoice    = document.getElementById('btn-whatsapp-choice');
 const btnMailChoice  = document.getElementById('btn-email-choice');
 const btnModalClose  = document.getElementById('btn-modal-close');
-const btnHeroBrowse  = document.getElementById('btn-hero-browse');
 
 // Browse Section DOM
-const browseSearch      = document.getElementById('browse-search');
 const btnFilterToggle   = document.getElementById('btn-filter-toggle');
 const browseTagsWrap    = document.getElementById('browse-tags-wrap');
 const browseTagsCloud   = document.getElementById('browse-tags-cloud');
@@ -222,7 +240,7 @@ function startLoading() {
 
   // Hide originals + fade selection content
   dotsRow.style.opacity = '0';
-  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue','.hero-separator','.btn-hero-browse','.browse-section'].forEach(sel => {
+  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue','.brand-line-separator','.browse-section'].forEach(sel => {
     const el = phaseSelection.querySelector(sel);
     if (el) { el.style.transition = 'opacity 0.35s'; el.style.opacity = '0'; }
   });
@@ -283,7 +301,7 @@ function startLoading() {
     }, 2000);
   }, 1100);
 
-  // ⚡ Fade out background orbs after 2 seconds
+  // ⚡ Start fading out background orbs mid-way through loading (after 2 seconds)
   setTimeout(() => {
     const bgOrbs = document.querySelector('.bg-orbs');
     if (bgOrbs) bgOrbs.style.opacity = '0';
@@ -499,12 +517,40 @@ function sendRequest(type) {
 
 // ── Restart ────────────────────────────────────────────────
 btnRestart.addEventListener('click', () => {
-  window.location.reload();
+  // Restore visibility and reset transitions/styles to prevent layout shifts
+  const dotsRow = document.getElementById('dots-row');
+  if (dotsRow) {
+    dotsRow.style.opacity = '1';
+    dotsRow.style.transition = '';
+  }
+
+  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue','.brand-line-separator','.browse-section'].forEach(sel => {
+    const el = phaseSelection.querySelector(sel);
+    if (el) { 
+      el.style.opacity = '1'; 
+      el.style.pointerEvents = 'auto'; 
+      el.style.transition = ''; // Remove the transition we added in startLoading
+    }
+  });
+
+  // Switch back to selection phase instantly
+  showPhase(phaseSelection);
+
+  // Instantly disable continue button to prevent accidental clicks
+  btnContinue.disabled = true;
+  btnContinue.classList.remove('enabled');
+
+  // Deselect tags after 1 second as requested
+  setTimeout(() => {
+    selectedTags.clear();
+    tagsCloud.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('selected'));
+  }, 1000);
 });
 
 // ── Phase Switcher ─────────────────────────────────────────
 function showPhase(target) {
   const allPhases = [phaseSelection, phaseLoading, phaseResults];
+  const bgOrbs = document.querySelector('.bg-orbs');
   
   // Hide others instantly but keep target hidden for a frame
   allPhases.forEach(p => {
@@ -513,6 +559,12 @@ function showPhase(target) {
       p.classList.remove('active-phase', 'fade-in');
     }
   });
+
+  // Toggle global background visibility based on phase
+  if (bgOrbs) {
+    // Hide gradients only in results phase
+    bgOrbs.style.opacity = (target === phaseResults) ? '0' : '1';
+  }
 
   // Reset scroll BEFORE showing target to avoid jump
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -542,14 +594,8 @@ function initBrowse() {
 }
 
 function renderBrowseGrid() {
-  const query = browseSearch.value.toLowerCase().trim();
-  
-  const filtered = PROJECTS.filter(p => {
-    return p.name.toLowerCase().includes(query);
-  });
-
   allProjectsGrid.innerHTML = '';
-  filtered.forEach(proj => {
+  PROJECTS.forEach(proj => {
     const card = document.createElement('div');
     card.className = 'project-card';
     
@@ -568,14 +614,49 @@ function renderBrowseGrid() {
     `;
     allProjectsGrid.appendChild(card);
   });
+  // Notify Lenis that the content height has changed
+  if (typeof lenis !== 'undefined') lenis.resize();
 }
-
-browseSearch.addEventListener('input', renderBrowseGrid);
-
-btnHeroBrowse.addEventListener('click', () => {
-  const browseSec = document.querySelector('.browse-section');
-  browseSec.scrollIntoView({ behavior: 'smooth' });
-});
 
 // Run init
 initBrowse();
+
+// ── Contact Section Logic (Ported) ──────────────────────────
+// Contact Form
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    const recipient = 'hello@mdwn.info';
+    const body = `${message}\n\n---\nSent from: ${email}`;
+    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+}
+
+// Copy Phone
+const copyBtn = document.getElementById('copy-phone-btn');
+const toast = document.getElementById('copy-toast');
+if (copyBtn && toast) {
+  copyBtn.addEventListener('click', () => {
+    const phoneNumber = '+966534223414';
+    const showToast = () => {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(phoneNumber).then(showToast);
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = phoneNumber;
+      ta.style.position = "fixed"; ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try { if (document.execCommand('copy')) showToast(); } catch(e) {}
+      document.body.removeChild(ta);
+    }
+  });
+}

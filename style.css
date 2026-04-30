@@ -2593,3 +2593,165 @@ section {
         transform: translateX(-50%) translateY(0);
     }
 }
+
+/* ================= Projects Promo Section ================= */
+.projects-promo-section {
+    padding: 160px 0;
+    background-color: #0c0c0c;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.promo-bg-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(8, 111, 182, 0.12), 
+        rgba(59, 185, 171, 0.12)
+    );
+    background-size: 200% 200%;
+    animation: promoBgMove 10s ease infinite;
+    z-index: 1;
+}
+
+@keyframes promoBgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.promo-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.promo-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    color: var(--color-white);
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.promo-text {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--color-white);
+    opacity: 0.5;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+}
+
+/* The Tasty Button */
+.tasty-btn-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-tasty {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    padding: 22px 60px;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 800;
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.btn-tasty svg {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.4s ease;
+}
+
+.btn-tasty:hover {
+    transform: scale(1.08);
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.15),
+                0 0 30px rgba(59, 185, 171, 0.3),
+                0 0 60px rgba(8, 111, 182, 0.2);
+}
+
+.btn-tasty:hover svg {
+    transform: translateX(-10px); /* RTL arrow logic */
+}
+
+/* The "Glow" behind the button */
+.tasty-btn-wrap::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 130%;
+    background: linear-gradient(90deg, 
+        rgba(240, 78, 58, 0.4), 
+        rgba(244, 200, 43, 0.4), 
+        rgba(59, 185, 171, 0.4), 
+        rgba(8, 111, 182, 0.4)
+    );
+    background-size: 300% 100%;
+    filter: blur(40px);
+    border-radius: 100px;
+    z-index: 1;
+    opacity: 0.3;
+    animation: gradientShift 4s linear infinite;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.tasty-btn-wrap:hover::after {
+    opacity: 0.8;
+    filter: blur(60px);
+}
+
+/* Sparks Particle System */
+.sparks-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10; /* Above the button */
+    overflow: visible;
+}
+
+.promo-spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: promoSparkAnim 1.5s ease-out forwards;
+}
+
+@keyframes promoSparkAnim {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-promo-section { padding: 100px 0; }
+    .btn-tasty { padding: 18px 40px; font-size: 1.2rem; }
+}
