@@ -26,40 +26,80 @@
   <!-- ===== PHASE 1: SELECTION ===== -->
   <section id="phase-selection" class="phase active-phase">
 
-    <!-- Animated background -->
-    <div class="bg-orbs">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-      <div class="orb orb-4"></div>
+    <!-- Hero Section (AI Filter) -->
+    <div class="selection-hero">
+      <!-- Animated background -->
+      <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+      </div>
+
+      <!-- 4 thinking dots -->
+      <div class="dots-row" id="dots-row">
+        <div class="dot dot-1"></div>
+        <div class="dot dot-2"></div>
+        <div class="dot dot-3"></div>
+        <div class="dot dot-4"></div>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="main-title">أنا أريد....</h1>
+      <p class="main-subtitle">اختر ما يعجبك وسنجد لك أفضل أعمالنا</p>
+
+      <!-- Tag pills -->
+      <div class="tags-cloud" id="tags-cloud">
+        <button class="tag-pill" data-tag="انيميشن">🎨 انيميشن</button>
+        <button class="tag-pill" data-tag="موشن">✨ موشن جرافكس</button>
+        <button class="tag-pill" data-tag="مونتاج">🎬 مونتاج</button>
+        <button class="tag-pill" data-tag="تصوير">📷 تصوير</button>
+        <button class="tag-pill" data-tag="كوميكس">💬 كوميكس</button>
+        <button class="tag-pill" data-tag="هوية">🖌️ هوية بصرية</button>
+        <button class="tag-pill" data-tag="تقرير">📋 تقرير</button>
+        <button class="tag-pill" data-tag="تصميم">🎭 تصميم</button>
+      </div>
+
+      <!-- Continue button -->
+      <button class="btn-continue" id="btn-continue" disabled>متابعة →</button>
+
+      <!-- OR Separator -->
+      <div class="hero-separator">
+        <span>أو</span>
+      </div>
+
+      <button class="btn-hero-browse" id="btn-hero-browse">تصفح المشاريع ↓</button>
     </div>
 
-    <!-- 4 thinking dots -->
-    <div class="dots-row" id="dots-row">
-      <div class="dot dot-1"></div>
-      <div class="dot dot-2"></div>
-      <div class="dot dot-3"></div>
-      <div class="dot dot-4"></div>
+    <!-- Browse Section (New) -->
+    <div class="browse-section">
+      <div class="browse-container">
+        <h2 class="browse-title">تصفح</h2>
+        
+        <div class="browse-controls">
+          <div class="search-wrap">
+            <input type="text" id="browse-search" placeholder="ابحث عن مشروع بالاسم...">
+            <span class="search-icon">🔍</span>
+          </div>
+          
+          <div class="filter-panel-wrap">
+            <button class="btn-filter-toggle" id="btn-filter-toggle">
+              تصفية بالوسوم 🏷️
+            </button>
+            
+            <div class="browse-tags-wrap hidden" id="browse-tags-wrap">
+              <div class="tags-cloud small" id="browse-tags-cloud">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="all-projects-grid" id="all-projects-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
     </div>
-
-    <!-- Headline -->
-    <h1 class="main-title">أنا أريد....</h1>
-    <p class="main-subtitle">اختر ما يعجبك وسنجد لك أفضل أعمالنا</p>
-
-    <!-- Tag pills -->
-    <div class="tags-cloud" id="tags-cloud">
-      <button class="tag-pill" data-tag="انيميشن">🎨 انيميشن</button>
-      <button class="tag-pill" data-tag="موشن">✨ موشن جرافكس</button>
-      <button class="tag-pill" data-tag="مونتاج">🎬 مونتاج</button>
-      <button class="tag-pill" data-tag="تصوير">📷 تصوير</button>
-      <button class="tag-pill" data-tag="كوميكس">💬 كوميكس</button>
-      <button class="tag-pill" data-tag="هوية">🖌️ هوية بصرية</button>
-      <button class="tag-pill" data-tag="تقرير">📋 تقرير</button>
-      <button class="tag-pill" data-tag="تصميم">🎭 تصميم</button>
-    </div>
-
-    <!-- Continue button -->
-    <button class="btn-continue" id="btn-continue" disabled>متابعة →</button>
 
   </section>
 

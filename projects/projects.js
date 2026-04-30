@@ -8,59 +8,38 @@ const BANNER_BASE = '../Our Projects/Project Banners/';
 
 const PROJECTS = [
   {
-    id: 'ghayam',
-    name: 'فيلم غمام',
-    banner: 'انيميشن فيلم غمام.png',
-    tags: ['انيميشن'],
+    id: 'makashdana',
+    name: 'مكشدانة',
+    banner: 'هوية بصرية مكشدانة.png',
+    tags: ['تصميم', 'هوية'],
     link: ''
   },
   {
-    id: 'maallah-anim',
-    name: 'مع الله',
-    banner: 'انيميشن مع الله.png',
-    tags: ['انيميشن'],
+    id: 'salammaknoon',
+    name: 'بودكاست سلام مكنون',
+    banner: 'هوية بصرية سلام مكنون.png',
+    tags: ['تصميم', 'هوية'],
     link: ''
   },
   {
-    id: 'maannabi-motion',
-    name: 'مع النبي (موشن)',
-    banner: 'موشن مع النبي.png',
-    tags: ['موشن', 'مونتاج'],
+    id: 'daralez',
+    name: 'دار العز',
+    banner: 'هوية بصرية دار العز.png',
+    tags: ['تصميم', 'هوية'],
     link: ''
   },
   {
-    id: 'ananas',
-    name: 'اناناس',
-    banner: ' مونتاج- موشن اناناس.png',
-    tags: ['موشن', 'مونتاج'],
-    link: ''
-  },
-  {
-    id: 'yaghilam',
-    name: 'يا غلام',
+    id: 'yaghilam-identity',
+    name: 'ياغلام (هوية بصرية)',
     banner: 'مونتاج يا غلام.png',
-    tags: ['مونتاج', 'تصوير'],
+    tags: ['هوية'],
     link: ''
   },
   {
-    id: 'harason',
-    name: 'الحراساثون',
-    banner: 'تصوير الحراساثون.png',
+    id: 'yaghilam-photo',
+    name: 'ياغلام (تصوير)',
+    banner: 'تصوير يا غلام.png',
     tags: ['تصوير'],
-    link: ''
-  },
-  {
-    id: 'risha',
-    name: 'ريشة - نادي الاعتماد',
-    banner: 'تصوير ريشة - نادي الاعتماد الرياضي.png',
-    tags: ['تصوير'],
-    link: ''
-  },
-  {
-    id: 'bab',
-    name: 'باب الحجرة',
-    banner: 'رسم باب الحجرة.png',
-    tags: ['كوميكس'],
     link: ''
   },
   {
@@ -71,78 +50,92 @@ const PROJECTS = [
     link: ''
   },
   {
-    id: 'daralez',
-    name: 'دار العز',
-    banner: 'هوية بصرية دار العز.png',
-    tags: ['هوية'],
-    link: ''
-  },
-  {
-    id: 'salammaknoon',
-    name: 'سلام مكنون',
-    banner: 'هوية بصرية سلام مكنون.png',
-    tags: ['هوية'],
-    link: ''
-  },
-  {
-    id: 'makashdana',
-    name: 'مكشدانة',
-    banner: 'هوية بصرية مكشدانة.png',
-    tags: ['هوية'],
+    id: 'maallah-motion',
+    name: 'مع الله (موشن)',
+    banner: 'موشن مع الله.png',
+    tags: ['موشن', 'مونتاج'],
     link: ''
   },
   {
     id: 'asma',
     name: 'اسمى',
     banner: 'تقرير اسمى.png',
-    tags: ['تقرير'],
+    tags: ['موشن', 'مونتاج', 'تقرير'],
     link: ''
   },
   {
     id: 'milaf',
     name: 'ميلاف',
     banner: 'تقرير ميلاف.png',
-    tags: ['تقرير'],
+    tags: ['موشن', 'مونتاج'],
+    link: ''
+  },
+  {
+    id: 'bab',
+    name: 'باب الحجرة',
+    banner: 'رسم باب الحجرة.png',
+    tags: ['كوميكس'],
+    link: ''
+  },
+  {
+    id: 'harason',
+    name: 'حراساتيون للدراسات الأمنية',
+    banner: 'تصوير الحراساثون.png',
+    tags: ['تصوير', 'مونتاج', 'تقرير'],
+    link: ''
+  },
+  {
+    id: 'risha',
+    name: 'نادي الاعتماد الرياضي',
+    banner: 'تصوير ريشة - نادي الاعتماد الرياضي.png',
+    tags: ['تصوير', 'مونتاج', 'تقرير'],
+    link: ''
+  },
+  {
+    id: 'yaghilam-podcast',
+    name: 'بودكاست ياغلام',
+    banner: 'مونتاج يا غلام.png',
+    tags: ['تصوير', 'مونتاج'],
+    link: ''
+  },
+  {
+    id: 'maallah-anim',
+    name: 'مع الله (انيميشن)',
+    banner: 'انيميشن مع الله.png',
+    tags: ['انيميشن'],
     link: ''
   },
   {
     id: 'dalilak',
-    name: 'دليلك',
+    name: 'مرشدك لأفضل التطبيقات القرآنية',
     banner: 'تصميم دليلك.png',
     tags: ['تصميم'],
     link: ''
   },
   {
-    id: 'maallah-motion',
-    name: 'مع الله (موشن)',
-    banner: 'موشن مع الله.png',
+    id: 'ananas',
+    name: 'أناناس',
+    banner: ' مونتاج- موشن اناناس.png',
     tags: ['موشن'],
     link: ''
   },
   {
-    id: 'maannabi-montage',
-    name: 'مع النبي (مونتاج)',
-    banner: 'مونتاج مع النبي.png',
-    tags: ['مونتاج'],
-    link: ''
-  },
-  {
-    id: 'yaghilam-photo',
-    name: 'يا غلام',
-    banner: 'تصوير يا غلام.png',
-    tags: ['تصوير'],
+    id: 'ghayam',
+    name: 'غمام',
+    banner: 'انيميشن فيلم غمام.png',
+    tags: ['انيميشن'],
     link: ''
   }
 ];
 
 // Loading messages
 const LOADING_MSGS = [
-  'جاري البحث في مشاريعنا...',
-  'ستجد شيء يعجبك باذن الله...',
-  'انتظر قليلاً.. جاري البحث',
-  'أحسنت الاختيار.. جاري البحث..',
-  '....',
-  '... يتم البحث'
+  'جاري تحليل اختياراتك...',
+  'ستجد ما يسرك بإذن الله...',
+  'انتظر قليلاً...',
+  'أحسنت الاختيار...',
+  'لحظات فقط...',
+  'نجهز لك الأفضل...'
 ];
 
 // ── State ──────────────────────────────────────────────────
@@ -164,7 +157,6 @@ const cardsGrid      = document.getElementById('cards-grid');
 const btnWantSame    = document.getElementById('btn-want-same');
 const btnRestart     = document.getElementById('btn-restart');
 const resultsTitle  = document.getElementById('results-title');
-const selectOverlay  = null; // removed from HTML
 const mainActions    = document.getElementById('main-actions');
 const selectionActions = document.getElementById('selection-actions');
 const btnConfirm     = document.getElementById('btn-confirm-select');
@@ -173,6 +165,16 @@ const contactModal   = document.getElementById('contact-modal');
 const btnWaChoice    = document.getElementById('btn-whatsapp-choice');
 const btnMailChoice  = document.getElementById('btn-email-choice');
 const btnModalClose  = document.getElementById('btn-modal-close');
+const btnHeroBrowse  = document.getElementById('btn-hero-browse');
+
+// Browse Section DOM
+const browseSearch      = document.getElementById('browse-search');
+const btnFilterToggle   = document.getElementById('btn-filter-toggle');
+const browseTagsWrap    = document.getElementById('browse-tags-wrap');
+const browseTagsCloud   = document.getElementById('browse-tags-cloud');
+const allProjectsGrid   = document.getElementById('all-projects-grid');
+
+let browseFilters = new Set();
 
 // ── Tag Selection ──────────────────────────────────────────
 tagsCloud.querySelectorAll('.tag-pill').forEach(pill => {
@@ -234,7 +236,7 @@ function startLoading() {
 
   // Hide originals + fade selection content
   dotsRow.style.opacity = '0';
-  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue'].forEach(sel => {
+  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue','.hero-separator','.btn-hero-browse','.browse-section'].forEach(sel => {
     const el = phaseSelection.querySelector(sel);
     if (el) { el.style.transition = 'opacity 0.35s'; el.style.opacity = '0'; }
   });
@@ -467,7 +469,8 @@ function updateConfirmBtn() {
 btnConfirm.addEventListener('click', () => {
   if (selectedCards.size === 0) return;
   contactModal.classList.remove('hidden');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Scroll halfway up instead of all the way to prevent mobile UI jitter
+  window.scrollTo({ top: window.scrollY / 2, behavior: 'smooth' });
 });
 
 btnModalClose.addEventListener('click', () => {
@@ -507,42 +510,7 @@ function sendRequest(type) {
 
 // ── Restart ────────────────────────────────────────────────
 btnRestart.addEventListener('click', () => {
-  // Reset state
-  selectedTags.clear();
-  selectedCards.clear();
-  selectionMode = false;
-  clearInterval(msgInterval);
-  if (currentSound) {
-    currentSound.pause();
-    currentSound.currentTime = 0;
-    currentSound = null;
-  }
-
-  // Reset UI
-  tagsCloud.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('selected'));
-  btnContinue.disabled = true;
-  btnContinue.classList.remove('enabled');
-  cardsGrid.innerHTML = '';
-  cardsGrid.classList.remove('selection-mode');
-  fadeTitle('وجدنا لك هذا!');
-  
-  // Reset action groups
-  mainActions.classList.remove('hidden');
-  selectionActions.classList.add('hidden');
-
-  // ⚡ Restore inline styles set by startLoading animation
-  const bgOrbs = document.querySelector('.bg-orbs');
-  if (bgOrbs) bgOrbs.style.opacity = '';
-
-  const dotsRowEl = document.getElementById('dots-row');
-  dotsRowEl.style.opacity = '';
-  dotsRowEl.style.transition = '';
-  ['.main-title', '.main-subtitle', '.tags-cloud', '.btn-continue'].forEach(sel => {
-    const el = phaseSelection.querySelector(sel);
-    if (el) { el.style.opacity = ''; el.style.transition = ''; }
-  });
-
-  showPhase(phaseSelection);
+  window.location.reload();
 });
 
 // ── Phase Switcher ─────────────────────────────────────────
@@ -578,3 +546,77 @@ function fadeTitle(newText) {
     resultsTitle.style.opacity = '1';
   }, 300);
 }
+
+// ── Browse Logic ──────────────────────────────────────────
+function initBrowse() {
+  // Extract all unique tags from PROJECTS
+  const allTags = new Set();
+  PROJECTS.forEach(p => p.tags.forEach(t => allTags.add(t)));
+  
+  // Render tag pills for browse section
+  browseTagsCloud.innerHTML = '';
+  allTags.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.className = 'tag-pill';
+    btn.textContent = tag;
+    btn.onclick = () => {
+      if (browseFilters.has(tag)) {
+        browseFilters.delete(tag);
+        btn.classList.remove('selected');
+      } else {
+        browseFilters.add(tag);
+        btn.classList.add('selected');
+      }
+      renderBrowseGrid();
+    };
+    browseTagsCloud.appendChild(btn);
+  });
+
+  renderBrowseGrid();
+}
+
+function renderBrowseGrid() {
+  const query = browseSearch.value.toLowerCase().trim();
+  
+  const filtered = PROJECTS.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(query);
+    const matchesTags = browseFilters.size === 0 || p.tags.some(t => browseFilters.has(t));
+    return matchesSearch && matchesTags;
+  });
+
+  allProjectsGrid.innerHTML = '';
+  filtered.forEach(proj => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    
+    const tagLabels = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', كوميكس:'كوميكس', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم' };
+    const tagsHTML  = proj.tags.map(t => `<span class="card-tag tag-${t}">${tagLabels[t] || t}</span>`).join('');
+
+    card.innerHTML = `
+      <div class="card-banner-wrap">
+        <img src="${BANNER_BASE}${proj.banner}" alt="${proj.name}" class="card-banner" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3 class="card-name">${proj.name}</h3>
+        <div class="card-tags">${tagsHTML}</div>
+        <button class="btn-watch" onclick="watchProject('${proj.id}','${proj.link}')">مشاهدة</button>
+      </div>
+    `;
+    allProjectsGrid.appendChild(card);
+  });
+}
+
+btnFilterToggle.addEventListener('click', () => {
+  browseTagsWrap.classList.toggle('hidden');
+  btnFilterToggle.classList.toggle('active');
+});
+
+browseSearch.addEventListener('input', renderBrowseGrid);
+
+btnHeroBrowse.addEventListener('click', () => {
+  const browseSec = document.querySelector('.browse-section');
+  browseSec.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Run init
+initBrowse();
