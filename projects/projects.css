@@ -243,6 +243,7 @@ body::-webkit-scrollbar { display: none; }
   justify-content: center;
   gap: 32px;
   width: 100%;
+  min-height: 800px; /* Prevents page jump when filtering results */
 }
 
 /* 4 columns on large desktop */
