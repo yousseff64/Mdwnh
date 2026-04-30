@@ -12,49 +12,42 @@ const PROJECTS = [
     name: 'مكشدانة',
     banner: 'هوية بصرية مكشدانة.png',
     tags: ['تصميم', 'هوية'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1egewenQQLqvh6bkPpvD4IytI8ND5RRpL/view?usp=share_link'
   },
   {
     id: 'salammaknoon',
     name: 'بودكاست سلام مكنون',
     banner: 'هوية بصرية سلام مكنون.png',
     tags: ['تصميم', 'هوية'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1MLPC2jAs-A8wRxpmds0r2B_0nVpk8pCx/view?usp=sharing'
   },
   {
     id: 'daralez',
     name: 'دار العز',
     banner: 'هوية بصرية دار العز.png',
     tags: ['تصميم', 'هوية'],
-    link: ''
-  },
-  {
-    id: 'yaghilam-identity',
-    name: 'ياغلام (هوية بصرية)',
-    banner: 'مونتاج يا غلام.png',
-    tags: ['هوية'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1W8flJbTCrACtWXVwTV7xBWK_Ek9AXT5O/view?usp=share_link'
   },
   {
     id: 'yaghilam-photo',
-    name: 'ياغلام (تصوير)',
+    name: 'يا غلام',
     banner: 'تصوير يا غلام.png',
     tags: ['تصوير'],
-    link: ''
+    link: 'https://www.youtube.com/watch?si=3M34xAVU513aswp3&v=h9WQT7gMP6E&feature=youtu.be'
   },
   {
     id: 'samarqand',
     name: 'قضية سمرقند',
     banner: 'رسم سمرقند.png',
     tags: ['كوميكس'],
-    link: ''
+    link: 'https://mdwn.studio/Samrqand/'
   },
   {
     id: 'maallah-motion',
     name: 'مع الله (موشن)',
     banner: 'موشن مع الله.png',
     tags: ['موشن', 'مونتاج'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1IEyk8RVUqM660I4-37H8c-nbn8lppEyx/view?usp=share_link'
   },
   {
     id: 'asma',
@@ -75,56 +68,49 @@ const PROJECTS = [
     name: 'باب الحجرة',
     banner: 'رسم باب الحجرة.png',
     tags: ['كوميكس'],
-    link: ''
+    link: 'https://mdwn.studio/Hujra/'
   },
   {
     id: 'harason',
-    name: 'حراساتيون للدراسات الأمنية',
+    name: 'الحراثاسون للدراسة الأمنية',
     banner: 'تصوير الحراساثون.png',
     tags: ['تصوير', 'مونتاج', 'تقرير'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1AKPFm-08Zm8y3W_brVrSOJwtQ1pyCnRz/view?usp=share_link'
   },
   {
     id: 'risha',
     name: 'نادي الاعتماد الرياضي',
     banner: 'تصوير ريشة - نادي الاعتماد الرياضي.png',
     tags: ['تصوير', 'مونتاج', 'تقرير'],
-    link: ''
-  },
-  {
-    id: 'yaghilam-podcast',
-    name: 'بودكاست ياغلام',
-    banner: 'مونتاج يا غلام.png',
-    tags: ['تصوير', 'مونتاج'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1xghsfy_6WF0QdQ03970-lxO9ftH2FCeC/view?usp=share_link'
   },
   {
     id: 'maallah-anim',
     name: 'مع الله (انيميشن)',
     banner: 'انيميشن مع الله.png',
     tags: ['انيميشن'],
-    link: ''
+    link: 'https://drive.google.com/file/d/17cnXj6XOPxtrlFWOdOi3hDfbyx_vD65B/view?usp=share_link'
   },
   {
     id: 'dalilak',
     name: 'مرشدك لأفضل التطبيقات القرآنية',
     banner: 'تصميم دليلك.png',
     tags: ['تصميم'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1IqkTdp959MSKbWw_6yIHODAs3YpHVLy9/view?usp=share_link'
   },
   {
     id: 'ananas',
     name: 'أناناس',
     banner: ' مونتاج- موشن اناناس.png',
     tags: ['موشن'],
-    link: ''
+    link: 'https://drive.google.com/file/d/1xiXUISFp6O69Q-e8D02kaH-3koqdbtiZ/view?usp=share_link'
   },
   {
     id: 'ghayam',
     name: 'غمام',
     banner: 'انيميشن فيلم غمام.png',
     tags: ['انيميشن'],
-    link: ''
+    link: 'https://drive.google.com/file/d/11aCcpOXRfU7hC7aGPmASY5IUqV_V31ix/view?usp=share_link'
   }
 ];
 
@@ -415,8 +401,11 @@ function buildCards(projects) {
 
 // ── Watch project ──────────────────────────────────────────
 function watchProject(id, link) {
-  if (link) window.open(link, '_blank');
-  // else: do nothing for now, links added later
+  if (link && link !== '') {
+    window.open(link, '_blank');
+  } else {
+    alert('رابط المشروع غير متوفر حالياً');
+  }
 }
 window.watchProject = watchProject;
 
