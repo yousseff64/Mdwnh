@@ -499,32 +499,7 @@ function sendRequest(type) {
 
 // ── Restart ────────────────────────────────────────────────
 btnRestart.addEventListener('click', () => {
-  // Soft reset state without hard browser reload
-  selectedTags.clear();
-  selectedCards.clear();
-  selectionMode = false;
-  
-  // Clear grids
-  cardsGrid.innerHTML = '';
-  browseSearch.value = '';
-  renderBrowseGrid();
-
-  // Reset UI elements that were faded out
-  const dotsRow = phaseSelection.querySelector('.dots-row');
-  if (dotsRow) dotsRow.style.opacity = '1';
-  
-  ['.main-title','.main-subtitle','.tags-cloud','.btn-continue','.hero-separator','.btn-hero-browse','.browse-section'].forEach(sel => {
-    const el = phaseSelection.querySelector(sel);
-    if (el) el.style.opacity = '1';
-  });
-
-  // Reset actions buttons visibility
-  mainActions.classList.remove('hidden');
-  selectionActions.classList.add('hidden');
-  cardsGrid.classList.remove('selection-mode');
-
-  // Back to start
-  showPhase(phaseSelection);
+  window.location.reload();
 });
 
 // ── Phase Switcher ─────────────────────────────────────────
