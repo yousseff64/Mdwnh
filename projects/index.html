@@ -292,40 +292,30 @@
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
 
-      function getDeviceType() {
-          const ua = navigator.userAgent;
-          if (/android/i.test(ua)) return 'Android';
-          if (/iphone|ipad|ipod/i.test(ua)) return 'iOS';
-          if (/mac/i.test(ua)) return 'Mac';
-          if (/windows/i.test(ua)) return 'Windows';
-          if (/linux/i.test(ua)) return 'Linux';
-          return 'Other';
-      }
-
-      async function getLocation() {
-          try {
-              const response = await fetch('https://ipapi.co/json/');
-              const data = await response.json();
-              return data.country_name || 'Unknown';
-          } catch (e) {
-              return 'Unknown';
-          }
-      }
-
-      async function incrementEntry() {
-          const device = getDeviceType();
-          const location = await getLocation();
-          const entryRef = db.ref('pages/projects/entries');
-          entryRef.transaction((current) => (current || 0) + 1);
-          const deviceRef = db.ref('pages/projects/devices/' + device);
-          deviceRef.transaction((current) => (current || 0) + 1);
-          const locationRef = db.ref('pages/projects/locations/' + location);
-          locationRef.transaction((current) => (current || 0) + 1);
-      }
-
       function incrementView() {
           const viewRef = db.ref('pages/projects/views');
           viewRef.transaction((currentViews) => (currentViews || 0) + 1);
+      }
+
+      function incrementEntry() {
+          const entryRef = db.ref('pages/projects/entries');
+          entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
+      }
+
+        // Track entry if not from internal referrer.
+        // Treat empty/no-referrer as external (some apps block referrers),
+        // but still ignore same-site navigations.
+        const referrer = (document.referrer || '').toLowerCase();
+        const isInternal = referrer && (referrer.includes(location.hostname) || referrer.includes('localhost'));
+        if (!isInternal) {
+          incrementEntry();
+        }
+
+      // Track view after 20 seconds
+      setTimeout(() => {
+          incrementView();
+      }, 20000);
+  </script>
 
   <script src="projects.js"></script>
 </body>

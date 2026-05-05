@@ -325,25 +325,6 @@
             gap: 0.75rem;
         }
 
-        .info-btn {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 6px;
-            transition: color 0.2s, background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .info-btn:hover {
-            color: var(--snow);
-            background: rgba(250,249,247,0.1);
-        }
-
         .card-color-bar {
             width: 4px;
             height: 42px;
@@ -462,116 +443,6 @@
             .dash-body   { padding: 1.5rem 1.25rem; }
             .live-badge  { display: none; }
         }
-
-        /* ── Stats Overlay ── */
-        .stats-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stats-overlay.hidden { display: none; }
-
-        .overlay-backdrop {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-        }
-
-        .overlay-content {
-            position: relative;
-            background: var(--raisin);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .overlay-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .overlay-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--snow);
-            margin: 0;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 6px;
-            transition: color 0.2s, background 0.2s;
-        }
-
-        .close-btn:hover {
-            color: var(--snow);
-            background: rgba(250,249,247,0.1);
-        }
-
-        .overlay-body {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            max-height: calc(80vh - 80px);
-            overflow-y: auto;
-        }
-
-        .stats-section h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--snow);
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .stats-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .stat-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            transition: border-color 0.2s;
-        }
-
-        .stat-item:hover { border-color: rgba(250,249,247,0.3); }
-
-        .stat-item-name {
-            font-size: 0.9rem;
-            color: var(--muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--snow);
-        }
     </style>
 </head>
 <body>
@@ -663,27 +534,6 @@
     </div>
 </div>
 
-<!-- Detailed Stats Overlay -->
-<div id="stats-overlay" class="stats-overlay hidden">
-    <div class="overlay-backdrop" onclick="hideDetailedStats()"></div>
-    <div class="overlay-content">
-        <div class="overlay-header">
-            <h2 id="overlay-title">تفاصيل الإحصائيات</h2>
-            <button class="close-btn" onclick="hideDetailedStats()">×</button>
-        </div>
-        <div class="overlay-body">
-            <div class="stats-section">
-                <h3>الأجهزة</h3>
-                <div id="devices-list" class="stats-list"></div>
-            </div>
-            <div class="stats-section">
-                <h3>المواقع</h3>
-                <div id="locations-list" class="stats-list"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
 // ── Firebase ──────────────────────────────────────────────────────────────────
 const firebaseConfig = {
@@ -701,14 +551,14 @@ const db = firebase.database();
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const COMICS = [
-    { id: 'hujra',    name: 'باب الحجرة',    emoji: '🚪', color: '#086fb6', type: 'comic' },
-    { id: 'samrqand', name: 'قضية سمرقند',   emoji: '⚖️', color: '#3bb9ab', type: 'comic' },
-    { id: 'ghailam',  name: 'القرد والغيلم', emoji: '🐒', color: '#f4c82b', type: 'comic' },
+    { id: 'hujra',    name: 'باب الحجرة',    emoji: '🚪', color: '#086fb6' },
+    { id: 'samrqand', name: 'قضية سمرقند',   emoji: '⚖️', color: '#3bb9ab' },
+    { id: 'ghailam',  name: 'القرد والغيلم', emoji: '🐒', color: '#f4c82b' },
 ];
 
 const PAGES = [
-    { id: 'main',     name: 'الصفحة الرئيسية', emoji: '🏠', color: '#086fb6', type: 'page' },
-    { id: 'projects', name: 'صفحة المشاريع',   emoji: '📁', color: '#3bb9ab', type: 'page' },
+    { id: 'main',     name: 'الصفحة الرئيسية', emoji: '🏠', color: '#086fb6' },
+    { id: 'projects', name: 'صفحة المشاريع',   emoji: '📁', color: '#3bb9ab' },
 ];
 
 // ── PIN ───────────────────────────────────────────────────────────────────────
@@ -836,100 +686,8 @@ function updateTotals() {
     document.getElementById('last-updated').textContent  =
         'آخر تحديث: ' + new Date().toLocaleTimeString('ar-SA');
 }
-function showDetailedStats(id, type) {
-    const overlay = document.getElementById('stats-overlay');
-    const title = document.getElementById('overlay-title');
-    const devicesList = document.getElementById('devices-list');
-    const locationsList = document.getElementById('locations-list');
 
-    // Set title
-    const item = [...PAGES, ...COMICS].find(i => i.id === id);
-    title.textContent = `تفاصيل ${item.name}`;
-
-    // Clear lists
-    devicesList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
-    locationsList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
-
-    // Show overlay
-    overlay.classList.remove('hidden');
-
-    // Fetch devices
-    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/devices`).once('value', snap => {
-        const devices = snap.val() || {};
-        devicesList.innerHTML = Object.entries(devices)
-            .sort(([,a], [,b]) => b - a)
-            .map(([device, count]) => `
-                <div class="stat-item">
-                    <div class="stat-item-name">${device}</div>
-                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
-                </div>
-            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
-    });
-
-    // Fetch locations
-    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/locations`).once('value', snap => {
-        const locations = snap.val() || {};
-        locationsList.innerHTML = Object.entries(locations)
-            .sort(([,a], [,b]) => b - a)
-            .map(([location, count]) => `
-                <div class="stat-item">
-                    <div class="stat-item-name">${location}</div>
-                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
-                </div>
-            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
-    });
-}
-
-function hideDetailedStats() {
-    document.getElementById('stats-overlay').classList.add('hidden');
-}
-function showDetailedStats(id, type) {
-    const overlay = document.getElementById('stats-overlay');
-    const title = document.getElementById('overlay-title');
-    const devicesList = document.getElementById('devices-list');
-    const locationsList = document.getElementById('locations-list');
-
-    // Set title
-    const item = [...PAGES, ...COMICS].find(i => i.id === id);
-    title.textContent = `تفاصيل ${item.name}`;
-
-    // Clear lists
-    devicesList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
-    locationsList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
-
-    // Show overlay
-    overlay.classList.remove('hidden');
-
-    // Fetch devices
-    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/devices`).once('value', snap => {
-        const devices = snap.val() || {};
-        devicesList.innerHTML = Object.entries(devices)
-            .sort(([,a], [,b]) => b - a)
-            .map(([device, count]) => `
-                <div class="stat-item">
-                    <div class="stat-item-name">${device}</div>
-                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
-                </div>
-            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
-    });
-
-    // Fetch locations
-    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/locations`).once('value', snap => {
-        const locations = snap.val() || {};
-        locationsList.innerHTML = Object.entries(locations)
-            .sort(([,a], [,b]) => b - a)
-            .map(([location, count]) => `
-                <div class="stat-item">
-                    <div class="stat-item-name">${location}</div>
-                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
-                </div>
-            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
-    });
-}
-
-function hideDetailedStats() {
-    document.getElementById('stats-overlay').classList.add('hidden');
-}
+function buildCard(comic, views, entries, maxVal) {
     const card = document.createElement('div');
     card.className   = 'comic-stat-card';
     card.dataset.views   = views   ?? 0;
@@ -950,13 +708,6 @@ function hideDetailedStats() {
                 <div class="card-title">${comic.name}</div>
                 <div class="card-id">${comic.id}</div>
             </div>
-            <button class="info-btn" onclick="showDetailedStats('${comic.id}', '${comic.type || 'comic'}')" title="تفاصيل إضافية">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-            </button>
         </div>
         <div class="card-body">
             <div>
@@ -995,13 +746,6 @@ function hideDetailedStats() {
     `;
     return card;
 }
-
-// Close overlay on Escape key
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !document.getElementById('stats-overlay').classList.contains('hidden')) {
-        hideDetailedStats();
-    }
-});
 </script>
 </body>
 </html>

@@ -144,49 +144,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (el) el.textContent = (snap.val() || 0).toLocaleString();
         });
     }
-    function getDeviceType() {
-        const ua = navigator.userAgent;
-        if (/android/i.test(ua)) return 'Android';
-        if (/iphone|ipad|ipod/i.test(ua)) return 'iOS';
-        if (/mac/i.test(ua)) return 'Mac';
-        if (/windows/i.test(ua)) return 'Windows';
-        if (/linux/i.test(ua)) return 'Linux';
-        return 'Other';
-    }
-
-    async function getLocation() {
-        try {
-            const response = await fetch('https://ipapi.co/json/');
-            const data = await response.json();
-            return data.country_name || 'Unknown';
-        } catch (e) {
-            return 'Unknown';
-        }
-    }
-
-    async function incrementView() {
+    function incrementView() {
         if (!db || hasCountedView) return;
         hasCountedView = true;
-        const device = getDeviceType();
-        const location = await getLocation();
         const viewRef = db.ref('comics/' + comicId + '/views');
         viewRef.transaction((currentViews) => (currentViews || 0) + 1);
-        const deviceRef = db.ref('comics/' + comicId + '/devices/' + device);
-        deviceRef.transaction((current) => (current || 0) + 1);
-        const locationRef = db.ref('comics/' + comicId + '/locations/' + location);
-        locationRef.transaction((current) => (current || 0) + 1);
     }
 
-    async function incrementEntry() {
+    function incrementEntry() {
         if (!db) return;
-        const device = getDeviceType();
-        const location = await getLocation();
         const entryRef = db.ref('comics/' + comicId + '/entries');
         entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
-        const deviceRef = db.ref('comics/' + comicId + '/devices/' + device);
-        deviceRef.transaction((current) => (current || 0) + 1);
-        const locationRef = db.ref('comics/' + comicId + '/locations/' + location);
-        locationRef.transaction((current) => (current || 0) + 1);
     }
 
     // Track the initial entry only if NOT coming from the internal /comics/ selection page
