@@ -574,6 +574,13 @@ document.querySelectorAll('.pin-digit').forEach((el, i, all) => {
         if (e.key === 'Backspace' && !el.value && i > 0) all[i - 1].focus();
     });
 });
+
+// Focus first input on card click (for mobile compatibility)
+document.querySelector('.login-card').addEventListener('click', () => {
+    document.getElementById('d1').focus();
+});
+
+// Try to focus on load (may not work on mobile)
 document.getElementById('d1').focus();
 
 function checkPassword() {
