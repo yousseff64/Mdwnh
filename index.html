@@ -15,6 +15,10 @@
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Circle Logo.png" type="image/png">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 
 <body>
@@ -495,6 +499,46 @@
 
     <!-- Lenis Smooth Scroll -->
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Firebase Analytics for Main Page -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyATzvkgxTYVKZcOEeLjkJpupw56TLeIjXU",
+            authDomain: "mdwnhviewer.firebaseapp.com",
+            databaseURL: "https://mdwnhviewer-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "mdwnhviewer",
+            storageBucket: "mdwnhviewer.firebasestorage.app",
+            messagingSenderId: "384065085258",
+            appId: "1:384065085258:web:35911a6e9b28015657ebb3",
+            measurementId: "G-Z2GTGYBSMS"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function incrementView() {
+            const viewRef = db.ref('pages/main/views');
+            viewRef.transaction((currentViews) => (currentViews || 0) + 1);
+        }
+
+        function incrementEntry() {
+            const entryRef = db.ref('pages/main/entries');
+            entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
+        }
+
+        // Track entry if not from internal referrer
+        const referrer = document.referrer.toLowerCase();
+        const isInternal = referrer.includes('mdwn.studio') || referrer.includes('localhost') || referrer === '';
+        if (!isInternal) {
+            incrementEntry();
+        }
+
+        // Track view after 20 seconds
+        setTimeout(() => {
+            incrementView();
+        }, 20000);
+    </script>
+
     <script src="script.js"></script>
 </body>
 

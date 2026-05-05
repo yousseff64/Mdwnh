@@ -229,9 +229,10 @@
         /* ── Summary Row ── */
         .summary-row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.25rem;
             margin-bottom: 2.5rem;
+            justify-items: center;
         }
 
         .summary-card {
@@ -243,6 +244,8 @@
             align-items: center;
             gap: 1rem;
             transition: border-color 0.3s;
+            width: 100%;
+            max-width: 420px;
         }
 
         .summary-card:hover { border-color: rgba(250,249,247,0.18); }
@@ -293,8 +296,10 @@
         /* ── Comic Cards ── */
         .comics-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.25rem;
+            justify-content: center;
+            justify-items: center;
         }
 
         .comic-stat-card {
@@ -303,6 +308,8 @@
             border-radius: 20px;
             overflow: hidden;
             transition: border-color 0.3s, transform 0.3s;
+            width: 100%;
+            max-width: 520px;
         }
 
         .comic-stat-card:hover {
@@ -515,6 +522,10 @@
             </div>
         </div>
 
+        <!-- Per-page -->
+        <div class="section-title">أداء الصفحات</div>
+        <div class="comics-grid" id="pages-grid"></div>
+
         <!-- Per-comic -->
         <div class="section-title">أداء كل قصة</div>
         <div class="comics-grid" id="comics-grid"></div>
@@ -543,6 +554,11 @@ const COMICS = [
     { id: 'hujra',    name: 'باب الحجرة',    emoji: '🚪', color: '#086fb6' },
     { id: 'samrqand', name: 'قضية سمرقند',   emoji: '⚖️', color: '#3bb9ab' },
     { id: 'ghailam',  name: 'القرد والغيلم', emoji: '🐒', color: '#f4c82b' },
+];
+
+const PAGES = [
+    { id: 'main',     name: 'الصفحة الرئيسية', emoji: '🏠', color: '#086fb6' },
+    { id: 'projects', name: 'صفحة المشاريع',   emoji: '📁', color: '#3bb9ab' },
 ];
 
 // ── PIN ───────────────────────────────────────────────────────────────────────
@@ -584,12 +600,47 @@ function logout() {
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 function loadData() {
+    const pagesGrid = document.getElementById('pages-grid');
+    pagesGrid.innerHTML = '';
+    PAGES.forEach(p => {
+        const card = buildCard(p, null, null, 1);
+        card.id = 'page-card-' + p.id;
+        pagesGrid.appendChild(card);
+    });
+
     const grid = document.getElementById('comics-grid');
     grid.innerHTML = '';
     COMICS.forEach(c => {
         const card = buildCard(c, null, null, 1);
         card.id = 'card-' + c.id;
         grid.appendChild(card);
+    });
+
+    PAGES.forEach(page => {
+        db.ref('pages/' + page.id).on('value', snap => {
+            const data    = snap.val() || {};
+            const views   = data.views   || 0;
+            const entries = data.entries || 0;
+
+            // Get max across all known values for bar scale
+            let maxVal = 1;
+            PAGES.forEach(p => {
+                const el = document.getElementById('page-card-' + p.id);
+                if (el) {
+                    maxVal = Math.max(maxVal,
+                        parseInt(el.dataset.views   || 0),
+                        parseInt(el.dataset.entries || 0));
+                }
+            });
+            maxVal = Math.max(maxVal, views, entries);
+
+            const newCard = buildCard(page, views, entries, maxVal);
+            newCard.id = 'page-card-' + page.id;
+            document.getElementById('page-card-' + page.id)?.replaceWith(newCard);
+
+            // Update totals
+            updateTotals();
+        });
     });
 
     COMICS.forEach(comic => {
@@ -615,17 +666,25 @@ function loadData() {
             document.getElementById('card-' + comic.id)?.replaceWith(newCard);
 
             // Update totals
-            let tv = 0, te = 0;
-            COMICS.forEach(c => {
-                const el = document.getElementById('card-' + c.id);
-                if (el) { tv += parseInt(el.dataset.views||0); te += parseInt(el.dataset.entries||0); }
-            });
-            document.getElementById('total-views').textContent   = tv.toLocaleString('ar');
-            document.getElementById('total-entries').textContent = te.toLocaleString('ar');
-            document.getElementById('last-updated').textContent  =
-                'آخر تحديث: ' + new Date().toLocaleTimeString('ar-SA');
+            updateTotals();
         });
     });
+}
+
+function updateTotals() {
+    let tv = 0, te = 0;
+    PAGES.forEach(p => {
+        const el = document.getElementById('page-card-' + p.id);
+        if (el) { tv += parseInt(el.dataset.views||0); te += parseInt(el.dataset.entries||0); }
+    });
+    COMICS.forEach(c => {
+        const el = document.getElementById('card-' + c.id);
+        if (el) { tv += parseInt(el.dataset.views||0); te += parseInt(el.dataset.entries||0); }
+    });
+    document.getElementById('total-views').textContent   = tv.toLocaleString('ar');
+    document.getElementById('total-entries').textContent = te.toLocaleString('ar');
+    document.getElementById('last-updated').textContent  =
+        'آخر تحديث: ' + new Date().toLocaleTimeString('ar-SA');
 }
 
 function buildCard(comic, views, entries, maxVal) {
