@@ -323,7 +323,25 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            position: relative;
+        }
+
+        .info-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-btn:hover {
+            color: var(--snow);
+            background: rgba(250,249,247,0.1);
         }
 
         .card-color-bar {
@@ -348,26 +366,6 @@
             margin-top: 2px;
             font-weight: 400;
         }
-
-        .info-btn {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.5rem;
-            color: var(--muted);
-            cursor: pointer;
-            transition: border-color 0.2s, color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .info-btn:hover { border-color: var(--blue); color: var(--blue); }
-
-        .info-btn svg { width: 14px; height: 14px; }
 
         .card-body {
             padding: 1.25rem 1.5rem;
@@ -457,38 +455,48 @@
             border-top: 1px solid var(--border);
         }
 
-        /* ── Modal ── */
-        .modal-overlay {
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .summary-row, .comics-grid { grid-template-columns: 1fr; }
+            .dash-header { padding: 1rem 1.25rem; }
+            .dash-body   { padding: 1.5rem 1.25rem; }
+            .live-badge  { display: none; }
+        }
+
+        /* ── Stats Overlay ── */
+        .stats-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
         }
 
-        .modal-overlay:not(.hidden) {
-            opacity: 1;
-            visibility: visible;
+        .stats-overlay.hidden { display: none; }
+
+        .overlay-backdrop {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
         }
 
-        .modal-content {
+        .overlay-content {
+            position: relative;
             background: var(--raisin);
             border: 1px solid var(--border);
             border-radius: 20px;
-            width: 90%;
             max-width: 600px;
+            width: 90%;
             max-height: 80vh;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
-        .modal-header {
+        .overlay-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -496,97 +504,73 @@
             justify-content: space-between;
         }
 
-        .modal-header h2 {
-            margin: 0;
+        .overlay-header h2 {
             font-size: 1.25rem;
+            font-weight: 600;
             color: var(--snow);
+            margin: 0;
         }
 
-        .modal-close {
+        .close-btn {
             background: none;
             border: none;
             color: var(--muted);
-            font-size: 2rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0;
-            width: 2rem;
-            height: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s;
+            padding: 0.25rem;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
         }
 
-        .modal-close:hover { background: var(--surface); }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .stats-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tab-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .tab-btn.active {
-            background: var(--blue);
-            border-color: var(--blue);
+        .close-btn:hover {
             color: var(--snow);
+            background: rgba(250,249,247,0.1);
         }
 
-        .tab-content {
-            display: none;
+        .overlay-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-height: calc(80vh - 80px);
+            overflow-y: auto;
         }
 
-        .tab-content.active {
-            display: block;
+        .stats-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--snow);
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
         .stats-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 0.75rem;
         }
 
         .stat-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem;
             background: var(--surface);
-            border-radius: 12px;
             border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: border-color 0.2s;
         }
 
-        .stat-item-label {
-            font-weight: 500;
-            color: var(--snow);
+        .stat-item:hover { border-color: rgba(250,249,247,0.3); }
+
+        .stat-item-name {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
         }
 
         .stat-item-value {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--blue);
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 900px) {
-            .summary-row, .comics-grid { grid-template-columns: 1fr; }
-            .dash-header { padding: 1rem 1.25rem; }
-            .dash-body   { padding: 1.5rem 1.25rem; }
-            .live-badge  { display: none; }
+            color: var(--snow);
         }
     </style>
 </head>
@@ -679,23 +663,22 @@
     </div>
 </div>
 
-<!-- ──────────── DETAILS MODAL ──────────── -->
-<div id="details-modal" class="modal-overlay hidden">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modal-title">تفاصيل</h2>
-            <button class="modal-close" onclick="closeDetailsModal()">×</button>
+<!-- Detailed Stats Overlay -->
+<div id="stats-overlay" class="stats-overlay hidden">
+    <div class="overlay-backdrop" onclick="hideDetailedStats()"></div>
+    <div class="overlay-content">
+        <div class="overlay-header">
+            <h2 id="overlay-title">تفاصيل الإحصائيات</h2>
+            <button class="close-btn" onclick="hideDetailedStats()">×</button>
         </div>
-        <div class="modal-body">
-            <div class="stats-tabs">
-                <button class="tab-btn active" onclick="switchTab('devices')">الجهاز</button>
-                <button class="tab-btn" onclick="switchTab('locations')">الموقع</button>
+        <div class="overlay-body">
+            <div class="stats-section">
+                <h3>الأجهزة</h3>
+                <div id="devices-list" class="stats-list"></div>
             </div>
-            <div id="devices-tab" class="tab-content active">
-                <div class="stats-list" id="devices-list"></div>
-            </div>
-            <div id="locations-tab" class="tab-content">
-                <div class="stats-list" id="locations-list"></div>
+            <div class="stats-section">
+                <h3>المواقع</h3>
+                <div id="locations-list" class="stats-list"></div>
             </div>
         </div>
     </div>
@@ -718,14 +701,14 @@ const db = firebase.database();
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const COMICS = [
-    { id: 'hujra',    name: 'باب الحجرة',    emoji: '🚪', color: '#086fb6' },
-    { id: 'samrqand', name: 'قضية سمرقند',   emoji: '⚖️', color: '#3bb9ab' },
-    { id: 'ghailam',  name: 'القرد والغيلم', emoji: '🐒', color: '#f4c82b' },
+    { id: 'hujra',    name: 'باب الحجرة',    emoji: '🚪', color: '#086fb6', type: 'comic' },
+    { id: 'samrqand', name: 'قضية سمرقند',   emoji: '⚖️', color: '#3bb9ab', type: 'comic' },
+    { id: 'ghailam',  name: 'القرد والغيلم', emoji: '🐒', color: '#f4c82b', type: 'comic' },
 ];
 
 const PAGES = [
-    { id: 'main',     name: 'الصفحة الرئيسية', emoji: '🏠', color: '#086fb6' },
-    { id: 'projects', name: 'صفحة المشاريع',   emoji: '📁', color: '#3bb9ab' },
+    { id: 'main',     name: 'الصفحة الرئيسية', emoji: '🏠', color: '#086fb6', type: 'page' },
+    { id: 'projects', name: 'صفحة المشاريع',   emoji: '📁', color: '#3bb9ab', type: 'page' },
 ];
 
 // ── PIN ───────────────────────────────────────────────────────────────────────
@@ -853,8 +836,100 @@ function updateTotals() {
     document.getElementById('last-updated').textContent  =
         'آخر تحديث: ' + new Date().toLocaleTimeString('ar-SA');
 }
+function showDetailedStats(id, type) {
+    const overlay = document.getElementById('stats-overlay');
+    const title = document.getElementById('overlay-title');
+    const devicesList = document.getElementById('devices-list');
+    const locationsList = document.getElementById('locations-list');
 
-function buildCard(comic, views, entries, maxVal) {
+    // Set title
+    const item = [...PAGES, ...COMICS].find(i => i.id === id);
+    title.textContent = `تفاصيل ${item.name}`;
+
+    // Clear lists
+    devicesList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
+    locationsList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
+
+    // Show overlay
+    overlay.classList.remove('hidden');
+
+    // Fetch devices
+    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/devices`).once('value', snap => {
+        const devices = snap.val() || {};
+        devicesList.innerHTML = Object.entries(devices)
+            .sort(([,a], [,b]) => b - a)
+            .map(([device, count]) => `
+                <div class="stat-item">
+                    <div class="stat-item-name">${device}</div>
+                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
+                </div>
+            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
+    });
+
+    // Fetch locations
+    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/locations`).once('value', snap => {
+        const locations = snap.val() || {};
+        locationsList.innerHTML = Object.entries(locations)
+            .sort(([,a], [,b]) => b - a)
+            .map(([location, count]) => `
+                <div class="stat-item">
+                    <div class="stat-item-name">${location}</div>
+                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
+                </div>
+            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
+    });
+}
+
+function hideDetailedStats() {
+    document.getElementById('stats-overlay').classList.add('hidden');
+}
+function showDetailedStats(id, type) {
+    const overlay = document.getElementById('stats-overlay');
+    const title = document.getElementById('overlay-title');
+    const devicesList = document.getElementById('devices-list');
+    const locationsList = document.getElementById('locations-list');
+
+    // Set title
+    const item = [...PAGES, ...COMICS].find(i => i.id === id);
+    title.textContent = `تفاصيل ${item.name}`;
+
+    // Clear lists
+    devicesList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
+    locationsList.innerHTML = '<div class="stat-item"><div class="stat-item-name">جاري التحميل...</div></div>';
+
+    // Show overlay
+    overlay.classList.remove('hidden');
+
+    // Fetch devices
+    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/devices`).once('value', snap => {
+        const devices = snap.val() || {};
+        devicesList.innerHTML = Object.entries(devices)
+            .sort(([,a], [,b]) => b - a)
+            .map(([device, count]) => `
+                <div class="stat-item">
+                    <div class="stat-item-name">${device}</div>
+                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
+                </div>
+            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
+    });
+
+    // Fetch locations
+    db.ref(`${type === 'page' ? 'pages' : 'comics'}/${id}/locations`).once('value', snap => {
+        const locations = snap.val() || {};
+        locationsList.innerHTML = Object.entries(locations)
+            .sort(([,a], [,b]) => b - a)
+            .map(([location, count]) => `
+                <div class="stat-item">
+                    <div class="stat-item-name">${location}</div>
+                    <div class="stat-item-value">${count.toLocaleString('ar')}</div>
+                </div>
+            `).join('') || '<div class="stat-item"><div class="stat-item-name">لا توجد بيانات</div></div>';
+    });
+}
+
+function hideDetailedStats() {
+    document.getElementById('stats-overlay').classList.add('hidden');
+}
     const card = document.createElement('div');
     card.className   = 'comic-stat-card';
     card.dataset.views   = views   ?? 0;
@@ -875,7 +950,7 @@ function buildCard(comic, views, entries, maxVal) {
                 <div class="card-title">${comic.name}</div>
                 <div class="card-id">${comic.id}</div>
             </div>
-            <button class="info-btn" onclick="openDetailsModal('${comic.id}', '${comic.name}', '${['main', 'projects'].includes(comic.id) ? 'page' : 'comic'}')" title="تفاصيل إضافية">
+            <button class="info-btn" onclick="showDetailedStats('${comic.id}', '${comic.type || 'comic'}')" title="تفاصيل إضافية">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
@@ -921,82 +996,11 @@ function buildCard(comic, views, entries, maxVal) {
     return card;
 }
 
-// ── Modal Functions ───────────────────────────────────────────────────────────
-let currentModalData = null;
-
-function openDetailsModal(id, name, type) {
-    const modal = document.getElementById('details-modal');
-    const title = document.getElementById('modal-title');
-    title.textContent = `تفاصيل ${name}`;
-
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-
-    // Load data
-    const path = type === 'comic' ? `comics/${id}` : `pages/${id}`;
-    loadModalData(path);
-}
-
-function closeDetailsModal() {
-    const modal = document.getElementById('details-modal');
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-}
-
-function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
-    document.getElementById(`${tab}-tab`).classList.add('active');
-}
-
-function loadModalData(path) {
-    const devicesList = document.getElementById('devices-list');
-    const locationsList = document.getElementById('locations-list');
-
-    devicesList.innerHTML = '<div class="stat-item"><span class="stat-item-label">جاري التحميل...</span></div>';
-    locationsList.innerHTML = '<div class="stat-item"><span class="stat-item-label">جاري التحميل...</span></div>';
-
-    // Load devices
-    db.ref(`${path}/devices`).once('value', snap => {
-        const devices = snap.val() || {};
-        const sortedDevices = Object.entries(devices).sort((a, b) => b[1] - a[1]);
-        devicesList.innerHTML = sortedDevices.map(([device, count]) => `
-            <div class="stat-item">
-                <span class="stat-item-label">${getDeviceLabel(device)}</span>
-                <span class="stat-item-value">${count.toLocaleString('ar')}</span>
-            </div>
-        `).join('') || '<div class="stat-item"><span class="stat-item-label">لا توجد بيانات</span></div>';
-    });
-
-    // Load locations
-    db.ref(`${path}/locations`).once('value', snap => {
-        const locations = snap.val() || {};
-        const sortedLocations = Object.entries(locations).sort((a, b) => b[1] - a[1]);
-        locationsList.innerHTML = sortedLocations.map(([location, count]) => `
-            <div class="stat-item">
-                <span class="stat-item-label">${location}</span>
-                <span class="stat-item-value">${count.toLocaleString('ar')}</span>
-            </div>
-        `).join('') || '<div class="stat-item"><span class="stat-item-label">لا توجد بيانات</span></div>';
-    });
-}
-
-function getDeviceLabel(device) {
-    const labels = {
-        'mac': 'Mac',
-        'windows': 'Windows',
-        'android': 'Android',
-        'ios': 'iOS',
-        'other': 'أخرى'
-    };
-    return labels[device] || device;
-}
-
-// Close modal on overlay click
-document.getElementById('details-modal').addEventListener('click', e => {
-    if (e.target.id === 'details-modal') closeDetailsModal();
+// Close overlay on Escape key
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !document.getElementById('stats-overlay').classList.contains('hidden')) {
+        hideDetailedStats();
+    }
 });
 </script>
 </body>

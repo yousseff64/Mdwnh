@@ -144,66 +144,45 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (el) el.textContent = (snap.val() || 0).toLocaleString();
         });
     }
-
-    // ── Device & Location Detection ──────────────────────────────────────────
-    function detectDevice() {
-        const ua = navigator.userAgent.toLowerCase();
-        if (ua.includes('android')) return 'android';
-        if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) return 'ios';
-        if (ua.includes('mac')) return 'mac';
-        if (ua.includes('windows')) return 'windows';
-        return 'other';
+    function getDeviceType() {
+        const ua = navigator.userAgent;
+        if (/android/i.test(ua)) return 'Android';
+        if (/iphone|ipad|ipod/i.test(ua)) return 'iOS';
+        if (/mac/i.test(ua)) return 'Mac';
+        if (/windows/i.test(ua)) return 'Windows';
+        if (/linux/i.test(ua)) return 'Linux';
+        return 'Other';
     }
 
-    async function detectLocation() {
+    async function getLocation() {
         try {
             const response = await fetch('https://ipapi.co/json/');
             const data = await response.json();
             return data.country_name || 'Unknown';
         } catch (e) {
-            console.error('Location detection failed:', e);
             return 'Unknown';
         }
     }
 
-    // Track device and location immediately for all visitors
-    (async () => {
-        const device = detectDevice();
-        const location = await detectLocation();
-        db.ref('comics/' + comicId + '/devices/' + device).transaction((current) => (current || 0) + 1);
-        db.ref('comics/' + comicId + '/locations/' + location).transaction((current) => (current || 0) + 1);
-    })();
-
-    function incrementView() {
+    async function incrementView() {
         if (!db || hasCountedView) return;
         hasCountedView = true;
+        const device = getDeviceType();
+        const location = await getLocation();
         const viewRef = db.ref('comics/' + comicId + '/views');
         viewRef.transaction((currentViews) => (currentViews || 0) + 1);
-    }
-
-    async function incrementEntry() {
-        if (!db) return;
-        const entryRef = db.ref('comics/' + comicId + '/entries');
-        entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
-
-        // Also track device and location for entries
-        const device = detectDevice();
-        const location = await detectLocation();
         const deviceRef = db.ref('comics/' + comicId + '/devices/' + device);
         deviceRef.transaction((current) => (current || 0) + 1);
         const locationRef = db.ref('comics/' + comicId + '/locations/' + location);
         locationRef.transaction((current) => (current || 0) + 1);
     }
 
-    async function incrementViewWithDetails() {
-        if (!db || hasCountedView) return;
-        hasCountedView = true;
-        const viewRef = db.ref('comics/' + comicId + '/views');
-        viewRef.transaction((currentViews) => (currentViews || 0) + 1);
-
-        // Also track device and location for views
-        const device = detectDevice();
-        const location = await detectLocation();
+    async function incrementEntry() {
+        if (!db) return;
+        const device = getDeviceType();
+        const location = await getLocation();
+        const entryRef = db.ref('comics/' + comicId + '/entries');
+        entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
         const deviceRef = db.ref('comics/' + comicId + '/devices/' + device);
         deviceRef.transaction((current) => (current || 0) + 1);
         const locationRef = db.ref('comics/' + comicId + '/locations/' + location);
@@ -222,7 +201,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Track a "view" only after 20 seconds of being on the page
     setTimeout(() => {
-        incrementViewWithDetails();
+        incrementView();
     }, 20000);
 
     // ── Splash messages ──────────────────────────────────────────────────────
