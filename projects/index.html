@@ -302,12 +302,14 @@
           entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
       }
 
-      // Track entry if not from internal referrer
-      const referrer = document.referrer.toLowerCase();
-      const isInternal = referrer.includes('mdwn.studio') || referrer.includes('localhost') || referrer === '';
-      if (!isInternal) {
+        // Track entry if not from internal referrer.
+        // Treat empty/no-referrer as external (some apps block referrers),
+        // but still ignore same-site navigations.
+        const referrer = (document.referrer || '').toLowerCase();
+        const isInternal = referrer && (referrer.includes(location.hostname) || referrer.includes('localhost'));
+        if (!isInternal) {
           incrementEntry();
-      }
+        }
 
       // Track view after 20 seconds
       setTimeout(() => {
