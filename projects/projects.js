@@ -8,130 +8,188 @@ const BANNER_BASE = '../Our Projects/Project Banners/';
 
 const PROJECTS = [
   {
+    id: 'ghayam',
+    name: 'غمام',
+    banner: 'انيميشن فيلم غمام.png',
+    tags: ['انيميشن'],
+    link: 'https://drive.google.com/file/d/11aCcpOXRfU7hC7aGPmASY5IUqV_V31ix/view?usp=share_link',
+    rank: 'best'
+  },
+  {
+    id: 'mentad',
+    name: 'منطاد',
+    banner: 'منطاد.PNG',
+    tags: ['انيميشن', 'كتابة_محتوى', 'اداء_صوتي'],
+    link: 'https://drive.google.com/file/d/1obX-1MrAnyfPOpR54tIq2kaxiPZHTBFT/view?usp=drive_link',
+    rank: 'normal'
+  },
+  {
+    id: 'layali_ramadaniya',
+    name: 'ليالي رمضانية',
+    banner: 'ليالي رمضانية.png',
+    tags: ['تصوير', 'مونتاج', 'تقرير'],
+    link: 'https://drive.google.com/file/d/1feyokSoRAiao3HQPIp9Q93P7x4jLASDq/view?usp=drive_link',
+    rank: 'best'
+  },
+  {
+    id: 'salam_podcast',
+    name: 'بودكاست سلام مكنون',
+    banner: 'بودكاست سلام مكنون.png',
+    tags: ['مونتاج', 'تصميم'],
+    link: 'https://youtu.be/NBYt33ZIAwQ?si=xXadp3IISJoOcpdk',
+    rank: 'noteworthy'
+  },
+  {
+    id: 'reading_club',
+    name: 'نادي القراءة',
+    banner: 'نادي القراءة.PNG',
+    tags: ['موشن', 'اداء_صوتي', 'كتابة_محتوى'],
+    link: 'https://drive.google.com/file/d/1YZI_se_uPn8_m_AnDtosoUvJD69F9K40/view?usp=drive_link',
+    rank: 'normal'
+  },
+  {
+    id: 'jazeel',
+    name: 'جزيل',
+    banner: 'جزيل.PNG',
+    tags: ['موشن', 'كتابة_محتوى', 'اداء_صوتي'],
+    link: 'https://www.tiktok.com/@jazeel_sa/video/7555792389336632594?is_from_webapp=1&sender_device=pc',
+    rank: 'noteworthy'
+  },
+  {
+    id: 'makashdana_video',
+    name: 'مشكدانة',
+    banner: 'مكشدانة.PNG',
+    tags: ['مونتاج'],
+    link: 'https://www.tiktok.com/@meskdinh/video/7612734451545607444?is_from_webapp=1&sender_device=pc',
+    rank: 'noteworthy'
+  },
+  {
     id: 'makashdana',
-    name: 'مكشدانة',
+    name: 'هوية مشكدانة',
     banner: 'هوية بصرية مكشدانة.png',
     tags: ['تصميم', 'هوية'],
-    link: 'https://drive.google.com/file/d/1egewenQQLqvh6bkPpvD4IytI8ND5RRpL/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1egewenQQLqvh6bkPpvD4IytI8ND5RRpL/view?usp=share_link',
+    rank: 'best'
   },
   {
     id: 'salammaknoon',
-    name: 'بودكاست سلام مكنون',
+    name: 'هوية سلام مكنون',
     banner: 'هوية بصرية سلام مكنون.png',
     tags: ['تصميم', 'هوية'],
-    link: 'https://drive.google.com/file/d/1MLPC2jAs-A8wRxpmds0r2B_0nVpk8pCx/view?usp=sharing'
+    link: 'https://drive.google.com/file/d/1MLPC2jAs-A8wRxpmds0r2B_0nVpk8pCx/view?usp=sharing',
+    rank: 'normal'
   },
   {
     id: 'daralez',
     name: 'دار العز',
     banner: 'هوية بصرية دار العز.png',
     tags: ['تصميم', 'هوية'],
-    link: 'https://drive.google.com/file/d/1W8flJbTCrACtWXVwTV7xBWK_Ek9AXT5O/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1W8flJbTCrACtWXVwTV7xBWK_Ek9AXT5O/view?usp=share_link',
+    rank: 'best'
   },
   {
     id: 'yaghilam-photo',
     name: 'يا غلام',
     banner: 'تصوير يا غلام.png',
     tags: ['تصوير'],
-    link: 'https://www.youtube.com/watch?si=3M34xAVU513aswp3&v=h9WQT7gMP6E&feature=youtu.be'
+    link: 'https://www.youtube.com/watch?si=3M34xAVU513aswp3&v=h9WQT7gMP6E&feature=youtu.be',
+    rank: 'noteworthy'
   },
   {
     id: 'samarqand',
     name: 'قضية سمرقند',
     banner: 'رسم سمرقند.png',
     tags: ['رسم'],
-    link: 'https://mdwn.studio/Samrqand/'
+    link: 'https://mdwn.studio/Samrqand/',
+    rank: 'noteworthy'
   },
   {
     id: 'maallah-motion',
     name: 'مع الله (موشن)',
     banner: 'موشن مع الله.png',
     tags: ['موشن', 'مونتاج'],
-    link: 'https://drive.google.com/file/d/1IEyk8RVUqM660I4-37H8c-nbn8lppEyx/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1IEyk8RVUqM660I4-37H8c-nbn8lppEyx/view?usp=share_link',
+    rank: 'noteworthy'
   },
   {
     id: 'asma',
     name: 'اسمى',
     banner: 'تقرير اسمى.png',
     tags: ['موشن', 'مونتاج', 'تقرير'],
-    link: 'https://drive.google.com/file/d/1eVx9LMkE6VpkPiiNnb9w_3nKdYOhxt-y/view?usp=share_link'
-  },
-  {
-    id: 'milaf',
-    name: 'ميلاف',
-    banner: 'تقرير ميلاف.png',
-    tags: ['موشن', 'مونتاج'],
-    link: 'https://drive.google.com/file/d/1htEUt3tei4vWJweCZmdbMMn-zayVnGwO/view?usp=sharing'
+    link: 'https://drive.google.com/file/d/1eVx9LMkE6VpkPiiNnb9w_3nKdYOhxt-y/view?usp=share_link',
+    rank: 'normal'
   },
   {
     id: 'bab',
     name: 'باب الحجرة',
     banner: 'رسم باب الحجرة.png',
     tags: ['رسم'],
-    link: 'https://mdwn.studio/Hujra/'
+    link: 'https://mdwn.studio/Hujra/',
+    rank: 'noteworthy'
   },
   {
     id: 'harason',
     name: 'الحراساثون للدراسات الأمنية',
     banner: 'تصوير الحراساثون.png',
     tags: ['تصوير', 'مونتاج', 'تقرير'],
-    link: 'https://drive.google.com/file/d/1AKPFm-08Zm8y3W_brVrSOJwtQ1pyCnRz/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1AKPFm-08Zm8y3W_brVrSOJwtQ1pyCnRz/view?usp=share_link',
+    rank: 'noteworthy'
   },
   {
     id: 'risha',
     name: 'نادي الاعتماد الرياضي',
     banner: 'تصوير ريشة - نادي الاعتماد الرياضي.png',
     tags: ['تصوير', 'مونتاج', 'تقرير'],
-    link: 'https://drive.google.com/file/d/1xghsfy_6WF0QdQ03970-lxO9ftH2FCeC/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1xghsfy_6WF0QdQ03970-lxO9ftH2FCeC/view?usp=share_link',
+    rank: 'normal'
   },
   {
     id: 'maallah-anim',
     name: 'مع الله (انيميشن)',
     banner: 'انيميشن مع الله.png',
     tags: ['انيميشن'],
-    link: 'https://drive.google.com/file/d/17cnXj6XOPxtrlFWOdOi3hDfbyx_vD65B/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/17cnXj6XOPxtrlFWOdOi3hDfbyx_vD65B/view?usp=share_link',
+    rank: 'noteworthy'
   },
   {
     id: 'dalilak',
     name: 'مرشدك لأفضل التطبيقات القرآنية',
     banner: 'تصميم دليلك.png',
     tags: ['تصميم'],
-    link: 'https://drive.google.com/file/d/1IqkTdp959MSKbWw_6yIHODAs3YpHVLy9/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1IqkTdp959MSKbWw_6yIHODAs3YpHVLy9/view?usp=share_link',
+    rank: 'normal'
   },
   {
     id: 'ananas',
     name: 'أناناس',
     banner: ' مونتاج- موشن اناناس.png',
     tags: ['موشن'],
-    link: 'https://drive.google.com/file/d/1xiXUISFp6O69Q-e8D02kaH-3koqdbtiZ/view?usp=share_link'
-  },
-  {
-    id: 'ghayam',
-    name: 'غمام',
-    banner: 'انيميشن فيلم غمام.png',
-    tags: ['انيميشن'],
-    link: 'https://drive.google.com/file/d/11aCcpOXRfU7hC7aGPmASY5IUqV_V31ix/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1xiXUISFp6O69Q-e8D02kaH-3koqdbtiZ/view?usp=share_link',
+    rank: 'noteworthy'
   },
   {
     id: 'mashaer-yateem',
     name: 'مشاعر يتيم',
     banner: 'انيميشن مشاعر يتيم.png',
     tags: ['رسم'],
-    link: 'https://www.youtube.com/watch?si=Q-ch3v0bzWUfBrHb&v=LV0ljvjeYA8&feature=youtu.be'
+    link: 'https://www.youtube.com/watch?si=Q-ch3v0bzWUfBrHb&v=LV0ljvjeYA8&feature=youtu.be',
+    rank: 'best'
   },
   {
     id: 'maanabi-motion',
     name: 'مع النبي',
     banner: 'موشن مع النبي.png',
     tags: ['موشن'],
-    link: 'https://drive.google.com/file/d/1mf1NzPyyJbGfWtSOLEneZKJHIOZKvnGj/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1mf1NzPyyJbGfWtSOLEneZKJHIOZKvnGj/view?usp=share_link',
+    rank: 'noteworthy'
   },
   {
     id: 'maanabi-edit',
     name: 'مع النبي',
     banner: 'مونتاج مع النبي.png',
     tags: ['مونتاج'],
-    link: 'https://drive.google.com/file/d/1NFOyBJreTm_yQOFwlCXzRAOcshID3h-L/view?usp=share_link'
+    link: 'https://drive.google.com/file/d/1NFOyBJreTm_yQOFwlCXzRAOcshID3h-L/view?usp=share_link',
+    rank: 'noteworthy'
   }
 ];
 
@@ -376,21 +434,25 @@ function prepareResults() {
     p.tags.some(t => selectedTags.has(t))
   );
 
+  // Separate by rank
+  const best = matched.filter(p => p.rank === 'best').sort(() => Math.random() - 0.5);
+  const noteworthy = matched.filter(p => p.rank === 'noteworthy').sort(() => Math.random() - 0.5);
+  const normal = matched.filter(p => p.rank === 'normal' || !p.rank).sort(() => Math.random() - 0.5);
+
+  // Prioritize Best -> Noteworthy -> Normal
+  let combined = [...best, ...noteworthy, ...normal];
+
   // Deduplicate by name (pick first occurrence)
   const seen = new Set();
-  const unique = matched.filter(p => {
+  const unique = combined.filter(p => {
     if (seen.has(p.name)) return false;
     seen.add(p.name);
     return true;
   });
 
-  // Shuffle and pick 3
-  const shuffled = unique.sort(() => Math.random() - 0.5);
-  const picks = shuffled.slice(0, 3);
-
-  // Fallback: if nothing matched, pick 3 random
-  picksForDisplay = picks.length > 0
-    ? picks
+  // Pick top 3
+  picksForDisplay = unique.length > 0
+    ? unique.slice(0, 3)
     : PROJECTS.sort(() => Math.random() - 0.5).slice(0, 3);
 }
 
@@ -407,15 +469,19 @@ function buildCards(projects) {
   projects.forEach(proj => {
     const card = document.createElement('div');
     card.className = 'project-card';
+    if (proj.rank === 'best') card.classList.add('best');
     card.dataset.id   = proj.id;
     card.dataset.name = proj.name;
 
     const bannerSrc  = BANNER_BASE + proj.banner;
-    const tagLabels  = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', كوميكس:'كوميكس', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم' };
+    const tagLabels  = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', كوميكس:'كوميكس', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم', اداء_صوتي:'أداء صوتي', كتابة_محتوى:'كتابة محتوى' };
     const tagsHTML   = proj.tags.map(t => `<span class="card-tag tag-${t}">${tagLabels[t] || t}</span>`).join('');
+
+    const stickerHTML = proj.rank === 'best' ? `<img src="${BANNER_BASE}sticker.png" class="best-badge" alt="Best Project">` : '';
 
     card.innerHTML = `
       <div class="card-banner-wrap">
+        ${stickerHTML}
         <img class="card-banner"
              src="${bannerSrc}"
              alt="${proj.name}"
@@ -616,15 +682,28 @@ function initBrowse() {
 
 function renderBrowseGrid() {
   allProjectsGrid.innerHTML = '';
-  PROJECTS.forEach(proj => {
+  
+  // Sort projects: Best -> Noteworthy -> Normal
+  const rankOrder = { 'best': 0, 'noteworthy': 1, 'normal': 2 };
+  const sortedProjects = [...PROJECTS].sort((a, b) => {
+    const rA = rankOrder[a.rank] !== undefined ? rankOrder[a.rank] : 2;
+    const rB = rankOrder[b.rank] !== undefined ? rankOrder[b.rank] : 2;
+    return rA - rB;
+  });
+
+  sortedProjects.forEach(proj => {
     const card = document.createElement('div');
     card.className = 'project-card';
+    if (proj.rank === 'best') card.classList.add('best');
     
-    const tagLabels = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', رسم:'رسم', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم' };
+    const tagLabels = { انيميشن:'انيميشن', موشن:'موشن', مونتاج:'مونتاج', تصوير:'تصوير', رسم:'رسم', هوية:'هوية بصرية', تقرير:'تقرير', تصميم:'تصميم', اداء_صوتي:'أداء صوتي', كتابة_محتوى:'كتابة محتوى' };
     const tagsHTML  = proj.tags.map(t => `<span class="card-tag tag-${t}">${tagLabels[t] || t}</span>`).join('');
+
+    const stickerHTML = proj.rank === 'best' ? `<img src="${BANNER_BASE}sticker.png" class="best-badge" alt="Best Project">` : '';
 
     card.innerHTML = `
       <div class="card-banner-wrap">
+        ${stickerHTML}
         <img src="${BANNER_BASE}${proj.banner}" alt="${proj.name}" class="card-banner" loading="lazy">
       </div>
       <div class="card-body">
