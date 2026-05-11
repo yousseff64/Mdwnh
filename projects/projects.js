@@ -68,7 +68,7 @@ const PROJECTS = [
     name: 'هوية مشكدانة',
     banner: 'هوية بصرية مكشدانة.png',
     tags: ['تصميم', 'هوية'],
-    link: 'https://drive.google.com/file/d/1egewenQQLqvh6bkPpvD4IytI8ND5RRpL/view?usp=share_link',
+    link: 'https://drive.google.com/file/d/1wmbLkvBaMnr1pqcZWthbkmmi4AM7T9Qk/view?usp=sharing',
     rank: 'best'
   },
   {
