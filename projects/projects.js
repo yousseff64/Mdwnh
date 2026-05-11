@@ -35,7 +35,7 @@ const PROJECTS = [
     id: 'salam_podcast',
     name: 'بودكاست سلام مكنون',
     banner: 'بودكاست سلام مكنون.png',
-    tags: ['مونتاج', 'تصميم'],
+    tags: ['مونتاج'],
     link: 'https://youtu.be/NBYt33ZIAwQ?si=xXadp3IISJoOcpdk',
     rank: 'noteworthy'
   },
