@@ -12,7 +12,7 @@ const PROJECTS = [
     name: 'غمام',
     banner: 'انيميشن فيلم غمام.png',
     tags: ['انيميشن'],
-    link: 'https://drive.google.com/file/d/11aCcpOXRfU7hC7aGPmASY5IUqV_V31ix/view?usp=share_link',
+    link: 'https://www.youtube.com/watch?v=bCkfuh_2yUE',
     rank: 'best'
   },
   {
