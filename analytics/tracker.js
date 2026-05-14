@@ -110,17 +110,18 @@
                 const hour     = getHour();
                 const dow      = getDayOfWeek();
 
-                // 1. Write instant metrics (Don't wait for country)
+                // 1. Write instant metrics
                 db.ref(`${path}/devices/${device}`).transaction(v => (v || 0) + 1);
                 db.ref(`${path}/os/${fKey(os)}`).transaction(v => (v || 0) + 1);
                 db.ref(`${path}/browsers/${fKey(browser)}`).transaction(v => (v || 0) + 1);
                 db.ref(`${path}/hours/h${hour}`).transaction(v => (v || 0) + 1);
                 db.ref(`${path}/days/${dow}`).transaction(v => (v || 0) + 1);
+                
+                // Count ALL entries (including internal ones)
+                db.ref(`${path}/entries`).transaction(v => (v || 0) + 1);
+                db.ref(`${path}/referrers/${refType}`).transaction(v => (v || 0) + 1);
 
-                if (refType !== 'internal') {
-                    db.ref(`${path}/entries`).transaction(v => (v || 0) + 1);
-                    db.ref(`${path}/referrers/${refType}`).transaction(v => (v || 0) + 1);
-                }
+                console.log(`[MDWNH Analytics] Tracked ${mode} on ${path} (${refType})`);
 
                 // 2. Background country fetch (Async, doesn't block)
                 getCountry().then(country => {
