@@ -92,6 +92,11 @@ function initNav() {
             const sid = pill.dataset.section;
             document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
             document.getElementById('panel-' + sid).classList.add('active');
+
+            // CRITICAL: Force Chart.js to resize now that the panel is visible
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+            }, 50);
         });
     });
 }
@@ -194,9 +199,18 @@ Chart.defaults.font.size   = 11;
 
 /* ── Donut chart (device) ─────────────────────────────────────────────────── */
 function renderDonut(canvasId, labels, values, colors) {
-    if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); }
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
+
+    if (chartInstances[canvasId]) {
+        const chart = chartInstances[canvasId];
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = values;
+        chart.data.datasets[0].backgroundColor = colors;
+        chart.update();
+        return;
+    }
+
     chartInstances[canvasId] = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -216,9 +230,9 @@ function renderDonut(canvasId, labels, values, colors) {
 
 /* ── Area/line chart (hours) ──────────────────────────────────────────────── */
 function renderHours(canvasId, hoursObj, color) {
-    if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); }
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
+
     function fmt12(h) {
         if (h === 0)  return '12 AM';
         if (h < 12)  return h + ' AM';
@@ -227,6 +241,16 @@ function renderHours(canvasId, hoursObj, color) {
     }
     const labels = Array.from({length: 24}, (_, i) => fmt12(i));
     const data   = Array.from({length: 24}, (_, i) => hoursObj['h' + i] || 0);
+
+    if (chartInstances[canvasId]) {
+        const chart = chartInstances[canvasId];
+        chart.data.datasets[0].data = data;
+        chart.data.datasets[0].borderColor = color;
+        chart.data.datasets[0].backgroundColor = color + '22';
+        chart.update();
+        return;
+    }
+
     chartInstances[canvasId] = new Chart(ctx, {
         type: 'line',
         data: {
@@ -256,12 +280,22 @@ function renderHours(canvasId, hoursObj, color) {
 
 /* ── Bar chart (days of week) ─────────────────────────────────────────────── */
 function renderDays(canvasId, daysObj, color) {
-    if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); }
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
+
     const order  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     const arabic = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
     const data   = order.map(d => daysObj[d] || 0);
+
+    if (chartInstances[canvasId]) {
+        const chart = chartInstances[canvasId];
+        chart.data.datasets[0].data = data;
+        chart.data.datasets[0].backgroundColor = color + '88';
+        chart.data.datasets[0].borderColor = color;
+        chart.update();
+        return;
+    }
+
     chartInstances[canvasId] = new Chart(ctx, {
         type: 'bar',
         data: {
