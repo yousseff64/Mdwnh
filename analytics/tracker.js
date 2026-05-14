@@ -46,39 +46,41 @@
     function getHour() { return new Date().getHours(); }
     function getDayOfWeek() { return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]; }
 
-    async function getCountry() {
-        // Try multiple IP-geolocation APIs in order for best mobile coverage
-        const apis = [
-            async () => {
-                const r = await fetch('https://ipwho.is/', { signal: AbortSignal.timeout(5000) });
-                const d = await r.json();
-                if (d.success && d.country) return d.country;
-                throw new Error('no country');
-            },
-            async () => {
-                const r = await fetch('https://ipinfo.io/json?fields=country', { signal: AbortSignal.timeout(5000) });
-                const d = await r.json();
-                // ipinfo returns 2-letter code, expand it
-                const countryMap = {
-                    SA:'Saudi Arabia', AE:'United Arab Emirates', EG:'Egypt', KW:'Kuwait',
-                    QA:'Qatar', BH:'Bahrain', OM:'Oman', JO:'Jordan', MA:'Morocco',
-                    DZ:'Algeria', TN:'Tunisia', IQ:'Iraq', YE:'Yemen', LB:'Lebanon',
-                    US:'United States', GB:'United Kingdom', DE:'Germany', FR:'France',
-                    TR:'Turkey', IN:'India', PK:'Pakistan'
-                };
-                const code = (d.country || '').toUpperCase();
-                if (code) return countryMap[code] || code;
-                throw new Error('no country');
-            }
-        ];
+    function fetchWithTimeout(url, ms) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
+        return fetch(url, { signal: controller.signal })
+            .finally(() => clearTimeout(timer));
+    }
 
-        for (const api of apis) {
-            try {
-                const name = await api();
-                if (name && name !== 'Unknown') return { name };
-            } catch { /* try next */ }
-        }
-        return { name: 'Unknown' };
+    async function getCountry() {
+        // 1st try: ipwho.is  (10k/day, great mobile coverage)
+        try {
+            const r = await fetchWithTimeout('https://ipwho.is/', 6000);
+            const d = await r.json();
+            if (d && d.success && d.country) return d.country;
+        } catch (e) { /* fall through */ }
+
+        // 2nd try: ipinfo.io (50k/month, very reliable)
+        try {
+            const r = await fetchWithTimeout('https://ipinfo.io/json', 6000);
+            const d = await r.json();
+            const code = (d && d.country || '').toUpperCase();
+            if (code) {
+                const MAP = {
+                    SA:'Saudi Arabia', AE:'United Arab Emirates', EG:'Egypt',
+                    KW:'Kuwait', QA:'Qatar', BH:'Bahrain', OM:'Oman',
+                    JO:'Jordan', MA:'Morocco', DZ:'Algeria', TN:'Tunisia',
+                    IQ:'Iraq', YE:'Yemen', LB:'Lebanon', SY:'Syria',
+                    US:'United States', GB:'United Kingdom', DE:'Germany',
+                    FR:'France', TR:'Turkey', IN:'India', PK:'Pakistan',
+                    CA:'Canada', AU:'Australia', NL:'Netherlands', SE:'Sweden'
+                };
+                return MAP[code] || code;
+            }
+        } catch (e) { /* fall through */ }
+
+        return 'Unknown';
     }
 
     function fKey(str) {
@@ -100,8 +102,8 @@
             const refType  = getReferrerType();
             const hour     = getHour();
             const dow      = getDayOfWeek();
-            const country  = await getCountry();
-            const cKey     = fKey(country.name || 'unknown');
+            const country  = await getCountry();          // plain string now
+            const cKey     = fKey(country || 'unknown');
 
             // ── Always track these (all visitors, internal or external) ──────
             db.ref(`${path}/devices/${device}`).transaction(v => (v || 0) + 1);
