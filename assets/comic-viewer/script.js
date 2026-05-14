@@ -144,33 +144,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (el) el.textContent = (snap.val() || 0).toLocaleString();
         });
     }
-    function incrementView() {
+
+    // Load enriched tracker
+    const trackerScript = document.createElement('script');
+    trackerScript.src = '../analytics/tracker.js';
+    document.head.appendChild(trackerScript);
+
+    // Entry tracking (runs once on load)
+    trackerScript.onload = () => {
+        if (typeof window.mdwnhTrack === 'function') {
+            window.mdwnhTrack(db, 'comics/' + comicId, 'entry');
+        }
+    };
+
+    // View tracking after 20 seconds
+    setTimeout(() => {
         if (!db || hasCountedView) return;
         hasCountedView = true;
-        const viewRef = db.ref('comics/' + comicId + '/views');
-        viewRef.transaction((currentViews) => (currentViews || 0) + 1);
-    }
-
-    function incrementEntry() {
-        if (!db) return;
-        const entryRef = db.ref('comics/' + comicId + '/entries');
-        entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
-    }
-
-    // Track the initial entry only if NOT coming from the internal /comics/ selection page
-    // Track the initial entry only if NOT coming from the internal /comics/ selection page
-    const referrer = document.referrer.toLowerCase();
-    if (!referrer.includes('/comics/')) {
-        incrementEntry();
-    }
+        if (typeof window.mdwnhTrack === 'function') {
+            window.mdwnhTrack(db, 'comics/' + comicId, 'view');
+        }
+    }, 20000);
 
     // Security: Disable right-click
     document.addEventListener('contextmenu', e => e.preventDefault());
-
-    // Track a "view" only after 20 seconds of being on the page
-    setTimeout(() => {
-        incrementView();
-    }, 20000);
 
     // ── Splash messages ──────────────────────────────────────────────────────
     if (loadTextEl) {

@@ -501,6 +501,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
     <!-- Firebase Analytics for Main Page -->
+    <script src="analytics/tracker.js"></script>
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -516,28 +517,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function incrementView() {
-            const viewRef = db.ref('pages/main/views');
-            viewRef.transaction((currentViews) => (currentViews || 0) + 1);
-        }
+        // Entry tracking
+        window.mdwnhTrack(db, 'pages/main', 'entry');
 
-        function incrementEntry() {
-            const entryRef = db.ref('pages/main/entries');
-            entryRef.transaction((currentEntries) => (currentEntries || 0) + 1);
-        }
-
-        // Track entry if not from internal referrer.
-        // Treat empty/no-referrer as external (some apps block referrers),
-        // but still ignore same-site navigations.
-        const referrer = (document.referrer || '').toLowerCase();
-        const isInternal = referrer && (referrer.includes(location.hostname) || referrer.includes('localhost'));
-        if (!isInternal) {
-            incrementEntry();
-        }
-
-        // Track view after 20 seconds
+        // View tracking after 20 seconds
+        let _mainViewCounted = false;
         setTimeout(() => {
-            incrementView();
+            if (_mainViewCounted) return;
+            _mainViewCounted = true;
+            window.mdwnhTrack(db, 'pages/main', 'view');
         }, 20000);
     </script>
 
