@@ -47,16 +47,38 @@
     function getDayOfWeek() { return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]; }
 
     async function getCountry() {
-        try {
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 5000);
-            const res = await fetch('https://ipapi.co/json/?fields=country_name,country_code', { signal: controller.signal });
-            clearTimeout(timeout);
-            const data = await res.json();
-            return { name: data.country_name || 'Unknown', code: data.country_code || 'XX' };
-        } catch {
-            return { name: 'Unknown', code: 'XX' };
+        // Try multiple IP-geolocation APIs in order for best mobile coverage
+        const apis = [
+            async () => {
+                const r = await fetch('https://ipwho.is/', { signal: AbortSignal.timeout(5000) });
+                const d = await r.json();
+                if (d.success && d.country) return d.country;
+                throw new Error('no country');
+            },
+            async () => {
+                const r = await fetch('https://ipinfo.io/json?fields=country', { signal: AbortSignal.timeout(5000) });
+                const d = await r.json();
+                // ipinfo returns 2-letter code, expand it
+                const countryMap = {
+                    SA:'Saudi Arabia', AE:'United Arab Emirates', EG:'Egypt', KW:'Kuwait',
+                    QA:'Qatar', BH:'Bahrain', OM:'Oman', JO:'Jordan', MA:'Morocco',
+                    DZ:'Algeria', TN:'Tunisia', IQ:'Iraq', YE:'Yemen', LB:'Lebanon',
+                    US:'United States', GB:'United Kingdom', DE:'Germany', FR:'France',
+                    TR:'Turkey', IN:'India', PK:'Pakistan'
+                };
+                const code = (d.country || '').toUpperCase();
+                if (code) return countryMap[code] || code;
+                throw new Error('no country');
+            }
+        ];
+
+        for (const api of apis) {
+            try {
+                const name = await api();
+                if (name && name !== 'Unknown') return { name };
+            } catch { /* try next */ }
         }
+        return { name: 'Unknown' };
     }
 
     function fKey(str) {
