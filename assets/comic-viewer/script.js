@@ -145,17 +145,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Load enriched tracker
-    const trackerScript = document.createElement('script');
-    trackerScript.src = '../analytics/tracker.js';
-    document.head.appendChild(trackerScript);
-
-    // Entry tracking (runs once on load)
-    trackerScript.onload = () => {
-        if (typeof window.mdwnhTrack === 'function') {
-            window.mdwnhTrack(db, 'comics/' + comicId, 'entry');
-        }
-    };
+    // Entry tracking (tracker.js loaded statically in each story page head)
+    if (typeof window.mdwnhTrack === 'function') {
+        window.mdwnhTrack(db, 'comics/' + comicId, 'entry');
+    }
 
     // View tracking after 20 seconds
     setTimeout(() => {

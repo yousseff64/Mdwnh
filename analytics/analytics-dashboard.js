@@ -219,7 +219,13 @@ function renderHours(canvasId, hoursObj, color) {
     if (chartInstances[canvasId]) { chartInstances[canvasId].destroy(); }
     const ctx = document.getElementById(canvasId);
     if (!ctx) return;
-    const labels = Array.from({length: 24}, (_, i) => i + ':00');
+    function fmt12(h) {
+        if (h === 0)  return '12 AM';
+        if (h < 12)  return h + ' AM';
+        if (h === 12) return '12 PM';
+        return (h - 12) + ' PM';
+    }
+    const labels = Array.from({length: 24}, (_, i) => fmt12(i));
     const data   = Array.from({length: 24}, (_, i) => hoursObj['h' + i] || 0);
     chartInstances[canvasId] = new Chart(ctx, {
         type: 'line',
