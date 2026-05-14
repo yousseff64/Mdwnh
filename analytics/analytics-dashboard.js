@@ -85,18 +85,25 @@ function initNav() {
             pills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             movePill(pill);
-            // Smooth scroll pill into view
             pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
             // Show panel
             const sid = pill.dataset.section;
             document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-            document.getElementById('panel-' + sid).classList.add('active');
+            const activePanel = document.getElementById('panel-' + sid);
+            activePanel.classList.add('active');
 
-            // CRITICAL: Force Chart.js to resize now that the panel is visible
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize'));
-            }, 50);
+            // CRITICAL SAFARI FIX: Use requestAnimationFrame to ensure the panel is visible 
+            // before telling Chart.js to resize. 
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    window.dispatchEvent(new Event('resize'));
+                    // Explicitly call resize on all charts in this panel
+                    Object.keys(chartInstances).forEach(id => {
+                        if (id.startsWith(sid)) chartInstances[id].resize();
+                    });
+                });
+            });
         });
     });
 }

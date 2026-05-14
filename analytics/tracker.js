@@ -88,40 +88,52 @@
     }
 
     // ── Main track function ───────────────────────────────────────────────────
-    // mode: 'entry' | 'view'
-    // On 'entry': ALWAYS writes device/OS/browser/time/country.
-    //             Only increments entries counter for non-internal traffic.
-    // On 'view':  Only increments views counter.
-    window.mdwnhTrack = async function(db, path, mode) {
-        if (!db) return;
-
-        if (mode === 'entry') {
-            const device   = getDevice();
-            const os       = getOS();
-            const browser  = getBrowser();
-            const refType  = getReferrerType();
-            const hour     = getHour();
-            const dow      = getDayOfWeek();
-            const country  = await getCountry();          // plain string now
-            const cKey     = fKey(country || 'unknown');
-
-            // ── Always track these (all visitors, internal or external) ──────
-            db.ref(`${path}/devices/${device}`).transaction(v => (v || 0) + 1);
-            db.ref(`${path}/os/${fKey(os)}`).transaction(v => (v || 0) + 1);
-            db.ref(`${path}/browsers/${fKey(browser)}`).transaction(v => (v || 0) + 1);
-            db.ref(`${path}/hours/h${hour}`).transaction(v => (v || 0) + 1);
-            db.ref(`${path}/days/${dow}`).transaction(v => (v || 0) + 1);
-            db.ref(`${path}/countries/${cKey}`).transaction(v => (v || 0) + 1);
-
-            // ── Only count "entries" for external traffic ────────────────────
-            if (refType !== 'internal') {
-                db.ref(`${path}/entries`).transaction(v => (v || 0) + 1);
-                db.ref(`${path}/referrers/${refType}`).transaction(v => (v || 0) + 1);
-            }
+    window.mdwnhTrack = async function(passedDb, path, mode) {
+        let db = passedDb;
+        
+        // Safety fallback: if db isn't passed, try to find it on window
+        if (!db && typeof firebase !== 'undefined') {
+            try { db = firebase.database(); } catch(e) {}
+        }
+        
+        if (!db) {
+            console.warn('MDWNH Tracker: No Firebase database instance found.');
+            return;
         }
 
-        if (mode === 'view') {
-            db.ref(`${path}/views`).transaction(v => (v || 0) + 1);
+        try {
+            if (mode === 'entry') {
+                const device   = getDevice();
+                const os       = getOS();
+                const browser  = getBrowser();
+                const refType  = getReferrerType();
+                const hour     = getHour();
+                const dow      = getDayOfWeek();
+
+                // 1. Write instant metrics (Don't wait for country)
+                db.ref(`${path}/devices/${device}`).transaction(v => (v || 0) + 1);
+                db.ref(`${path}/os/${fKey(os)}`).transaction(v => (v || 0) + 1);
+                db.ref(`${path}/browsers/${fKey(browser)}`).transaction(v => (v || 0) + 1);
+                db.ref(`${path}/hours/h${hour}`).transaction(v => (v || 0) + 1);
+                db.ref(`${path}/days/${dow}`).transaction(v => (v || 0) + 1);
+
+                if (refType !== 'internal') {
+                    db.ref(`${path}/entries`).transaction(v => (v || 0) + 1);
+                    db.ref(`${path}/referrers/${refType}`).transaction(v => (v || 0) + 1);
+                }
+
+                // 2. Background country fetch (Async, doesn't block)
+                getCountry().then(country => {
+                    const cKey = fKey(country || 'unknown');
+                    db.ref(`${path}/countries/${cKey}`).transaction(v => (v || 0) + 1);
+                }).catch(() => {});
+            }
+
+            if (mode === 'view') {
+                db.ref(`${path}/views`).transaction(v => (v || 0) + 1);
+            }
+        } catch (err) {
+            console.error('MDWNH Track Error:', err);
         }
     };
 })();
