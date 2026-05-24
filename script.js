@@ -1043,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Construct Mailto Link
             // Note: We include the user's entered email in the body since mailto 'from' isn't reliable
-            const recipient = 'hello@mdwn.info';
+            const recipient = 'contact@mdwn.studio';
             const body = `${message}\n\n---\nSent from: ${email}`;
 
             const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

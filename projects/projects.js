@@ -592,7 +592,7 @@ function sendRequest(type) {
 اعجبني ${quoted} من مشاريعكم! وأريد العمل على شيء مثله
 
 اليكم التفاصيل والميزانية المقترحة`;
-    const mailto = `mailto:hello@mdwn.info?subject=${encodeURIComponent(rawSubject)}&body=${encodeURIComponent(rawBody)}`;
+    const mailto = `mailto:contact@mdwn.studio?subject=${encodeURIComponent(rawSubject)}&body=${encodeURIComponent(rawBody)}`;
     window.location.href = mailto;
   } else {
     // WhatsApp logic: No heading, single row
@@ -730,7 +730,7 @@ if (contactForm) {
     const email = document.getElementById('email').value;
     const subject = document.getElementById('subject').value;
     const message = document.getElementById('message').value;
-    const recipient = 'hello@mdwn.info';
+    const recipient = 'contact@mdwn.studio';
     const body = `${message}\n\n---\nSent from: ${email}`;
     window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   });
