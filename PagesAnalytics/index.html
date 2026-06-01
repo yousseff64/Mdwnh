@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مركز الاستراتيجية — المدونة ستوديو</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="مركز التحليلات والاستراتيجية للمدونة ستوديو — تقرير تحليلي، لوحة قيادة تفاعلية، واستراتيجية النسخة القادمة.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="../Circle Logo.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ═══ شاشة الدخول ═══ -->
+  <div id="login">
+    <div class="login-card">
+      <div class="brand-dots"><span></span><span></span><span></span><span></span></div>
+      <h1>مركز الاستراتيجية</h1>
+      <p>المدونة ستوديو — أدخل رمز الوصول للمتابعة</p>
+      <form id="pin-form" autocomplete="off">
+        <div class="pin">
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="الرقم الأول">
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="الرقم الثاني">
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="الرقم الثالث">
+          <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="الرقم الرابع">
+        </div>
+        <button class="btn-login" type="submit">دخول</button>
+        <div class="login-err" id="login-err"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ التطبيق ═══ -->
+  <div id="app">
+
+    <!-- الشريط العلوي -->
+    <header class="topbar">
+      <div class="tb-brand">
+        <img src="../logo.png" alt="المدونة ستوديو">
+        <div class="tb-dots"><span style="background:var(--brand-blue)"></span><span style="background:var(--brand-teal)"></span><span style="background:var(--brand-yellow)"></span><span style="background:var(--brand-red)"></span></div>
+        <div>
+          <div class="tb-name">مركز الاستراتيجية</div>
+          <div class="tb-sub">المدونة ستوديو · لوحة داخلية</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span class="live"><i></i> بيانات حقيقية · يونيو ٢٠٢٦</span>
+        <button class="btn-out" id="logout">خروج</button>
+      </div>
+    </header>
+
+    <!-- شريط التنقّل -->
+    <nav class="navbar">
+      <div class="nav-pills" id="pills">
+        <button class="pill active" data-go="report">📊 التقرير التحليلي</button>
+        <button class="pill" data-go="dashboard">📈 لوحة القيادة</button>
+        <button class="pill" data-go="strategy">🚀 استراتيجية النسخة القادمة</button>
+        <span class="pill-ind" id="pill-ind"></span>
+      </div>
+    </nav>
+
+    <!-- البطل -->
+    <header class="hero wrap">
+      <img src="../logo.png" class="hero-logo reveal" alt="المدونة ستوديو">
+      <div class="badge reveal d1">استوديو إبداعي · رسوم متحركة ونشر وعي · منذ ٢٠١٧</div>
+      <h1 class="reveal d1">مركز <span class="grad">الاستراتيجية</span><br>للمدونة ستوديو</h1>
+      <p class="lead reveal d2">قراءة كاملة للأداء عبر يوتيوب وإنستغرام وتيك توك، ولوحة قيادة تفاعلية، وخارطة طريق لنموّ النسخة القادمة — مبنية على بيانات حقيقية تم جمعها مباشرةً من المنصّات.</p>
+      <div class="hero-stats" id="hero-stats"></div>
+    </header>
+
+    <!-- ═══ ١ · التقرير التحليلي ═══ -->
+    <section id="report" class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">القسم الأول</div>
+        <h2>التقرير التحليلي</h2>
+        <p>تفكيك أداء المحتوى الحالي عبر المنصّات الثلاث: نقاط القوة، الموضوعات المتكرّرة، وأنماط التفاعل — كما رصدناها من الصفحات مباشرة.</p>
+      </div>
+
+      <div class="grid g-3 reveal" id="platforms" style="margin-bottom:2.4rem"></div>
+
+      <div class="sec-head reveal" style="margin-bottom:1.4rem"><h2 style="font-size:1.4rem">أبرز الأنماط</h2></div>
+      <div class="grid g-3 reveal" id="insights" style="margin-bottom:2.6rem"></div>
+
+      <div class="grid g-2" style="align-items:start">
+        <div class="chart-card reveal">
+          <h3>أعلى الأعمال الطويلة على يوتيوب</h3>
+          <div class="sub">حسب إجمالي المشاهدات — كل العصور</div>
+          <div class="toplist" id="yt-top"></div>
+        </div>
+        <div class="chart-card reveal d1">
+          <h3>أعلى الشورتس أداءً</h3>
+          <div class="sub">المحتوى القصير يشكّل نصف كتالوج يوتيوب تقريبًا</div>
+          <div class="toplist" id="yt-shorts"></div>
+        </div>
+      </div>
+
+      <div class="sec-head reveal" style="margin:2.6rem 0 1.4rem"><h2 style="font-size:1.4rem">ركائز المحتوى</h2>
+        <p>أربع ركائز تتكرّر عبر الكتالوج — مرتّبة حسب الحصة وأثرها على الانتشار.</p></div>
+      <div class="grid g-4 reveal" id="pillars"></div>
+    </section>
+
+    <!-- ═══ ٢ · لوحة القيادة التفاعلية ═══ -->
+    <section id="dashboard" class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">القسم الثاني</div>
+        <h2>لوحة القيادة التفاعلية</h2>
+        <p>مؤشّرات الأداء الرئيسية ومقاييس المتابعين ورسوم النمو المتوقّعة — تفاعلية بالكامل.</p>
+      </div>
+
+      <div class="grid g-4 reveal" id="kpis" style="margin-bottom:1.6rem"></div>
+
+      <div class="grid g-2" style="margin-bottom:1.1rem">
+        <div class="chart-card reveal">
+          <h3>توزيع الجمهور عبر المنصّات</h3>
+          <div class="sub">إجمالي ١٠٥٬٢٧١ متابعًا</div>
+          <div class="chart-box"><canvas id="c-audience"></canvas></div>
+        </div>
+        <div class="chart-card reveal d1">
+          <h3>مقارنة المنصّات</h3>
+          <div class="sub">الجمهور · المحتوى · التفاعل · فرصة النمو (مقياس نسبي ٠–١٠٠)</div>
+          <div class="chart-box"><canvas id="c-radar"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid g-2" style="margin-bottom:1.1rem">
+        <div class="chart-card reveal">
+          <h3>أداء يوتيوب حسب السنة</h3>
+          <div class="sub">إجمالي المشاهدات لكل حقبة (عيّنة الأعمال الطويلة)</div>
+          <div class="chart-box"><canvas id="c-era"></canvas></div>
+        </div>
+        <div class="chart-card reveal d1">
+          <h3>توزيع المشاهدات</h3>
+          <div class="sub">عدد الأعمال الطويلة ضمن كل شريحة مشاهدات</div>
+          <div class="chart-box"><canvas id="c-dist"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid g-2">
+        <div class="chart-card reveal">
+          <h3>تفاعل إنستغرام: تباين هائل</h3>
+          <div class="sub">إعجابات آخر المنشورات — لاحظ قفزة محتوى رمضان الموسمي</div>
+          <div class="chart-box"><canvas id="c-ig"></canvas></div>
+        </div>
+        <div class="chart-card reveal d1">
+          <h3>النمو المتوقّع — ١٢ شهرًا</h3>
+          <div class="sub"><span class="proj-note">◆ مستهدف الاستراتيجية — ليست أرقامًا مقيسة</span></div>
+          <div class="chart-box"><canvas id="c-growth"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ٣ · استراتيجية النسخة القادمة ═══ -->
+    <section id="strategy" class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">القسم الثالث</div>
+        <h2>استراتيجية النسخة القادمة</h2>
+        <p>خارطة طريق مقترحة للمرحلة المقبلة من النمو: أفكار محتوى، تكامل بين المنصّات، وأهداف توسّع.</p>
+      </div>
+
+      <div class="card reveal" id="thesis" style="margin-bottom:2.4rem;border-right:3px solid var(--brand-teal)"></div>
+
+      <div class="sec-head reveal" style="margin-bottom:1.6rem"><h2 style="font-size:1.4rem">المراحل الأربع</h2></div>
+      <div class="grid g-4 reveal" id="phases" style="margin-bottom:2.8rem"></div>
+
+      <div class="sec-head reveal" style="margin-bottom:1.4rem"><h2 style="font-size:1.4rem">أفكار المحتوى</h2></div>
+      <div class="grid g-3 reveal" id="ideas" style="margin-bottom:2.8rem"></div>
+
+      <div class="grid g-2" style="align-items:start">
+        <div>
+          <div class="sec-head reveal" style="margin-bottom:1.2rem"><h2 style="font-size:1.4rem">التكامل بين المنصّات</h2></div>
+          <div class="grid reveal" id="synergies" style="gap:.8rem"></div>
+        </div>
+        <div>
+          <div class="sec-head reveal" style="margin-bottom:1.2rem"><h2 style="font-size:1.4rem">أهداف ١٢ شهرًا</h2></div>
+          <div class="card reveal d1" id="targets"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      المدونة ستوديو · مركز الاستراتيجية الداخلي — بيانات مرصودة في ١ يونيو ٢٠٢٦ ·
+      <a href="../index.html">الموقع الرئيسي</a>
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
