@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مدونة ستوديو | Mdwnh Studio</title>
+    <meta name="description" content="استوديو إنتاج فني: أنيميشن، مونتاج، موشن جرافكس، تصوير، وقصص مصورة — بمبادئ واضحة.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,154 +14,127 @@
         rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3.0">
     <link rel="icon" href="Circle Logo.png" type="image/png">
-
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar">
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="navbar" id="navbar">
         <div class="container nav-container">
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" aria-label="Toggle Menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ffffff" class="bi bi-list"
-                    viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-                </svg>
-            </button>
-
-            <a href="#hero" class="logo-link">
-                <img src="logo.png" alt="المدونة ستوديو" class="nav-logo">
+            <a href="#hero" class="logo-link" aria-label="مدونة ستوديو">
+                <img src="logo.png" alt="مدونة ستوديو" class="nav-logo" width="120" height="55">
             </a>
-            <ul class="nav-links">
-                <li><a href="comics/" class="nav-comics-link">قصصنا</a></li>
-                <li><a href="#manifesto">من نحن</a></li>
-                <li><a href="#team">الفريق</a></li>
-                <li><a href="#latest-work">جديدنا</a></li>
-                <li><a href="#services">خدماتنا</a></li>
-                <li><a href="#projects-promo">مشاريعنا</a></li>
-                <li><a href="#contact" class="btn btn-primary small">تواصل معنا</a></li>
-            </ul>
-        </div>
 
-        <!-- Mobile Drawer -->
-        <div class="mobile-drawer">
-            <ul class="mobile-nav-links">
-                <li><a href="comics/" class="nav-comics-link">قصصنا</a></li>
-                <li><a href="#manifesto">من نحن</a></li>
-                <li><a href="#team">الفريق</a></li>
-                <li><a href="#latest-work">جديدنا</a></li>
-                <li><a href="#services">خدماتنا</a></li>
-                <li><a href="#projects-promo">مشاريعنا</a></li>
-                <li><a href="#contact" class="btn btn-primary small">تواصل معنا</a></li>
+            <ul class="nav-links">
+                <li><a href="comics/">قصصنا</a></li>
+                <li><a href="#latest" data-spy>جديدنا</a></li>
+                <li><a href="#services" data-spy>خدماتنا</a></li>
+                <li><a href="#portfolio" data-spy>أعمالنا</a></li>
+                <li><a href="#join" data-spy>انضم إلينا</a></li>
             </ul>
+
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-primary btn-nav">تواصل معنا</a>
+                <button class="mobile-menu-toggle" aria-label="القائمة" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Mobile Drawer + backdrop (kept OUTSIDE the navbar so position:fixed
+         isn't trapped by the navbar's backdrop-filter containing block) -->
+    <div class="drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
+    <aside class="mobile-drawer" id="mobile-drawer">
+        <ul class="mobile-nav-links">
+            <li><a href="comics/">قصصنا</a></li>
+            <li><a href="#latest">جديدنا</a></li>
+            <li><a href="#services">خدماتنا</a></li>
+            <li><a href="#portfolio">أعمالنا</a></li>
+            <li><a href="#join">انضم إلينا</a></li>
+            <li><a href="#contact" class="btn btn-primary drawer-cta">تواصل معنا</a></li>
+        </ul>
+    </aside>
+
+    <!-- ===================== HERO ===================== -->
     <header id="hero" class="hero-section">
-        <div class="video-overlay"></div>
         <div class="video-background">
-            <video autoplay muted loop playsinline webkit-playsinline>
-                <source src="Introshowreel1.mp4" type="video/mp4">
+            <video autoplay muted loop playsinline webkit-playsinline poster="assets/media/hero-poster.jpg"
+                id="hero-video">
+                <source src="assets/media/showreel-720.mp4" type="video/mp4">
             </video>
         </div>
-
-        <!-- Subtle Global Spinner attached to background logic visually via CSS -->
-        <div class="spinning-gradient"></div>
+        <div class="video-overlay"></div>
 
         <div class="hero-content container">
-            <img src="logo.png" alt="Logo" class="hero-logo">
-
-            <div class="text-content">
-                <h1 class="main-headline">لقد وصلت!</h1>
-                <p class="sub-headline">لا داعي للبحث أكثر من هذا. نحن هنا لمساعدتك</p>
-                <button id="hero-video-btn" class="btn btn-primary big hero-cta">شاهد أعمالنا</button>
-
-                <!-- Scroll Down Indicator -->
-                <div class="scroll-indicator">
-                    <a href="#manifesto" aria-label="Scroll Down">
-                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-                        </svg>
-                    </a>
-                </div>
+            <img src="logo.png" alt="" class="hero-logo" width="220" height="101">
+            <h1 class="main-headline">لقد وصلت!</h1>
+            <p class="sub-headline">استوديو إنتاج فني — أنيميشن، مونتاج، موشن جرافكس، تصوير وأكثر.<br>نصنع محتوى أصيلًا
+                يليق بقضيتك.</p>
+            <div class="hero-ctas">
+                <button id="hero-video-btn" class="btn btn-primary btn-big">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    شاهد أعمالنا
+                </button>
+                <a href="#contact" class="btn btn-ghost btn-big">تواصل معنا</a>
             </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <a href="#clients" aria-label="انزل للأسفل">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                </svg>
+            </a>
         </div>
     </header>
 
-    <!-- Clients Marquee -->
-    <section id="clients" class="clients-section">
+    <!-- ===================== CLIENTS MARQUEE ===================== -->
+    <section id="clients" class="clients-section" aria-label="عملاؤنا">
         <div class="marquee-track">
-            <!-- Set 1 (Original) -->
             <div class="marquee-content">
-                <div class="client-item"><img src="Clients/1.png" alt="Client 1"></div>
-                <div class="client-item"><img src="Clients/2.png" alt="Client 2"></div>
-                <div class="client-item"><img src="Clients/3.png" alt="Client 3"></div>
-                <div class="client-item"><img src="Clients/4.png" alt="Client 4"></div>
-                <div class="client-item"><img src="Clients/5.png" alt="Client 5"></div>
-                <div class="client-item"><img src="Clients/6.png" alt="Client 6"></div>
-                <div class="client-item"><img src="Clients/7.png" alt="Client 7"></div>
-                <div class="client-item"><img src="Clients/8.png" alt="Client 8"></div>
-                <div class="client-item"><img src="Clients/11.png" alt="Client 11"></div>
-                <div class="client-item"><img src="Clients/12.png" alt="Client 12"></div>
+                <div class="client-item"><img src="Clients/1.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/2.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/3.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/4.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/5.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img class="client-invert" src="Clients/6.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/7.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/8.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/11.png" alt="عميل" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/12.png" alt="عميل" loading="lazy" decoding="async"></div>
             </div>
-            <!-- Set 2 (Duplicate 1) -->
             <div class="marquee-content" aria-hidden="true">
-                <div class="client-item"><img src="Clients/1.png" alt="Client 1"></div>
-                <div class="client-item"><img src="Clients/2.png" alt="Client 2"></div>
-                <div class="client-item"><img src="Clients/3.png" alt="Client 3"></div>
-                <div class="client-item"><img src="Clients/4.png" alt="Client 4"></div>
-                <div class="client-item"><img src="Clients/5.png" alt="Client 5"></div>
-                <div class="client-item"><img src="Clients/6.png" alt="Client 6"></div>
-                <div class="client-item"><img src="Clients/7.png" alt="Client 7"></div>
-                <div class="client-item"><img src="Clients/8.png" alt="Client 8"></div>
-                <div class="client-item"><img src="Clients/11.png" alt="Client 11"></div>
-                <div class="client-item"><img src="Clients/12.png" alt="Client 12"></div>
-            </div>
-            <!-- Set 3 (Duplicate 2) -->
-            <div class="marquee-content" aria-hidden="true">
-                <div class="client-item"><img src="Clients/1.png" alt="Client 1"></div>
-                <div class="client-item"><img src="Clients/2.png" alt="Client 2"></div>
-                <div class="client-item"><img src="Clients/3.png" alt="Client 3"></div>
-                <div class="client-item"><img src="Clients/4.png" alt="Client 4"></div>
-                <div class="client-item"><img src="Clients/5.png" alt="Client 5"></div>
-                <div class="client-item"><img src="Clients/6.png" alt="Client 6"></div>
-                <div class="client-item"><img src="Clients/7.png" alt="Client 7"></div>
-                <div class="client-item"><img src="Clients/8.png" alt="Client 8"></div>
-                <div class="client-item"><img src="Clients/11.png" alt="Client 11"></div>
-                <div class="client-item"><img src="Clients/12.png" alt="Client 12"></div>
-            </div>
-            <!-- Set 4 (Duplicate 3 - Extra Safety) -->
-            <div class="marquee-content" aria-hidden="true">
-                <div class="client-item"><img src="Clients/1.png" alt="Client 1"></div>
-                <div class="client-item"><img src="Clients/2.png" alt="Client 2"></div>
-                <div class="client-item"><img src="Clients/3.png" alt="Client 3"></div>
-                <div class="client-item"><img src="Clients/4.png" alt="Client 4"></div>
-                <div class="client-item"><img src="Clients/5.png" alt="Client 5"></div>
-                <div class="client-item"><img src="Clients/6.png" alt="Client 6"></div>
-                <div class="client-item"><img src="Clients/7.png" alt="Client 7"></div>
-                <div class="client-item"><img src="Clients/8.png" alt="Client 8"></div>
-                <div class="client-item"><img src="Clients/11.png" alt="Client 11"></div>
-                <div class="client-item"><img src="Clients/12.png" alt="Client 12"></div>
+                <div class="client-item"><img src="Clients/1.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/2.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/3.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/4.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/5.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img class="client-invert" src="Clients/6.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/7.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/8.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/11.png" alt="" loading="lazy" decoding="async"></div>
+                <div class="client-item"><img src="Clients/12.png" alt="" loading="lazy" decoding="async"></div>
             </div>
         </div>
     </section>
 
-    <!-- Manifesto (About) -->
-    <section id="manifesto" class="manifesto-section container">
-        <div class="manifesto-wrapper">
-            <h2>
+    <!-- ===================== MANIFESTO ===================== -->
+    <section id="manifesto" class="manifesto-section">
+        <div class="icon-scatter" aria-hidden="true">
+            <span class="brand-icon i1 c-blue"></span>
+            <span class="brand-icon i3 c-red"></span>
+            <span class="brand-icon i5 c-teal"></span>
+        </div>
+        <div class="container manifesto-wrapper reveal">
+            <h2 class="manifesto-line">
                 <span class="manifesto-prefix">ننتج</span>
-                <div class="cycling-container">
-                    <div class="cycling-list">
+                <span class="cycling-container"><span class="cycling-list">
                         <span class="cycling-item">أنيميشن</span>
                         <span class="cycling-item">مونتاج</span>
                         <span class="cycling-item">موشن جرافكس</span>
@@ -168,11 +142,10 @@
                         <span class="cycling-item">آداء صوتي</span>
                         <span class="cycling-item">ثري دي</span>
                         <span class="cycling-item">كتابة محتوى</span>
-                    </div>
-                </div>
-                <span class="manifesto-suffix">يتوافق مع مبادئنا</span>
+                    </span></span>
+                <span class="manifesto-suffix"><span class="m-verb" id="m-verb">يتوافق</span> مع مبادئنا</span>
             </h2>
-            <p>
+            <p class="manifesto-text">
                 داخل مكتبة المدونة هناك عالم خيالي مليئ بكائنات السراج الذين يعملون على قدم وساق ليقدموا ما أفتقده
                 المحتوى في جيلنا المعاصر من إبداع وأصالة، بإنتاجات متنوعة غير مألوفة لدى الجمهور الذي اعتاد أن يرى الفن
                 كغاية لا كوسيلة.
@@ -180,60 +153,29 @@
         </div>
     </section>
 
-    <!-- Team Section -->
-    <section id="team" class="team-section">
-        <!-- Background Pattern (via CSS) -->
-        <div class="team-bg-pattern"></div>
+    <div class="soft-divider" aria-hidden="true">
+        <span class="soft-divider-dot"></span>
+    </div>
 
-        <!-- Header Text -->
-        <div class="team-header">
-            <h3>+25</h3>
-            <div class="team-subtitle">مبدع في مجالات مختلفة</div>
-            <div class="team-blessing">* نسأل الله أن يبارك فيهم</div>
-        </div>
-
-        <!-- Mobile-Only Image (video) -->
-        <video class="team-mobile-image" autoplay muted loop playsinline webkit-playsinline>
-            <source src="Images/Team.mp4" type="video/mp4">
-        </video>
-
-        <div class="team-container">
-
-            <!-- Central Logo -->
-            <div class="team-center-logo">
-                <div class="team-logo-glow"></div>
-                <img src="Circle Logo.png" alt="Mdwnh Studio">
-            </div>
-
-            <!-- Floating Members (Populated by JS) -->
-            <div class="team-members-cloud"></div>
-        </div>
-
-        <!-- Static Peeking Character (Bottom) -->
-        <img src="Siraj-members/Siraj.png" alt="Siraj" class="team-peeking-siraj">
-    </section>
-
-    <!-- Latest Work Section -->
-    <section id="latest-work" class="latest-work-section">
-        <div class="latest-gradient-bg" id="latest-gradient-bg"></div>
+    <!-- ===================== LATEST (auto YouTube) ===================== -->
+    <section id="latest" class="yt-section">
         <div class="container">
-            <div class="latest-header">
+            <div class="section-header reveal">
                 <h2>شاهد جديدنا</h2>
-                <p>بين يديكم أحدث ما عملنا عليه خلال الفترة الماضية</p>
+                <p>أحدث فيديوهاتنا على يوتيوب — تُحدَّث تلقائيًا</p>
             </div>
-            <div class="latest-grid" id="latest-grid">
-                <!-- Populated by JS -->
+        </div>
+        <div class="yt-marquee">
+            <div class="yt-track" id="yt-track">
+                <!-- Populated by JS from window.MDWNH_YT (looped) -->
             </div>
         </div>
     </section>
 
-    <!-- Separator -->
-    <div class="section-separator"></div>
-
-    <!-- Services Section -->
+    <!-- ===================== SERVICES ===================== -->
     <section id="services" class="services-section">
+        <!-- Desktop: split screen -->
         <div class="services-grid">
-            <!-- Right: Content & Controls -->
             <div class="services-content">
                 <div class="services-controls">
                     <button class="service-btn active" data-target="animation">الأنيميشن</button>
@@ -245,30 +187,25 @@
                 </div>
 
                 <div class="service-text-wrapper">
-                    <!-- Animation Content (Default) -->
                     <div id="animation" class="service-text active">
                         <h3>نرسم ونحرك</h3>
                         <p>مساحة خيال تتسع لأفكارك التي قد يصعب إخراجها للواقع، عبر رسوم متحركة ولوحات فنية جميلة.</p>
                     </div>
-                    <!-- Editing Content -->
                     <div id="editing" class="service-text">
                         <h3>نقص ونحرر</h3>
                         <p>كثير من فديوهات اليوم تحتاج إلى من يجيد عرضها وتعديلها لتتناسب مع الفكرة والسياق، وينتقي لها
                             افضل التأثيرات والإضافات، وهذا ما نبرع فيه.</p>
                     </div>
-                    <!-- Motion Content -->
                     <div id="motion" class="service-text">
                         <h3>حركة وانسيابية</h3>
-                        <p>اصبحت الحركة في المنتجات المرئية عنصراً أساسياً لا يمكن التخلي عنه، ولكن صدقني ليس كل أحد
-                            يجيد توظيفها</p>
+                        <p>اصبحت الحركة في المنتجات المرئية عنصراً أساسياً لا يمكن التخلي عنه، ولكن صدقني ليس كل أحد يجيد
+                            توظيفها</p>
                     </div>
-                    <!-- Photography Content -->
                     <div id="photography" class="service-text">
                         <h3>نلتقط ونخرج</h3>
                         <p>في ميدان التصوير نخطط ونخرج حتى تلتقط عدستنا أجمل اللقطات و المقاطع، ثم تصل للمتابع بأبهى
                             حُلّة، وأنقى صوت.</p>
                     </div>
-                    <!-- Other Content -->
                     <div id="other" class="service-text">
                         <h3>شركاء الهدف</h3>
                         <p>متطلبات المشروع الفني تتفرع كثيرًا ويصعب متابعتها، لذا سعينا لتقديم كل ما يحتاجه عملائنا،
@@ -277,19 +214,17 @@
                 </div>
             </div>
 
-            <!-- Left: Dynamic Image -->
             <div class="services-media">
                 <div class="image-wrapper">
-                    <img id="service-img" src="Images/Animation.png" alt="Animation Service">
+                    <img id="service-img" src="Images/Animation.png" alt="خدمة الأنيميشن" decoding="async">
                 </div>
             </div>
         </div>
-        </div>
 
-        <!-- Mobile Services Scroller (Hidden on Desktop) -->
+        <!-- Mobile: horizontal scroller -->
         <div class="mobile-services-scroller">
             <div class="mobile-service-card">
-                <img src="Images/Animation.png" alt="Animation" draggable="false">
+                <img src="Images/Animation.png" alt="الأنيميشن" draggable="false">
                 <div class="mobile-service-content">
                     <h3>الانيميشن</h3>
                     <h4>نرسم ونحرك</h4>
@@ -297,37 +232,34 @@
                 </div>
             </div>
             <div class="mobile-service-card">
-                <img src="Images/Editing.png" alt="Editing" draggable="false">
+                <img src="Images/Editing.png" alt="المونتاج" draggable="false">
                 <div class="mobile-service-content">
                     <h3>المونتاج</h3>
                     <h4>نقص ونحرر</h4>
                     <p>كثير من فديوهات اليوم تحتاج إلى من يجيد عرضها وتعديلها لتتناسب مع الفكرة والسياق، وينتقي لها افضل
                         التأثيرات والإضافات، وهذا ما نبرع فيه.</p>
-
                 </div>
             </div>
             <div class="mobile-service-card">
-                <img src="Images/Motion.png" alt="Motion" draggable="false">
+                <img src="Images/Motion.png" alt="الموشن" draggable="false">
                 <div class="mobile-service-content">
                     <h3>الموشن</h3>
                     <h4>حركة وانسيابية</h4>
                     <p>اصبحت الحركة في المنتجات المرئية عنصراً أساسياً لا يمكن التخلي عنه، ولكن صدقني ليس كل أحد يجيد
                         توظيفها</p>
-
                 </div>
             </div>
             <div class="mobile-service-card">
-                <img src="Images/Recording.jpg" alt="Photography" draggable="false">
+                <img src="Images/Recording.jpg" alt="التصوير" draggable="false">
                 <div class="mobile-service-content">
                     <h3>التصوير</h3>
                     <h4>نلتقط ونخرج</h4>
                     <p>في ميدان التصوير نخطط ونخرج حتى تلتقط عدستنا أجمل اللقطات و المقاطع، ثم تصل للمتابع بأبهى حُلّة،
                         وأنقى صوت.</p>
-
                 </div>
             </div>
             <div class="mobile-service-card">
-                <img src="Images/Other.png" alt="Other" draggable="false">
+                <img src="Images/Other.png" alt="أخرى" draggable="false">
                 <div class="mobile-service-content">
                     <h3>أخرى</h3>
                     <h4>شركاء الهدف</h4>
@@ -336,8 +268,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Pagination Controls -->
         <div class="mobile-pagination-controls">
             <div class="pagination-dot active" data-index="0"></div>
             <div class="pagination-dot" data-index="1"></div>
@@ -347,37 +277,131 @@
         </div>
     </section>
 
-    <!-- Projects Promo Section -->
-    <section id="projects-promo" class="projects-promo-section">
-        <div class="promo-bg-gradient"></div>
-        <div class="container promo-container">
-            <div class="promo-content">
-                <h2 class="promo-title">تصفح إبداعاتنا</h2>
-                <p class="promo-text">مشاريعنا تتحدث عنا. انطلق في رحلة عبر أعمالنا الفنية السابقة.</p>
-                <div class="tasty-btn-wrap">
-                    <div class="sparks-container"></div>
-                    <a href="projects/" class="btn-tasty">
-                        <span>تصفح المشاريع</span>
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
+    <!-- ===================== PORTFOLIO (merged gallery) ===================== -->
+    <section id="portfolio" class="portfolio-section">
+        <div class="icon-scatter" aria-hidden="true">
+            <span class="brand-icon i4 c-teal"></span>
+            <span class="brand-icon i1 c-yellow"></span>
+        </div>
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>أعمالنا</h2>
+                <p>مشاريعنا تتحدث عنا — تصفح، صفِّ حسب المجال، أو دعنا نرشح لك</p>
+            </div>
+
+            <!-- Guided flow entry (opt-in only) -->
+            <div class="guided-entry-wrap reveal">
+                <button class="guided-entry" id="guided-entry-btn">
+                    <span class="guided-dots" aria-hidden="true">
+                        <i class="gd gd-red"></i><i class="gd gd-yellow"></i><i class="gd gd-teal"></i><i
+                            class="gd gd-blue"></i>
+                    </span>
+                    <span class="guided-entry-text">
+                        <strong>محتار من وين تبدأ؟</strong>
+                        <small>خلنا نرشح لك أفضل أعمالنا حسب ذوقك</small>
+                    </span>
+                    <span class="guided-arrow" aria-hidden="true">←</span>
+                </button>
+            </div>
+
+            <!-- Filter pills -->
+            <div class="filter-bar reveal" id="filter-bar" role="group" aria-label="تصفية المشاريع">
+                <button class="filter-pill active" data-tag="all">الكل</button>
+                <!-- Populated by JS from FILTER_TAGS -->
+            </div>
+
+            <!-- Grid -->
+            <div class="portfolio-grid" id="portfolio-grid">
+                <!-- Populated by JS from PROJECTS -->
+            </div>
+
+            <div class="portfolio-actions">
+                <button class="btn btn-ghost-dark" id="show-more-btn">عرض الكل</button>
+                <a href="#contact" class="btn btn-primary btn-big portfolio-cta" id="portfolio-cta">
+                    أريد عملاً مثل هذا
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M19 12H5M5 12l7-7M5 12l7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Guided Flow Overlay -->
+        <div class="guided-overlay hidden" id="guided-overlay" role="dialog" aria-modal="true"
+            aria-label="مساعد اختيار المشاريع">
+            <button class="guided-close" id="guided-close" aria-label="إغلاق">×</button>
+
+            <!-- Phase 1: tags -->
+            <div class="guided-phase" id="g-phase-tags">
+                <div class="dots-row" aria-hidden="true">
+                    <div class="dot dot-red"></div>
+                    <div class="dot dot-yellow"></div>
+                    <div class="dot dot-teal"></div>
+                    <div class="dot dot-blue"></div>
+                </div>
+                <h3 class="guided-title">أنا أريد....</h3>
+                <p class="guided-sub">اختر ما يعجبك وسنجد لك أفضل أعمالنا</p>
+                <div class="tags-cloud" id="g-tags-cloud">
+                    <button class="tag-pill" data-tag="انيميشن">🎨 انيميشن</button>
+                    <button class="tag-pill" data-tag="موشن">✨ موشن جرافكس</button>
+                    <button class="tag-pill" data-tag="مونتاج">🎬 مونتاج</button>
+                    <button class="tag-pill" data-tag="تصوير">📷 تصوير</button>
+                    <button class="tag-pill" data-tag="رسم">🖋️ رسم</button>
+                    <button class="tag-pill" data-tag="هوية">🖌️ هوية بصرية</button>
+                    <button class="tag-pill" data-tag="تقرير">📋 تقرير</button>
+                    <button class="tag-pill" data-tag="تصميم">🎭 تصميم</button>
+                </div>
+                <div class="guided-controls">
+                    <button class="btn btn-primary btn-big" id="g-continue" disabled>متابعة ←</button>
+                </div>
+            </div>
+
+            <!-- Phase 2: thinking (moving dots injected by JS from the tags dots) -->
+            <div class="guided-phase hidden" id="g-phase-loading">
+                <div class="orbit-spacer" aria-hidden="true"></div>
+                <p class="guided-loading-text" id="g-loading-text"></p>
+            </div>
+
+            <!-- Phase 3: results -->
+            <div class="guided-phase hidden" id="g-phase-results">
+                <h3 class="guided-title" id="g-results-title">وجدنا لك هذا!</h3>
+                <p class="guided-sub">إليك أفضل ما يتناسب مع اختياراتك</p>
+                <div class="guided-results-grid" id="g-results-grid"></div>
+                <div class="guided-controls">
+                    <button class="btn btn-primary btn-big" id="g-want-same">أريد مثله! 🚀</button>
+                    <button class="btn btn-ghost" id="g-restart">← ابحث مجدداً</button>
+                </div>
+            </div>
+
+            <!-- Contact choice modal -->
+            <div class="g-contact-modal hidden" id="g-contact-modal">
+                <div class="g-contact-card">
+                    <h3>كيف تود التواصل معنا؟</h3>
+                    <p>اختر الوسيلة التي تناسبك لإرسال طلبك</p>
+                    <div class="g-contact-options">
+                        <button class="btn btn-whatsapp" id="g-wa-choice">واتساب 💬</button>
+                        <button class="btn btn-primary" id="g-mail-choice">بريد إلكتروني ✉️</button>
+                    </div>
+                    <button class="btn btn-ghost" id="g-modal-close">إغلاق</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <div class="soft-divider" aria-hidden="true">
+        <span class="soft-divider-dot"></span>
+    </div>
+
+    <!-- ===================== CONTACT ===================== -->
     <section id="contact" class="contact-section">
-        <div class="peeking-gradient"></div> <!-- Fading Gradient Background -->
-        <div class="peeking-chars-container"></div> <!-- Container for peeking members -->
         <div class="container contact-container">
-            <div class="contact-card">
+            <div class="contact-card reveal">
                 <h2>هل أنت مستعد للبدء؟</h2>
                 <p>نبحث عن الشركاء الذين يقدرون الجودة. إذا كان لديك مشروع طموح، فنحن هنا لتحقيقه.</p>
                 <form id="contact-form" class="contact-form">
                     <div class="form-group">
-                        <input type="email" id="email" placeholder="بريدك الإلكتروني" required>
+                        <input type="email" id="email" placeholder="بريدك الإلكتروني" required autocomplete="email">
                     </div>
                     <div class="form-group">
                         <input type="text" id="subject" placeholder="عنوان الرسالة" required>
@@ -385,33 +409,30 @@
                     <div class="form-group">
                         <textarea id="message" placeholder="محتوى الرسالة" rows="4" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary big">
+                    <button type="submit" class="btn btn-primary btn-big btn-full">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                            class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                            viewBox="0 0 16 16" aria-hidden="true">
                             <path
                                 d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z" />
                         </svg>
                         إرسال عبر البريد
                     </button>
 
-                    <div class="or-divider">
-                        <span>أو</span>
-                    </div>
+                    <div class="or-divider"><span>أو</span></div>
 
                     <div class="contact-actions-row">
                         <a href="https://api.whatsapp.com/send/?phone=966534223414&text&type=phone_number&app_absent=0"
-                            target="_blank" class="btn btn-whatsapp big">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                class="bi bi-whatsapp" viewBox="0 0 16 16">
+                            target="_blank" rel="noopener" class="btn btn-whatsapp btn-big">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                viewBox="0 0 16 16" aria-hidden="true">
                                 <path
                                     d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
                             </svg>
                             إرسال واتساب
                         </a>
-
-                        <button type="button" class="btn btn-copy big" id="copy-phone-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                        <button type="button" class="btn btn-copy btn-big" id="copy-phone-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                viewBox="0 0 16 16" aria-hidden="true">
                                 <path fill-rule="evenodd"
                                     d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z" />
                             </svg>
@@ -423,57 +444,84 @@
         </div>
     </section>
 
-    <!-- Success Toast Notification -->
-    <div id="copy-toast" class="copy-toast">تم نسخ الرقم بنجاح</div>
+    <!-- ===================== JOIN + TEAM (merged) ===================== -->
+    <section id="join" class="join-section">
+        <div class="icon-scatter" aria-hidden="true">
+            <span class="brand-icon i2 c-red"></span>
+            <span class="brand-icon i6 c-teal"></span>
+        </div>
+        <div class="container join-grid reveal">
+            <div class="join-text">
+                <h2>هل أنت مبدع؟</h2>
+                <p>نبحث دائمًا عن رسامين، مونتيرين، مصممين، كتّاب محتوى وأصوات مميزة يشاركوننا الرؤية. انضم إلى عالم
+                    السراج وكن جزءًا من القصة.</p>
+                <a class="btn btn-primary btn-big"
+                    href="https://wa.me/966534223414?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%A7%D9%84%D8%A7%D9%86%D8%B6%D9%85%D8%A7%D9%85%20%D9%84%D9%84%D9%81%D8%B1%D9%8A%D9%82"
+                    target="_blank" rel="noopener">انضم إلى الفريق</a>
+            </div>
+            <div class="join-team">
+                <div class="team-count">
+                    <span class="team-count-top">انضم إلى</span>
+                    <span class="team-count-num">+25</span>
+                    <span class="team-count-label">مبدع في مجالات مختلفة</span>
+                </div>
+                <img src="Siraj-members/Siraj.png" alt="" class="footer-siraj" loading="lazy" decoding="async">
+            </div>
+        </div>
     </section>
 
+    <!-- Toast -->
+    <div id="copy-toast" class="copy-toast" role="status">تم نسخ الرقم بنجاح</div>
+
+    <!-- Floating mobile CTA -->
+    <a href="#contact" class="floating-cta" id="floating-cta" aria-hidden="true">أريد عملاً مثل هذا</a>
+
+    <!-- ===================== FOOTER ===================== -->
     <footer class="footer">
         <div class="container footer-content">
-            <!-- Logo -->
             <div class="footer-logo-container">
-                <img src="footer-logo.png" alt="MDWNH" class="footer-logo">
+                <img src="footer-logo.png" alt="MDWNH" class="footer-logo" loading="lazy" decoding="async">
             </div>
 
-            <!-- Social Links -->
             <div class="social-links">
-                <a href="https://www.youtube.com/@MDWNH" target="_blank" class="social-btn youtube"
+                <a href="https://www.youtube.com/@Mdwn.c" target="_blank" rel="noopener" class="social-btn youtube"
                     aria-label="YouTube">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path
                             d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                     </svg>
                 </a>
-                <a href="https://www.linkedin.com/company/mdwnh" target="_blank" class="social-btn linkedin"
-                    aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                <a href="https://www.linkedin.com/company/mdwnh" target="_blank" rel="noopener"
+                    class="social-btn linkedin" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path
                             d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 .001-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                     </svg>
                 </a>
-                <a href="https://www.instagram.com/mdwnh.studio/" target="_blank" class="social-btn instagram"
-                    aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                <a href="https://www.instagram.com/mdwnh.studio/" target="_blank" rel="noopener"
+                    class="social-btn instagram" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path
                             d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.981 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.981-6.98.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.668-.072-4.948-.2-4.353-2.612-6.782-6.981-6.981C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4.01 4.01 0 1 1 0-8.019A4.01 4.01 0 0 1 12 16zm7.846-10.405a1.441 1.441 0 1 1-2.882 0 1.441 1.441 0 0 1 2.882 0z" />
                     </svg>
                 </a>
-                <a href="https://www.tiktok.com/@mdwnh.studio" target="_blank" class="social-btn tiktok"
+                <a href="https://www.tiktok.com/@mdwnh.studio" target="_blank" rel="noopener" class="social-btn tiktok"
                     aria-label="TikTok">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path
                             d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z" />
                     </svg>
                 </a>
-                <a href="https://www.behance.net/gallery/236817445/_" target="_blank" class="social-btn behance"
-                    aria-label="Behance">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="currentColor">
+                <a href="https://www.behance.net/gallery/236817445/_" target="_blank" rel="noopener"
+                    class="social-btn behance" aria-label="Behance">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path
                             d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
                     </svg>
                 </a>
-                <a href="https://discord.gg/Pz2jPCHtF4" target="_blank" class="social-btn discord" aria-label="Discord">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+                <a href="https://discord.gg/Pz2jPCHtF4" target="_blank" rel="noopener" class="social-btn discord"
+                    aria-label="Discord">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path
                             d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.419 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z" />
                     </svg>
@@ -488,48 +536,46 @@
 
     <!-- Video Player Modal -->
     <div id="video-modal" class="video-modal hidden">
-        <div class="video-modal-glow"></div>
-        <button class="video-close-btn" aria-label="Close video">×</button>
+        <button class="video-close-btn" aria-label="إغلاق الفيديو">×</button>
         <div class="video-container">
-            <iframe id="vimeo-player" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                allowfullscreen>
-            </iframe>
+            <iframe id="vimeo-player" src="" title="Showreel" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 
-    <!-- Lenis Smooth Scroll -->
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <!-- Data + Site JS -->
+    <script src="projects-data.js?v=3.0" defer></script>
+    <script src="assets/youtube-data.js" defer onerror="window.__ytFailed=true"></script>
+    <script src="script.js?v=5.0" defer></script>
 
-    <!-- Firebase Analytics for Main Page -->
-    <script src="analytics/tracker.js?v=2.0"></script>
+    <!-- Firebase Analytics (deferred, non-blocking) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js" defer></script>
+    <script src="analytics/tracker.js?v=2.0" defer></script>
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyATzvkgxTYVKZcOEeLjkJpupw56TLeIjXU",
-            authDomain: "mdwnhviewer.firebaseapp.com",
-            databaseURL: "https://mdwnhviewer-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "mdwnhviewer",
-            storageBucket: "mdwnhviewer.firebasestorage.app",
-            messagingSenderId: "384065085258",
-            appId: "1:384065085258:web:35911a6e9b28015657ebb3",
-            measurementId: "G-Z2GTGYBSMS"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // Entry tracking
-        window.mdwnhTrack(db, 'pages/main', 'entry');
-
-        // View tracking after 20 seconds
-        let _mainViewCounted = false;
-        setTimeout(() => {
-            if (_mainViewCounted) return;
-            _mainViewCounted = true;
-            window.mdwnhTrack(db, 'pages/main', 'view');
-        }, 20000);
+        window.addEventListener('load', () => {
+            if (typeof firebase === 'undefined' || !window.mdwnhTrack) return;
+            const firebaseConfig = {
+                apiKey: "AIzaSyATzvkgxTYVKZcOEeLjkJpupw56TLeIjXU",
+                authDomain: "mdwnhviewer.firebaseapp.com",
+                databaseURL: "https://mdwnhviewer-default-rtdb.europe-west1.firebasedatabase.app",
+                projectId: "mdwnhviewer",
+                storageBucket: "mdwnhviewer.firebasestorage.app",
+                messagingSenderId: "384065085258",
+                appId: "1:384065085258:web:35911a6e9b28015657ebb3",
+                measurementId: "G-Z2GTGYBSMS"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+            window.mdwnhTrack(db, 'pages/main', 'entry');
+            let counted = false;
+            setTimeout(() => {
+                if (counted) return;
+                counted = true;
+                window.mdwnhTrack(db, 'pages/main', 'view');
+            }, 20000);
+        });
     </script>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
