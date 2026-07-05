@@ -2019,6 +2019,7 @@ button {
     .manifesto-line {
         flex-wrap: wrap;
         row-gap: 0;
+        font-size: clamp(1.9rem, 8vw, 2.3rem);
     }
 
     .manifesto-prefix,
@@ -2111,6 +2112,12 @@ button {
         line-height: 1.5;
     }
 
+    /* "شركاء الهدف" has the longest paragraph of the five cards — it runs
+       past the card's fixed height at the default size, so trim it slightly. */
+    .mobile-service-card:nth-child(5) .mobile-service-content p {
+        font-size: 0.9rem;
+    }
+
     .mobile-pagination-controls {
         display: flex;
         justify-content: center;
@@ -2194,6 +2201,13 @@ button {
         display: none;
     }
 
+    /* team-count is hidden here, so the desktop "push way down to meet the
+       footer" margin (meant for the space under the +25 count) just reads
+       as a big gap under the "انضم إلى الفريق" button — tighten it up. */
+    .join-team {
+        margin-top: var(--s-2);
+    }
+
     .join-team .footer-siraj {
         width: min(360px, 78%);
     }
@@ -2237,7 +2251,12 @@ button {
 
     .client-item {
         height: 96px;
-        width: 150px;
+        width: 110px;
+    }
+
+    .marquee-content {
+        gap: 0;
+        padding-inline-end: 0;
     }
 }
 

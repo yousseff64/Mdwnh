@@ -344,6 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // every move, so an infinite (loop) animation can never "run out" no
         // matter how fast or far the drag goes — it just wraps around.
         const wrap = (n, m) => ((n % m) + m) % m;
+        const MAX_MOMENTUM = 8; // clamp how many x normal speed a hard flick can hit
+        const VELOCITY_WINDOW_MS = 100; // only recent samples count toward the flick speed
         let drag = null;
         track.addEventListener('pointerdown', (e) => {
             if (e.pointerType !== 'touch') return;
@@ -351,7 +353,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!anim) return;
             cancelAnimationFrame(rampId);
             anim.playbackRate = 0;
-            drag = { pointerId: e.pointerId, anim, startX: e.clientX, baseTime: anim.currentTime || 0, moved: false };
+            drag = {
+                pointerId: e.pointerId, anim, startX: e.clientX, baseTime: anim.currentTime || 0,
+                moved: false, samples: [{ t: performance.now(), x: e.clientX }]
+            };
             try { track.setPointerCapture(e.pointerId); } catch (err) { /* not a real active pointer (e.g. synthetic events); drag still works via the track's own listeners */ }
             track.classList.add('dragging');
         });
@@ -360,6 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const dx = e.clientX - drag.startX;
             drag.anim.currentTime = wrap(drag.baseTime - (dx / PX_PER_SEC) * 1000, durationMs);
             if (Math.abs(dx) > 8) drag.moved = true;
+            const now = performance.now();
+            drag.samples.push({ t: now, x: e.clientX });
+            while (drag.samples.length > 2 && now - drag.samples[0].t > VELOCITY_WINDOW_MS) drag.samples.shift();
         });
         const endDrag = (e) => {
             if (!drag || e.pointerId !== drag.pointerId) return;
@@ -370,8 +378,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 const suppressClick = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
                 track.addEventListener('click', suppressClick, { capture: true, once: true });
                 setTimeout(() => track.removeEventListener('click', suppressClick, true), 400);
+
+                // Momentum: estimate flick velocity from the last ~100ms of
+                // movement and coast at that speed, decelerating back down
+                // to the normal cruising rate instead of snapping straight
+                // to it — a slow drag settles almost immediately, a hard
+                // flick keeps gliding for a beat first. Record release
+                // position/time as a sample too, so holding the finger still
+                // before lifting (the standard "stop the fling" gesture)
+                // correctly reads as ~0 velocity instead of reusing a stale
+                // pre-pause sample.
+                const now = performance.now();
+                drag.samples.push({ t: now, x: e.clientX });
+                while (drag.samples.length > 2 && now - drag.samples[0].t > VELOCITY_WINDOW_MS) drag.samples.shift();
+                const first = drag.samples[0];
+                const last = drag.samples[drag.samples.length - 1];
+                const dt = last.t - first.t;
+                const velocityPxPerMs = dt > 0 ? (last.x - first.x) / dt : 0;
+                const momentumRate = Math.max(-MAX_MOMENTUM, Math.min(MAX_MOMENTUM,
+                    -(velocityPxPerMs * 1000) / PX_PER_SEC));
+                drag.anim.playbackRate = momentumRate;
+                rampPlaybackRate(1, 900, easeOut);
+            } else {
+                rampPlaybackRate(1, 500, easeIn);
             }
-            rampPlaybackRate(1, 500, easeIn);
             drag = null;
         };
         track.addEventListener('pointerup', endDrag);
