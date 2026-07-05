@@ -312,7 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // as sluggish — bump the speed there.
         const PX_PER_SEC = window.innerWidth <= 860 ? 70 : 40;
         const setWidth = track.querySelector('.yt-set').getBoundingClientRect().width;
-        track.style.animationDuration = `${setWidth / PX_PER_SEC}s`;
+        const durationSec = setWidth / PX_PER_SEC;
+        track.style.animationDuration = `${durationSec}s`;
+        const durationMs = durationSec * 1000;
 
         // Eased pause/resume on hover: ramp the CSS animation's playbackRate
         // instead of an instant animation-play-state toggle, so it glides to
@@ -335,6 +337,45 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         track.addEventListener('mouseenter', () => rampPlaybackRate(0, 500, easeOut));
         track.addEventListener('mouseleave', () => rampPlaybackRate(1, 500, easeIn));
+
+        // Touch drag-to-scroll: scrub the CSS animation's currentTime directly
+        // instead of fighting it with a transform, so it stays perfectly in
+        // sync with the loop. currentTime is wrapped into [0, durationMs) on
+        // every move, so an infinite (loop) animation can never "run out" no
+        // matter how fast or far the drag goes — it just wraps around.
+        const wrap = (n, m) => ((n % m) + m) % m;
+        let drag = null;
+        track.addEventListener('pointerdown', (e) => {
+            if (e.pointerType !== 'touch') return;
+            const anim = track.getAnimations()[0];
+            if (!anim) return;
+            cancelAnimationFrame(rampId);
+            anim.playbackRate = 0;
+            drag = { pointerId: e.pointerId, anim, startX: e.clientX, baseTime: anim.currentTime || 0, moved: false };
+            try { track.setPointerCapture(e.pointerId); } catch (err) { /* not a real active pointer (e.g. synthetic events); drag still works via the track's own listeners */ }
+            track.classList.add('dragging');
+        });
+        track.addEventListener('pointermove', (e) => {
+            if (!drag || e.pointerId !== drag.pointerId) return;
+            const dx = e.clientX - drag.startX;
+            drag.anim.currentTime = wrap(drag.baseTime - (dx / PX_PER_SEC) * 1000, durationMs);
+            if (Math.abs(dx) > 8) drag.moved = true;
+        });
+        const endDrag = (e) => {
+            if (!drag || e.pointerId !== drag.pointerId) return;
+            track.classList.remove('dragging');
+            if (drag.moved) {
+                // swallow the ghost click so a dragged card doesn't also
+                // navigate to its YouTube link
+                const suppressClick = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
+                track.addEventListener('click', suppressClick, { capture: true, once: true });
+                setTimeout(() => track.removeEventListener('click', suppressClick, true), 400);
+            }
+            rampPlaybackRate(1, 500, easeIn);
+            drag = null;
+        };
+        track.addEventListener('pointerup', endDrag);
+        track.addEventListener('pointercancel', endDrag);
     })();
 
     /* ================= 8. Portfolio grid + filter ================= */

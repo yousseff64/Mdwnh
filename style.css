@@ -830,6 +830,15 @@ button {
     direction: ltr;
     animation: ytmarquee 40s linear infinite;
     will-change: transform;
+    /* let the browser handle vertical page scroll natively, but leave
+       horizontal gestures to our own drag handler in script.js (no native
+       horizontal pan/zoom fighting the drag-scrub on touch devices) */
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.yt-track.dragging {
+    cursor: grabbing;
 }
 
 /* paused until scrolled into view (set by IntersectionObserver) */
@@ -2151,6 +2160,14 @@ button {
 
     .latest-content {
         width: 100%;
+    }
+
+    /* Fade mask reads as a hard edge/vignette at mobile width and fights the
+       drag gesture visually (cards fade out mid-drag) — just show the full
+       strip instead. */
+    .yt-marquee {
+        -webkit-mask-image: none;
+        mask-image: none;
     }
 
     /* Merged join: stack, hide team count, Siraj under text */
