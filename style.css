@@ -1603,7 +1603,7 @@ button {
 .join-section {
     position: relative;
     background: var(--bg-2);
-    padding-block: var(--s-7) 2rem;
+    padding-block: var(--s-7) 0;
     overflow: hidden;
 }
 
@@ -1650,6 +1650,9 @@ button {
     flex-direction: column;
     align-items: center;
     gap: var(--s-3);
+    /* push the whole text+image group down so it (and the image under it)
+       lands low in the section, right above the footer border */
+    margin-top: clamp(3rem, 9vw, 7rem);
 }
 
 .team-count {
@@ -1684,13 +1687,14 @@ button {
     color: var(--text);
 }
 
-/* Siraj sits under the "+25" count, in normal flow (so the two stay aligned
-   as one unit no matter the viewport width), but pushed way down so it
-   starts just above the footer's top border. */
+/* Siraj sits directly under the "+25" count (small natural gap via
+   .join-team's flex gap) — the big downward push lives on .join-team
+   itself so the whole group moves together and the image's bottom lands
+   right at the footer's top border (padding-bottom: 0 on .join-section). */
 .footer-siraj {
     width: min(320px, 64vw);
     height: auto;
-    margin-top: clamp(3rem, 9vw, 7rem);
+    display: block;
     filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.18));
 }
 
@@ -2175,10 +2179,6 @@ button {
 
     .join-team .footer-siraj {
         width: min(360px, 78%);
-        /* team-count is hidden here, so the image is join-team's only
-           child — don't inherit the desktop "way down" push meant for
-           the space under the +25 count. */
-        margin-top: var(--s-4);
     }
 
     /* Floating CTA active on mobile only */
