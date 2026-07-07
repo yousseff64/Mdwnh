@@ -210,6 +210,18 @@ button {
     font-size: 1.05rem;
 }
 
+.yt-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.yt-subtitle-icon {
+    flex-shrink: 0;
+    color: var(--muted);
+}
+
 /* ---------- Scroll reveal ---------- */
 .reveal {
     opacity: 0;
@@ -963,7 +975,7 @@ button {
 .services-grid {
     display: flex;
     width: 100%;
-    min-height: 300px;
+    height: clamp(480px, 38vw, 600px);
 }
 
 .services-content {
@@ -1103,6 +1115,7 @@ button {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
 }
 
 .mobile-services-scroller {
@@ -1612,7 +1625,7 @@ button {
 .join-section {
     position: relative;
     background: var(--bg-2);
-    padding-block: var(--s-7) 0;
+    padding-block: var(--s-4) 0;
     overflow: hidden;
 }
 
@@ -1661,7 +1674,7 @@ button {
     gap: var(--s-3);
     /* push the whole text+image group down so it (and the image under it)
        lands low in the section, right above the footer border */
-    margin-top: clamp(3rem, 9vw, 7rem);
+    margin-top: clamp(2.1rem, 6.3vw, 4.9rem);
 }
 
 .team-count {
@@ -1701,10 +1714,11 @@ button {
    itself so the whole group moves together and the image's bottom lands
    right at the footer's top border (padding-bottom: 0 on .join-section). */
 .footer-siraj {
-    width: min(320px, 64vw);
+    width: min(224px, 45vw);
     height: auto;
     display: block;
     filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.18));
+    transform: translateX(-12px);
 }
 
 /* ============================================================
@@ -2210,6 +2224,7 @@ button {
 
     .join-team .footer-siraj {
         width: min(360px, 78%);
+        transform: none;
     }
 
     /* Floating CTA active on mobile only */
