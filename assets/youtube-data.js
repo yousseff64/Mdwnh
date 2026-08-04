@@ -44,14 +44,5 @@ window.MDWNH_YT = [
     "link": "https://www.youtube.com/watch?v=ftUknipRrKA",
     "channelName": "مدونة ستوديو",
     "channelLogo": "https://yt3.googleusercontent.com/jY1IpHG-Su6gSO7rygFFkWwZZ_KL9Z_plB870fSSZ62F2wO4551FVN7YRzM3QyGTZ8K21XpvEw=s900-c-k-c0x00ffffff-no-rj"
-  },
-  {
-    "videoId": "O1xRcQWH_t0",
-    "title": "حكاية القرد والغيلم 🐢🐵",
-    "published": "2025-08-21T17:30:09+00:00",
-    "thumbnail": "https://i.ytimg.com/vi/O1xRcQWH_t0/hqdefault.jpg",
-    "link": "https://www.youtube.com/watch?v=O1xRcQWH_t0",
-    "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/jY1IpHG-Su6gSO7rygFFkWwZZ_KL9Z_plB870fSSZ62F2wO4551FVN7YRzM3QyGTZ8K21XpvEw=s900-c-k-c0x00ffffff-no-rj"
   }
 ];
