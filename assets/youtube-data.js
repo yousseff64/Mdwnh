@@ -28,15 +28,6 @@ window.MDWNH_YT = [
     "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
   },
   {
-    "videoId": "KRuVul1IcbM",
-    "title": "غدًا … غمام 🌧️ #animation",
-    "published": "2026-05-06T17:56:58+00:00",
-    "thumbnail": "https://i.ytimg.com/vi/KRuVul1IcbM/hqdefault.jpg",
-    "link": "https://www.youtube.com/watch?v=KRuVul1IcbM",
-    "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
-  },
-  {
     "videoId": "00aH0qeo6dY",
     "title": "غدًا ...  غمام 🌧️",
     "published": "2026-05-06T17:41:48+00:00",
@@ -51,6 +42,15 @@ window.MDWNH_YT = [
     "published": "2026-04-25T16:21:46+00:00",
     "thumbnail": "https://i.ytimg.com/vi/tJfiXnSMD0c/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=tJfiXnSMD0c",
+    "channelName": "مدونة ستوديو",
+    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+  },
+  {
+    "videoId": "ftUknipRrKA",
+    "title": "تشويقة فلم غمام",
+    "published": "2026-01-29T12:50:18+00:00",
+    "thumbnail": "https://i.ytimg.com/vi/ftUknipRrKA/hqdefault.jpg",
+    "link": "https://www.youtube.com/watch?v=ftUknipRrKA",
     "channelName": "مدونة ستوديو",
     "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
   }
