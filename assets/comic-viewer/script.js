@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let currentViewMode = 'vertical';
     let flipBook = null;
-    let hasCountedView = false;
     // Store all loaded images by URL for instant retrieval
     const loadedImagesMap = new Map(); // url -> img
 
@@ -145,19 +144,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Entry tracking (tracker.js loaded statically in each story page head)
-    if (typeof window.mdwnhTrack === 'function') {
-        window.mdwnhTrack(db, 'comics/' + comicId, 'entry');
+    // Analytics v3 (tracker.js is loaded statically in each story page head).
+    // The tracker owns sessions, active dwell time and the 20s qualified-view
+    // rule; the reader only needs to report the container it scrolls and how
+    // far through the comic the reader has actually got.
+    if (window.MdwnhAnalytics) {
+        window.MdwnhAnalytics.init({
+            db: db,
+            path: 'comics/' + comicId,
+            scrollContainer: containerEl   // vertical mode scrolls this, not window
+        });
     }
-
-    // View tracking after 20 seconds
-    setTimeout(() => {
-        if (!db || hasCountedView) return;
-        hasCountedView = true;
-        if (typeof window.mdwnhTrack === 'function') {
-            window.mdwnhTrack(db, 'comics/' + comicId, 'view');
-        }
-    }, 20000);
 
     // Security: Disable right-click
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -375,6 +372,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 flipBook.on('flip', e => {
                     playFlipSound();
                     updatePageCounter(flipBook, totalPages);
+                    // Reading progress in flip mode. Pages run right-to-left, so
+                    // "read so far" is measured from the end of the book.
+                    if (window.MdwnhAnalytics) {
+                        const read = Math.max(0, totalPages - 2 - (flipBook.getCurrentPageIndex() - 1));
+                        window.MdwnhAnalytics.progress(read, totalPages - 2);
+                    }
                 });
                 updatePageCounter(flipBook, totalPages);
             } catch(e) { console.error('Flipbook init:', e); }

@@ -558,10 +558,10 @@
     <!-- Firebase Analytics (deferred, non-blocking) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js" defer></script>
-    <script src="analytics/tracker.js?v=2.0" defer></script>
+    <script src="analytics/tracker.js?v=3.0" defer></script>
     <script>
         window.addEventListener('load', () => {
-            if (typeof firebase === 'undefined' || !window.mdwnhTrack) return;
+            if (typeof firebase === 'undefined' || !window.MdwnhAnalytics) return;
             const firebaseConfig = {
                 apiKey: "AIzaSyATzvkgxTYVKZcOEeLjkJpupw56TLeIjXU",
                 authDomain: "mdwnhviewer.firebaseapp.com",
@@ -573,14 +573,9 @@
                 measurementId: "G-Z2GTGYBSMS"
             };
             firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
-            window.mdwnhTrack(db, 'pages/main', 'entry');
-            let counted = false;
-            setTimeout(() => {
-                if (counted) return;
-                counted = true;
-                window.mdwnhTrack(db, 'pages/main', 'view');
-            }, 20000);
+            // v3 handles sessions, dwell time, scroll depth and the 20s
+            // qualified-view rule itself — no manual timers needed here.
+            window.MdwnhAnalytics.init({ db: firebase.database(), path: 'pages/main' });
         });
     </script>
 </body>

@@ -3,230 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>إحصائيات – MDWN Studio</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" href="../favicon.ico" sizes="any">
     <link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="../favicon-16x16.png" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="../apple-touch-icon.png" sizes="180x180">
     <link rel="manifest" href="../site.webmanifest">
+    <link rel="stylesheet" href="styles.css?v=3.0">
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        :root {
-            --black:   #0e0e10;
-            --raisin:  #1a1a1f;
-            --surface: #242429;
-            --surface2:#2c2c33;
-            --border:  rgba(255,255,255,0.07);
-            --snow:    #f5f4f2;
-            --muted:   rgba(245,244,242,0.42);
-            --blue:    #3b82f6;
-            --teal:    #2dd4bf;
-            --yellow:  #fbbf24;
-            --red:     #f87171;
-            --purple:  #a78bfa;
-            --orange:  #fb923c;
-            --font:    'Rubik', sans-serif;
-        }
-        *{box-sizing:border-box;margin:0;padding:0;}
-        html{scroll-behavior:smooth;}
-        body{background:var(--black);color:var(--snow);font-family:var(--font);min-height:100vh;direction:rtl;line-height:1.6;overflow-x:hidden;}
-
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar{width:5px;}
-        ::-webkit-scrollbar-track{background:var(--black);}
-        ::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px;}
-
-        /* ─── LOGIN ─── */
-        #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,0.12) 0%,transparent 60%),var(--black);}
-        .login-card{background:var(--raisin);border:1px solid var(--border);border-radius:28px;padding:3rem 2.5rem;width:100%;max-width:400px;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,0.7);}
-        .login-dots{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1.5rem;}
-        .login-dot{width:12px;height:12px;border-radius:50%;}
-        .login-card h1{font-size:1.4rem;font-weight:700;margin-bottom:.3rem;}
-        .login-card p{color:var(--muted);font-size:.88rem;margin-bottom:2rem;}
-        .pin-input{display:flex;gap:.75rem;justify-content:center;margin-bottom:1.5rem;direction:ltr;}
-        .pin-digit{width:58px;height:66px;border:2px solid var(--border);border-radius:16px;background:var(--surface);color:var(--snow);font-size:2rem;font-weight:700;text-align:center;outline:none;transition:border-color .2s,box-shadow .2s;font-family:var(--font);-webkit-text-security:disc;}
-        .pin-digit:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,0.2);}
-        .btn-login{width:100%;padding:.9rem;background:var(--blue);color:#fff;border:none;border-radius:14px;font-size:1rem;font-weight:600;font-family:var(--font);cursor:pointer;transition:opacity .2s,transform .2s;}
-        .btn-login:hover{opacity:.88;transform:translateY(-1px);}
-        .login-error{color:var(--red);font-size:.85rem;margin-top:.75rem;min-height:1.2em;}
-
-        /* ─── DASHBOARD ─── */
-        #dashboard{display:none;min-height:100vh;}
-
-        /* ─── HEADER ─── */
-        .dash-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(26,26,31,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;}
-        .dash-brand{display:flex;align-items:center;gap:.8rem;}
-        .brand-dots{display:flex;gap:4px;}
-        .brand-dot{width:9px;height:9px;border-radius:50%;}
-        .brand-name{font-weight:700;font-size:1.05rem;}
-        .brand-sub{font-size:.72rem;color:var(--muted);margin-top:1px;}
-        .live-badge{display:flex;align-items:center;gap:6px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);border-radius:99px;padding:.22rem .7rem;font-size:.72rem;color:var(--teal);font-weight:500;}
-        .live-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 1.5s infinite;}
-        @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-        .btn-logout{background:none;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.35rem .9rem;font-size:.82rem;font-family:var(--font);cursor:pointer;transition:border-color .2s,color .2s;}
-        .btn-logout:hover{border-color:var(--red);color:var(--red);}
-
-        /* ─── PILL NAV BAR ─── */
-        .nav-bar-wrap{position:sticky;top:57px;z-index:150;background:rgba(14,14,16,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.75rem 2rem;}
-        .nav-bar{display:flex;align-items:center;gap:.25rem;overflow-x:auto;position:relative;-ms-overflow-style:none;scrollbar-width:none;}
-        .nav-bar::-webkit-scrollbar{display:none;}
-        .nav-pill{position:relative;z-index:2;border:none;background:none;color:var(--muted);font-family:var(--font);font-size:.85rem;font-weight:500;padding:.5rem 1.1rem;border-radius:99px;cursor:pointer;transition:color .25s;white-space:nowrap;display:flex;align-items:center;gap:.4rem;}
-        .nav-pill:hover{color:var(--snow);}
-        .nav-pill.active{color:var(--snow);font-weight:600;}
-        .nav-pill-indicator{position:absolute;top:0;height:100%;border-radius:99px;background:var(--surface2);border:1px solid var(--border);transition:left .3s cubic-bezier(.4,0,.2,1),width .3s cubic-bezier(.4,0,.2,1);z-index:1;pointer-events:none;}
-        .nav-separator{width:1px;height:22px;background:var(--border);margin:0 .35rem;flex-shrink:0;}
-
-        /* ─── DASH BODY ─── */
-        .dash-body{padding:2rem;max-width:1200px;margin:0 auto;}
-
-        /* ─── SECTION PANEL ─── */
-        .section-panel{display:none;}
-        .section-panel.active{display:block;animation:fadeIn .3s ease;}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-
-        /* ─── KPI ROW ─── */
-        .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.75rem;}
-        .kpi-card{background:var(--raisin);border:1px solid var(--border);border-radius:18px;padding:1.25rem 1.4rem;transition:border-color .25s,transform .25s;}
-        .kpi-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-2px);}
-        .kpi-label{font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;}
-        .kpi-val{font-size:2rem;font-weight:800;line-height:1;letter-spacing:-1px;}
-        .kpi-sub{font-size:.72rem;color:var(--muted);margin-top:.35rem;}
-
-        /* ─── CHARTS GRID ─── */
-        .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
-        .charts-grid.triple{grid-template-columns:repeat(3,1fr);}
-        .chart-card{background:var(--raisin);border:1px solid var(--border);border-radius:18px;padding:1.4rem;overflow:hidden;}
-        .chart-card.full{grid-column:1/-1;}
-        .chart-title{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
-        .chart-title-icon{font-size:1rem;}
-        .chart-wrap{position:relative;height:200px;}
-        .chart-wrap.tall{height:240px;}
-        .chart-wrap.short{height:160px;}
-
-        /* ─── BAR LIST (horizontal ranked list) ─── */
-        .bar-list{display:flex;flex-direction:column;gap:.6rem;margin-top:.25rem;}
-        .bar-item{display:flex;flex-direction:column;gap:.25rem;}
-        .bar-item-row{display:flex;align-items:center;justify-content:space-between;}
-        .bar-item-label{font-size:.8rem;color:var(--snow);font-weight:500;display:flex;align-items:center;gap:.4rem;}
-        .bar-item-val{font-size:.8rem;font-weight:700;color:var(--muted);}
-        .bar-track{height:5px;background:var(--surface);border-radius:99px;overflow:hidden;}
-        .bar-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.4,0,.2,1);}
-
-        /* ─── SECTION HEADER ─── */
-        .section-hero{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem;padding:1.5rem;background:var(--raisin);border:1px solid var(--border);border-radius:20px;}
-        .section-hero-icon{font-size:2.5rem;flex-shrink:0;}
-        .section-hero-name{font-size:1.4rem;font-weight:800;line-height:1.2;}
-        .section-hero-id{font-size:.75rem;color:var(--muted);margin-top:.2rem;direction:ltr;}
-        .section-hero-bar{width:5px;border-radius:99px;align-self:stretch;flex-shrink:0;}
-
-        /* ─── CONVERSION BADGE ─── */
-        .conv-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;background:var(--surface);border-radius:12px;margin-top:.75rem;}
-        .conv-label{font-size:.78rem;color:var(--muted);}
-        .conv-val{font-size:.95rem;font-weight:700;color:var(--yellow);}
-
-        /* ─── SKELETON ─── */
-        .skeleton{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;display:inline-block;}
-        @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-
-        /* ─── FOOTER ─── */
-        .dash-footer{text-align:center;color:var(--muted);font-size:.74rem;padding:2rem;border-top:1px solid var(--border);margin-top:1.5rem;}
-
-        /* ─── RESPONSIVE ─── */
-        @media(max-width:900px){
-            .charts-grid{grid-template-columns:1fr;}
-            .charts-grid.triple{grid-template-columns:1fr;}
-            .dash-body{padding:1rem;}
-            .nav-bar-wrap{padding:.6rem 1rem;}
-            .kpi-row{grid-template-columns:1fr 1fr;}
-            .live-badge{display:none;}
-        }
-        @media(max-width:480px){
-            .kpi-row{grid-template-columns:1fr;}
-            .dash-header{padding:.8rem 1rem;}
-        }
-    </style>
 </head>
 <body>
 
-<!-- ── LOGIN ───────────────────────────────────────── -->
+<!-- ═══ LOGIN ═══════════════════════════════════════════════════════════════ -->
 <div id="login-screen">
     <div class="login-card">
-        <div class="login-dots">
-            <div class="login-dot" style="background:var(--blue)"></div>
-            <div class="login-dot" style="background:var(--teal)"></div>
-            <div class="login-dot" style="background:var(--yellow)"></div>
-            <div class="login-dot" style="background:var(--red)"></div>
-        </div>
-        <h1>إحصائيات MDWN</h1>
+        <img class="login-logo" src="../logo.png" alt="مدونة ستوديو">
+        <h1>لوحة الإحصائيات</h1>
         <p>أدخل رمز الوصول للمتابعة</p>
         <div class="pin-input">
-            <input class="pin-digit" id="d1" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
-            <input class="pin-digit" id="d2" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
-            <input class="pin-digit" id="d3" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
-            <input class="pin-digit" id="d4" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]">
+            <input class="pin-digit" id="d1" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]" aria-label="الرقم الأول">
+            <input class="pin-digit" id="d2" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]" aria-label="الرقم الثاني">
+            <input class="pin-digit" id="d3" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]" aria-label="الرقم الثالث">
+            <input class="pin-digit" id="d4" maxlength="1" type="password" inputmode="numeric" pattern="[0-9]" aria-label="الرقم الرابع">
         </div>
         <button class="btn-login" onclick="checkPassword()">دخول</button>
         <div class="login-error" id="login-error"></div>
     </div>
 </div>
 
-<!-- ── DASHBOARD ──────────────────────────────────── -->
+<!-- ═══ DASHBOARD ═══════════════════════════════════════════════════════════ -->
 <div id="dashboard">
 
-    <!-- Header -->
     <header class="dash-header">
         <div class="dash-brand">
-            <div class="brand-dots">
-                <div class="brand-dot" style="background:var(--blue)"></div>
-                <div class="brand-dot" style="background:var(--teal)"></div>
-                <div class="brand-dot" style="background:var(--yellow)"></div>
-                <div class="brand-dot" style="background:var(--red)"></div>
-            </div>
+            <img class="brand-logo" src="../logo.png" alt="مدونة ستوديو">
+            <div class="brand-divider"></div>
             <div>
-                <div class="brand-name">MDWN Analytics</div>
+                <div class="brand-name">لوحة الإحصائيات</div>
                 <div class="brand-sub" id="last-updated">جاري التحميل…</div>
             </div>
         </div>
-        <div class="live-badge"><div class="live-dot"></div>مباشر</div>
-        <button class="btn-logout" onclick="logout()">خروج</button>
+        <div class="header-actions">
+            <div class="live-badge"><div class="live-dot"></div>مباشر</div>
+            <button class="btn-ghost" id="refresh-btn"><span class="ico">⟳</span> تحديث</button>
+            <button class="btn-ghost" id="export-btn">⬇ CSV</button>
+            <button class="btn-ghost danger" onclick="logout()">خروج</button>
+        </div>
     </header>
 
-    <!-- Pill Nav Bar -->
     <div class="nav-bar-wrap">
-        <div class="nav-bar" id="nav-bar">
-            <div class="nav-pill-indicator" id="pill-indicator"></div>
-            <button class="nav-pill active" data-section="hujra">🚪 باب الحجرة</button>
-            <button class="nav-pill" data-section="samrqand">⚖️ قضية سمرقند</button>
-            <button class="nav-pill" data-section="ghailam">🐒 القرد والغيلم</button>
-            <div class="nav-separator"></div>
-            <button class="nav-pill" data-section="main">🏠 الصفحة الرئيسية</button>
-            <button class="nav-pill" data-section="projects">📁 المشاريع</button>
-        </div>
+        <div class="nav-bar" id="scope-nav"></div>
     </div>
 
-    <!-- Body -->
     <div class="dash-body">
 
-        <!-- ── HUJRA ── -->
-        <div class="section-panel active" id="panel-hujra"></div>
-        <!-- ── SAMRQAND ── -->
-        <div class="section-panel" id="panel-samrqand"></div>
-        <!-- ── GHAILAM ── -->
-        <div class="section-panel" id="panel-ghailam"></div>
-        <!-- ── MAIN ── -->
-        <div class="section-panel" id="panel-main"></div>
-        <!-- ── PROJECTS ── -->
-        <div class="section-panel" id="panel-projects"></div>
+        <!-- ── Controls ────────────────────────────────────────────────── -->
+        <div class="control-bar">
+            <div class="ctl-group">
+                <span class="ctl-label">الفترة</span>
+                <select id="period-select">
+                    <option value="today">اليوم</option>
+                    <option value="this_week" selected>هذا الأسبوع</option>
+                    <option value="last_week">الأسبوع الماضي</option>
+                    <option value="this_month">هذا الشهر</option>
+                    <option value="last_month">الشهر الماضي</option>
+                    <option value="last7">آخر 7 أيام</option>
+                    <option value="last28">آخر 28 يوم</option>
+                    <option value="last90">آخر 90 يوم</option>
+                    <option value="custom">فترة مخصصة</option>
+                </select>
+            </div>
+            <div id="custom-range" style="display:none">
+                <input type="date" id="date-from" aria-label="من تاريخ">
+                <span class="ctl-label">إلى</span>
+                <input type="date" id="date-to" aria-label="إلى تاريخ">
+                <button class="btn-ghost" id="apply-custom">تطبيق</button>
+            </div>
+            <label class="switch" title="يقصّ الفترة السابقة لنفس عدد الأيام المنقضية، حتى لا تبدو الفترة الحالية أقل لمجرد أنها لم تكتمل بعد">
+                <input type="checkbox" id="fair-toggle" checked>
+                مقارنة عادلة
+            </label>
+            <div class="ctl-spacer"></div>
+            <div class="ctl-group">
+                <span class="ctl-label">مؤشر الرسم</span>
+                <select id="trend-metric">
+                    <option value="sessions">الجلسات</option>
+                    <option value="qualifiedViews">المشاهدات الحقيقية</option>
+                    <option value="engagedSessions">الجلسات المتفاعلة</option>
+                    <option value="pageviews">مشاهدات الصفحات</option>
+                    <option value="newVisitors">الزوار الجدد</option>
+                </select>
+            </div>
+        </div>
 
-        <div class="dash-footer" id="footer-time">آخر تحديث: —</div>
+        <div class="period-head">
+            <div class="period-title" id="scope-title">📊 نظرة عامة</div>
+            <div class="period-line" id="period-label">…</div>
+            <div class="period-prev" id="period-prev-label">…</div>
+        </div>
+
+        <!-- ── KPIs ────────────────────────────────────────────────────── -->
+        <div class="kpi-row" id="kpi-row"></div>
+
+        <!-- ── What changed ────────────────────────────────────────────── -->
+        <div class="card" id="narrative-card">
+            <div class="card-head" data-collapse>
+                <span>🔍 ماذا تغيّر؟ ولماذا؟</span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body" id="narrative"></div>
+        </div>
+
+        <!-- ── Trend ───────────────────────────────────────────────────── -->
+        <div class="card">
+            <div class="card-head" data-collapse>
+                <span>📈 المنحنى اليومي <span class="card-sub">— الفترة الحالية مقابل السابقة</span></span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body"><div class="chart-wrap"><canvas id="chart-trend"></canvas></div></div>
+        </div>
+
+        <!-- ── Section comparison (overview only) ──────────────────────── -->
+        <div class="card" id="scope-compare-card">
+            <div class="card-head" data-collapse>
+                <span>🏆 مقارنة الأقسام</span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body table-scroll" id="scope-compare"></div>
+        </div>
+
+        <!-- ── Funnel + devices ────────────────────────────────────────── -->
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-head" data-collapse>
+                    <span>🪜 قمع التفاعل <span class="card-sub">— أين يتسرّب الزوار</span></span>
+                    <span class="chev">▾</span>
+                </div>
+                <div class="card-body" id="funnel"></div>
+            </div>
+            <div class="card">
+                <div class="card-head" data-collapse><span>📱 الأجهزة</span><span class="chev">▾</span></div>
+                <div class="card-body"><div class="chart-wrap mid"><canvas id="chart-device"></canvas></div></div>
+            </div>
+        </div>
+
+        <!-- ── Sources + countries ─────────────────────────────────────── -->
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-head" data-collapse>
+                    <span>📡 مصادر الزيارات <span class="card-sub">— من أين جاؤوا</span></span>
+                    <span class="chev">▾</span>
+                </div>
+                <div class="card-body table-scroll" id="tbl-sources"></div>
+            </div>
+            <div class="card">
+                <div class="card-head" data-collapse><span>🌍 الدول</span><span class="chev">▾</span></div>
+                <div class="card-body table-scroll" id="tbl-countries"></div>
+            </div>
+        </div>
+
+        <!-- ── Heatmap ─────────────────────────────────────────────────── -->
+        <div class="card">
+            <div class="card-head" data-collapse>
+                <span>🕐 خريطة النشاط <span class="card-sub">— اليوم × الساعة، بتوقيت الرياض</span></span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body table-scroll" id="heatmap"></div>
+        </div>
+
+        <!-- ── Visitor mix ─────────────────────────────────────────────── -->
+        <div class="card">
+            <div class="card-head" data-collapse>
+                <span>👥 زوار جدد مقابل عائدين <span class="card-sub">— يوميًا</span></span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body"><div class="chart-wrap short"><canvas id="chart-visitors"></canvas></div></div>
+        </div>
+
+        <!-- ── Tech breakdowns ─────────────────────────────────────────── -->
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-head" data-collapse><span>💻 نظام التشغيل</span><span class="chev">▾</span></div>
+                <div class="card-body table-scroll" id="tbl-os"></div>
+            </div>
+            <div class="card">
+                <div class="card-head" data-collapse><span>🌐 المتصفح</span><span class="chev">▾</span></div>
+                <div class="card-body table-scroll" id="tbl-browsers"></div>
+            </div>
+            <div class="card">
+                <div class="card-head" data-collapse><span>📐 حجم الشاشة</span><span class="chev">▾</span></div>
+                <div class="card-body table-scroll" id="tbl-screens"></div>
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-head" data-collapse><span>🔗 نوع المصدر</span><span class="chev">▾</span></div>
+                <div class="card-body table-scroll" id="tbl-referrers"></div>
+            </div>
+            <div class="card">
+                <div class="card-head" data-collapse><span>🗣️ لغة المتصفح</span><span class="chev">▾</span></div>
+                <div class="card-body table-scroll" id="tbl-langs"></div>
+            </div>
+            <div class="card">
+                <div class="card-head" data-collapse>
+                    <span>🎯 الحملات <span class="card-sub">— utm_campaign</span></span>
+                    <span class="chev">▾</span>
+                </div>
+                <div class="card-body table-scroll" id="tbl-campaigns"></div>
+            </div>
+        </div>
+
+        <!-- ── Events ──────────────────────────────────────────────────── -->
+        <div class="card">
+            <div class="card-head" data-collapse>
+                <span>⚡ الأحداث <span class="card-sub">— نقرات خارجية، تقدّم القراءة، أزرار</span></span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body table-scroll" id="tbl-events"></div>
+        </div>
+
+        <!-- ── Raw daily table ─────────────────────────────────────────── -->
+        <div class="card">
+            <div class="card-head" data-collapse>
+                <span>🗓️ التفصيل اليومي <span class="card-sub">— كل يوم على حدة، لمعرفة أين بالضبط تغيّر الرقم</span></span>
+                <span class="chev">▾</span>
+            </div>
+            <div class="card-body table-scroll" id="daily-table"></div>
+        </div>
+
+        <div class="dash-footer">
+            <img src="../logo.png" alt="مدونة ستوديو">
+            <div id="footer-time">آخر تحديث: —</div>
+            <div style="margin-top:.4rem">التوقيت المستخدم في كل الأرقام: الرياض (UTC+3)</div>
+        </div>
     </div>
 </div>
 
-<!-- Part 2: JS will be inlined here via script tag -->
-<script src="analytics-dashboard.js"></script>
+<script src="dashboard.js?v=3.0"></script>
 </body>
 </html>
