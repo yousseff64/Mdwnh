@@ -216,14 +216,16 @@ body {
     bottom: calc(100% + 10px);
     /* Centred on the card and free to overrun it — anchoring to the card's
        own edges squeezed the text into a 105px-wide column. */
-    left: 50%; width: 265px; max-width: calc(100vw - 28px);
+    /* --tip-w and --tip-shift are set per badge by positionTips() so the box is
+       nudged back inside the screen instead of being cut off at the edge. */
+    left: 50%; width: var(--tip-w, 265px);
     background: #101014; color: var(--snow);
     border: 1px solid var(--border2); border-radius: 12px;
     padding: .75rem .9rem; font-size: .76rem; font-weight: 400;
     line-height: 1.7; text-transform: none; letter-spacing: 0;
     text-align: right; white-space: normal;
     box-shadow: 0 18px 44px rgba(0, 0, 0, .8);
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% + var(--tip-shift, 0px)));
     pointer-events: none;
     /* display:none rather than visibility:hidden: a hidden-but-laid-out
        absolute box still contributes to scrollable overflow, which nudged the
@@ -235,11 +237,16 @@ body {
    rather than one grouped selector list — mixing pseudo-classes with a plain
    class ahead of ::after resolves inconsistently across engines. */
 .kpi-label .info.open::after  { display: block; animation: tipIn .18s ease both; }
-.kpi-label .info:hover::after { display: block; animation: tipIn .18s ease both; }
 .kpi-label .info:focus::after { display: block; animation: tipIn .18s ease both; }
+/* Hover only where hovering is real. On a touch screen a tap applies :hover
+   for a moment and then drops it, which made the explanation flash up and
+   vanish again. Touch devices open it through .open instead. */
+@media (hover: hover) and (pointer: fine) {
+    .kpi-label .info:hover::after { display: block; animation: tipIn .18s ease both; }
+}
 @keyframes tipIn {
-    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
-    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    from { opacity: 0; transform: translateX(calc(-50% + var(--tip-shift, 0px))) translateY(4px); }
+    to   { opacity: 1; transform: translateX(calc(-50% + var(--tip-shift, 0px))) translateY(0); }
 }
 .kpi-label .info.open { background: var(--blue); color: #fff; }
 

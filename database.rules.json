@@ -5,7 +5,7 @@
     "stats": {
       "v3": {
         "$scope": {
-          ".read": true,
+          ".read": "auth != null",
           ".validate": "$scope.matches(/^(comics_hujra|comics_samrqand|comics_ghailam|pages_main|pages_projects)$/)",
           "daily": {
             "$date": {
@@ -264,7 +264,7 @@
     },
     "comics": {
       "$id": {
-        ".read": true,
+        ".read": "auth != null",
         ".validate": "$id.matches(/^(hujra|samrqand|ghailam)$/)",
         "entries": {
           ".write": "newData.exists()",
@@ -272,7 +272,8 @@
         },
         "views": {
           ".write": "newData.exists()",
-          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() > (data.exists() ? data.val() : 0) && newData.val() - (data.exists() ? data.val() : 0) <= 1000"
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() > (data.exists() ? data.val() : 0) && newData.val() - (data.exists() ? data.val() : 0) <= 1000",
+          ".read": true
         },
         "devices": {
           "$k": {
@@ -310,14 +311,12 @@
             ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() > (data.exists() ? data.val() : 0) && newData.val() - (data.exists() ? data.val() : 0) <= 1000 && $k.matches(/^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)$/)"
           }
         },
-        "countries": {
-          ".read": true
-        }
+        "countries": {}
       }
     },
     "pages": {
       "$id": {
-        ".read": true,
+        ".read": "auth != null",
         ".validate": "$id.matches(/^(main|projects)$/)",
         "entries": {
           ".write": "newData.exists()",
@@ -363,9 +362,7 @@
             ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() > (data.exists() ? data.val() : 0) && newData.val() - (data.exists() ? data.val() : 0) <= 1000 && $k.matches(/^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)$/)"
           }
         },
-        "countries": {
-          ".read": true
-        }
+        "countries": {}
       }
     }
   }

@@ -44,6 +44,7 @@ const DOW_AR = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأرب�
 
 /* ── State ────────────────────────────────────────────────────────────────── */
 let syncPillIndicator = function () {};   // assigned by buildScopeNav
+let positionTips     = function () {};   // assigned by initControls
 
 const state = {
     scope: 'all',
@@ -843,11 +844,11 @@ function toISO(k) {
 const legacyRaw = {};
 
 function loadLegacy() {
-    return Promise.all(DATA_SCOPES.map(id =>
+    return ensureAuth().then(() => Promise.all(DATA_SCOPES.map(id =>
         db.ref(LEGACY_PATH[id]).once('value')
           .then(s => { legacyRaw[id] = s.val() || {}; })
           .catch(() => { legacyRaw[id] = {}; })
-    ));
+    )));
 }
 
 function renderAllTime() {
@@ -919,15 +920,35 @@ function renderAllTime() {
 
 /* ══ Data loading ═══════════════════════════════════════════════════════════
    One range-scoped read per scope instead of a permanent whole-node listener. */
+/* The database no longer serves analytics to anonymous HTTP callers, so the
+   dashboard signs in first. This is not the PIN — it stops the numbers being
+   readable by anyone who simply knows the database URL. Someone who reads this
+   file could still sign in the same way; it raises the floor, it is not a wall.
+   Resolves immediately once a session exists, so refreshes do not re-auth. */
+let authReady = null;
+function ensureAuth() {
+    if (authReady) return authReady;
+    authReady = new Promise(resolve => {
+        firebase.auth().onAuthStateChanged(user => { if (user) resolve(user); });
+        firebase.auth().signInAnonymously().catch(err => {
+            console.error('[MDWNH] sign-in failed:', err && err.code);
+            const n = el('narrative');
+            if (n) n.innerHTML = `<div class="nar-empty">تعذّر تسجيل الدخول إلى قاعدة البيانات
+                (${err && err.code || 'خطأ'}). تأكد من تفعيل "Anonymous" في إعدادات Firebase Authentication.</div>`;
+            setLoading(false);
+        });
+    });
+    return authReady;
+}
+
 function loadRange(from, to) {
     setLoading(true);
-    const jobs = DATA_SCOPES.map(id =>
+    return ensureAuth().then(() => Promise.all(DATA_SCOPES.map(id =>
         db.ref('stats/v3/' + id + '/daily')
           .orderByKey().startAt(from).endAt(to).once('value')
           .then(snap => { state.raw[id] = Object.assign(state.raw[id] || {}, snap.val() || {}); })
           .catch(err => { console.warn('[MDWNH] load failed for', id, err && err.message); })
-    );
-    return Promise.all(jobs).then(() => { state.loaded = true; setLoading(false); });
+    ))).then(() => { state.loaded = true; setLoading(false); });
 }
 
 function setLoading(on) {
@@ -973,6 +994,7 @@ function render() {
     renderAllTime();
 
     syncPillIndicator();   // widths can shift as content lands; keep it honest
+    positionTips();        // KPI cards were just rebuilt; re-measure the popovers
 
     const now = new Date().toLocaleTimeString('ar-EG', { timeZone: TZ, hour12: true });
     el('last-updated').textContent = 'آخر تحديث: ' + now + ' (الرياض)';
@@ -1100,6 +1122,27 @@ function initControls() {
 
     /* Metric explanations. Hover covers the desktop case in CSS; this makes
        them openable by tap, which is the only way to read them on a phone. */
+    /* Keep every explanation box inside the screen. Each one is centred on its
+       card, which pushed the boxes on the outer columns past the screen edge
+       where they were cut off. This measures where the box would land and
+       hands the CSS a correction, so it slides back into view instead. */
+    positionTips = function () {
+        const vw = document.documentElement.clientWidth;
+        const M = 10;                                   // breathing room at the edges
+        document.querySelectorAll('.kpi-label .info').forEach(badge => {
+            const card = badge.closest('.kpi-card');
+            if (!card) return;
+            const r = card.getBoundingClientRect();
+            const centre = r.left + r.width / 2;
+            const w = Math.min(265, vw - 2 * M);
+            const wanted = centre - w / 2;
+            const clamped = Math.max(M, Math.min(wanted, vw - M - w));
+            badge.style.setProperty('--tip-w', w + 'px');
+            badge.style.setProperty('--tip-shift', Math.round(clamped - wanted) + 'px');
+        });
+    };
+    window.addEventListener('resize', positionTips);
+
     function closeTips(except) {
         document.querySelectorAll('.kpi-label .info.open').forEach(b => {
             if (b === except) return;
@@ -1108,15 +1151,21 @@ function initControls() {
             if (card) card.classList.remove('tip-open');
         });
     }
+    /* A tap can deliver more than one click (the touch event plus the browser's
+       synthetic one). Without this guard the second toggled the box straight
+       back off, so it appeared and vanished. Repeats on the same badge inside
+       350ms are treated as one press. */
+    let lastBadge = null, lastAt = 0;
     document.addEventListener('click', e => {
         const badge = e.target.closest && e.target.closest('.kpi-label .info');
+        if (badge && badge === lastBadge && Date.now() - lastAt < 350) return;
         closeTips(badge);
-        if (badge) {
-            e.stopPropagation();
-            const open = badge.classList.toggle('open');
-            const card = badge.closest('.kpi-card');
-            if (card) card.classList.toggle('tip-open', open);
-        }
+        if (!badge) return;
+        lastBadge = badge; lastAt = Date.now();
+        positionTips();                       // measure before it becomes visible
+        const open = badge.classList.toggle('open');
+        const card = badge.closest('.kpi-card');
+        if (card) card.classList.toggle('tip-open', open);
     });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTips(null); });
 }
