@@ -211,38 +211,42 @@ body {
    :focus is included so a tap on touch devices opens it too. */
 .kpi-label .info::after {
     content: attr(data-tip);
-    position: absolute; z-index: 300;
-    top: calc(100% + 8px);
+    /* Opens ABOVE the icon. Below, it was covered by the next card. */
+    position: absolute; z-index: 900;
+    bottom: calc(100% + 10px);
     /* Centred on the card and free to overrun it — anchoring to the card's
-       own edges squeezed the text into a 105px-wide column. body has
-       overflow-x:hidden, so any spill at the row edges is clipped. */
-    left: 50%; width: 265px; max-width: 86vw;
+       own edges squeezed the text into a 105px-wide column. */
+    left: 50%; width: 265px; max-width: calc(100vw - 28px);
     background: #101014; color: var(--snow);
     border: 1px solid var(--border2); border-radius: 12px;
     padding: .75rem .9rem; font-size: .76rem; font-weight: 400;
     line-height: 1.7; text-transform: none; letter-spacing: 0;
     text-align: right; white-space: normal;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, .75);
-    opacity: 0; visibility: hidden;
-    transform: translateX(-50%) translateY(-4px);
-    transition: opacity .18s, transform .18s, visibility .18s;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, .8);
+    transform: translateX(-50%);
     pointer-events: none;
+    /* display:none rather than visibility:hidden: a hidden-but-laid-out
+       absolute box still contributes to scrollable overflow, which nudged the
+       page sideways on mobile. */
+    display: none;
 }
 /* .open is toggled by tap/click. Touch devices never fire a reliable :hover,
-   so the explanation must be reachable without one. Kept as its own rule
-   rather than grouped with the :hover/:focus selectors — a selector list that
-   mixes pseudo-classes with a plain class ahead of ::after resolves
-   inconsistently across engines. */
-.kpi-label .info.open::after {
-    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
-}
-.kpi-label .info:hover::after {
-    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
-}
-.kpi-label .info:focus::after {
-    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+   so the explanation must be reachable without one. Kept as separate rules
+   rather than one grouped selector list — mixing pseudo-classes with a plain
+   class ahead of ::after resolves inconsistently across engines. */
+.kpi-label .info.open::after  { display: block; animation: tipIn .18s ease both; }
+.kpi-label .info:hover::after { display: block; animation: tipIn .18s ease both; }
+.kpi-label .info:focus::after { display: block; animation: tipIn .18s ease both; }
+@keyframes tipIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 .kpi-label .info.open { background: var(--blue); color: #fff; }
+
+/* Lift the whole card while its explanation is open so no later card, and no
+   sticky header, can paint over the popover. */
+.kpi-card.tip-open { z-index: 900; }
+.kpi-card:hover    { z-index: 500; }
 .kpi-card { position: relative; }
 .kpi-label { position: static; }
 .kpi-val { font-size: 1.85rem; font-weight: 800; line-height: 1.05; letter-spacing: -1px; direction: ltr; text-align: right; }

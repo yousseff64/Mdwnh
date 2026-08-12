@@ -43,6 +43,8 @@ const DATA_SCOPES = SCOPES.filter(s => s.id !== 'all').map(s => s.id);
 const DOW_AR = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
 /* ── State ────────────────────────────────────────────────────────────────── */
+let syncPillIndicator = function () {};   // assigned by buildScopeNav
+
 const state = {
     scope: 'all',
     preset: 'this_week',
@@ -970,6 +972,8 @@ function render() {
     renderDailyTable(period);
     renderAllTime();
 
+    syncPillIndicator();   // widths can shift as content lands; keep it honest
+
     const now = new Date().toLocaleTimeString('ar-EG', { timeZone: TZ, hour12: true });
     el('last-updated').textContent = 'آخر تحديث: ' + now + ' (الرياض)';
     el('footer-time').textContent = 'آخر تحديث: ' + now + ' بتوقيت الرياض';
@@ -1025,10 +1029,31 @@ function buildScopeNav() {
         indicator.style.left = btn.offsetLeft + 'px';
         indicator.style.width = btn.offsetWidth + 'px';
     }
-    requestAnimationFrame(() => {
+
+    /* Re-measure from whatever the active pill currently is. A single early
+       requestAnimationFrame was not enough: the Rubik webfont swaps in after
+       it runs and changes every pill's width, so the highlight sat a little
+       off until the first tap re-measured it — and if the tab is opened in the
+       background the frame never fires at all, leaving it at 0. Re-sync on
+       every event that can change the measurement instead. */
+    syncPillIndicator = function () {
         const a = bar.querySelector('.nav-pill.active');
-        if (a) move(a);
-    });
+        if (a && a.offsetWidth) move(a);
+    };
+    requestAnimationFrame(syncPillIndicator);
+    window.addEventListener('load', syncPillIndicator);
+    /* Plain timers as the backstop. requestAnimationFrame, ResizeObserver and
+       load are all tied to the rendering lifecycle, so a tab opened in the
+       background can miss every one of them and leave the highlight stranded.
+       setTimeout fires either way, and re-measuring is a couple of reads. */
+    [0, 300, 1200, 3000].forEach(ms => setTimeout(syncPillIndicator, ms));
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => setTimeout(syncPillIndicator, 50));
+    }
+    if (window.ResizeObserver) {
+        new ResizeObserver(syncPillIndicator).observe(bar);
+    }
+    bar.addEventListener('scroll', syncPillIndicator, { passive: true });
     bar.querySelectorAll('.nav-pill').forEach(pill => {
         pill.addEventListener('click', () => {
             bar.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
@@ -1039,10 +1064,8 @@ function buildScopeNav() {
             render();                     // data is already in memory — instant
         });
     });
-    window.addEventListener('resize', () => {
-        const a = bar.querySelector('.nav-pill.active');
-        if (a) move(a);
-    });
+    window.addEventListener('resize', syncPillIndicator);
+    window.addEventListener('orientationchange', () => setTimeout(syncPillIndicator, 150));
 }
 
 function initControls() {
@@ -1077,18 +1100,25 @@ function initControls() {
 
     /* Metric explanations. Hover covers the desktop case in CSS; this makes
        them openable by tap, which is the only way to read them on a phone. */
+    function closeTips(except) {
+        document.querySelectorAll('.kpi-label .info.open').forEach(b => {
+            if (b === except) return;
+            b.classList.remove('open');
+            const card = b.closest('.kpi-card');
+            if (card) card.classList.remove('tip-open');
+        });
+    }
     document.addEventListener('click', e => {
         const badge = e.target.closest && e.target.closest('.kpi-label .info');
-        document.querySelectorAll('.kpi-label .info.open').forEach(b => {
-            if (b !== badge) b.classList.remove('open');
-        });
-        if (badge) { e.stopPropagation(); badge.classList.toggle('open'); }
-    });
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.kpi-label .info.open').forEach(b => b.classList.remove('open'));
+        closeTips(badge);
+        if (badge) {
+            e.stopPropagation();
+            const open = badge.classList.toggle('open');
+            const card = badge.closest('.kpi-card');
+            if (card) card.classList.toggle('tip-open', open);
         }
     });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTips(null); });
 }
 
 /* ── PIN gate ─────────────────────────────────────────────────────────────── */
