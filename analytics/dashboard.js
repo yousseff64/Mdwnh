@@ -388,31 +388,54 @@ function el(id) { return document.getElementById(id); }
 function setHTML(id, html) { const e = el(id); if (e) e.innerHTML = html; }
 
 function renderKPIs(c, p) {
+    // Every card carries a real explanation. `tip` is shown in a popover on
+    // hover/tap — the old build used a bare title attribute that only changed
+    // the cursor and never actually explained anything.
     const cards = [
-        { k: 'الجلسات',            v: num(c.sessions),        d: change(c.sessions, p.sessions),
-          sub: `${num(p.sessions)} في الفترة السابقة`, hint: 'زائر واحد خلال 30 دقيقة = جلسة واحدة' },
-        { k: 'إجمالي التفاعل',     v: num(c.engagementScore), d: change(c.engagementScore, p.engagementScore),
-          sub: `${num(p.engagementScore)} سابقًا`, hint: 'جلسات متفاعلة + مشاهدات حقيقية + من أنهى المحتوى', big: true },
-        { k: 'مشاهدات حقيقية',     v: num(c.qualifiedViews),  d: change(c.qualifiedViews, p.qualifiedViews),
-          sub: '20 ثانية فعلية داخل الصفحة', hint: 'الوقت محسوب فقط والتبويب مفتوح أمام الزائر' },
-        { k: 'معدل التفاعل',       v: pct(c.engagementRate),  d: change(c.engagementRate, p.engagementRate),
-          sub: `${num(c.engagedSessions)} جلسة متفاعلة` },
-        { k: 'متوسط وقت القراءة',  v: dur(c.avgSeconds),      d: change(c.avgSeconds, p.avgSeconds),
-          sub: 'لكل جلسة، وقت نشط فقط' },
-        { k: 'متوسط عمق التمرير',  v: pct(c.avgScroll),       d: change(c.avgScroll, p.avgScroll),
-          sub: 'كم نزل الزائر في الصفحة' },
-        { k: 'معدل الارتداد',      v: pct(c.bounceRate),      d: change(c.bounceRate, p.bounceRate),
-          sub: 'خرج دون أي تفاعل', invert: true },
-        { k: 'زوار جدد',           v: num(c.newVisitors),     d: change(c.newVisitors, p.newVisitors),
-          sub: `${pct(100 - c.returnRate)} من الجلسات` },
-        { k: 'زوار عائدون',        v: num(c.returningVisitors), d: change(c.returningVisitors, p.returningVisitors),
-          sub: `${pct(c.returnRate)} من الجلسات` },
-        { k: 'مشاهدات الصفحات',    v: num(c.pageviews),       d: change(c.pageviews, p.pageviews),
-          sub: `${c.pagesPerSession.toFixed(2)} صفحة/جلسة` }
+        { k: 'الجلسات', v: num(c.sessions), d: change(c.sessions, p.sessions),
+          sub: `${num(p.sessions)} في الفترة السابقة`,
+          tip: 'عدد الزيارات المنفصلة. الزائر الواحد يُحسب جلسة واحدة مهما حدّث الصفحة، وتُفتح له جلسة جديدة فقط بعد 30 دقيقة من عدم النشاط. هذا هو رقم "كم شخص دخل" الحقيقي.' },
+
+        { k: 'إجمالي التفاعل', v: num(c.engagementScore), d: change(c.engagementScore, p.engagementScore),
+          sub: `${num(p.engagementScore)} سابقًا`, big: true,
+          tip: 'الرقم الرئيسي للفريق. مجموع: الجلسات المتفاعلة + المشاهدات الحقيقية + من وصل لنهاية المحتوى. يرتفع فقط عندما يستهلك الناس المحتوى فعلًا، لا لمجرد فتح الصفحة.' },
+
+        { k: 'مشاهدات حقيقية', v: num(c.qualifiedViews), d: change(c.qualifiedViews, p.qualifiedViews),
+          sub: '20 ثانية فعلية داخل الصفحة',
+          tip: 'من بقي 20 ثانية والصفحة مفتوحة أمامه فعلًا. لو فتح التبويب في الخلفية ولم ينظر إليه لا يُحتسب — الوقت يتوقف عند تصغير النافذة أو تبديل التبويب.' },
+
+        { k: 'معدل التفاعل', v: pct(c.engagementRate), d: change(c.engagementRate, p.engagementRate),
+          sub: `${num(c.engagedSessions)} جلسة متفاعلة`,
+          tip: 'نسبة الجلسات التي تفاعلت فعلًا = الجلسات المتفاعلة ÷ كل الجلسات. الجلسة تُعتبر متفاعلة إذا بقي الزائر 15 ثانية نشطة، أو نزل 50% من الصفحة، أو ضغط على أي شيء.' },
+
+        { k: 'متوسط وقت القراءة', v: dur(c.avgSeconds), d: change(c.avgSeconds, p.avgSeconds),
+          sub: 'لكل جلسة، وقت نشط فقط',
+          tip: 'متوسط الوقت النشط لكل جلسة. يُحسب فقط والصفحة ظاهرة أمام الزائر. انخفاضه مع ثبات الجلسات يعني أن المحتوى لم يمسك الناس.' },
+
+        { k: 'متوسط عمق التمرير', v: pct(c.avgScroll), d: change(c.avgScroll, p.avgScroll),
+          sub: 'كم نزل الزائر في الصفحة',
+          tip: 'أقصى نسبة نزل إليها الزائر في الصفحة، بالمتوسط. 100% = وصل للنهاية. رقم منخفض يعني أن أول الصفحة لا يقنعهم بالاستمرار.' },
+
+        { k: 'معدل الارتداد', v: pct(c.bounceRate), d: change(c.bounceRate, p.bounceRate),
+          sub: 'خرج دون أي تفاعل', invert: true,
+          tip: 'نسبة من دخل وخرج دون أي تفاعل يُذكر (أقل من 15 ثانية، ولم ينزل، ولم يضغط شيئًا). كلما قلّ كان أفضل — لذلك يظهر انخفاضه باللون الأخضر.' },
+
+        { k: 'زوار جدد', v: num(c.newVisitors), d: change(c.newVisitors, p.newVisitors),
+          sub: `${pct(100 - c.returnRate)} من الجلسات`,
+          tip: 'جلسات من أجهزة تزور الموقع لأول مرة. ارتفاعه يعني أن التسويق يجلب جمهورًا جديدًا.' },
+
+        { k: 'زوار عائدون', v: num(c.returningVisitors), d: change(c.returningVisitors, p.returningVisitors),
+          sub: `${pct(c.returnRate)} من الجلسات`,
+          tip: 'جلسات من أجهزة سبق أن زارت الموقع. ارتفاعه يعني أن المحتوى يستحق الرجوع إليه — وهو أفضل مؤشر على الولاء.' },
+
+        { k: 'مشاهدات الصفحات', v: num(c.pageviews), d: change(c.pageviews, p.pageviews),
+          sub: `${c.pagesPerSession.toFixed(2)} صفحة/جلسة`,
+          tip: 'إجمالي مرات تحميل الصفحة، بما فيها التحديث والرجوع. أعلى من الجلسات دائمًا. النسبة صفحة/جلسة تبيّن كم صفحة يتصفحها الزائر في الزيارة الواحدة.' }
     ];
     setHTML('kpi-row', cards.map(x => `
-        <div class="kpi-card${x.big ? ' hero' : ''}"${x.hint ? ` title="${x.hint}"` : ''}>
-            <div class="kpi-label">${x.k}${x.hint ? '<span class="info">؟</span>' : ''}</div>
+        <div class="kpi-card${x.big ? ' hero' : ''}">
+            <div class="kpi-label">${x.k}<span class="info" tabindex="0" role="button"
+                 aria-label="شرح ${x.k}" data-tip="${x.tip.replace(/"/g, '&quot;')}">؟</span></div>
             <div class="kpi-val">${x.v}</div>
             <div class="kpi-foot">${deltaHTML(x.d, x.invert)}<span class="kpi-sub">${x.sub}</span></div>
         </div>`).join(''));
@@ -777,6 +800,121 @@ function renderScopeCompare(period) {
         </table>`);
 }
 
+/* ══ All-time totals from the pre-v3 data ════════════════════════════════════
+   The v2 tracker only ever stored lifetime totals with no dates attached, so
+   per-day history for that period cannot be reconstructed — it was never
+   recorded. The totals themselves are intact though, and v3 keeps mirroring
+   into the same legacy counters, so this node is a genuine all-time figure.
+
+   The one thing that needs repairing on read is countries: v2 wrote whatever
+   its two IP providers returned, so the same country landed under both a name
+   and a code ("belgium" and "be", "libya" and "ly"). They are merged back to a
+   single ISO-2 key here rather than by rewriting production data.            */
+const LEGACY_PATH = {
+    comics_hujra: 'comics/hujra', comics_samrqand: 'comics/samrqand',
+    comics_ghailam: 'comics/ghailam', pages_main: 'pages/main',
+    pages_projects: 'pages/projects'
+};
+const NAME_TO_ISO = {
+    saudi_arabia: 'SA', united_arab_emirates: 'AE', egypt: 'EG', kuwait: 'KW',
+    qatar: 'QA', bahrain: 'BH', oman: 'OM', jordan: 'JO',
+    hashemite_kingdom_of_jordan: 'JO', morocco: 'MA', algeria: 'DZ',
+    tunisia: 'TN', libya: 'LY', iraq: 'IQ', yemen: 'YE', lebanon: 'LB',
+    syria: 'SY', palestine: 'PS', sudan: 'SD', mauritania: 'MR',
+    somalia: 'SO', djibouti: 'DJ', comoros: 'KM',
+    united_states: 'US', united_kingdom: 'GB', germany: 'DE', france: 'FR',
+    netherlands: 'NL', belgium: 'BE', sweden: 'SE', norway: 'NO',
+    denmark: 'DK', finland: 'FI', poland: 'PL', czechia: 'CZ', spain: 'ES',
+    italy: 'IT', russia: 'RU', turkey: 'TR', israel: 'IL',
+    india: 'IN', pakistan: 'PK', bangladesh: 'BD', indonesia: 'ID',
+    malaysia: 'MY', singapore: 'SG', japan: 'JP', china: 'CN',
+    kyrgyzstan: 'KG', senegal: 'SN', uganda: 'UG', kenya: 'KE',
+    nigeria: 'NG', south_africa: 'ZA', canada: 'CA', australia: 'AU',
+    brazil: 'BR', unknown: 'ZZ', other: 'ZZ'
+};
+function toISO(k) {
+    const raw = String(k || '').toLowerCase();
+    if (NAME_TO_ISO[raw]) return NAME_TO_ISO[raw];
+    if (/^[a-z]{2}$/.test(raw)) return raw.toUpperCase();   // already a code
+    return 'ZZ';
+}
+const legacyRaw = {};
+
+function loadLegacy() {
+    return Promise.all(DATA_SCOPES.map(id =>
+        db.ref(LEGACY_PATH[id]).once('value')
+          .then(s => { legacyRaw[id] = s.val() || {}; })
+          .catch(() => { legacyRaw[id] = {}; })
+    ));
+}
+
+function renderAllTime() {
+    const scopes = state.scope === 'all' ? DATA_SCOPES : [state.scope];
+    let entries = 0, views = 0;
+    const countries = {}, devices = {};
+
+    scopes.forEach(id => {
+        const L = legacyRaw[id] || {};
+        entries += L.entries || 0;
+        views   += L.views || 0;
+        for (const k in (L.countries || {})) {
+            const c = toISO(k);
+            countries[c] = (countries[c] || 0) + L.countries[k];
+        }
+        for (const k in (L.devices || {})) devices[k] = (devices[k] || 0) + L.devices[k];
+    });
+
+    const rows = DATA_SCOPES
+        .filter(id => scopes.indexOf(id) !== -1)
+        .map(id => ({ meta: SCOPES.find(s => s.id === id), L: legacyRaw[id] || {} }))
+        .sort((a, b) => (b.L.entries || 0) - (a.L.entries || 0));
+    const maxE = rows[0] ? (rows[0].L.entries || 1) : 1;
+
+    const topC = Object.entries(countries).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    const maxC = topC[0] ? topC[0][1] : 1;
+
+    setHTML('all-time', `
+        <div class="at-heads">
+            <div class="at-stat"><div class="at-lbl">إجمالي الزيارات</div><div class="at-val">${num(entries)}</div></div>
+            <div class="at-stat"><div class="at-lbl">إجمالي المشاهدات</div><div class="at-val">${num(views)}</div></div>
+            <div class="at-stat"><div class="at-lbl">الدول</div><div class="at-val">${num(Object.keys(countries).length)}</div></div>
+        </div>
+        <div class="grid-2" style="margin-bottom:0">
+            <div>
+                <div class="at-sub">حسب القسم</div>
+                <table class="bt"><thead><tr><th>القسم</th><th>زيارات</th><th>مشاهدات</th></tr></thead>
+                <tbody>${rows.map(r => `
+                    <tr>
+                        <td class="bt-name">
+                            <div class="bt-label">${r.meta.emoji} ${r.meta.name}</div>
+                            <div class="bt-track"><div class="bt-fill" style="width:${Math.round(((r.L.entries || 0) / maxE) * 100)}%;background:${r.meta.color}"></div></div>
+                        </td>
+                        <td class="bt-num">${num(r.L.entries || 0)}</td>
+                        <td class="bt-num muted">${num(r.L.views || 0)}</td>
+                    </tr>`).join('')}</tbody></table>
+            </div>
+            <div>
+                <div class="at-sub">أعلى الدول منذ البداية <span class="at-fix">(تم دمج المكرر)</span></div>
+                <table class="bt"><thead><tr><th>الدولة</th><th>زيارات</th><th>الحصة</th></tr></thead>
+                <tbody>${topC.map(([c, v]) => `
+                    <tr>
+                        <td class="bt-name">
+                            <div class="bt-label">${countryLabel(c)}</div>
+                            <div class="bt-track"><div class="bt-fill" style="width:${Math.round((v / maxC) * 100)}%;background:#fbbf24"></div></div>
+                        </td>
+                        <td class="bt-num">${num(v)}</td>
+                        <td class="bt-num muted">${pct((v / Math.max(entries, 1)) * 100)}</td>
+                    </tr>`).join('')}</tbody></table>
+            </div>
+        </div>
+        <div class="at-note">
+            هذه الأرقام محفوظة من النظام القديم ولم يُحذف منها شيء، وما زالت تتراكم مع النظام الجديد.
+            لكن ما قبل 12 أغسطس 2026 كان يُحسب بالطريقة القديمة (كل تحديث للصفحة = زيارة جديدة)، لذلك
+            "الزيارات" هنا أعلى من الواقع، ولا يمكن تفصيلها يومًا بيوم لأن النظام القديم لم يكن يسجّل التواريخ أصلًا.
+            التفصيل اليومي والمقارنات تبدأ من 12 أغسطس 2026 فصاعدًا.
+        </div>`);
+}
+
 /* ══ Data loading ═══════════════════════════════════════════════════════════
    One range-scoped read per scope instead of a permanent whole-node listener. */
 function loadRange(from, to) {
@@ -830,6 +968,7 @@ function render() {
     renderFunnel(cur, prev);
     renderVisitorMix(period);
     renderDailyTable(period);
+    renderAllTime();
 
     const now = new Date().toLocaleTimeString('ar-EG', { timeZone: TZ, hour12: true });
     el('last-updated').textContent = 'آخر تحديث: ' + now + ' (الرياض)';
@@ -935,6 +1074,21 @@ function initControls() {
     document.querySelectorAll('[data-collapse]').forEach(h => {
         h.addEventListener('click', () => h.parentElement.classList.toggle('collapsed'));
     });
+
+    /* Metric explanations. Hover covers the desktop case in CSS; this makes
+       them openable by tap, which is the only way to read them on a phone. */
+    document.addEventListener('click', e => {
+        const badge = e.target.closest && e.target.closest('.kpi-label .info');
+        document.querySelectorAll('.kpi-label .info.open').forEach(b => {
+            if (b !== badge) b.classList.remove('open');
+        });
+        if (badge) { e.stopPropagation(); badge.classList.toggle('open'); }
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.kpi-label .info.open').forEach(b => b.classList.remove('open'));
+        }
+    });
 }
 
 /* ── PIN gate ─────────────────────────────────────────────────────────────── */
@@ -990,7 +1144,7 @@ function initDashboard() {
 
     buildScopeNav();
     initControls();
-    refresh();
+    loadLegacy().then(refresh);   // all-time totals load once, then the period data
 
     // Light auto-refresh. Far cheaper than v2's permanent whole-node listeners.
     setInterval(() => { if (!document.hidden) refresh(); }, 120000);
