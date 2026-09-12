@@ -12,6 +12,7 @@ import { $, arabize, clamp, el, reduced, tick, whileVisible } from './util.js';
 import { initNav, initRails, initReveal, initFooter } from './ambient.js';
 import { coverCard, initCovers } from './cover.js';
 import { dressHero, sceneCanvas } from './scenes.js';
+import { stillsStrip } from './stills.js';
 
 const asked = new URLSearchParams(location.search).get('id');
 const id = PROJECT_PAGES[asked] ? asked : PROJECTS[0].id;
@@ -52,14 +53,33 @@ const hero = el('section', { class: 'ph', id: 'top', 'data-rail': `NOW SHOWING �
     el('h1', { class: 'ph__title', 'aria-label': card.name },
       words.flatMap((w, i) => [el('span', { class: 'ph__w', style: `--i:${i}`, 'aria-hidden': 'true' }, w), i < words.length - 1 ? ' ' : null])),
     el('p', { class: 'ph__tag' }, p.tagline),
-    el('div', { class: 'ph__acts' },
-      el('button', { class: 'btn', type: 'button', onclick: watchNow },
-        el('i', { class: 'ph__tri', 'aria-hidden': 'true' }), 'شاهد الآن'),
-      el('a', { class: 'btn btn--ghost', href: watchUrl, target: '_blank', rel: 'noopener' }, 'افتحه في يوتيوب')
-    )
+    el('div', { class: 'ph__acts' }, acts())
   ),
   el('div', { class: 'ph__front', id: 'phFront', 'aria-hidden': 'true' })
 );
+
+/* The comic reader lives on this same site, so it is a plain link, not a
+   trip out to somewhere else. Where a work has one, it leads: the pages are
+   the whole story and the video is the teaser for it. */
+function acts() {
+  /* say what the button actually plays: a teaser is not the film */
+  const label = p.length.includes('تشويقة') ? 'شاهد التشويقة'
+    : p.length.includes('إعلان') ? 'شاهد الإعلان'
+      : 'شاهد الآن';
+  const watch = el('button', { class: `btn${p.read ? ' btn--ghost' : ''}`, type: 'button', onclick: watchNow },
+    el('i', { class: 'ph__tri', 'aria-hidden': 'true' }), label);
+  if (!p.read) return [watch, el('a', { class: 'btn btn--ghost', href: watchUrl, target: '_blank', rel: 'noopener' }, 'افتحه في يوتيوب')];
+  return [
+    el('a', { class: 'btn ph__read', href: p.read }, `اقرأ القصة المصورة (${pages()})`),
+    watch
+  ];
+}
+
+/* the page count already sits in the facts table, so read it from there */
+function pages() {
+  const f = p.facts.find((x) => x.k === 'القصة المصورة');
+  return f ? f.v : 'كاملة';
+}
 
 /* ------------------------------------------------------------- player ---
    The video plays in place. Until it is pressed it is only its own
@@ -108,6 +128,31 @@ function watchNow() {
 const watch = el('section', { class: 'pwatch', id: 'watch', 'aria-label': `شاهد ${card.name}` },
   el('div', { class: 'shell' }, player));
 
+/* لقطات من العمل: a slow strip under the video (js/stills.js) */
+const strip = stillsStrip(id, card.name);
+
+/* ------------------------------------------------------------- award ---
+   The rosette from إنجازاتنا on the home page, cooled to this page's night:
+   the three petals take the page's own ink instead of the cream paper, and
+   the place is set in the accent rather than the sun. The words beside it
+   say the same thing, so nothing rests on the drawing. */
+
+const prize = p.award ? el('section', { class: 'pprize', 'data-rise': '' },
+  el('div', { class: 'shell pprize__bar' },
+    el('div', { class: 'pprize__seal', 'aria-hidden': 'true' },
+      el('i'), el('i'), el('i'),
+      el('b', {}, p.award.place),
+      el('span', {}, p.award.rank)
+    ),
+    el('div', { class: 'pprize__copy' },
+      el('p', { class: 'pprize__rank' }, `${p.award.rank} · ${p.award.name}`),
+      el('p', { class: 'pprize__note' }, p.award.note)
+    ),
+    el('img', { class: 'pprize__plaque', src: 'assets/img/award.svg',
+      alt: 'شعار جائزة الإنتاج المرئي للنشء', width: 790, height: 588, loading: 'lazy', decoding: 'async' })
+  )
+) : null;
+
 /* ------------------------------------------------------------ numbers --- */
 
 const places = (n) => (String(n).split('.')[1] || '').length;
@@ -144,7 +189,7 @@ const story = el('section', { class: 'section pstory', id: 'story', 'data-rail':
       el('h2', { class: 'h2' }, 'عَنِ الحِكَايَةِ'),
       el('p', { class: 'pstory__lede' }, p.body[0]),
       p.body.slice(1).map((t) => el('p', {}, t)),
-      p.read ? el('a', { class: 'btn btn--ghost pstory__read', href: p.read, target: '_blank', rel: 'noopener' }, 'اقرأ القصة المصورة كاملة') : null
+      p.read ? el('a', { class: 'btn pstory__read', href: p.read }, 'اقرأ القصة المصورة كاملة') : null
     ),
     el('dl', { class: 'pfacts', 'data-rise': '', style: '--rise-delay: 120ms' },
       p.facts.map((f) => el('div', {}, el('dt', {}, f.k), el('dd', {}, f.v)))
@@ -169,7 +214,9 @@ const more = el('section', { class: 'section pmore', 'data-rail': 'MORE WORK · 
   )
 );
 
-$('#pmain').append(hero, watch, stats, story, more);
+/* A work without an award has no prize band, and one without stills has no
+   strip. append() would turn either null into the word "null" on the page. */
+$('#pmain').append(...[hero, watch, prize, strip, stats, story, more].filter(Boolean));
 
 /* the footer's own list of works, with this one marked */
 $('#footWorks').append(...PROJECTS.map((o) => el('li', {},

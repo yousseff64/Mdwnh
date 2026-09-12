@@ -64,14 +64,27 @@ export function initHero() {
     if (e.key === 'ArrowRight') go(-1);
   });
 
-  /* swipe, because most of this audience arrives on a phone */
+  /* Swipe, because most of this audience arrives on a phone.
+     A mouse drag across the card is how you select the copy, not how you
+     turn the deck, so only a touch or a pen swipes. The gesture also has
+     to be sideways, and it is dropped the moment text is being selected:
+     otherwise highlighting a line threw the reader onto the next headline. */
   let x0 = null;
-  track.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+  let y0 = null;
+  track.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse') return;
+    x0 = e.clientX;
+    y0 = e.clientY;
+  });
+  const dropSwipe = () => { x0 = y0 = null; };
+  track.addEventListener('pointercancel', dropSwipe);
   track.addEventListener('pointerup', (e) => {
     if (x0 === null) return;
     const dx = e.clientX - x0;
-    x0 = null;
-    if (Math.abs(dx) > 48) go(dx < 0 ? 1 : -1);
+    const dy = e.clientY - y0;
+    dropSwipe();
+    if (!getSelection()?.isCollapsed) return;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) go(dx < 0 ? 1 : -1);
   });
 
   /* A sideways trackpad swipe turns the deck, one headline per gesture:
@@ -202,18 +215,32 @@ export function initHero() {
 /* -------------------------------------------------------------- build --- */
 
 function buildSlide(item) {
+  /* Where the work is a comic, the pages are the whole story and the video is
+     the teaser for it, so the comic is the second button and the video drops
+     to a quiet link under the pair. The comic reader is on this same site. */
   const acts = el('div', { class: 'news__acts' },
     el('a', { class: 'btn', href: item.primary.href }, item.primary.label),
-    el('a', { class: 'btn btn--ghost', href: item.secondary.href, target: '_blank', rel: 'noopener' }, item.secondary.label)
+    item.read
+      ? el('a', { class: 'btn btn--ghost', href: item.read.href }, item.read.label)
+      : el('a', { class: 'btn btn--ghost', href: item.secondary.href, target: '_blank', rel: 'noopener' }, item.secondary.label),
+    item.read
+      ? el('a', { class: 'news__watch', href: item.secondary.href, target: '_blank', rel: 'noopener' },
+        el('i', { class: 'news__tri', 'aria-hidden': 'true' }), item.secondary.label)
+      : null
   );
   return el('article', { class: 'news__slide', 'data-align': item.align },
     el('img', { class: 'news__art', src: item.art, alt: item.name, width: 1448, height: 814 }),
     el('span', { class: 'news__chip' }, item.kicker),
     el('div', { class: 'news__body' },
-      el('p', { class: 'news__text' }, item.body),
+      el('p', { class: 'news__text' }, lines(item.body)),
       acts
     )
   );
+}
+
+/* A body written over more than one line keeps its breaks. */
+function lines(text) {
+  return String(text).split('\n').flatMap((t, i) => (i ? [el('br'), t] : [t]));
 }
 
 function buildClouds(item, layer = 'clouds') {

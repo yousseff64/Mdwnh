@@ -299,10 +299,186 @@ body.pp {
 }
 .pstory__read { margin-top: 0.5rem; }
 
+/* the comic's own button in the hero: filled where the video's is a ghost,
+   because the pages are the whole story and the video is the teaser */
+.ph__read { --btn-bg: var(--accent); --btn-fg: var(--tone-deep); }
+
 @media (max-width: 720px) {
   .pstats__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pstats__row li:nth-child(3) { border-inline-start: 0; }
   .pstats__row li:nth-child(n + 3) { border-top: 1px solid color-mix(in srgb, var(--tone-ink) 16%, transparent); }
+}
+
+/* ========================================================== the award === */
+/* غَمَام's prize, in the same rosette as إنجازاتنا on the home page but built
+   for a dark page: no cream paper and no sun, just this world's own ink with
+   one cool rim of light on it, and a faint pool of the accent underneath so
+   it lifts off the night without shouting. */
+
+.pprize {
+  position: relative;
+  z-index: 3;
+  margin-top: clamp(1.5rem, 3.5vw, 2.75rem);
+  padding-bottom: clamp(1.75rem, 4vw, 3rem);
+}
+.pprize__bar {
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 2.2vw, 1.6rem);
+  width: min(100%, 54rem);
+  margin-inline: auto;
+  padding: clamp(0.9rem, 2vw, 1.35rem) clamp(1.1rem, 2.4vw, 1.7rem);
+  border-radius: clamp(14px, 1.8vw, 22px);
+  background:
+    radial-gradient(80% 160% at 8% 0%, color-mix(in srgb, var(--accent) 13%, transparent) 0%, transparent 70%),
+    color-mix(in srgb, var(--tone-sky) 42%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--tone-ink) 22%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--tone-ink) 12%, transparent),
+    0 26px 60px -40px #000;
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+}
+
+/* three squares turned 30° apart: the same rosette as the home page medal */
+.pprize__seal {
+  position: relative;
+  isolation: isolate;
+  flex: none;
+  width: clamp(4.5rem, 11cqw, 6.5rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+  color: var(--tone-ink);
+  filter: drop-shadow(0 6px 14px #0009);
+}
+.pprize__seal i {
+  position: absolute;
+  inset: 9%;
+  z-index: -1;
+  border-radius: 24%;
+  background: color-mix(in srgb, var(--tone-ink) 13%, var(--tone-deep));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+.pprize__seal i:nth-child(2) { rotate: 30deg; }
+.pprize__seal i:nth-child(3) { rotate: 60deg; }
+.pprize__seal::after {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  z-index: -1;
+  border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--tone-ink) 34%, transparent);
+}
+.pprize__seal b {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 2.1rem;
+  line-height: 1;
+  color: var(--accent);
+  margin-block: -0.12em -0.04em;
+}
+.pprize__seal span {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.625rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--tone-ink) 78%, transparent);
+}
+
+.pprize__copy { flex: 1 1 auto; min-width: 0; }
+.pprize__rank {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1rem, 2.1vw, 1.375rem);
+  line-height: 1.4;
+  color: var(--tone-ink);
+}
+.pprize__note {
+  margin: 0.3rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--tone-ink) 62%, transparent);
+}
+/* The awarding body's own mark, quiet: it is a source, not a headline. It is
+   drawn in dark ink for paper, so it sits on its own pale chip rather than
+   disappearing into the night. */
+.pprize__plaque {
+  flex: none;
+  width: clamp(4rem, 10cqw, 6rem);
+  height: auto;
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  background: #f4f3f0;
+  box-shadow: 0 10px 24px -18px #000;
+  opacity: 0.9;
+}
+
+@media (max-width: 560px) {
+  .pprize__bar { flex-wrap: wrap; justify-content: center; text-align: center; }
+  .pprize__copy { flex-basis: 100%; order: 3; }
+}
+
+/* ========================================================= the stills === */
+/* A slow strip of frames from the work itself, under the video. It is meant
+   to sit quietly behind the writing that follows, so it has no lift, no
+   tilt and no shadow that moves: only the drift, and the pointer stops it
+   (js/stills.js). Masked at both ends so frames arrive and leave instead of
+   being cut off by the screen edge. */
+
+.strip {
+  position: relative;
+  z-index: 2;
+  padding-bottom: clamp(2.25rem, 5vw, 4rem);
+}
+.strip__frame {
+  overflow: clip;
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to left, transparent, #000 6%, #000 94%, transparent);
+}
+.strip__frame:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+.strip__track {
+  display: flex;
+  gap: clamp(0.6rem, 1.4vw, 1.1rem);
+  width: max-content;
+  will-change: transform;
+}
+.strip__shot {
+  flex: none;
+  margin: 0;
+  width: clamp(15rem, 30vw, 27rem);
+  border-radius: clamp(10px, 1.3vw, 16px);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--tone-ink) 8%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tone-ink) 14%, transparent);
+}
+.strip__shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Reduced motion: the same frames, none of the drift. It becomes a row you
+   push yourself, which is also what a keyboard gets. */
+.strip__frame.is-still {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+.strip__frame.is-still .strip__track { transform: none !important; }
+.strip__frame.is-still .strip__shot { scroll-snap-align: center; }
+
+@media (max-width: 600px) {
+  .strip__shot { width: 74vw; }
 }
 
 /* ============================================================== story === */

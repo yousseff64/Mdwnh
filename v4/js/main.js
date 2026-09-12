@@ -7,7 +7,9 @@ import { initWins } from './wins.js';
 import { initCommunity } from './community.js';
 import { initNav, initRails, initReveal, initCards, initFooter } from './ambient.js';
 import { afterLoad } from './util.js';
+import { paintLive } from './live.js';
 
+paintLive();         /* the numbers written into the copy, from assets/stats-data.js */
 initNav();
 initRails();
 initCards();

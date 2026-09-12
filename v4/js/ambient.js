@@ -6,6 +6,7 @@
 
 import { STATS, SOCIALS } from './data.js';
 import { $, $$, el } from './util.js';
+import { statValue, readAt } from './live.js';
 import { initNavWorks } from './navworks.js';
 
 /* --------------------------------------------------------------- nav --- */
@@ -141,18 +142,25 @@ const LOGOS = {
 export function initCards() {
   const grid = $('#statGrid');
   STATS.forEach((s, i) => {
+    /* assets/stats-data.js, where it covers this row. Anything it does not
+       cover keeps the figure written into data.js by hand. */
+    const now = statValue(s);
+    const display = now ? now.display : s.display;
+    /* `approx` rows stay marked as estimates however fresh they are: the
+       views total rests on a TikTok figure nothing can read exactly. */
+    const verified = !s.approx && (s.verified || !!now);
     grid.append(el('a', {
       class: 'stat',
       href: s.href,
       target: '_blank',
       rel: 'noopener',
       'data-rise': '',
-      'data-estimate': s.verified ? null : '',
+      'data-estimate': verified ? null : '',
       style: `--stat-accent: var(--${s.accent}); --rise-delay: ${i * 60}ms`,
-      title: s.verified ? '' : 'رقم تقريبي، يُحدَّث عند توفر الإحصاء الدقيق'
+      title: verified ? '' : 'رقم تقريبي، يُحدَّث عند توفر الإحصاء الدقيق'
     },
       el('i', { class: `mark mark--${MARKS[i % MARKS.length]} stat__mark`, style: `--mark-color: var(--${s.accent})`, 'aria-hidden': 'true' }),
-      el('span', { class: 'stat__n' }, s.display),
+      el('span', { class: 'stat__n' }, display),
       el('span', { class: 'stat__l' }, s.label)
     ));
   });

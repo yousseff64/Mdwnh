@@ -646,8 +646,44 @@ def build_community():
     print(f"club     {1 + len(SIRAJ_HUES):3d} files  {total / 1024:8.0f} KB")
 
 
+
+def build_stills():
+    """The strip of stills that runs across every project page.
+
+    Source lives in Art/stills/<project id>/1.jpg … 5.jpg, one folder per id
+    in PROJECTS. To change a still, drop a new file over the old one and run
+    this again: anything wider than 16:9 is centre cropped, anything taller
+    is cropped to the middle band, so a replacement does not have to be cut
+    to size first. Two widths ship, because the strip is small on a phone and
+    half the screen on a desktop.
+    """
+    d = ensure("img", "stills")
+    root = src("Art", "stills")
+    total = 0
+    files = 0
+    for pid in sorted(listdir(root)):
+        folder = os.path.join(root, pid)
+        if not os.path.isdir(folder):
+            continue
+        for i, name in enumerate(listdir(folder), 1):
+            im = Image.open(os.path.join(folder, name)).convert("RGB")
+            w, h = im.size
+            want = w * 9 / 16
+            if h > want + 1:                       # tall: keep the middle band
+                y = round((h - want) / 2)
+                im = im.crop((0, y, w, y + round(want)))
+            elif h < want - 1:                     # wide: keep the middle column
+                want_w = round(h * 16 / 9)
+                x = round((w - want_w) / 2)
+                im = im.crop((x, 0, x + want_w, h))
+            total += save_webp(im, os.path.join(d, f"{pid}-{i}.webp"), 960, quality=73)
+            total += save_webp(im, os.path.join(d, f"{pid}-{i}-sm.webp"), 480, quality=70)
+            files += 2
+    print(f"stills   {files:3d} files  {total / 1024:8.0f} KB")
+
+
 STEPS = [build_images, build_banners, build_covers, build_scenery, build_icons, build_award, build_wins, build_fall,
-         build_video, build_seam, build_avatars, build_community]
+         build_video, build_seam, build_avatars, build_community, build_stills]
 
 if __name__ == "__main__":
     # no arguments builds everything; `build-assets.py avatars seam` builds

@@ -410,9 +410,27 @@
   max-width: 44ch;
 }
 
-.news__acts { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.news__acts { display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; }
 .news__acts .btn { --btn-bg: #fff; --btn-fg: #1a1a1a; }
 .news__acts .btn--ghost { --btn-bg: #fff; --btn-fg: #1a1a1a; }
+
+/* The trailer, beside the two buttons and quieter than both: on a work that
+   is a comic first, the pages are the story and this is the teaser for it. */
+.news__watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.3em 0.2em;
+  font-size: clamp(0.875rem, 1vw, 0.9375rem);
+  font-weight: 500;
+  color: #ffffffb5;
+  text-decoration: none;
+  border-bottom: 1px solid #ffffff3d;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.news__watch:hover { color: #fff; border-color: #ffffffa8; }
+/* play points right in every language: media controls are never mirrored */
+.news__tri { width: 0.6em; aspect-ratio: 1; background: currentColor; clip-path: polygon(12% 4%, 96% 50%, 12% 96%); }
 
 /* what the headline is, pinned to the card's far top corner. It blurs the
    art behind it only: the slide is its backdrop root. */
@@ -906,7 +924,8 @@
   align-items: center;
   gap: clamp(2rem, 5vw, 5.5rem);
 }
-.wins__lead { margin: 0.75rem 0 0; max-width: 40ch; }
+.wins__lead { margin: 1.35rem 0 0; max-width: 40ch; }
+.wins__lead--second { font-size: var(--t-body); color: var(--ink-70); }
 .wins__stats {
   margin-top: clamp(1.25rem, 2.6vw, 2rem);
   display: grid;
@@ -2278,7 +2297,10 @@
 .pfoot__acts { margin-top: 1.75rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; }
 .pfoot__acts .btn { --btn-bg: var(--foot-accent); --btn-fg: var(--foot-bg); }
 .pfoot__acts .btn--ghost { --btn-bg: #fff; --btn-fg: var(--foot-bg); }
-.pfoot__cta .pfoot__note { margin-top: 1.25rem; font-size: 0.875rem; color: #ffffff80; }
+/* its own width, wider than the paragraph above it, so the question and the
+   answer stay on one line. Below that it wraps like anything else. */
+.pfoot__cta .pfoot__note { max-width: none; margin-top: 1.25rem; font-size: 0.875rem; color: #ffffff80; }
+@media (min-width: 60rem) { .pfoot__cta .pfoot__note { white-space: nowrap; } }
 .pfoot__note a { color: #fff; text-underline-offset: 0.25em; }
 
 .pfoot__grid {

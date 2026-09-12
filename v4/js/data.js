@@ -16,8 +16,9 @@ export const NEWS = [
     art: 'assets/img/hujra.webp',
     scene: 'eyes',                // its project page's world (js/scenes.js)
     align: 'end',                 // logo sits at the right edge of the art
-    body: 'تظن أن بابك مغلق، لكن هل جربت فتحه حقًا؟ أحيانًا يكون العائق في عقلك وحده. شاهد التشويقة الرسمية، ثم اقرأ الحكاية كاملة في ٤٣ صفحة.',
+    body: 'تظن أن بابك مغلق، لكن هل جربت فتحه حقًا؟ شاهد التشويقة الرسمية، واكتشف ما وراءه.\nالحكاية كاملة في ٤٣ صفحة.',
     primary: { label: 'أعرف المزيد', href: 'project.html?id=hujra' },
+    read: { label: 'اقرأ القصة المصورة', href: 'https://mdwn.studio/Hujra/' },
     secondary: { label: 'شاهد التشويقة', href: 'https://www.youtube.com/watch?v=tJfiXnSMD0c' },
     tone: {
       bg: '#4a2a63',
@@ -46,8 +47,9 @@ export const NEWS = [
     art: 'assets/img/samarqand.webp',
     scene: 'leaves',
     align: 'center',              // logo sits centred in the art
-    body: 'فتى حالم يحمل رسالة سمرقند إلى الحاكم الذي يقود المعتدين، في رحلة محفوفة بالغموض والعجائب. شاهد الفيلم، ثم اقرأ الحكاية كاملة في ٥١ صفحة.',
+    body: 'من سمرقند إلى معسكر المعتدين، يحمل فتى رسالة لا يعرف ما الذي ينتظره عند نهايتها.\nشاهد الفيلم، واقرأ الحكاية كاملة في ٥١ صفحة.',
     primary: { label: 'أعرف المزيد', href: 'project.html?id=samarqand' },
+    read: { label: 'اقرأ القصة المصورة', href: 'https://mdwn.studio/Samrqand/' },
     secondary: { label: 'شاهد الفيلم', href: 'https://www.youtube.com/watch?v=aU4dZUsIVxk' },
     tone: {
       bg: '#7f9dbe',
@@ -88,16 +90,41 @@ export const PROJECTS = [
 ];
 
 /* ----------------------------------------------------------- إنجازاتنا ---
-   `verified` numbers were read from the public channel pages on 2026-09-07.
-   `sourced` numbers come from the شخصية العميل المثالي research doc, dated
-   2026-08-27. Swap them the moment you have exact figures.
+   Two kinds of number here.
+
+   `live` names a key in window.MDWNH_STATS, written by
+   scripts/fetch-stats.mjs (an hourly GitHub Action). Those rows refresh
+   themselves off the public YouTube and Discord pages, so nobody has to
+   remember to edit them. `display` is only the fallback the page paints
+   before that file is parsed, or if it is missing.
+
+   Everything else is entered by hand, with the date it was read. TikTok
+   serves only its first page to anyone not logged in, and Instagram
+   publishes no view count at all, so neither can be read by a script.
 --------------------------------------------------------------------------- */
+
+/* The views figure is every platform added together, not YouTube's alone.
+   Each line is one platform's own total.
+     yt   read live off the channel's about page, exact
+     tt   TikTok. THIS IS A FLOOR, not the real total: it is the sum of the
+          24 videos TikTok serves to a logged out visitor, out of 61 on the
+          profile. Replace it with the all time figure from TikTok Studio
+          (Analytics → Video views → All time) and drop the `floor` flag.
+     ig   Instagram publishes no view count on a profile, and the account
+          has no reels, so there is nothing to add.
+--------------------------------------------------------------------------- */
+export const VIEWS = {
+  yt: { live: 'ytViews', value: 1525199, at: '١٢ سبتمبر ٢٠٢٦' },
+  tt: { value: 1347297, at: '١٢ سبتمبر ٢٠٢٦', floor: true },
+  ig: { value: 0, at: '١٢ سبتمبر ٢٠٢٦' }
+};
+
 export const STATS = [
-  { id: 'yt', label: 'مشترك في يوتيوب', value: 37400, display: '٣٧٫٤ ألف', accent: 'ember', verified: true, href: 'https://www.youtube.com/@Mdwn.c' },
-  { id: 'views', label: 'مشاهدة على يوتيوب', value: 1523657, display: '١٫٥ مليون', accent: 'sky', verified: true, href: 'https://www.youtube.com/@Mdwn.c' },
-  { id: 'ig', label: 'متابع في إنستغرام', value: 55000, display: '٥٥ ألف', accent: 'sun', verified: false, href: 'https://www.instagram.com/mdwn.c/' },
+  { id: 'yt', label: 'مشترك في يوتيوب', value: 37400, display: '٣٧٫٤ ألف', live: 'ytSubsText', accent: 'ember', verified: true, href: 'https://www.youtube.com/@Mdwn.c' },
+  { id: 'views', label: 'مشاهدة على كل المنصات', value: 2872496, display: '٢٫٩ مليون', live: 'views', approx: true, accent: 'sky', verified: false, href: 'https://www.youtube.com/@Mdwn.c' },
+  { id: 'ig', label: 'متابع في إنستغرام', value: 55200, display: '٥٥٫٢ ألف', accent: 'sun', verified: true, href: 'https://www.instagram.com/mdwn.c/' },
   { id: 'tt', label: 'إعجاب على تيك توك', value: 79200, display: '٧٩٫٢ ألف', accent: 'mint', verified: true, href: 'https://www.tiktok.com/@mdwn.c' },
-  { id: 'disc', label: 'عضو في نادي المدونة', value: 1284, display: '١٬٢٨٤', accent: 'ember', verified: false, href: 'https://discord.gg/RBtp2JVXm6' },
+  { id: 'disc', label: 'عضو في نادي المدونة', value: 1284, display: '١٬٢٨٤', live: 'discMembers', accent: 'ember', verified: true, href: 'https://discord.gg/RBtp2JVXm6' },
   { id: 'films', label: 'عمل منشور', value: 115, display: '١١٥', accent: 'sky', verified: true, href: 'https://www.youtube.com/@Mdwn.c/videos' }
 ];
 
@@ -201,6 +228,65 @@ export const SOCIALS = [
   { id: 'dc', name: 'ديسكورد', handle: 'نادي المدونة', note: 'التحديات والنقاش والتصويت', href: 'https://discord.gg/RBtp2JVXm6', accent: 'sky', icon: 'hash' }
 ];
 
+/* --------------------------------------------------------- project stills ---
+   The strip that runs across a project page, five frames per work, in the
+   order they appear on the strip.
+
+   To change one, drop a new file over Art/stills/<id>/<n>.jpg and rerun
+   `python3 v4/tools/build-assets.py stills`. It is cut to 16:9 for you, so
+   the replacement does not have to be trimmed first. To add or drop a frame,
+   add or drop the file and the line here. Every entry has a 480 wide twin
+   built beside it (-sm.webp); js/stills.js asks for it on a phone.
+
+   Where they came from: أعمال بالفيديو are frames off the film itself.
+   بَابُ الحُجْرَة and القِرْدُ وَالغَيْلَم are bands cut out of the comic,
+   because their videos are a teaser and an announcement, not the work.
+--------------------------------------------------------------------------- */
+export const STILLS = {
+  samarqand: [
+    { src: 'assets/img/stills/samarqand-1.webp', alt: 'الفتى في سوق سمرقند' },
+    { src: 'assets/img/stills/samarqand-2.webp', alt: 'صحن المسجد الكبير' },
+    { src: 'assets/img/stills/samarqand-3.webp', alt: 'وجه الفتى عن قرب' },
+    { src: 'assets/img/stills/samarqand-4.webp', alt: 'الفتى ورفيقه في الطريق' },
+    { src: 'assets/img/stills/samarqand-5.webp', alt: 'الفتى يشير ورفيقه يضحك' }
+  ],
+  ghamam: [
+    { src: 'assets/img/stills/ghamam-1.webp', alt: 'غمام بين زملائه' },
+    { src: 'assets/img/stills/ghamam-2.webp', alt: 'غمام أمام حاسوبه ليلًا' },
+    { src: 'assets/img/stills/ghamam-3.webp', alt: 'غمام خلف المنصة' },
+    { src: 'assets/img/stills/ghamam-4.webp', alt: 'العرض التقديمي على الشاشة' },
+    { src: 'assets/img/stills/ghamam-5.webp', alt: 'القاعة تذوب في نوبة الهلع' }
+  ],
+  hujra: [
+    { src: 'assets/img/stills/hujra-1.webp', alt: 'حسام داخل مكعب زجاجي' },
+    { src: 'assets/img/stills/hujra-2.webp', alt: 'حسام يصرخ في وجه الوهم' },
+    { src: 'assets/img/stills/hujra-3.webp', alt: 'صفحة ابتعد' },
+    { src: 'assets/img/stills/hujra-4.webp', alt: 'حسام وسط عيون متوهجة' },
+    { src: 'assets/img/stills/hujra-5.webp', alt: 'حسام منكفئ خلف الباب' }
+  ],
+  lis: [
+    { src: 'assets/img/stills/lis-1.webp', alt: 'المدينة ليلًا' },
+    { src: 'assets/img/stills/lis-2.webp', alt: 'اللص أمام الباب' },
+    { src: 'assets/img/stills/lis-3.webp', alt: 'فناء البيت ونافورته' },
+    { src: 'assets/img/stills/lis-4.webp', alt: 'اللص بين أكياس الطعام' },
+    { src: 'assets/img/stills/lis-5.webp', alt: 'نهاية الحكاية تحت الأضواء' }
+  ],
+  fasl: [
+    { src: 'assets/img/stills/fasl-1.webp', alt: 'السيد عجيب أمام السبورة' },
+    { src: 'assets/img/stills/fasl-2.webp', alt: 'حقل قمح عند الغروب' },
+    { src: 'assets/img/stills/fasl-3.webp', alt: 'أينشتاين ومعادلاته' },
+    { src: 'assets/img/stills/fasl-4.webp', alt: 'سيارة تعبر الزمن' },
+    { src: 'assets/img/stills/fasl-5.webp', alt: 'كائن يسبح قرب ثقب أسود' }
+  ],
+  qird: [
+    { src: 'assets/img/stills/qird-1.webp', alt: 'القرد على غصن التين' },
+    { src: 'assets/img/stills/qird-2.webp', alt: 'أول لقاء بين القرد والغيلم' },
+    { src: 'assets/img/stills/qird-3.webp', alt: 'شجرة التين على الشاطئ' },
+    { src: 'assets/img/stills/qird-4.webp', alt: 'القرد على ظهر الغيلم في البحر' },
+    { src: 'assets/img/stills/qird-5.webp', alt: 'بيت الغيلم تحت سطح الماء' }
+  ]
+};
+
 /* ------------------------------------------------- project detail pages ---
    One page per id in PROJECTS, rendered by project.html?id=…
 
@@ -271,6 +357,15 @@ export const PROJECT_PAGES = {
       'غمام طالب جامعي تباغته نوبات الهلع والقلق الاجتماعي كلما اقترب موعد عرضه التقديمي. يرى الفيلم كيف يثقل هذا الضغط دراسته، وكيف يتعثر ثم ينهض من جديد.',
       'صنعناه في وقت قياسي لمسابقة إنتاج محتوى للنشء، وفاز بالمركز الثاني في جائزة الإنتاج المرئي للنشء. فيلم بلا موسيقى، يترك الصمت والمؤثرات الصوتية تحكي، وكتب الناس تحته في التعليقات: هذا أنا.'
     ],
+    /* the one award on the site. project.js gives it its own band under the
+       video, in the same three rosette petals as إنجازاتنا on the home page,
+       cooled down to this page's night. */
+    award: {
+      place: '٢',
+      rank: 'المركز الثاني',
+      name: 'جائزة الإنتاج المرئي للنشء',
+      note: 'عن فيلم غمام، مسابقة إنتاج محتوى للنشء'
+    },
     crew: ['كتابة', 'إخراج', 'تصميم صوت', 'أداء صوتي'],
     stats: [
       { n: 51.6, u: 'ألف', l: 'مشاهدة' },

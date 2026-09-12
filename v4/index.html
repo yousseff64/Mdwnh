@@ -22,6 +22,10 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap"></noscript>
 
 <link rel="preload" as="image" href="assets/img/hujra.webp" fetchpriority="high">
+<!-- the live numbers (scripts/fetch-stats.mjs rewrites it hourly). A plain
+     script so it is on window before any module runs; the page reads fine
+     without it, because every figure is also written into the HTML. -->
+<script defer src="assets/stats-data.js?v=1789140000"></script>
 <link rel="stylesheet" href="css/base.css?v=1789140000">
 <link rel="stylesheet" href="css/sections.css?v=1789140000">
 
@@ -81,15 +85,15 @@
   </button>
 
   <ul class="nav__links" id="navLinks">
-    <li><a href="#about" data-spy>مَنْ نَحْنُ؟</a></li>
-    <li><a href="#work" data-spy>أَعْمَالُنَا</a></li>
+    <li><a href="#about" data-spy>من نحن؟</a></li>
+    <li><a href="#work" data-spy>أعمالنا</a></li>
     <!-- the bar's button covers this on wide screens; the phone menu has no button -->
-    <li class="nav__menuonly"><a href="#contribute" data-spy>اِنْضَمَّ إِلَيْنَا</a></li>
-    <li><a href="#community" data-spy>مُجْتَمَعُنَا</a></li>
-    <li><a href="#contact" data-spy>تَوَاصَلْ مَعَنَا</a></li>
+    <li class="nav__menuonly"><a href="#contribute" data-spy>انضم إلينا</a></li>
+    <li><a href="#community" data-spy>مجتمعنا</a></li>
+    <li><a href="#contact" data-spy>تواصل معنا</a></li>
   </ul>
 
-  <a class="btn nav__cta" href="#contribute">شَارِكْ مَعَنَا</a>
+  <a class="btn nav__cta" href="#contribute">شارك معنا</a>
 </header>
 
 <main>
@@ -120,10 +124,11 @@
           <img class="news__art" src="assets/img/hujra.webp" alt="باب الحجرة" width="1448" height="814" fetchpriority="high">
           <span class="news__chip">مسلسل قصير · قريبًا</span>
           <div class="news__body">
-            <p class="news__text">تظن أن بابك مغلق، لكن هل جربت فتحه حقًا؟ أحيانًا يكون العائق في عقلك وحده. شاهد التشويقة الرسمية، ثم اقرأ الحكاية كاملة في ٤٣ صفحة.</p>
+            <p class="news__text">تظن أن بابك مغلق، لكن هل جربت فتحه حقًا؟ شاهد التشويقة الرسمية، واكتشف ما وراءه.<br>الحكاية كاملة في ٤٣ صفحة.</p>
             <div class="news__acts">
               <a class="btn" href="project.html?id=hujra">أعرف المزيد</a>
-              <a class="btn btn--ghost" href="https://www.youtube.com/watch?v=tJfiXnSMD0c" target="_blank" rel="noopener">شاهد التشويقة</a>
+              <a class="btn btn--ghost" href="https://mdwn.studio/Hujra/">اقرأ القصة المصورة</a>
+              <a class="news__watch" href="https://www.youtube.com/watch?v=tJfiXnSMD0c" target="_blank" rel="noopener"><i class="news__tri" aria-hidden="true"></i>شاهد التشويقة</a>
             </div>
           </div>
         </article>
@@ -155,9 +160,9 @@
     <div class="about__copy" data-rise>
       <p class="eyebrow"><span>أنيميشن</span><span>إخراج</span><span>كتابة</span><span>تصميم صوت</span></p>
       <h2 class="h2 h-lit about__title">مَنْ نَحْنُ؟</h2>
-      <p class="lead">نحن استوديو أنيميشن عربي. نصنع أفلامًا قصيرة ومسلسلات وعالمًا قصصيًا كاملًا اسمه عالم المدونة، من الفكرة الأولى إلى آخر إطار.</p>
-      <p>بدأنا سنة ٢٠١٧ بقصة واحدة على يوتيوب. اليوم عندنا ١١٥ عملًا منشورًا وأكثر من مليون ونصف مشاهدة، وفريق يكبر مع كل مشروع.</p>
-      <p>لا نصنع محتوى لملء جدول. نصنع قصصًا نتمنى لو رأيناها ونحن صغار: عربية، مكتوبة بجدية، ومرسومة بيد.</p>
+      <p class="lead">نحن استوديو أنيميشن عربي نصنع الأفلام القصيرة والمسلسلات، ونبني عوالمًا قصصية متكاملة مثل العالم الأكبر الحاضن لكل هذه العوالم: عالم المدونة.</p>
+      <p>بدأت الحكاية عام ٢٠١٧، بقصة واحدة نُشرت على يوتيوب. ومنذ ذلك الحين، اتسع العالم إلى أكثر من ١١٥ عملًا، تجاوزت مشاهداتها مليونًا ونصف المليون، ونما معها فريق يعمل على كل مشروع من فكرته الأولى حتى آخر إطار فيه.</p>
+      <p>نؤمن أن للقصص العربية مكانًا بين القصص التي نشأنا عليها. لذلك نصنع حكايات نودّ لو رأيناها ونحن صغار؛ حكايات عربية، تُكتب بعناية، وتُروى بالرسوم المتحركة، وتترك وراءها عالمًا يستحق أن يُكتشف.</p>
 
       <ul class="about__roles">
         <li style="--role-accent: var(--ember)"><b>١١٥</b> عملًا منشورًا</li>
@@ -245,7 +250,7 @@
            so fading the words does not cut the blur off from what is behind. -->
       <div class="voices__intro">
         <div class="voices__veil" aria-hidden="true"><i></i><i></i><i></i></div>
-        <p class="eyebrow"><span>٣٧٫٤ ألف مشترك</span><span>١٫٥ مليون مشاهدة</span></p>
+        <p class="eyebrow"><span data-live="ytSubsText" data-live-after="مشترك">٣٧٫٤ ألف مشترك</span><span data-live="views" data-live-after="مشاهدة">٢٫٩ مليون مشاهدة</span></p>
         <h2 class="h2">مَاذَا قَالُوا عَنَّا؟</h2>
         <p>هذا ما كتبه الناس تحت أعمالنا. اسقط معنا بينها.</p>
       </div>
@@ -282,7 +287,8 @@
       <header data-rise>
         <p class="eyebrow"><span>يوتيوب</span><span>إنستغرام</span><span>تيك توك</span><span>ديسكورد</span></p>
         <h2 class="h2">إِنْجَازَاتُنَا</h2>
-        <p class="lead wins__lead">خلف كل رقم هنا ناس حقيقيون يتابعون. وعلى الرف كأس المركز الثاني في جائزة الإنتاج المرئي للنشء، عن فيلم غمام.</p>
+        <p class="lead wins__lead">هذه الأرقام ليست مجرد أرقام؛ وراءها مشاهدون اختاروا أن يتابعوا ما نصنعه.</p>
+        <p class="wins__lead wins__lead--second">وبين ما صنعناه، كأس المركز الثاني في جائزة الإنتاج المرئي للنشء، الفائز بها فيلم غمام.</p>
       </header>
 
       <div class="wins__stats" id="statGrid"></div>
@@ -359,7 +365,7 @@
     <header class="contribute__head" data-rise>
       <p class="eyebrow"><span>انشر</span><span>اقترح</span><span>ادعم</span></p>
       <h2 class="h2 contribute__title">كَيْفَ أُسَاهِمُ؟<i class="mark mark--sparkles contribute__spark" aria-hidden="true"></i></h2>
-      <p class="lead">تود أن تكون ممن ساهم في نمو مشروع المدونة وانتشاره، ودعم فريق العمل، ونشر المحتوى المفيد الشيق؟ اختر طريقتك.</p>
+      <p class="lead">إن كنت تريد أن تكون جزءًا من رحلة المدونة، فهناك أكثر من طريقة لدعم ما نصنعه ومساعدة هذا العالم على الوصول إلى جمهور أوسع.</p>
     </header>
 
     <div class="ways__wrap">
@@ -443,7 +449,7 @@
       <header data-rise>
         <p class="eyebrow"><span>نادي المدونة</span><span>ديسكورد</span><span>يوتيوب</span><span>إنستغرام</span><span>تيك توك</span></p>
         <h2 class="h2 h-lit community__title">مُجْتَمَعُنَا</h2>
-        <p class="lead community__lead">نادي المدونة سيرفر ديسكورد يجمع ١٬٢٨٤ عضوًا. نلتقي فيه كل أسبوع في تحدي رسم جديد، نتناقش في آخر حلقة، ونصوت على الخطوة القادمة قبل أن نبدأ الإنتاج.</p>
+        <p class="lead community__lead">نادي المدونة مجتمع على ديسكورد، يضم <b data-live="discMembers">١٬٢٨٤</b> عضوًا، وفيه أكثر من مجرد الحديث عن أعمال المدونة.<br>فعاليات وتحديات أسبوعية، ومساحات للنقاش والتعارف، وأقسام مخصصة للشباب والفتيات، إلى جانب مجتمع يتابع أعمالنا ويشارك في بعض مراحلها.</p>
       </header>
 
       <div class="community__where">
@@ -512,7 +518,7 @@
         </div>
       </div>
 
-      <span class="call__badge" aria-hidden="true"><b>١٬٢٨٤</b>عضوًا</span>
+      <span class="call__badge" aria-hidden="true"><b data-live="discMembers">١٬٢٨٤</b>عضوًا</span>
       <div class="call__fx" id="callFx" aria-hidden="true"></div>
 
       <i class="cloud call__cloud--a" data-seed="5" data-flip="1" aria-hidden="true"></i>
@@ -546,7 +552,7 @@
     <div class="pfoot__cta">
       <p class="eyebrow"><span>يوتيوب</span><span>نادي المدونة</span><span>إنستغرام</span></p>
       <h2 class="h2 pfoot__h">لَا تَفُتْكَ الحِكَايَةُ القَادِمَة</h2>
-      <p>ننشر أعمالنا على يوتيوب أولًا. اشترك في القناة ليصلك العمل القادم يوم نشره، أو ادخل نادي المدونة وصوّت على ما نصنعه بعده.</p>
+      <p>ننشر أعمالنا أولًا على يوتيوب. اشترك في القناة لتكون من أوائل من يشاهدون العمل القادم، وبإمكانك الانضمام إلى نادي المدونة والمشاركة في اختيار ما نصنعه بعد ذلك.</p>
       <div class="pfoot__acts">
         <a class="btn" href="https://www.youtube.com/@Mdwn.c?sub_confirmation=1" target="_blank" rel="noopener">اشترك في القناة</a>
         <a class="btn btn--ghost" href="https://discord.gg/RBtp2JVXm6" target="_blank" rel="noopener">ادخل النادي</a>

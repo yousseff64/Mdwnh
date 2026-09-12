@@ -1,0 +1,40 @@
+name: Update site numbers
+
+on:
+  schedule:
+    - cron: '20 * * * *'   # hourly, offset from the YouTube feed job
+  workflow_dispatch:       # manual "Run workflow" button
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-stats
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Reads only public pages: the YouTube channel's about page and the
+      # نادي المدونة invite. A source that fails is skipped, not zeroed.
+      - name: Fetch the numbers
+        run: node scripts/fetch-stats.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add v4/assets/stats-data.js
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: update the site numbers"
+            git push
+          fi
