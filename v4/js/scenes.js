@@ -239,6 +239,13 @@ const RECIPES = {
   figs: () => [['fig', 14]]
 };
 
+/* The share of the scroll the falling field takes, and whether depth slows
+   it. Nearly every scene's field sits far behind the page and creeps.
+   القرد والغيلم's figs hang in the page itself: they travel with it one to
+   one, and depth only changes their size, not their speed. */
+const SCROLL = { figs: { k: 1, depth: false } };
+const CREEP = { k: 0.16, depth: true };
+
 /* a soft round light, drawn once and stamped */
 function glow(color) {
   const c = document.createElement('canvas');
@@ -269,6 +276,7 @@ export function sceneCanvas(canvas, scene, th, onFrame, { box = null, density = 
   let H = 0;
   let dpr = 1;
   let parts = [];
+  const roll = SCROLL[scene] || CREEP;
 
   function resize() {
     const w = box ? box.clientWidth : innerWidth;
@@ -352,7 +360,7 @@ export function sceneCanvas(canvas, scene, th, onFrame, { box = null, density = 
         env.sy = p.y - ptr.y * p.z * 12;
       } else {
         env.sx = mod(p.x - ptr.x * p.z * 22 + M, W + M * 2) - M;
-        env.sy = mod(p.y - scroll * p.z * 0.16 - ptr.y * p.z * 12 + M, H + M * 2) - M;
+        env.sy = mod(p.y - scroll * (roll.depth ? p.z : 1) * roll.k - ptr.y * p.z * 12 + M, H + M * 2) - M;
       }
       ctx.setTransform(dpr, 0, 0, dpr, env.sx * dpr, env.sy * dpr);
       p.k.draw(ctx, p, t, env);

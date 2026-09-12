@@ -299,8 +299,10 @@ def build_wins():
     that won, and the red grin drawn behind them (a mask, like the icons)."""
     d = ensure("img", "wins")
     folder = os.path.join("Art", "achievements")
-    total = save_webp(Image.open(src(folder, "award.jpg")).convert("RGB"),
-                      os.path.join(d, "night.webp"), quality=84)
+    # The photo came off the phone mirrored: the screens behind the trophy
+    # read backwards. Flip it here, so the piece stays where it is placed.
+    night = Image.open(src(folder, "award.jpg")).convert("RGB").transpose(Image.FLIP_LEFT_RIGHT)
+    total = save_webp(night, os.path.join(d, "night.webp"), quality=84)
     # The still catches a second character at its left edge. Square on ryan.
     still = Image.open(src(folder, "ryan.png")).convert("RGB").crop((70, 20, 680, 630))
     total += save_webp(still, os.path.join(d, "still.webp"), 460, quality=84)

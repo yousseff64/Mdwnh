@@ -892,9 +892,13 @@
   z-index: 3;                 /* the floor سراج lands on, and lands over */
   color: var(--ink);
   overflow: clip;
+  /* Creamy paper, with a warm patch of light on the side the table sits on
+     (the left, in the page's direction) so the rays and the white clouds
+     still have something to read against. */
   background:
-    radial-gradient(70% 60% at 100% 0%, #fbe389 0%, #fbe38900 70%),
-    linear-gradient(to bottom, #f8d443 0%, var(--sun) 45%, #f3c22c 100%);
+    radial-gradient(72% 58% at 14% 4%, #ffe7a8 0%, #ffe7a800 64%),
+    radial-gradient(58% 52% at 96% 92%, #fdf0cd 0%, #fdf0cd00 72%),
+    linear-gradient(to bottom, #fffdf6 0%, #fdf8ea 52%, #fbf4e2 100%);
 }
 .wins__layout {
   display: grid;
@@ -910,17 +914,19 @@
   gap: clamp(0.6rem, 1.2vw, 0.95rem);
 }
 
-/* --h is the pointer lift, sprung by wins.js */
+/* --h is the pointer lift, sprung by wins.js. Each card carries a wash of
+   its own accent, never enough to take the text off black. */
 .stat {
   --h: 0;
+  --tint: var(--stat-accent, var(--ember));
   position: relative;
   display: grid;
   gap: 0.1rem;
   padding: clamp(0.95rem, 1.7vw, 1.3rem) clamp(1.05rem, 1.9vw, 1.45rem);
   border-radius: 18px;
-  background: color-mix(in srgb, #fffdf6 calc(var(--h) * 100%), #fff7dcd9);
-  border: var(--hair) solid #ffffffa6;
-  box-shadow: 0 calc(6px + var(--h) * 12px) calc(18px + var(--h) * 16px) -14px #7a560066;
+  background: color-mix(in srgb, var(--tint) calc(10% + var(--h) * 6%), #fffefa);
+  border: var(--hair) solid color-mix(in srgb, var(--tint) calc(28% + var(--h) * 24%), #fffefa);
+  box-shadow: 0 calc(6px + var(--h) * 12px) calc(18px + var(--h) * 16px) -14px color-mix(in srgb, var(--tint) 55%, #32323200);
   translate: 0 calc(var(--h) * -5px);
   text-decoration: none;
   color: inherit;
@@ -933,7 +939,7 @@
   font-size: clamp(1.5rem, 2.4vw, 2.5rem);
   line-height: 1.05;
   white-space: nowrap; /* ٣٧٫٤ ألف is one figure, never two lines */
-  color: var(--stat-accent, var(--ember));
+  color: var(--ink);   /* the colour is in the wash and the mark, not the figure */
 }
 .stat__l { font-size: 0.875rem; color: var(--ink-70); }
 .stat__mark {
@@ -973,7 +979,7 @@
   position: absolute;
   inset: -12% -16%;
   z-index: 0;
-  background: radial-gradient(closest-side at 50% 40%, #fff7cf 0%, #fff4b800 100%);
+  background: radial-gradient(closest-side at 50% 40%, #ffe08f 0%, #ffdf8a00 100%);
 }
 .prize__rays {
   position: absolute;
@@ -983,7 +989,7 @@
   aspect-ratio: 1;
   translate: -50% -50%;
   z-index: 0;
-  background: repeating-conic-gradient(#ffffff42 0deg 5deg, #fff0 5deg 15deg);
+  background: repeating-conic-gradient(#f6c53a5c 0deg 5deg, #fff0 5deg 15deg);
   -webkit-mask: radial-gradient(closest-side, #000 12%, #0000 70%);
   mask: radial-gradient(closest-side, #000 12%, #0000 70%);
   animation: prize-turn 90s linear infinite;
@@ -1085,7 +1091,7 @@
   width: 12cqw;
   height: 3.6cqw;
   rotate: 38deg;
-  background: #ffffffc2;
+  background: #f6e6bcc7;
   box-shadow: 0 0.2cqw 0.6cqw #0000001f;
 }
 
@@ -1173,7 +1179,7 @@
   position: absolute;
   width: calc(var(--s, 1) * 3.2cqw);
   aspect-ratio: 1;
-  background: var(--c, #fff);
+  background: var(--c, var(--sun));
   -webkit-mask: var(--spark) center / contain no-repeat;
   mask: var(--spark) center / contain no-repeat;
   pointer-events: none;
@@ -1193,7 +1199,7 @@
    Drift is transform (util.js), the entrance is translate. */
 .prize .cloud {
   --cloud-color: #fff;
-  filter: blur(var(--blur, 0px));
+  filter: blur(var(--blur, 0px)) drop-shadow(0 0.6cqw 0.9cqw #c9a14a38);
   transition: translate 1.3s cubic-bezier(.2,.7,.3,1), opacity 1.3s ease;
 }
 .prize.is-armed:not(.is-in) .cloud { translate: 0 45%; opacity: 0; }

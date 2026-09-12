@@ -13,7 +13,7 @@
 import { $, $$, el, clamp, reduced, tick, whileVisible, cloudDrift, spring, step, arabize } from './util.js';
 
 const DEAL = 150;            /* ms between one piece landing and the next */
-const BURST = ['#fff', 'var(--ember)', '#fff', 'var(--sky)'];
+const BURST = ['var(--sun)', 'var(--ember)', 'var(--sun)', 'var(--sky)'];
 const AR = '٠١٢٣٤٥٦٧٨٩';
 
 /* One loop for every spring in the section. It only ticks while

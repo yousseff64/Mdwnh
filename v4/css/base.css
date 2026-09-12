@@ -135,6 +135,10 @@ h1, h2, h3 {
   flex-wrap: wrap;
   gap: 0.55em;
   align-items: center;
+  /* The tashkeel over the header below reaches up into this line. Lift the
+     eyebrow clear of it in translate, so nothing in the flow moves and the
+     headers keep their place on the screen. */
+  translate: 0 -0.5rem;
 }
 .eyebrow span::after {
   content: '·';
