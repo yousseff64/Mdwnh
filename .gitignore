@@ -4,3 +4,7 @@
 
 # Scratch
 REBUILD_PLAN.md
+**/._*
+
+# Python scratch
+__pycache__/

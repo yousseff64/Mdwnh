@@ -1,0 +1,318 @@
+/* ============================================================
+   Tokens, reset, type scale, and the primitives every section
+   reuses: eyebrows, headers, buttons, brush icons, clouds, rails.
+   ============================================================ */
+
+:root {
+  /* brand */
+  --paper: #FBFAF9;
+  --ink: #323232;
+  --ember: #F56549;
+  --sun: #F7D038;
+  --mint: #45C4B9;
+  --sky: #0084C1;
+
+  /* derived */
+  --ink-70: #323232b3;
+  --ink-45: #32323273;
+  --ink-12: #3232321f;
+  --void: #0B0B12;
+  --hair: 1.5px;
+
+  /* the hero stage recolours these live */
+  --tone-bg: var(--sky);
+  --tone-deep: #05386b;
+  --tone-cloud: #ffffff;
+  --tone-glow: #ffffff;
+  --tone-ink: #ffffff;
+
+  /* rhythm */
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --rail: 2.25rem;
+  /* Vertical rhythm follows the screen's height as well as its width, so a
+     short laptop screen does not spend a third of itself on padding and a
+     section's header stays on screen with its content. */
+  --bay: clamp(4.5rem, min(6vw, 10svh), 7rem);
+
+  /* type */
+  --display: 'Baloo Bhaijaan 2', 'Rubik', system-ui, sans-serif;
+  --body: 'Rubik', system-ui, -apple-system, sans-serif;
+
+  --t-hero: clamp(2.75rem, 8.5vw, 7rem);
+  --t-h2: clamp(2.25rem, 6.5vw, 5.25rem);
+  --t-h3: clamp(1.5rem, 2.6vw, 2.25rem);
+  --t-lead: clamp(1.0625rem, 1.5vw, 1.375rem);
+  --t-body: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  --t-micro: clamp(0.625rem, 0.78vw, 0.75rem);
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Type and spacing are set in rem, so this one value is the page's density.
+   The client preferred the site at 90%. A percentage (not px) keeps the
+   reader's own browser text size in charge. */
+html {
+  font-size: 90%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: var(--t-body);
+  line-height: 1.7;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--sun); color: var(--ink); }
+
+/* Latin handles inside RTL copy: keep the @ on the left where it belongs. */
+.ltr { direction: ltr; unicode-bidi: isolate; }
+
+.sr {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ headings --- */
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 1.12;
+  margin: 0;
+  /* Arabic joins break under tracking. Never letter-space these. */
+  letter-spacing: 0;
+}
+
+.h-hero { font-size: var(--t-hero); }
+.h2 { font-size: var(--t-h2); }
+.h3 { font-size: var(--t-h3); font-weight: 700; }
+
+/* A white header lit from inside: a slight gradient fill plus a white inner
+   rim (the #inkLit SVG filter at the top of index.html). The clipped fill and
+   the filter only paint inside the box, so each lit header pads its top for
+   the tashkeel and takes it back in its margin. */
+.defs { position: absolute; }
+.h-lit { color: #fff; }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .h-lit {
+    background: linear-gradient(to bottom, #fff 30%, #cde5f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: url(#inkLit);
+  }
+}
+
+/* the tiny real-names line that sits above every header */
+.eyebrow {
+  font-family: var(--body);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--ink-45);
+  margin: 0 0 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55em;
+  align-items: center;
+}
+.eyebrow span::after {
+  content: '·';
+  margin-inline-start: 0.55em;
+  color: currentColor;
+  opacity: 0.55;
+}
+.eyebrow span:last-child::after { content: none; }
+
+/* Tall Arabic headers (hamza, tashkeel) ride above their line box and reach
+   into the eyebrow. Space them apart in the header's own em, so the gap
+   grows with the header. */
+.eyebrow + :where(h1, h2, .h2) { margin-block-start: 0.3em; }
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.65;
+  max-width: 46ch;
+  color: var(--ink-70);
+}
+
+/* ------------------------------------------------------------- layout --- */
+
+.shell {
+  width: min(100% - (var(--gutter) * 2), 1440px);
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+  padding-block: var(--bay);
+}
+
+.section > .shell { position: relative; z-index: 2; }
+
+/* ------------------------------------------------------------ buttons --- */
+
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.72em 1.6em;
+  border: var(--hair) solid var(--btn-bg);
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(0.9375rem, 1.15vw, 1.125rem);
+  line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 120ms cubic-bezier(.2,.7,.3,1), box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px -10px var(--btn-bg); }
+.btn:active { transform: translateY(0) scale(0.975); transition-duration: 90ms; }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--btn-bg);
+}
+.btn--ghost:hover { background: var(--btn-bg); color: var(--btn-fg); }
+
+.btn--onTone { --btn-bg: var(--tone-ink); --btn-fg: var(--tone-bg); }
+
+/* ------------------------------------------- brush icons as colour marks --- */
+
+.mark {
+  --mark-color: var(--ember);
+  --mark-src: url(../assets/icons/asterisk.webp);
+  display: block;
+  background-color: var(--mark-color);
+  -webkit-mask-image: var(--mark-src);
+  mask-image: var(--mark-src);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  pointer-events: none;
+}
+
+.mark--asterisk { --mark-src: url(../assets/icons/asterisk.webp); }
+.mark--hash     { --mark-src: url(../assets/icons/hash.webp); }
+.mark--question { --mark-src: url(../assets/icons/question.webp); }
+.mark--smile    { --mark-src: url(../assets/icons/smile.webp); }
+.mark--sparkles { --mark-src: url(../assets/icons/sparkles.webp); }
+.mark--spiral   { --mark-src: url(../assets/icons/spiral.webp); }
+.mark--swash    { --mark-src: url(../assets/icons/swash.webp); }
+.mark--grin     { --mark-src: url(../assets/icons/grin.svg); }
+
+/* decorative marks scattered into the empty margins */
+.strew {
+  position: absolute;
+  z-index: 0;
+  opacity: 0.9;
+  animation: sway var(--sway, 11s) ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sway {
+  from { transform: translate3d(0,0,0) rotate(var(--r0, -6deg)); }
+  to   { transform: translate3d(0,-14px,0) rotate(var(--r1, 7deg)); }
+}
+
+/* --------------------------------------------------------------- clouds --- */
+
+.cloud {
+  position: absolute;
+  width: 26rem;
+  aspect-ratio: 721 / 372;
+  background-color: var(--cloud-color, #fff);
+  -webkit-mask-image: url(../assets/img/cloud.webp);
+  mask-image: url(../assets/img/cloud.webp);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* --------------------------------------------------- vertical edge rails --- */
+
+.railtext {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: var(--rail);
+  z-index: 40;
+  pointer-events: none;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--rail-ink, var(--ink-45));
+  transition: color 500ms ease;
+  mix-blend-mode: normal;
+}
+.railtext--start { inset-inline-start: 0; }
+.railtext--end { inset-inline-end: 0; }
+
+/* Arabic cannot be set in vertical-rl without shredding the joins, so the
+   line stays horizontal and the whole box is rotated. */
+.railtext b {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-weight: inherit;
+  white-space: nowrap;
+  transform-origin: center;
+  transition: opacity 260ms ease;
+}
+.railtext--start b { transform: translate(-50%, -50%) rotate(90deg); }
+.railtext--end b { transform: translate(-50%, -50%) rotate(-90deg); }
+.railtext[data-swap] b { opacity: 0; }
+
+@media (max-width: 1180px) { .railtext { display: none; } }
+
+/* ---------------------------------------------------------- scroll-in --- */
+
+[data-rise] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity 620ms cubic-bezier(.2,.7,.3,1), transform 620ms cubic-bezier(.2,.7,.3,1);
+  transition-delay: var(--rise-delay, 0ms);
+}
+[data-rise].is-in { opacity: 1; transform: none; }
+
+/* ------------------------------------------------------- reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .strew, .cloud { animation: none !important; }
+  [data-rise] { opacity: 1; transform: none; transition: none; }
+  .btn { transition: background 120ms ease, color 120ms ease; }
+  .btn:hover, .btn:active { transform: none; }
+}

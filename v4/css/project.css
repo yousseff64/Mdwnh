@@ -1,0 +1,398 @@
+/* ============================================================
+   Project pages (project.html). One template, six worlds: the
+   colours come from each video's thumbnail (data.js
+   PROJECT_PAGES), and so does the scenery (js/scenes.js).
+   Page order: hero, player, numbers, story, more work, footer.
+   ============================================================ */
+
+body.pp {
+  background: linear-gradient(to bottom, var(--tone-sky) 0, var(--tone-bg) 115svh) no-repeat, var(--tone-bg);
+  color: var(--tone-ink);
+}
+.pp ::selection { background: var(--accent); color: var(--tone-deep); }
+.pp :focus-visible { outline-color: var(--pop); }
+.pp .eyebrow { color: color-mix(in srgb, var(--tone-ink) 58%, transparent); }
+.pp .railtext { color: color-mix(in srgb, var(--tone-ink) 40%, transparent); }
+.pp main .btn { --btn-bg: var(--tone-ink); --btn-fg: var(--tone-bg); }
+
+/* the scenery: one canvas fixed behind the whole page, under the footer */
+.pfx { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+/* Scenery reaches past the sides (orbits, eyes, clouds). body's own clip
+   is handed to the viewport, which phones still let you pan, so main clips
+   sideways itself. Only sideways: the front clouds still hang downward. */
+.pp main { position: relative; z-index: 1; overflow-x: clip; }
+
+/* ---- the bar on a light world (القرد والغيلم) ----
+   It keeps its white logo and ink like every other page, so the faint frost
+   it wears before any scroll turns to the world's night glass instead. */
+@media (min-width: 901px) {
+  .pp--light .nav[data-on-tone]:not(.is-stuck) {
+    background: color-mix(in srgb, var(--nav-glass) 64%, transparent);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+}
+
+/* =============================================================== hero === */
+
+/* The hero sits over the top of the player (its bottom padding is where
+   the player rises into it), so it lets clicks through and only its copy
+   takes them. That keeps the front clouds above the player's corners. */
+.ph {
+  --px: 0; --py: 0; --out: 0;
+  position: relative;
+  z-index: 4;
+  min-height: min(92svh, 60rem);
+  display: grid;
+  align-items: center;
+  padding-block: clamp(6.5rem, 15vh, 9rem) clamp(8rem, 20vh, 12rem);
+  text-align: center;
+  pointer-events: none;
+}
+.ph__back, .ph__front { position: absolute; inset: 0; pointer-events: none; }
+.ph__back { z-index: 0; translate: calc(var(--px) * -12px) calc(var(--py) * -8px); }
+.ph__front { z-index: 4; translate: calc(var(--px) * -30px) calc(var(--py) * -16px); }
+
+.ph__copy {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  pointer-events: auto;
+  translate: 0 calc(var(--out) * 14vh);
+  opacity: calc(1 - var(--out) * 1.15);
+}
+.ph__eyebrow { justify-content: center; animation: p-rise 900ms cubic-bezier(.2,.75,.2,1) 80ms both; }
+
+.ph__title {
+  font-size: clamp(3.25rem, 11.5vw, 10rem);
+  line-height: 1.08;
+  max-width: 14ch;
+  text-wrap: balance;
+  /* a hard edge under the letters, like the thumbnails' 3D titles */
+  filter: drop-shadow(0 0.05em 0 var(--edge, color-mix(in srgb, var(--accent2) 55%, #000)));
+}
+.pp--light .ph__title { --edge: var(--accent2); }
+/* each word is its own clipped fill, padded for the tashkeel above it */
+.ph__w {
+  display: inline-block;
+  padding-block: 0.3em 0.1em;
+  margin-block: -0.3em -0.1em;
+  background: linear-gradient(to bottom, var(--tone-ink) 40%, color-mix(in srgb, var(--tone-ink) 68%, var(--accent)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: p-word 1100ms cubic-bezier(.2,.75,.2,1) both;
+  animation-delay: calc(160ms + var(--i) * 120ms);
+}
+@keyframes p-word { from { opacity: 0; transform: translate3d(0, 0.32em, 0) scale(0.94); filter: blur(12px); } }
+@keyframes p-rise { from { opacity: 0; transform: translate3d(0, 18px, 0); } }
+
+.ph__tag {
+  margin: clamp(0.9rem, 2vw, 1.4rem) auto 0;
+  max-width: 32ch;
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--tone-ink) 86%, transparent);
+  text-wrap: balance;
+  animation: p-rise 900ms cubic-bezier(.2,.75,.2,1) 520ms both;
+}
+.ph__acts {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+  animation: p-rise 900ms cubic-bezier(.2,.75,.2,1) 660ms both;
+}
+/* play points right in every language: media controls are never mirrored */
+.ph__tri { width: 0.62em; aspect-ratio: 1; background: currentColor; clip-path: polygon(12% 4%, 96% 50%, 12% 96%); }
+
+/* ---- scenery pieces (js/scenes.js) ---- */
+
+/* .sun and .eyes are shared with the news hero: sections.css */
+
+.orbit {
+  position: absolute;
+  top: 48%;
+  left: -24%;
+  width: min(62rem, 110vw);
+  aspect-ratio: 1;
+  translate: 0 -50%;
+}
+.orbit svg { width: 100%; height: 100%; overflow: visible; }
+.orbit__ring { transform-box: view-box; transform-origin: 50% 50%; animation: p-spin var(--spin) linear infinite; }
+@keyframes p-spin { to { transform: rotate(360deg); } }
+
+.spot { position: absolute; inset: 0; }
+.spot__beam {
+  position: absolute;
+  top: -12%;
+  left: 50%;
+  width: min(76rem, 150vw);
+  height: 125%;
+  translate: -50% 0;
+  background: linear-gradient(to bottom, #ffffffb8, #ffffff2e 50%, transparent 88%);
+  clip-path: polygon(45% 0, 55% 0, 92% 100%, 8% 100%);
+  filter: blur(26px);
+  opacity: 0.5;
+  animation: p-flicker 9s linear infinite;
+}
+.spot__pool {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: min(46rem, 90vw);
+  height: 9rem;
+  translate: -50% 0;
+  background: radial-gradient(closest-side, #ffffff36, transparent);
+}
+/* an old bulb: steady, with the odd stutter */
+@keyframes p-flicker {
+  0%, 40%, 44.5%, 100% { opacity: 0.5; }
+  41% { opacity: 0.34; }
+  42% { opacity: 0.56; }
+  43.5% { opacity: 0.4; }
+  72% { opacity: 0.46; }
+}
+
+.swirls { position: absolute; inset: 4% -4%; }
+.swirls svg { width: 100%; height: 100%; }
+.swirls path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-opacity: 0.3;
+  stroke-width: 1.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: p-draw 2.6s cubic-bezier(.45,0,.2,1) forwards;
+  animation-delay: calc(300ms + var(--i) * 380ms);
+}
+@keyframes p-draw { to { stroke-dashoffset: 0; } }
+
+@media (max-width: 760px) {
+  .orbit { left: -62%; top: 40%; opacity: 0.7; }
+}
+
+/* ============================================================= player === */
+
+/* above everything in the hero, clouds included: nothing may sit on the
+   video or catch a click meant for it */
+.pwatch {
+  position: relative;
+  z-index: 5;
+  margin-top: calc(clamp(8rem, 20vh, 12rem) * -0.72);
+  padding-bottom: clamp(3rem, 7vw, 5.5rem);
+}
+.player {
+  --in: 1;
+  position: relative;
+  width: min(100%, 70rem);
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: clamp(16px, 2.2vw, 30px);
+  overflow: hidden;
+  background: #000;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tone-ink) 20%, transparent),
+    0 50px 100px -50px #000d,
+    0 0 90px -24px color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: perspective(1800px) rotateX(calc((1 - var(--in)) * 18deg)) scale(calc(0.86 + var(--in) * 0.14));
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+.player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.player.is-playing .player__face { display: none; }
+
+.player__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.player__face:focus-visible { outline: 3px solid var(--pop); outline-offset: -6px; border-radius: inherit; }
+.player__face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 900ms cubic-bezier(.2,.7,.2,1);
+}
+.player__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 50%, transparent, #0005), linear-gradient(to top, #000b, transparent 42%);
+}
+.player__btn {
+  position: relative;
+  z-index: 2;
+  width: clamp(4.5rem, 9vw, 7rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffffff38;
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 0 0 1.5px #ffffff70, 0 18px 40px -12px #0009;
+  transition: transform 420ms cubic-bezier(.3,1.4,.5,1), background 220ms ease;
+}
+.player__btn i { width: 34%; aspect-ratio: 1; background: #fff; clip-path: polygon(20% 8%, 92% 50%, 20% 92%); translate: 8% 0; }
+.player__face:hover img { scale: 1.04; }
+.player__face:hover .player__btn { transform: scale(1.08); background: color-mix(in srgb, var(--accent) 60%, transparent); }
+.player__face:active .player__btn { transform: scale(0.94); transition-duration: 90ms; }
+.player__label {
+  position: absolute;
+  z-index: 2;
+  inset-inline-start: clamp(1rem, 3vw, 2rem);
+  inset-block-end: clamp(0.8rem, 2.4vw, 1.6rem);
+  display: grid;
+  text-align: start;
+  line-height: 1.35;
+}
+.player__label b { font-family: var(--display); font-size: clamp(1.1rem, 2vw, 1.6rem); }
+.player__label small { font-size: 0.8125rem; opacity: 0.78; }
+
+/* ============================================================ numbers === */
+
+.pstats { position: relative; z-index: 2; }
+.pstats__row {
+  list-style: none;
+  margin-block: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid color-mix(in srgb, var(--tone-ink) 16%, transparent);
+}
+.pstats__row li {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  padding: clamp(1.4rem, 3vw, 2.4rem) clamp(0.5rem, 2vw, 1.5rem);
+  text-align: center;
+}
+.pstats__row li + li { border-inline-start: 1px solid color-mix(in srgb, var(--tone-ink) 16%, transparent); }
+.pstats b {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5.4vw, 4.75rem);
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.pstats b small { margin-inline-start: 0.2em; font-size: 0.36em; font-weight: 700; color: var(--pop); }
+.pstats__l { font-size: 0.9375rem; color: color-mix(in srgb, var(--tone-ink) 68%, transparent); }
+.pstats__note {
+  margin-block: 0.85rem 0;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: color-mix(in srgb, var(--tone-ink) 52%, transparent);
+}
+.pstory__read { margin-top: 0.5rem; }
+
+@media (max-width: 720px) {
+  .pstats__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pstats__row li:nth-child(3) { border-inline-start: 0; }
+  .pstats__row li:nth-child(n + 3) { border-top: 1px solid color-mix(in srgb, var(--tone-ink) 16%, transparent); }
+}
+
+/* ============================================================== story === */
+
+.pstory { z-index: 2; }
+.pstory__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+}
+.pstory__copy p { max-width: 50ch; color: color-mix(in srgb, var(--tone-ink) 80%, transparent); }
+.pstory__copy .pstory__lede {
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1.25rem, 2.1vw, 1.8rem);
+  line-height: 1.6;
+  font-weight: 500;
+  color: var(--tone-ink);
+}
+.pfacts { margin: 0; border-top: 1px solid color-mix(in srgb, var(--tone-ink) 16%, transparent); }
+.pfacts div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--tone-ink) 16%, transparent);
+}
+.pfacts dt { font-size: 0.9375rem; color: color-mix(in srgb, var(--tone-ink) 62%, transparent); }
+.pfacts dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.125rem; text-align: end; }
+
+@media (max-width: 880px) { .pstory__grid { grid-template-columns: 1fr; } }
+
+/* ========================================================= more work === */
+
+/* bottom padding is headroom for the footer's cloud edge */
+.pmore { z-index: 2; padding-bottom: calc(var(--bay) + clamp(3rem, 7vw, 6rem)); }
+.pmore__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; }
+.pmore__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding-bottom: 0.15em;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  text-decoration: none;
+  background: linear-gradient(var(--pop), var(--pop)) 100% 100% / 100% 2px no-repeat;
+}
+.pmore__all span { transition: translate 300ms cubic-bezier(.2,.7,.3,1); }
+.pmore__all:hover span { translate: -5px 0; }
+
+.pmore__row {
+  margin-top: clamp(1.5rem, 3.5vw, 2.75rem);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  align-items: start;
+}
+.pmore__row .cover { width: 100%; margin: 0; }
+
+@media (max-width: 900px) {
+  .pmore__row {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(44vw, 13rem);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 1rem var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .pmore__row::-webkit-scrollbar { display: none; }
+  .pmore__row .cover { scroll-snap-align: center; }
+}
+
+/* ============================================================= footer === */
+
+/* the shared footer (sections.css), in this work's own night */
+.pp .pfoot { --foot-bg: var(--tone-deep); --foot-accent: var(--accent); }
+
+/* ===================================================== reduced motion === */
+
+@media (prefers-reduced-motion: reduce) {
+  .ph__w, .ph__eyebrow, .ph__tag, .ph__acts { animation: none; }
+  .ph__copy { translate: none; opacity: 1; }
+  .ph__back, .ph__front { translate: none; }
+  .player { transform: none; }
+  .player__face img, .player__btn, .pmore__all span { transition: none; }
+  .orbit__ring, .spot__beam { animation: none; }
+  .swirls path { animation: none; stroke-dashoffset: 0; }
+}
