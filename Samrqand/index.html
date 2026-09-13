@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مدونة - قضية سمرقند</title>
-    <link rel="stylesheet" href="../assets/comic-viewer/style.css">
+    <link rel="stylesheet" href="../comics/viewer/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700&family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
     
     <!-- Firebase SDKs -->
@@ -17,15 +17,15 @@
 </head>
 <body>
     <nav class="flipbook-nav">
-        <a href="../comics/index.html" class="btn-back">
+        <a href="../comics/" class="btn-back">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
             </svg>
             <span>القصص</span>
         </a>
-        <div class="logo">
-            <img src="../logo.png" alt="مدونة">
-        </div>
+        <a class="logo" href="../" aria-label="مدونة ستوديو، الرئيسية">
+            <img src="../assets/img/logo-white.webp" alt="مدونة ستوديو">
+        </a>
         <div class="header-center">
             <div class="book-title">قضية سمرقند</div>
             <div class="view-stats"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg> <span id="view-count">...</span></div>
@@ -59,12 +59,12 @@
     </main>
 
     <script>
-        window.COMIC_PATH = '../قضية سمرقند/';
+        window.COMIC_PATH = '../comics/pages/samarqand/';
         window.COMIC_ID = 'samrqand';
         window.PAGE_COUNT = 51;
         window.PAGE_PATTERN = '{n}.png';
     </script>
 
-    <script src="../assets/comic-viewer/script.js?v=3.0"></script>
+    <script src="../comics/viewer/script.js?v=4.0"></script>
 </body>
 </html>

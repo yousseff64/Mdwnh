@@ -1,6 +1,6 @@
 /* ============================================================
    Fetch latest LONG YouTube uploads for the MDWNH channel and write
-   assets/youtube-data.js. No API key, no cookies.
+   old/assets/youtube-data.js, the archived site's feed. No API key, no cookies.
 
    Strategy:
    1. Resolve the @handle → channelId + real channel name + avatar
@@ -16,7 +16,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const HANDLE = 'Mdwn.c';                 // youtube.com/@Mdwn.c
-const OUT = 'assets/youtube-data.js';
+const OUT = 'old/assets/youtube-data.js';
 const MAX = 6;
 const FALLBACK_NAME = 'مدونة ستوديو';
 const FALLBACK_LOGO = 'Circle Logo.png';

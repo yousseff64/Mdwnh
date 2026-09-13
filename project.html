@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدونة ستوديو</title>
+<meta name="description" content="عمل من أعمال مدونة ستوديو: شاهده، واعرف حكايته، وانتقل إلى العمل التالي.">
+<meta name="theme-color" content="#110e33">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://i.ytimg.com">
+<!-- Only the weights the page uses, without blocking the first paint -->
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap"></noscript>
+
+<link rel="stylesheet" href="css/base.css?v=1789277355">
+<link rel="stylesheet" href="css/sections.css?v=1789277355">
+<link rel="stylesheet" href="css/project.css?v=1789277355">
+
+<link rel="modulepreload" href="js/project.js?v=1789277355">
+<link rel="modulepreload" href="js/util.js">
+<link rel="modulepreload" href="js/data.js">
+<link rel="modulepreload" href="js/ambient.js">
+<link rel="modulepreload" href="js/navworks.js">
+<link rel="modulepreload" href="js/cover.js">
+<link rel="modulepreload" href="js/scenes.js">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+</head>
+
+<!-- One template for every work. js/project.js reads ?id=, paints the
+     work's colours, builds the page, and js/scenes.js dresses it. -->
+<body class="pp">
+
+<div class="railtext railtext--start" id="railStart" aria-hidden="true"><b>MDWNH STUDIO</b></div>
+<div class="railtext railtext--end" id="railEnd" aria-hidden="true"><b>EST. 2017 · RIYADH</b></div>
+
+<canvas class="pfx" id="pfx" aria-hidden="true"></canvas>
+
+<a href="#watch" class="sr">تخطَّ إلى الفيديو</a>
+
+<header class="nav" id="nav" data-on-tone>
+  <a class="nav__logo" href="index.html" aria-label="مدونة ستوديو، الرئيسية">
+    <img id="navLogo" src="assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155">
+  </a>
+
+  <button class="nav__burger" id="burger" aria-expanded="false" aria-controls="navLinks" aria-label="القائمة">
+    <span></span>
+  </button>
+
+  <ul class="nav__links" id="navLinks">
+    <li><a href="index.html#news">الرئيسية</a></li>
+    <li><a href="index.html#about">من نحن؟</a></li>
+    <li><a href="index.html#work">أعمالنا</a></li>
+    <li><a href="index.html#community">مجتمعنا</a></li>
+    <li><a href="index.html#contribute">انضم إلينا</a></li>
+  </ul>
+
+  <a class="btn nav__cta" href="https://www.youtube.com/@Mdwn.c?sub_confirmation=1" target="_blank" rel="noopener">اشترك في القناة</a>
+</header>
+
+<main id="pmain"></main>
+
+<footer class="pfoot" id="contact">
+  <div class="pfoot__clouds" aria-hidden="true">
+    <i class="cloud" style="left: -6%; width: min(30rem, 60vw);"></i>
+    <i class="cloud" style="left: 22%; width: min(22rem, 44vw); transform: scaleX(-1);"></i>
+    <i class="cloud" style="left: 44%; width: min(34rem, 66vw);"></i>
+    <i class="cloud" style="left: 76%; width: min(28rem, 56vw); transform: scaleX(-1);"></i>
+  </div>
+  <div class="pfoot__mark" aria-hidden="true"><img src="assets/img/logo-white.webp" alt="" width="340" height="155" loading="lazy"></div>
+
+  <div class="shell">
+    <div class="pfoot__cta">
+      <p class="eyebrow"><span>يوتيوب</span><span>نادي المدونة</span></p>
+      <h2 class="h2 pfoot__h">لَا تَفُتْكَ الحِكَايَةُ القَادِمَة</h2>
+      <p>ننشر أعمالنا على يوتيوب أولًا. اشترك في القناة ليصلك العمل القادم يوم نشره، أو ادخل نادي المدونة وصوّت على ما نصنعه بعده.</p>
+      <div class="pfoot__acts">
+        <a class="btn" href="https://www.youtube.com/@Mdwn.c?sub_confirmation=1" target="_blank" rel="noopener">اشترك في القناة</a>
+        <a class="btn btn--ghost" href="https://discord.gg/RBtp2JVXm6" target="_blank" rel="noopener">ادخل النادي</a>
+      </div>
+      <p class="pfoot__note">عندك فكرة، أو تريد الانضمام إلى فريق إنتاج، أو تكتب عنا؟ <a href="https://ig.me/m/mdwn.c" target="_blank" rel="noopener">راسلنا على إنستغرام</a></p>
+    </div>
+
+    <div class="pfoot__grid">
+      <div class="pfoot__brand">
+        <img src="assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155" loading="lazy">
+        <p>استوديو أنيميشن عربي منذ ٢٠١٧. نكتب ونرسم ونحرّك قصصًا عربية أصلية، من الفكرة الأولى إلى آخر إطار.</p>
+      </div>
+      <nav aria-label="الأعمال">
+        <h3>الأَعْمَال</h3>
+        <ul id="footWorks"></ul>
+      </nav>
+      <nav aria-label="الاستوديو">
+        <h3>الاسْتُودْيُو</h3>
+        <ul>
+          <li><a href="index.html#about">من نحن</a></li>
+          <li><a href="index.html#work">أعمالنا</a></li>
+          <li><a href="index.html#community">مجتمعنا</a></li>
+          <li><a href="index.html#contribute">انضم إلينا</a></li>
+          <li><a href="index.html#contact">تواصل معنا</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="تابعنا">
+        <h3>تَابِعْنَا</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@Mdwn.c" target="_blank" rel="noopener">يوتيوب</a></li>
+          <li><a href="https://www.instagram.com/mdwn.c/" target="_blank" rel="noopener">إنستغرام</a></li>
+          <li><a href="https://www.tiktok.com/@mdwn.c" target="_blank" rel="noopener">تيك توك</a></li>
+          <li><a href="https://discord.gg/RBtp2JVXm6" target="_blank" rel="noopener">ديسكورد</a></li>
+          <li><a href="https://www.patreon.com/mdwn" target="_blank" rel="noopener">باتريون</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="pfoot__bar">
+      <span>© <span id="year">٢٠٢٦</span> مدونة ستوديو. كل الحقوق محفوظة.</span>
+      <a class="pfoot__up" href="#top">العودة إلى الأعلى ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="js/project.js?v=1789277355"></script>
+</body>
+</html>

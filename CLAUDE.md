@@ -20,9 +20,9 @@ Arabic animation studio. This repo holds the public website.
   written normally.
 - **Always load the `apple-design` skill** for any UI, layout, motion or
   interaction work. Hover and gesture motion is spring driven and
-  interruptible (see `v4/js/contribute.js`), feedback lands on press, and
+  interruptible (see `js/contribute.js`), feedback lands on press, and
   every effect has a reduced motion fallback.
-- Other agents may be editing `v4/` at the same time. Make targeted edits,
+- Other agents may be editing the site at the same time. Make targeted edits,
   re-read a file right before changing it, and never revert changes you did
   not make.
 
@@ -47,22 +47,39 @@ way in is spelled out.
 
 ## Repo layout
 
+The site is the repo root. `mdwn.studio` serves it, and the site that used to
+live there is archived, whole and working, at `mdwn.studio/old`.
+
 ```
-/                     the currently deployed site (v3)
-/v4                   the redo. self contained, nothing outside it is imported
+/                     the site
   index.html          single page
   project.html        project detail template, driven by ?id=
-  css/                base.css (tokens + primitives), sections.css
+  css/                base.css (tokens + primitives), sections.css, project.css
   js/                 data.js + one module per behaviour
   assets/             GENERATED. do not hand edit
   tools/build-assets.py
-/Art, /icons          source art. large, unoptimised, never shipped directly
+/comics               the comic shelf
+  index.html          the three covers, on base.css + comics.css
+  viewer/             the reader chrome every comic shares (css, js, page turn)
+  pages/<id>/         the numbered page art each reader loads
+/Hujra, /Samrqand,
+/Ghailam              one reader per comic. These URLs are published, so they
+                      keep their names even though the ids elsewhere are
+                      hujra, samarqand and qird
+/old                  the previous site, archived and still reachable. It
+                      links out to /comics/ and /analytics/ absolutely,
+                      because those did not move with it
+/analytics            the view counter the readers and /old share
+/Art, /icons          source art. Hundreds of megabytes, untracked, never
+                      shipped: only what build-assets.py writes is
 /Art/stills/<id>/     the five frames on each project page's strip
-/Our Projects         project banner art
-/Samrqand, /Hujra,
-/Ghailam              the in site comic readers, one folder of pages each
-/scripts              fetch-youtube.mjs  → assets/youtube-data.js (v3 feed)
-                      fetch-stats.mjs    → v4/assets/stats-data.js (the numbers)
+/Art/comments/        the featured comment screenshots, named by handle
+/Art/showreel.mp4     the master behind the clip in the مُجْتَمَعُنَا call
+/scripts              fetch-stats.mjs    → assets/stats-data.js (the numbers)
+                      fetch-youtube.mjs  → old/assets/youtube-data.js. This
+                      only feeds the archive now, so the hourly job that runs
+                      it is doing nothing anyone reads. Retire it when you
+                      are sure nothing else wants it.
 ```
 
 `build_images` in build-assets.py currently fails: it looks for the project
@@ -71,18 +88,18 @@ step at a time (`build-assets.py stills`) until the paths are reconciled.
 
 ## Assets
 
-`v4/assets/` is **generated output**. To change an asset, change the source in
+`assets/` is **generated output**. To change an asset, change the source in
 `Art/` or `icons/` and rerun:
 
 ```bash
-python3 v4/tools/build-assets.py
+python3 tools/build-assets.py
 ```
 
 Everything ships as WebP. The home page's payload is about 1.6 MB, including
 the 69 frame falling animation packed into a single 480 KB atlas. Keep it that
 way: the site must feel instant on a phone on mobile data.
 
-The project page stills (`v4/assets/img/stills/`) add about 1 MB across all six
+The project page stills (`assets/img/stills/`) add about 1 MB across all six
 works, but none of it is on the home page and every frame is lazy loaded, so a
 project page costs 30 to 100 KB on a phone (the `-sm.webp` twin) and up to
 330 KB on a desktop. Each still ships at two widths.
@@ -122,10 +139,10 @@ marginalia may be tracked.
 
 ## The falling سراج section
 
-`v4/js/fall.js` is the one piece with a load bearing layout contract. Do not
+`js/fall.js` is the one piece with a load bearing layout contract. Do not
 change these without reading it:
 
-- **Stacking order is deliberate.** Page order is أعمالنا, ماذا قالوا عنا,
+- **Stacking order is deliberate.** Page order is أعمالنا, ماذا قالوا عن عملنا,
   إنجازاتنا, كيف أساهم. `.work` is `z-index: 5`, `.voices` is `4`, `.wins`
   is `3`, `.contribute` is `2`. سراج drops out from *under* `.work`, and lands
   *over* `.wins` so his hands break the seam. The block above `.voices` must
@@ -164,10 +181,26 @@ change these without reading it:
   of a screen while the stage scrolls away, and lands once the floor has risen
   into view. Frames scrub over `run + vh * LIFT`, not just the pinned run.
 
+## The comments
+
+The seven comments in `js/data.js` marked `hi` are real: people wrote them
+under the work, and the screenshots they were copied from sit in
+`Art/comments/`, each named after the handle. `build-assets.py avatars` cuts
+the round avatar out of each one. Where a commenter has no real picture (a
+plain black circle, a letter) drop the `av` and let the card paint its own
+coloured initial instead.
+
+**Every other row in that table is filler, and must stay filler.** They are
+noises and notes to nobody. The field behind سراج is decoration, and the blur
+that softens it is not a guarantee: a phone renders it unblurred, and an old
+browser or a screenshot can lose it entirely. A plausible compliment written
+into a background row becomes a testimonial the studio never received. Never
+write one.
+
 ## The numbers
 
 `scripts/fetch-stats.mjs` runs hourly (`.github/workflows/stats.yml`) and
-writes `v4/assets/stats-data.js`, a plain script loaded before the modules. It
+writes `assets/stats-data.js`, a plain script loaded before the modules. It
 reads only public pages: YouTube's about page (subscribers, total channel
 views, video count) and the نادي المدونة invite (members). TikTok serves only
 its first page to anyone not logged in, and Instagram publishes no view count,
@@ -195,7 +228,7 @@ so those stay hand entered in `data.js`.
 - **The strip of stills** (`js/stills.js`, `STILLS` in `data.js`) is
   deliberately quiet: one slow drift, no lift, no tilt, and the pointer eases
   it to a stop. To change a frame, drop a file over `Art/stills/<id>/<n>.jpg`
-  and run `python3 v4/tools/build-assets.py stills`: it is cut to 16:9 for you
+  and run `python3 tools/build-assets.py stills`: it is cut to 16:9 for you
   and both widths are rebuilt. Reduced motion turns it into a snap scrolling
   row and moves nothing.
 - **غمام's award** is the `award` block on its page, drawn by `.pprize` as the

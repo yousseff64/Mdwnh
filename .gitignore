@@ -1,10 +1,15 @@
 # macOS metadata
 ._*
 .DS_Store
+**/._*
+
+# Source art. Hundreds of megabytes of masters that never ship: the site
+# only ever carries what tools/build-assets.py writes into assets/.
+/Art/
+/icons/
 
 # Scratch
 REBUILD_PLAN.md
-**/._*
 
 # Python scratch
 __pycache__/

@@ -1,6 +1,6 @@
 /* ============================================================
    Refresh the numbers in إِنْجَازَاتُنَا and writes
-   v4/assets/stats-data.js. No API key, no cookies, no login.
+   assets/stats-data.js. No API key, no cookies, no login.
 
    What is read live
      yt      subscribers, total channel views and the video count, off
@@ -23,7 +23,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 
 const HANDLE = 'Mdwn.c';
 const INVITE = 'RBtp2JVXm6';
-const OUT = 'v4/assets/stats-data.js';
+const OUT = 'assets/stats-data.js';
 
 /* YouTube serves the trimmed page to an obvious bot, and the channel totals
    are not on it, so ask the way a browser would. */
