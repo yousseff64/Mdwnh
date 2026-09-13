@@ -90,7 +90,9 @@ const player = el('div', { class: 'player', id: 'player' });
 const face = el('button', { class: 'player__face', type: 'button', 'aria-label': `شغّل ${card.name} هنا` },
   el('img', { src: `https://i.ytimg.com/vi/${p.yt}/maxresdefault.jpg`, alt: '', width: 1280, height: 720, decoding: 'async' }),
   el('span', { class: 'player__btn', 'aria-hidden': 'true' }, el('i')),
-  el('span', { class: 'player__label', 'aria-hidden': 'true' }, el('b', {}, 'شاهد الآن'), el('small', {}, `${p.type} · ${p.length}`))
+  /* where the work is a comic, the type names the pages, not this video:
+     the length already says what the video is, so it stands alone */
+  el('span', { class: 'player__label', 'aria-hidden': 'true' }, el('b', {}, 'شاهد الآن'), el('small', {}, p.read ? p.length : `${p.type} · ${p.length}`))
 );
 player.append(face);
 

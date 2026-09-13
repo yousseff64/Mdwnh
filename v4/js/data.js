@@ -12,7 +12,7 @@ export const NEWS = [
   {
     id: 'hujra',
     name: 'باب الحجرة',
-    kicker: 'مسلسل قصير · قريبًا',
+    kicker: 'قصة مصورة · اقرأها الآن',
     art: 'assets/img/hujra.webp',
     scene: 'eyes',                // its project page's world (js/scenes.js)
     align: 'end',                 // logo sits at the right edge of the art
@@ -43,7 +43,7 @@ export const NEWS = [
   {
     id: 'samarqand',
     name: 'قضية سمرقند',
-    kicker: 'فيلم قصير · جديد',
+    kicker: 'قصة مصورة · جديدة',
     art: 'assets/img/samarqand.webp',
     scene: 'leaves',
     align: 'center',              // logo sits centred in the art
@@ -81,9 +81,9 @@ export const NEWS = [
    Each year is the year the work went up on YouTube.
 --------------------------------------------------------------------------- */
 export const PROJECTS = [
-  { id: 'samarqand', name: 'قضية سمرقند', role: 'فيلم قصير', year: '٢٠٢٦', cover: 'assets/img/covers/samarqand.webp', accent: '#e0a36b' },
+  { id: 'samarqand', name: 'قضية سمرقند', role: 'قصة مصورة', year: '٢٠٢٦', cover: 'assets/img/covers/samarqand.webp', accent: '#e0a36b' },
   { id: 'ghamam', name: 'غمام', role: 'فيلم قصير', year: '٢٠٢٦', cover: 'assets/img/covers/ghamam.webp', accent: '#9b7cf2' },
-  { id: 'hujra', name: 'باب الحجرة', role: 'مسلسل قصير', year: '٢٠٢٦', cover: 'assets/img/covers/hujra.webp', accent: '#8fd0ff' },
+  { id: 'hujra', name: 'باب الحجرة', role: 'قصة مصورة', year: '٢٠٢٦', cover: 'assets/img/covers/hujra.webp', accent: '#8fd0ff' },
   { id: 'lis', name: 'اللص التقي', role: 'حكاية مرسومة', year: '٢٠٢٤', cover: 'assets/img/covers/lis.webp', accent: '#f3d9a4' },
   { id: 'fasl', name: 'فصل عجيب', role: 'برنامج علمي', year: '٢٠٢٥', cover: 'assets/img/covers/fasl.webp', accent: '#c35bff' },
   { id: 'qird', name: 'القرد والغيلم', role: 'قصة مصورة', year: '٢٠٢٥', cover: 'assets/img/covers/qird.webp', accent: '#8cc63f' }
@@ -317,9 +317,9 @@ export const PROJECT_PAGES = {
   samarqand: {
     name: 'قَضِيَّةُ سَمَرْقَنْد',
     latin: 'THE SAMARKAND CASE',
-    type: 'فيلم قصير',
+    type: 'قصة مصورة',
     year: '٢٠٢٦',
-    length: 'أقل من ٣ دقائق',
+    length: 'الفيلم، أقل من ٣ دقائق',
     yt: 'aU4dZUsIVxk',
     scene: 'leaves',
     read: 'https://mdwn.studio/Samrqand/',
@@ -336,7 +336,7 @@ export const PROJECT_PAGES = {
       { n: 8.3, u: '٪', l: 'نسبة الإعجاب إلى المشاهدات' }
     ],
     facts: [
-      { k: 'النوع', v: 'فيلم قصير' },
+      { k: 'النوع', v: 'قصة مصورة' },
       { k: 'نُشر في', v: '٦ أغسطس ٢٠٢٦' },
       { k: 'المدة', v: '٢:٤٩' },
       { k: 'الموضوع', v: 'حكاية من التاريخ الإسلامي' },
@@ -385,7 +385,7 @@ export const PROJECT_PAGES = {
   hujra: {
     name: 'بَابُ الحُجْرَة',
     latin: 'BAB AL HUJRA',
-    type: 'مسلسل قصير',
+    type: 'قصة مصورة',
     year: '٢٠٢٦',
     length: 'التشويقة الرسمية',
     yt: 'tJfiXnSMD0c',
@@ -404,7 +404,7 @@ export const PROJECT_PAGES = {
       { n: 43, u: 'صفحة', l: 'في القصة المصورة' }
     ],
     facts: [
-      { k: 'النوع', v: 'مسلسل قصير' },
+      { k: 'النوع', v: 'قصة مصورة' },
       { k: 'التشويقة', v: '٢٥ أبريل ٢٠٢٦' },
       { k: 'مدة التشويقة', v: '٣٦ ثانية' },
       { k: 'القصة المصورة', v: '٤٣ صفحة' },

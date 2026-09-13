@@ -154,30 +154,30 @@
   .nav__cta { display: none; }
 }
 
-/* ---- the أعمالنا list (js/navworks.js) ----
-   A popover in the top layer, so its glass blurs the page and not the
-   bar. Same glass as the stuck bar, a little heavier because it is a
-   bigger surface holding text. --o is its spring, 0 to 1: it grows out
-   of the link and the blur arrives with it. */
+/* ---- the أعمالنا shelf (js/navworks.js) ----
+   Six covers, not six labels: the art is what tells the works apart,
+   so nothing here needs a bullet or a tag to carry colour. A popover
+   in the top layer, so its glass blurs the page and not the bar.
+   --o is its spring, 0 to 1: the panel grows out of the link and the
+   blur arrives with it. */
 .navworks {
   position: fixed;
   inset: var(--y, 4rem) auto auto var(--x, 50%);
   margin: 0;
   translate: -50% 0;
   width: max-content;
-  min-width: 13.5rem;
-  padding: 0.35rem;
+  padding: 0.7rem 0.75rem 0.8rem;
   border: 0;
-  border-radius: 1.15rem;
+  border-radius: 1.5rem;
   overflow: visible;
   color: #fff;
-  background: color-mix(in srgb, var(--nav-glass, #0b0b12) 76%, transparent);
-  box-shadow: inset 0 0 0 1px #ffffff1f, 0 22px 44px -22px #000c;
-  -webkit-backdrop-filter: blur(calc(var(--o, 0) * 22px)) saturate(calc(1 + var(--o, 0) * 0.8));
-  backdrop-filter: blur(calc(var(--o, 0) * 22px)) saturate(calc(1 + var(--o, 0) * 0.8));
+  background: color-mix(in srgb, var(--nav-glass, #0b0b12) 78%, transparent);
+  box-shadow: inset 0 0 0 1px #ffffff1f, 0 28px 54px -26px #000d;
+  -webkit-backdrop-filter: blur(calc(var(--o, 0) * 24px)) saturate(calc(1 + var(--o, 0) * 0.8));
+  backdrop-filter: blur(calc(var(--o, 0) * 24px)) saturate(calc(1 + var(--o, 0) * 0.8));
   opacity: var(--o, 0);
   transform-origin: var(--ox, 50%) 0;
-  transform: translateY(calc((1 - var(--o, 0)) * -0.45rem)) scale(calc(0.94 + var(--o, 0) * 0.06));
+  transform: translateY(calc((1 - var(--o, 0)) * -0.5rem)) scale(calc(0.95 + var(--o, 0) * 0.05));
 }
 /* covers the gap under the link, so the pointer never leaves both */
 .navworks::before {
@@ -187,59 +187,169 @@
   bottom: 100%;
   height: var(--gap, 0.75rem);
 }
-.navworks ul { list-style: none; margin: 0; padding: 0; }
-/* the rows gather toward the link as it closes, spread as it opens */
-.navworks li { transform: translateY(calc((1 - var(--o, 0)) * var(--i) * -3px)); }
+/* the house decoration, one copy, sunk into the far corner. The clip is
+   on this wrapper and not on the panel, so the bridge above survives. */
+.navworks__deco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.navworks__cloud {
+  --cloud-color: #fff;
+  width: 15rem;
+  inset-block-start: -2.6rem;
+  inset-inline-end: -3rem;
+  opacity: 0.12;
+  animation: nw-drift 26s ease-in-out infinite;
+}
+@keyframes nw-drift {
+  50% { transform: translate3d(-14px, 6px, 0) rotate(-2deg); }
+}
+
+/* the studio's line, and beside it the latin title of whichever cover
+   is under the pointer */
+.navworks__head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 0;
+  padding: 0.1rem 0.5rem 0.6rem;
+}
+.navworks__head b {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1;
+}
+.navworks__head i {
+  direction: ltr;
+  font-style: normal;
+  font-family: var(--body);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;        /* latin marginalia only */
+  opacity: 0.5;
+  animation: nw-latin 260ms cubic-bezier(.2,.7,.3,1);
+}
+@keyframes nw-latin { from { opacity: 0; translate: 8px 0; } }
+
+.navworks ul {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.2rem;
+}
+/* Each cover takes its own slice of the panel's spring, so they land
+   one after another along the row instead of all at once. */
+.navworks li {
+  --p: clamp(0, calc((var(--o, 0) - var(--i) * 0.055) / 0.7), 1);
+  opacity: var(--p);
+  transform: translateY(calc((1 - var(--p)) * 16px)) scale(calc(0.94 + var(--p) * 0.06));
+}
 
 /* .nav__links a styles every link in the bar, so these reach past them */
 .nav__links .navworks a {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 0.8rem;
-  border-radius: 0.8rem;
+  display: grid;
+  justify-items: center;
+  width: 6.2rem;
+  padding: 0.4rem 0.3rem 0.5rem;
+  border-radius: 1rem;
   color: #fff;
   font-family: var(--body);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  transition: background 160ms ease, transform 120ms ease-out;
+  transition: background 200ms ease, opacity 260ms ease;
 }
-.nav__links .navworks a::before {
-  content: '';
-  flex: none;
-  width: 0.5rem; height: 0.5rem;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
-  transition: transform 200ms cubic-bezier(.2,.7,.3,1);
-}
-.nav__links .navworks a::after { content: none; }
-.nav__links .navworks a b { font-weight: 500; }
-.nav__links .navworks a small {
-  margin-inline-start: auto;
-  padding-inline-start: 1.25rem;
+.nav__links .navworks a::after,
+.nav__links .navworks a::before { content: none; }
+.nav__links .navworks a b {
+  margin-block-start: 0.3rem;
+  /* two lines' room whether a name takes one or two, so every role in
+     the row sits on the same line */
+  min-block-size: 2.3em;
   font-size: 0.75rem;
-  font-weight: 400;
-  opacity: 0.62;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
 }
-.nav__links .navworks a:hover,
-.nav__links .navworks a:focus-visible { background: #ffffff17; }
-.nav__links .navworks a:hover::before,
-.nav__links .navworks a:focus-visible::before { transform: scale(1.35); }
-.nav__links .navworks a[aria-current='page'] { background: #ffffff21; }
+.nav__links .navworks a small {
+  font-size: 0.625rem;
+  font-weight: 400;
+  opacity: 0.52;
+}
+
+/* the cover itself: its own art, its own baked shadow, no frame */
+.navworks__art {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 900 / 1333;
+  transform-origin: 50% 90%;
+  translate: 0 0;
+  scale: 1;
+  rotate: 0deg;
+  transition: translate 320ms cubic-bezier(.2,.7,.3,1),
+              scale 320ms cubic-bezier(.2,.7,.3,1),
+              rotate 320ms cubic-bezier(.2,.7,.3,1);
+}
+.navworks__art img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; }
+/* the work's own colour pools behind it as it lifts, the way a lifted
+   card pools into the sky in أعمالنا */
+.navworks__art::after {
+  content: '';
+  position: absolute;
+  inset: 16% 6% 8%;
+  border-radius: 1rem;
+  background: var(--accent);
+  filter: blur(16px);
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+/* one cover forward, the rest a step back: the shelf answers the pointer
+   as a whole */
+.navworks ul:has(a:hover) a:not(:hover),
+.navworks ul:has(a:focus-visible) a:not(:focus-visible) { opacity: 0.42; }
+.nav__links .navworks a:hover .navworks__art,
+.nav__links .navworks a:focus-visible .navworks__art { translate: 0 -8px; scale: 1.07; rotate: -2.5deg; }
+.navworks li:nth-child(even) a:hover .navworks__art,
+.navworks li:nth-child(even) a:focus-visible .navworks__art { rotate: 2.5deg; }
+.nav__links .navworks a:hover .navworks__art::after,
+.nav__links .navworks a:focus-visible .navworks__art::after { opacity: 0.55; }
 /* feedback lands on the press */
-.nav__links .navworks a:active { background: #ffffff26; transform: scale(0.97); }
-.nav__links .navworks a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+.nav__links .navworks a:active .navworks__art {
+  translate: 0 -2px;
+  scale: 0.98;
+  transition-duration: 110ms;
+}
+.nav__links .navworks a[aria-current='page'] { background: #ffffff17; }
+.nav__links .navworks a[aria-current='page'] small { opacity: 0.85; }
+.nav__links .navworks a:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+/* a phone that reports hover (a mouse on a small window) still fits */
+@media (max-width: 1100px) {
+  .nav__links .navworks a { width: 5.3rem; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  /* the spring still runs, as a plain cross-fade */
+  /* the spring still runs, as a plain cross-fade, and nothing drifts */
   .navworks, .navworks li { transform: none; }
+  .navworks__cloud { animation: none; }
+  .navworks__head i { animation: none; }
   .navworks {
-    -webkit-backdrop-filter: blur(22px) saturate(1.8);
-    backdrop-filter: blur(22px) saturate(1.8);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    backdrop-filter: blur(24px) saturate(1.8);
   }
-  .nav__links .navworks a, .nav__links .navworks a::before { transition: background 160ms ease; }
-  .nav__links .navworks a:active, .nav__links .navworks a:hover::before { transform: none; }
+  .navworks__art, .nav__links .navworks a:active .navworks__art { transition: none; translate: none; scale: none; rotate: none; }
+  .nav__links .navworks a:hover .navworks__art,
+  .nav__links .navworks a:focus-visible .navworks__art { translate: none; scale: none; rotate: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .navworks {
