@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>قصصنا المصورة | مدونة ستوديو</title>
-<meta name="description" content="اقرأ القصص المصورة من إنتاج مدونة ستوديو كاملة، صفحة بصفحة، من غير تحميل ولا اشتراك.">
+<meta name="description" content="اقرأ القصص المصورة من إنتاج مدونة ستوديو كاملة، صفحة بصفحة.">
 <meta name="theme-color" content="#FBFAF9">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap"></noscript>
 
 <link rel="stylesheet" href="../css/base.css?v=2">
+<link rel="stylesheet" href="../css/cover.css?v=2">
 <link rel="stylesheet" href="comics.css?v=2">
 
 <link rel="icon" href="../favicon.ico" sizes="any">
@@ -60,60 +61,63 @@
   <div class="shell head">
     <p class="eyebrow"><span>باب الحجرة</span><span>قضية سمرقند</span><span>القرد والغيلم</span></p>
     <h1>قِصَصُنَا المُصَوَّرَة<i class="mark mark--sparkles head__spark" aria-hidden="true"></i></h1>
-    <p class="lead">ثلاث حكايات رسمناها صفحة بصفحة. اقرأها هنا كاملة، بلا تحميل ولا اشتراك.</p>
+    <p class="lead">ثلاث حكايات رسمناها صفحة بصفحة. اقرأها هنا كاملة.</p>
   </div>
 
   <section class="shell shelf" id="shelf" aria-label="القصص المصورة">
-    <div class="shelf__grid">
+    <div class="shelf__grid" id="shelf-grid">
 
-      <article class="book" style="--book: #8fd0ff;">
-        <a class="book__hit" href="../Hujra/">
-          <span class="book__art">
-            <img src="../assets/img/covers/hujra.webp" alt="غلاف باب الحجرة" width="900" height="1333"
-                 sizes="(max-width: 640px) 90vw, 20rem"
+      <article class="book">
+        <a class="cover" href="../Hujra/" style="--accent: #8fd0ff" aria-label="باب الحجرة، قصة مصورة، ٤٣ صفحة">
+          <span class="cover__card">
+            <img src="../assets/img/covers/hujra.webp"
                  srcset="../assets/img/covers/hujra-sm.webp 480w, ../assets/img/covers/hujra.webp 900w"
-                 loading="lazy" decoding="async">
-            <span class="btn book__read">اقرأ الآن</span>
+                 sizes="(max-width: 640px) 82vw, 21rem"
+                 alt="" width="900" height="1333" draggable="false" loading="lazy" decoding="async">
+            <span class="cover__glare" data-mask="../assets/img/covers/hujra-sm.webp"></span>
           </span>
           <span class="book__meta">
-            <h2 class="book__name">بَابُ الحُجْرَة</h2>
+            <span class="book__name">بَابُ الحُجْرَة</span>
             <span class="book__pages">٤٣ صفحة</span>
           </span>
-          <p class="book__line">تظن أن بابك مغلق. هل جربت فتحه حقًا؟</p>
+          <span class="book__line">تظن أن بابك مغلق. هل جربت فتحه حقًا؟</span>
+          <span class="book__cta">اقرأ الآن <span aria-hidden="true">←</span></span>
         </a>
       </article>
 
-      <article class="book" style="--book: #e0a36b;">
-        <a class="book__hit" href="../Samrqand/">
-          <span class="book__art">
-            <img src="../assets/img/covers/samarqand.webp" alt="غلاف قضية سمرقند" width="900" height="1333"
-                 sizes="(max-width: 640px) 90vw, 20rem"
+      <article class="book">
+        <a class="cover" href="../Samrqand/" style="--accent: #e0a36b" aria-label="قضية سمرقند، قصة مصورة، ٥١ صفحة">
+          <span class="cover__card">
+            <img src="../assets/img/covers/samarqand.webp"
                  srcset="../assets/img/covers/samarqand-sm.webp 480w, ../assets/img/covers/samarqand.webp 900w"
-                 loading="lazy" decoding="async">
-            <span class="btn book__read">اقرأ الآن</span>
+                 sizes="(max-width: 640px) 82vw, 21rem"
+                 alt="" width="900" height="1333" draggable="false" loading="lazy" decoding="async">
+            <span class="cover__glare" data-mask="../assets/img/covers/samarqand-sm.webp"></span>
           </span>
           <span class="book__meta">
-            <h2 class="book__name">قَضِيَّةُ سَمَرْقَنْد</h2>
+            <span class="book__name">قَضِيَّةُ سَمَرْقَنْد</span>
             <span class="book__pages">٥١ صفحة</span>
           </span>
-          <p class="book__line">رسالة واحدة هي أمل المدينة، وفتى واحد يحملها.</p>
+          <span class="book__line">رسالة واحدة هي أمل المدينة، وفتى واحد يحملها.</span>
+          <span class="book__cta">اقرأ الآن <span aria-hidden="true">←</span></span>
         </a>
       </article>
 
-      <article class="book" style="--book: #8cc63f;">
-        <a class="book__hit" href="../Ghailam/">
-          <span class="book__art">
-            <img src="../assets/img/covers/qird.webp" alt="غلاف القرد والغيلم" width="900" height="1333"
-                 sizes="(max-width: 640px) 90vw, 20rem"
+      <article class="book">
+        <a class="cover" href="../Ghailam/" style="--accent: #8cc63f" aria-label="القرد والغيلم، قصة مصورة، ١٨ صفحة">
+          <span class="cover__card">
+            <img src="../assets/img/covers/qird.webp"
                  srcset="../assets/img/covers/qird-sm.webp 480w, ../assets/img/covers/qird.webp 900w"
-                 loading="lazy" decoding="async">
-            <span class="btn book__read">اقرأ الآن</span>
+                 sizes="(max-width: 640px) 82vw, 21rem"
+                 alt="" width="900" height="1333" draggable="false" loading="lazy" decoding="async">
+            <span class="cover__glare" data-mask="../assets/img/covers/qird-sm.webp"></span>
           </span>
           <span class="book__meta">
-            <h2 class="book__name">القِرْدُ وَالغَيْلَم</h2>
+            <span class="book__name">القِرْدُ وَالغَيْلَم</span>
             <span class="book__pages">١٨ صفحة</span>
           </span>
-          <p class="book__line">صداقة على شجرة تين، وقلبٌ مطلوب في عرض البحر.</p>
+          <span class="book__line">صداقة على شجرة تين، وقلبٌ مطلوب في عرض البحر.</span>
+          <span class="book__cta">اقرأ الآن <span aria-hidden="true">←</span></span>
         </a>
       </article>
 
@@ -175,6 +179,13 @@
     <a href="#top">العودة إلى الأعلى ↑</a>
   </div>
 </footer>
+
+<script type="module">
+  /* The same lift, tilt and glare the أعمالنا marquee uses. This shelf does
+     not build its cards in script, so it only borrows the behaviour. */
+  import { initCovers } from '../js/cover.js';
+  initCovers(document.getElementById('shelf-grid'));
+</script>
 
 </body>
 </html>

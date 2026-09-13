@@ -2,10 +2,11 @@
    قِصَصُنَا المُصَوَّرَة: the shelf that leads into the readers.
 
    Everything structural comes from ../css/base.css (tokens, the
-   eyebrow, .btn, the brush marks, the clouds, the edge rails).
-   This file is only what the shelf itself needs, so the page
-   loads one small stylesheet on top of the shared one instead of
-   dragging the whole home page's sections.css behind it.
+   eyebrow, .btn, the brush marks, the clouds, the edge rails) and
+   ../css/cover.css (the card itself). This file is only what the
+   shelf adds on top, so the page loads two small stylesheets
+   instead of dragging the home page's whole sections.css behind
+   it.
    ============================================================ */
 
 body {
@@ -28,7 +29,8 @@ body {
 }
 
 /* Clouds drift on their own here. The home page hands this to
-   js/ambient.js, but this page runs no modules, so it is CSS. */
+   js/ambient.js; the only module this page loads is cover.js, so
+   the drift is CSS. */
 .sky .cloud {
   --cloud-color: #ffffff;
   opacity: 0.85;
@@ -100,50 +102,24 @@ body {
 }
 .shelf__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: clamp(1.5rem, 3.5vw, 3rem);
-  max-width: 68rem;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+  max-width: 66rem;
   margin-inline: auto;
 }
 
-/* One card per story. The cover is the same framed art the home page's
-   أعمالنا shelf uses, so the two shelves are recognisably the same shelf. */
-.book { position: relative; }
-.book__hit {
-  display: block;
+/* One story per card, on the same .cover the أعمالنا marquee uses
+   (../css/cover.css, driven by ../js/cover.js): the lift, the tilt toward
+   the pointer, the accent pooling underneath and the light sliding across
+   the art. Nothing here re-does any of that. It only lets the card fill its
+   cell instead of holding the marquee's fixed width, and hangs the title
+   under it. The art is not boxed: each cover is cut with its frame and
+   shadow already painted in, and the parts that break out of that frame are
+   meant to. */
+.shelf .cover {
+  width: 100%;
   text-decoration: none;
-  color: inherit;
-  border-radius: 1.25rem;
-  transition: transform 320ms cubic-bezier(.2,.7,.3,1);
-}
-.book__hit:hover { transform: translateY(-8px); }
-.book__hit:active { transform: translateY(-2px) scale(0.99); transition-duration: 110ms; }
-
-.book__art {
-  position: relative;
-  display: block;
-  border-radius: 1.1rem;
-  overflow: hidden;
-  /* the glow each cover lifts in, taken from its own art */
-  box-shadow: 0 18px 40px -26px var(--book, var(--ink));
-  transition: box-shadow 320ms ease;
-}
-.book__hit:hover .book__art { box-shadow: 0 30px 60px -28px var(--book, var(--ink)); }
-.book__art img { width: 100%; height: auto; }
-
-.book__read {
-  position: absolute;
-  inset-block-end: 0.9rem;
-  inset-inline-start: 50%;
-  translate: 50% 0;
-  opacity: 0;
-  transition: opacity 220ms ease, translate 320ms cubic-bezier(.2,.7,.3,1);
-}
-.book__hit:hover .book__read,
-.book__hit:focus-visible .book__read { opacity: 1; translate: 50% -0.35rem; }
-/* A touch screen has no hover, so the button is simply always there. */
-@media (hover: none) {
-  .book__read { opacity: 1; translate: 50% -0.35rem; }
 }
 
 .book__meta {
@@ -151,14 +127,13 @@ body {
   align-items: baseline;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-block-start: 0.95rem;
+  margin-block-start: 0.85rem;
 }
 .book__name {
   font-family: var(--display);
   font-size: var(--t-h3);
   font-weight: 700;
   line-height: 1.25;
-  margin: 0;
 }
 .book__pages {
   flex: none;
@@ -168,10 +143,24 @@ body {
   color: var(--ink-45);
 }
 .book__line {
-  margin: 0.3rem 0 0;
+  display: block;
+  margin-block-start: 0.25rem;
   color: var(--ink-70);
   font-size: 0.94em;
+  line-height: 1.6;
 }
+
+/* the cue sharpens as the card lifts, so the card says what it does */
+.book__cta {
+  display: inline-block;
+  margin-block-start: 0.5rem;
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--ink-45);
+  translate: calc(var(--h, 0) * 0.35rem) 0;
+  transition: color 200ms ease;
+}
+.cover.is-hot .book__cta { color: var(--ink); }
 
 /* --------------------------------------------------------------- footer --- */
 
@@ -225,7 +214,5 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .sky .cloud { animation: none; }
-  .book__hit, .book__art, .book__read { transition: none; }
-  .book__hit:hover, .book__hit:active { transform: none; }
-  .book__read { opacity: 1; translate: 50% -0.35rem; }
+  .book__cta { translate: none; transition: none; }
 }

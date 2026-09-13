@@ -1,0 +1,85 @@
+/* ============================================================
+   The cover card, wherever a work is shown as its art.
+
+   Three places share it: the أعمالنا marquee, أعمال أخرى at the
+   foot of a project page, and the قِصَصُنَا المُصَوَّرَة shelf.
+   It lives in its own file so those three cannot drift apart.
+
+   The art needs no frame around it: build-assets.py cuts every
+   cover to one shared 900 x 1333 shape with the card, the art
+   breaking out of it, and the shadow already painted in. Putting
+   it in a box would only clip the parts meant to escape.
+
+   js/cover.js drives it.
+   ============================================================ */
+
+/* --h is the hover (0 to 1), --mx and --my the pointer across the card
+   (-1 to 1). All three are springs in js/cover.js, so every transform here
+   is just a function of them, the كَيْفَ أُسَاهِمُ؟ cards' recipe. */
+.cover {
+  --h: 0; --mx: 0; --my: 0;
+  /* As big as the screen allows while the header and the strip still fit
+     one screen: the file is 1.48 times as tall as it is wide, and 17rem is
+     the bar, the header and the strip's padding. */
+  --cw: clamp(15rem, min(32vw, calc((100svh - 17rem) / 1.48)), 32rem);
+  flex: none;
+  display: block;
+  width: var(--cw);
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 320ms ease, scale 420ms cubic-bezier(.2,.7,.3,1);
+}
+.cover:focus-visible { outline: none; }
+.cover:focus-visible .cover__card { outline: 3px solid var(--sky); outline-offset: 2px; border-radius: 24px; }
+
+/* one lifted card at a time: the rest step back */
+.has-hot .cover:not(.is-hot) { opacity: 0.7; scale: 0.97; }
+
+.cover__card {
+  position: relative;
+  display: block;
+  transform: perspective(900px)
+             translate3d(0, calc(var(--h) * -12px), 0)
+             rotateX(calc(var(--my) * -7deg))
+             rotateY(calc(var(--mx) * 7deg))
+             scale(calc(1 + var(--h) * 0.035));
+  transition: scale 160ms cubic-bezier(.2,.7,.3,1);
+  will-change: transform;
+}
+/* feedback lands on the press */
+.cover:active .cover__card { scale: 0.97; transition-duration: 90ms; }
+.cover img { width: 100%; height: auto; }
+
+/* the card's own colour pooling under it as it lifts */
+.cover__card::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 14% 6% 0;
+  border-radius: 40%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 75%, transparent), transparent);
+  opacity: var(--h);
+  translate: 0 calc(var(--h) * 16px);
+  scale: 1.12;
+}
+/* light catching the art, following the pointer. Masked by the art itself
+   (inline style), so it never lands on the transparent margin. */
+.cover__glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  background: radial-gradient(circle at calc(50% + var(--mx) * 50%) calc(50% + var(--my) * 50%), #ffffffb3, transparent 48%);
+  mix-blend-mode: soft-light;
+  opacity: var(--h);
+}
+
+@media (max-width: 760px) { .cover { --cw: 68vw; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cover__card { transform: none !important; }
+  .cover__card::before { translate: none; }
+  .marquee .cover { rotate: none; }
+}
+
