@@ -44,8 +44,13 @@
              rotateY(calc(var(--mx) * 7deg))
              scale(calc(1 + var(--h) * 0.035));
   transition: scale 160ms cubic-bezier(.2,.7,.3,1);
-  will-change: transform;
 }
+/* The lift is a pointer effect, so the layer is only worth holding while a
+   pointer is on the card. The strip's own layer carries the cards while it
+   cruises, and twelve layers inside it would each be composited again. */
+.cover:hover .cover__card,
+.cover:focus-within .cover__card,
+.cover.is-hot .cover__card { will-change: transform; }
 /* feedback lands on the press */
 .cover:active .cover__card { scale: 0.97; transition-duration: 90ms; }
 .cover img { width: 100%; height: auto; }
@@ -74,6 +79,11 @@
   mix-blend-mode: soft-light;
   opacity: var(--h);
 }
+/* A blend mode makes the compositor read the backdrop back out again on
+   every frame, and the strip cruises the whole time it is on screen. On a
+   device that cannot spare that (html.lite) the glare goes: it only ever
+   lights under a pointer, which that device does not have. */
+.lite .cover__glare { display: none; }
 
 @media (max-width: 760px) { .cover { --cw: 68vw; } }
 

@@ -569,17 +569,37 @@ const PIECES = {
     let seen = true;
     new IntersectionObserver(([e]) => { seen = e.isIntersecting; }).observe(wrap);
 
+    /* Every eye sits at a fixed percentage of the wrap, so its place inside
+       the wrap only changes when the wrap is resized. Measuring all twelve
+       every frame meant twelve rects and a forced layout on the first
+       screen of every visit, for a gaze nobody can see move a pixel out of
+       place. Their offsets are read once, and a frame asks the page for one
+       rect: the wrap's, which the scroll does move. */
+    let offs = [];
+    const remeasure = () => {
+      const w = wrap.getBoundingClientRect();
+      offs = eyes.map((e) => {
+        const r = e.node.getBoundingClientRect();
+        return { cx: r.left - w.left + r.width / 2, cy: r.top - w.top + r.height / 2 };
+      });
+    };
+    /* The wrap and the eyes both: an eye is sized in rem, so it can change
+       without the wrap around it changing. One observer over all of them
+       fires on a real resize, not on a frame. */
+    const ro = new ResizeObserver(remeasure);
+    ro.observe(wrap);
+    eyes.forEach((e) => ro.observe(e.node));
+
     const follow = (ptr) => {
-      if (!seen) return;
+      if (!seen || !offs.length) return;
       const px = ((ptr.x + 1) / 2) * innerWidth;
       const py = ((ptr.y + 1) / 2) * innerHeight;
-      /* every read before any write: measuring after moving an iris would
-         make the browser restyle the page once per eye, every frame */
-      const boxes = eyes.map((e) => e.node.getBoundingClientRect());
+      /* the one read, before any write: moving an iris and then measuring
+         would make the browser restyle the page once per eye, every frame */
+      const w = wrap.getBoundingClientRect();
       eyes.forEach((e, i) => {
-        const r = boxes[i];
-        const dx = px - (r.left + r.width / 2);
-        const dy = py - (r.top + r.height / 2);
+        const dx = px - (w.left + offs[i].cx);
+        const dy = py - (w.top + offs[i].cy);
         const d = Math.hypot(dx, dy) || 1;
         const f = clamp(d / 260, 0.2, 1);
         e.ball.style.transform = `translate(${((dx / d) * 13 * f).toFixed(2)}px,${((dy / d) * 7 * f).toFixed(2)}px)`;

@@ -573,12 +573,22 @@ const arabicNum = (n) => String(n).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 const easeIn = (t) => t * t;
 
+/* The sheet is 2048x2592, which is about 20 MB once it is unpacked, and an
+   <img> unpacks it on the main thread: on a phone that is a visible stall
+   right as the reader reaches this section. createImageBitmap does it on a
+   worker thread instead, and drawImage takes the bitmap as it stands. An
+   older browser without it keeps the <img>. */
 function load(src) {
-  return new Promise((res, rej) => {
-    const img = new Image();
-    img.decoding = 'async';
-    img.onload = () => res(img);
-    img.onerror = rej;
-    img.src = src;
+  const img = () => new Promise((res, rej) => {
+    const node = new Image();
+    node.decoding = 'async';
+    node.onload = () => res(node);
+    node.onerror = rej;
+    node.src = src;
   });
+  if (!window.createImageBitmap) return img();
+  return fetch(src)
+    .then((r) => r.blob())
+    .then((b) => createImageBitmap(b))
+    .catch(img);
 }

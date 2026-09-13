@@ -136,12 +136,19 @@ export function step(s, dt) {
   return false;
 }
 
-/* Runs `fn` only while `target` is anywhere near the viewport. */
+/* Runs `fn` only while `target` is anywhere near the viewport.
+
+   While it runs, `target` carries `.is-live`, and that is what buys the
+   layers: `will-change` is a standing claim on GPU memory, so the CSS hands
+   it only to the parts that are moving right now. A phone that keeps a
+   hundred promoted layers alive down the whole page composites all hundred
+   on every frame and runs out of room for the ones that matter. The class
+   lands a third of a screen early, so nothing is promoted mid motion. */
 export function whileVisible(target, fn, margin = '35% 0px') {
   let stop = null;
   new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && !stop) stop = tick(fn);
-    else if (!entry.isIntersecting && stop) { stop(); stop = null; }
+    if (entry.isIntersecting && !stop) { target.classList.add('is-live'); stop = tick(fn); }
+    else if (!entry.isIntersecting && stop) { stop(); stop = null; target.classList.remove('is-live'); }
   }, { rootMargin: margin }).observe(target);
 }
 

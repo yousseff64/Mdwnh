@@ -262,8 +262,12 @@ h1, h2, h3 {
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   pointer-events: none;
-  will-change: transform;
 }
+/* Only the clouds in a section whose drift is actually running get a layer
+   (js/util.js sets `.is-live`). A still cloud is one masked rectangle and
+   needs nothing; forty promoted ones down the page cost a phone every
+   frame, everywhere. */
+.is-live .cloud { will-change: transform; }
 
 /* --------------------------------------------------- vertical edge rails --- */
 

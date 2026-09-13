@@ -25,7 +25,14 @@ export function initAbout() {
   const phone = matchMedia('(max-width: 880px)');
   let fog = phone.matches ? 1 : 0;
   let onScreen = false;
+  /* The tint follows the scroll frame by frame, because an opacity costs
+     nothing to change. The blur is held to eighths of the same lift: every
+     new radius redraws the cast, so a fresh one on every frame is the most
+     expensive thing on the section, and eight steps look the same. */
+  const STEP = 8;
+  let step = Math.round(fog * STEP);
   art.style.setProperty('--fog', fog);
+  art.style.setProperty('--fogstep', step / STEP);
 
   const sync = () => {
     const want = onScreen && fog < 0.35;
@@ -41,6 +48,8 @@ export function initAbout() {
     if (f === fog) return;
     fog = f;
     art.style.setProperty('--fog', f.toFixed(3));
+    const s = Math.round(f * STEP);
+    if (s !== step) art.style.setProperty('--fogstep', (step = s) / STEP);
     sync();
   });
 
