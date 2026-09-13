@@ -426,10 +426,11 @@ body.pp {
 
 /* ========================================================= the stills === */
 /* A slow strip of frames from the work itself, under the video. It is meant
-   to sit quietly behind the writing that follows, so it has no lift, no
-   tilt and no shadow that moves: only the drift, and the pointer stops it
-   (js/stills.js). Masked at both ends so frames arrive and leave instead of
-   being cut off by the screen edge. */
+   to sit quietly behind the writing that follows, so it has no tilt and no
+   lean: only the drift, a frame that grows a little under the pointer, and
+   the grab (js/stills.js). Masked at both ends so frames arrive and leave
+   instead of being cut off by the screen edge. pan-y leaves vertical swipes
+   to the page and gives sideways ones to the strip. */
 
 .strip {
   position: relative;
@@ -438,9 +439,14 @@ body.pp {
 }
 .strip__frame {
   overflow: clip;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: grab;
   -webkit-mask-image: linear-gradient(to left, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(to left, transparent, #000 6%, #000 94%, transparent);
 }
+.strip__frame.is-dragging { cursor: grabbing; }
 .strip__frame:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
 .strip__track {
   display: flex;
@@ -456,7 +462,14 @@ body.pp {
   overflow: hidden;
   background: color-mix(in srgb, var(--tone-ink) 8%, transparent);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--tone-ink) 14%, transparent);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* the frame under the pointer grows, a little: no tilt, no lift, no shadow */
+@media (hover: hover) and (pointer: fine) {
+  .strip__shot:hover { transform: scale(1.035); }
+}
+/* a hand dragging the strip is not pointing at any one frame */
+.strip__frame.is-dragging .strip__shot { transform: none; transition: none; }
 .strip__shot img {
   display: block;
   width: 100%;
@@ -470,10 +483,13 @@ body.pp {
    push yourself, which is also what a keyboard gets. */
 .strip__frame.is-still {
   overflow-x: auto;
+  touch-action: auto;
+  cursor: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding-inline: clamp(1rem, 4vw, 2rem);
 }
+.strip__frame.is-still .strip__shot { transition: none; transform: none; }
 .strip__frame.is-still .strip__track { transform: none !important; }
 .strip__frame.is-still .strip__shot { scroll-snap-align: center; }
 

@@ -113,8 +113,11 @@ const KINDS = {
     }),
     move(p, dt) { p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt; },
     draw(ctx, p) {
+      /* The copy sits over this field, and a glyph drifting under a line of
+         Arabic used to compete with it. Faint enough to read as chalk left
+         in the dark, never enough to fight a word. */
       ctx.rotate(p.rot);
-      ctx.globalAlpha = 0.16 + 0.4 * Math.min(1, p.z);
+      ctx.globalAlpha = 0.07 + 0.15 * Math.min(1, p.z);
       ctx.fillStyle = p.c;
       ctx.font = `600 ${(p.size * p.z).toFixed(1)}px Rubik, system-ui, sans-serif`;
       ctx.fillText(p.s, 0, 0);
@@ -240,10 +243,14 @@ const RECIPES = {
 };
 
 /* The share of the scroll the falling field takes, and whether depth slows
-   it. Nearly every scene's field sits far behind the page and creeps.
-   القرد والغيلم's figs hang in the page itself: they travel with it one to
-   one, and depth only changes their size, not their speed. */
-const SCROLL = { figs: { k: 1, depth: false } };
+   it. Every scene's field sits far behind the page and creeps.
+
+   القرد والغيلم's figs used to travel with the scroll one to one. The field
+   wraps every screenful, so at one to one a screen of scrolling swapped the
+   whole field for a copy of itself: the figs whipped up the screen and the
+   same arrangement tiled down the page. They creep like everything else now,
+   a touch faster, so the wrap stays out of sight and depth still reads. */
+const SCROLL = { figs: { k: 0.3, depth: true } };
 const CREEP = { k: 0.16, depth: true };
 
 /* a soft round light, drawn once and stamped */
