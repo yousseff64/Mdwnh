@@ -232,8 +232,10 @@ so those stay hand entered in `data.js`.
   and both widths are rebuilt. Reduced motion turns it into a snap scrolling
   row and moves nothing.
 - **غمام's award** is the `award` block on its page, drawn by `.pprize` as the
-  same three petal rosette as إنجازاتنا, cooled to that page's night. Any
-  other work that wins something gets the band by adding the same block.
+  same three petal rosette as إنجازاتنا, cooled to that page's night. The band
+  closes عَنِ الحِكَايَة, where the copy names the competition, and climbs into
+  that section's bottom bay so it reads as the story's last line. Any other
+  work that wins something gets the band by adding the same block.
 
 ## Accessibility floor
 

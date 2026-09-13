@@ -364,9 +364,9 @@ export const PROJECT_PAGES = {
       'غمام طالب جامعي تباغته نوبات الهلع والقلق الاجتماعي كلما اقترب موعد عرضه التقديمي. يرى الفيلم كيف يثقل هذا الضغط دراسته، وكيف يتعثر ثم ينهض من جديد.',
       'صنعناه في وقت قياسي لمسابقة إنتاج محتوى للنشء، وفاز بالمركز الثاني في جائزة الإنتاج المرئي للنشء. فيلم بلا موسيقى، يترك الصمت والمؤثرات الصوتية تحكي، وكتب الناس تحته في التعليقات: هذا أنا.'
     ],
-    /* the one award on the site. project.js gives it its own band under the
-       video, in the same three rosette petals as إنجازاتنا on the home page,
-       cooled down to this page's night. */
+    /* the one award on the site. project.js gives it its own band under
+       عَنِ الحِكَايَة, in the same three rosette petals as إنجازاتنا on the
+       home page, cooled down to this page's night. */
     award: {
       place: '٢',
       rank: 'المركز الثاني',

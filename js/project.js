@@ -137,7 +137,12 @@ const strip = stillsStrip(id, card.name);
    The rosette from إنجازاتنا on the home page, cooled to this page's night:
    the three petals take the page's own ink instead of the cream paper, and
    the place is set in the accent rather than the sun. The words beside it
-   say the same thing, so nothing rests on the drawing. */
+   say the same thing, so nothing rests on the drawing.
+
+   It closes عَنِ الحِكَايَة, because the story is where the prize is earned:
+   the second paragraph there names the competition, and the band under it
+   is that sentence given its medal. .pprize pulls up into the section's
+   bottom bay so it reads as the story's last line, not a fifth section. */
 
 const prize = p.award ? el('section', { class: 'pprize', 'data-rise': '' },
   el('div', { class: 'shell pprize__bar' },
@@ -218,7 +223,7 @@ const more = el('section', { class: 'section pmore', 'data-rail': 'MORE WORK · 
 
 /* A work without an award has no prize band, and one without stills has no
    strip. append() would turn either null into the word "null" on the page. */
-$('#pmain').append(...[hero, watch, prize, strip, stats, story, more].filter(Boolean));
+$('#pmain').append(...[hero, watch, strip, stats, story, prize, more].filter(Boolean));
 
 /* the footer's own list of works, with this one marked */
 $('#footWorks').append(...PROJECTS.map((o) => el('li', {},

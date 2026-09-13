@@ -313,13 +313,16 @@ body.pp {
 /* غَمَام's prize, in the same rosette as إنجازاتنا on the home page but built
    for a dark page: no cream paper and no sun, just this world's own ink with
    one cool rim of light on it, and a faint pool of the accent underneath so
-   it lifts off the night without shouting. */
+   it lifts off the night without shouting.
+
+   It follows عَنِ الحِكَايَة, whose second paragraph names the competition, so
+   it climbs back into that section's bottom bay: close enough to read as the
+   end of the story, with a full bay still under it before أَعْمَالٌ أُخْرَى. */
 
 .pprize {
   position: relative;
   z-index: 3;
-  margin-top: clamp(1.5rem, 3.5vw, 2.75rem);
-  padding-bottom: clamp(1.75rem, 4vw, 3rem);
+  margin-top: calc(var(--bay) * -0.55);
 }
 .pprize__bar {
   container-type: inline-size;
