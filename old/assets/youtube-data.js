@@ -10,15 +10,6 @@ window.MDWNH_YT = [
     "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
   },
   {
-    "videoId": "HMATd6va6mU",
-    "title": "كيف أتصدق  وأنا لا أملك المال؟",
-    "published": "2026-07-25T21:08:46+00:00",
-    "thumbnail": "https://i.ytimg.com/vi/HMATd6va6mU/hqdefault.jpg",
-    "link": "https://www.youtube.com/watch?v=HMATd6va6mU",
-    "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
-  },
-  {
     "videoId": "h_2FFW6mZ5g",
     "title": "عالم المدونة",
     "published": "2026-06-11T18:30:20+00:00",
@@ -51,6 +42,15 @@ window.MDWNH_YT = [
     "published": "2026-04-25T16:21:46+00:00",
     "thumbnail": "https://i.ytimg.com/vi/tJfiXnSMD0c/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=tJfiXnSMD0c",
+    "channelName": "مدونة ستوديو",
+    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+  },
+  {
+    "videoId": "ftUknipRrKA",
+    "title": "تشويقة فلم غمام",
+    "published": "2026-01-29T12:50:18+00:00",
+    "thumbnail": "https://i.ytimg.com/vi/ftUknipRrKA/hqdefault.jpg",
+    "link": "https://www.youtube.com/watch?v=ftUknipRrKA",
     "channelName": "مدونة ستوديو",
     "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
   }
