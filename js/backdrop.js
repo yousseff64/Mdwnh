@@ -53,7 +53,7 @@ export function backdrop(id, bg) {
     class: `pbg${bg.light.flicker ? ' pbg--flicker' : ''}`,
     'aria-hidden': 'true',
     style: `--at:${bg.at[0]}% ${bg.at[1]}%;--at-tall:${bg.atTall[0]}% ${bg.atTall[1]}%;`
-         + `--zoom-tall:${bg.zoomTall || 1};--pool:${bg.pool};--pool-k:${bg.poolK * 100}%;`
+         + `--zoom:${bg.zoom || 1};--zoom-tall:${bg.zoomTall || 1};--pool:${bg.pool};--pool-k:${bg.poolK * 100}%;`
          + (bg.zenith ? `--zenith:${bg.zenith}` : '')
   }, pic, glow, el('i', { class: 'pbg__pool' }));
 
@@ -82,9 +82,9 @@ export function backdrop(id, bg) {
       u = (u - (bg.tall - span / 2)) / span;
     }
     const [ox, oy] = tall ? bg.atTall : bg.at;
-    /* the phone's column can be drawn enlarged about its anchor
-       (bg.zoomTall), which is the same sum with a bigger picture */
-    const s = Math.max(W / ar, H) * (tall ? bg.zoomTall || 1 : 1);
+    /* the picture can be drawn enlarged about its anchor (bg.zoom,
+       bg.zoomTall), which is the same sum with a bigger picture */
+    const s = Math.max(W / ar, H) * ((tall ? bg.zoomTall : bg.zoom) || 1);
     const w = ar * s;
     const x = (W - w) * (ox / 100) + u * w;
     const y = (H - s) * (oy / 100) + v * s;

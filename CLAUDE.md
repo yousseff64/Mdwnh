@@ -280,6 +280,10 @@ its flat colour and its scene's set piece: nothing requires a painting.
   and `plate` puts the tagline on frosted glass where the painting is busy.
   On a painted page the copy never fades as one block: opacity on a parent
   cuts the glass's blur off, so each piece carries its own fade.
+- **A subject meant to be dead centre is centred in the build**, not on the
+  page (`BACKGROUND_MIDDLE` in build-assets.py trims the master around it).
+  غمام's glasses were painted a little left of the middle, and a centred
+  title over them showed it.
 - **A phone's column is its own picture.** It is cut from wherever the
   painting is calm (`tall`), and where it is nothing like the wide frame the
   hero takes its own colours there (`bg.phone`): فصل عجيب's column is all

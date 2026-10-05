@@ -731,12 +731,20 @@ def build_stills():
 # as a fraction of the master's width: js/data.js carries the same number
 # (bg.tall) so the page can find the painted light again after the crop.
 BACKGROUNDS = {
-    "hujra": (("Hujra", "حجرة"), 0.60),
+    "hujra": (("Hujra", "حجرة"), 0.76),
     "samarqand": (("Samarqand", "سمرقند"), 0.50),
     "fasl": (("عجيب", "Fasl"), 0.50),
     "lis": (("لص", "Lis"), 0.47),
     "qird": (("قرد", "غيلم", "qird", "Qird"), 0.36),
     "ghamam": (("غمام", "ghamam", "Ghamam"), 0.50),
+}
+
+# Where a painting's subject is meant to be dead centre and was painted a
+# little off it, the master is trimmed on one side until it is: the value is
+# where the subject sits across the untrimmed master. Every crop on every
+# screen is then centred on it, with nothing to correct on the page.
+BACKGROUND_MIDDLE = {
+    "ghamam": 0.4889,   # the lit glasses
 }
 
 
@@ -770,6 +778,11 @@ def build_backgrounds():
             continue
         im = Image.open(path).convert("RGB")
         w, h = im.size
+        mid = BACKGROUND_MIDDLE.get(pid)
+        if mid:
+            half = round(min(mid, 1 - mid) * w)
+            im = im.crop((round(mid * w) - half, 0, round(mid * w) + half, h))
+            w, h = im.size
         # the master keeps its own shape (bg.ar in data.js): a taller one
         # just gives the page more sky to crop from
         total += save_webp(im, os.path.join(d, f"{pid}-1920.webp"), 1920, quality=80)

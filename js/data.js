@@ -318,8 +318,9 @@ export const STILLS = {
                 tall    centre of the 9:16 column a phone gets. The build
                         step holds the same number: change both
                 at      object-position on a wide screen, atTall on a phone
-                zoomTall  enlarges the phone's column about atTall, to
-                        move the subject out from behind the copy
+                zoom    enlarges the picture about `at`, to move the
+                        subject out from behind the copy. zoomTall does
+                        the same for the phone's column, about atTall
                 place   'side' moves the copy off centre on a wide screen
                 light   where the painting's light is, so the title can be
                         lit by it (js/backdrop.js). A point, or a cone with
@@ -430,13 +431,14 @@ export const PROJECT_PAGES = {
     ],
     theme: { bg: '#2b0c23', sky: '#140a14', deep: '#0d050b', ink: '#f8eff8', accent: '#f3b9f4', accent2: '#9c4a88', pop: '#eeb0f0', cloud: '#4d2443' },
     /* the hall, and the one pair of lit glasses in the middle of it. The
-       title is short, so the copy stands to one side and leaves him alone
-       in the centre, and what light there is on it comes from him, below */
+       copy is centred over him, so the painting is drawn a little large
+       from its top edge: that drops him out from behind the buttons, into
+       the gap above the video. What light the title has comes from him */
     bg: {
-      ar: 1.6696, tall: 0.5, at: [50, 50], atTall: [50, 0], zoomTall: 1.2, place: 'side',
-      light: { kind: 'point', at: [0.497, 0.455], r: 0.8 },
+      ar: 1.6327, tall: 0.5, at: [50, 0], atTall: [50, 0], zoom: 1.36, zoomTall: 1.2,
+      light: { kind: 'point', at: [0.5, 0.462], r: 0.8 },
       lit: ['#ffd9ff', '#f8eff8', '#b79ac0'],
-      cast: '#000000d0', pool: '#0d050b', poolK: 0.5
+      cast: '#000000d0', pool: '#0d050b', poolK: 0.36
     }
   },
   hujra: {
@@ -473,7 +475,7 @@ export const PROJECT_PAGES = {
        for both, so its column is cut from that dark: the last of the eyes
        along one edge, and the copy in the clear */
     bg: {
-      ar: 1.7778, tall: 0.6, at: [0, 30], atTall: [50, 50], place: 'side',
+      ar: 1.7778, tall: 0.76, at: [0, 30], atTall: [50, 50], place: 'side',
       light: { kind: 'point', at: [0.33, 0.38], r: 1.5 },
       lit: ['#ffffff', '#cfe6ff', '#a98be6'],
       cast: '#05020ccc', pool: '#0d0617', poolK: 0.55,

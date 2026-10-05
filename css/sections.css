@@ -401,8 +401,8 @@
 
    Turning the deck carries the paintings too (hero.js sweep): the old one
    slides the way the card went and goes out of focus, the new one arrives
-   out of focus from the other side and sharpens as it comes to rest. The
-   opacity transition here is what is left when motion is turned off. */
+   out of focus from the other side and sharpens as it comes to rest. With
+   motion turned off they cross fade instead (the reduced motion block). */
 .news__bgs {
   position: absolute;
   inset: 0;
@@ -415,7 +415,9 @@
   inset: -2.5%;
   opacity: 0;
   translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -4px);
-  transition: opacity 900ms cubic-bezier(.4,0,.2,1);
+  /* each painting keeps its own layer, so a sweep never has to build one
+     (and paint the picture again) on its first frame */
+  will-change: transform, filter, opacity;
 }
 .news__bg.is-on { opacity: 1; }
 /* --zoom closes in on the corner the crop is anchored to (bg.news) */
@@ -674,6 +676,8 @@
 @media (prefers-reduced-motion: reduce) {
   .news__title, .news__head .eyebrow { animation: none; }
   .news__track, .news__clouds, .news__front, .news__worlds, .news__bg { transform: none; translate: none; }
+  /* no sweep here: the paintings just change places */
+  .news__bg { transition: opacity 400ms ease; will-change: auto; }
   .news__layer .eye { transition: none; }
 }
 

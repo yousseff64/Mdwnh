@@ -55,7 +55,12 @@ export function initHero() {
     if (!bgHost || !painted(item)) return null;
     if (i === 0) return bgHost.querySelector('.news__bg');
     const node = newsBg(item);
-    afterLoad(() => bgHost.append(node));
+    /* decoded before it is ever shown: WebKit otherwise decodes a painting
+       on the frame it first appears, mid sweep, and blinks */
+    afterLoad(() => {
+      bgHost.append(node);
+      node.querySelector('img').decode?.().catch(() => {});
+    });
     return node;
   });
 
@@ -255,9 +260,16 @@ export function initHero() {
      the stage never shows past a moving edge.
 
      A turn made before the last one has finished picks each painting up
-     from wherever it is: the keyframe it starts from is left out, so it
-     starts from what is on screen. When a painting has settled its
-     animations are dropped and the stylesheet holds it again. */
+     from wherever it is. Where it is, is read off the screen and written
+     into the new sweep's first keyframe: leaving that keyframe out and
+     letting the browser work it out from the sweep already running made
+     WebKit flash the painting at its resting state for a frame. The new
+     sweep is started before the old ones are dropped, for the same reason:
+     there is never a frame with nothing holding the painting.
+
+     The sweep is the only thing that moves these. The stylesheet's opacity
+     transition is for reduced motion alone (sections.css), so the two never
+     run against each other. */
   function sweep(out, into, dir) {
     /* a device that cannot keep up slides and fades, and skips the blur */
     const far = lite.on ? 'none' : 'blur(26px)';
@@ -265,16 +277,27 @@ export function initHero() {
     const away = (side) => ({ transform: `translate3d(${side * 6}%,0,0) scale(1.13)`, filter: far, opacity: 0 });
     const home = { transform: 'translate3d(0,0,0) scale(1)', filter: near, opacity: 1 };
     const opts = { duration: SLIDE_MS * 1.5, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'both' };
-    /* only a sweep counts as moving: the stylesheet's own opacity
-       transition starts on every turn, and is not one */
-    const sweeps = (n) => n.getAnimations().filter((a) => !(a instanceof CSSTransition));
-    const moving = (n) => sweeps(n).some((a) => a.playState === 'running');
-    const settle = (n, a) => a.finished.then(() => {
-      if (!moving(n)) sweeps(n).forEach((x) => x.cancel());
-    }).catch(() => {});
+    const sweeps = (n) => n.getAnimations().filter((x) => !(x instanceof CSSTransition));
 
-    if (out) settle(out, out.animate(moving(out) ? [away(-dir)] : [home, away(-dir)], opts));
-    if (into) settle(into, into.animate(moving(into) ? [home] : [away(dir), home], opts));
+    const run = (n, rest, to) => {
+      const old = sweeps(n);
+      let from = rest;
+      if (old.some((x) => x.playState === 'running')) {
+        const now = getComputedStyle(n);
+        from = {
+          transform: now.transform === 'none' ? home.transform : now.transform,
+          filter: now.filter === 'none' ? near : now.filter,
+          opacity: now.opacity
+        };
+      }
+      const a = n.animate([from, to], opts);
+      old.forEach((x) => x.cancel());
+      /* once it has come to rest where the stylesheet would have it anyway,
+         the sweep lets go */
+      a.finished.then(() => { if (sweeps(n).length === 1) a.cancel(); }).catch(() => {});
+    };
+    if (out) run(out, home, away(-dir));
+    if (into) run(into, away(dir), home);
   }
 
   function slide(node, fromX, toX, fromOp, toOp, opts) {
@@ -348,7 +371,7 @@ function newsBg(item) {
       srcset: `${base}-1280.webp 1280w, ${base}-1920.webp 1920w`,
       sizes: 'max(100vw, 200vh)',
       alt: '',
-      decoding: 'async'
+      decoding: 'sync'
     })
   ));
 }

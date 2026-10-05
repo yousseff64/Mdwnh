@@ -17,8 +17,9 @@ import { $, $$, el, reduced, tick, whileVisible, cloudDrift, spring, step } from
 /* What each سراج says when the ring comes round to them. مصباح is sharing
    his screen and the studio's showreel is what is on it, so that is the only
    thing anyone in the room talks about: he is showing it, the other three
-   are reacting to it. Each speaks their own dialect (Gulf, Egyptian,
-   Levantine, Maghrebi), because the club is spread across all four. Keep
+   are reacting to it. They speak Gulf, Egyptian and Levantine, the
+   dialects most of the club reads without effort. There was a Maghrebi
+   voice too, and the client had it taken out: do not bring it back. Keep
    every line about the reel. */
 const LINES = {
   misbah: [
@@ -37,9 +38,9 @@ const LINES = {
     'عيدو من الأول، ما شبعت منو'
   ],
   qandeel: [
-    'واعر بزاف هاد الشوريل',
-    'شحال من لقطة زوينة فيه',
-    'عاود ليا هاديك اللقطة عفاك'
+    'ما شاء الله، الشوريل خرافي',
+    'كم لقطة حلوة فيه، ما ينعد',
+    'رجّع لي ذيك اللقطة لو سمحت'
   ]
 };
 
