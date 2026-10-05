@@ -795,9 +795,53 @@ def build_backgrounds():
         files += 4
     print(f"bg       {files:3d} files  {total / 1024:8.0f} KB")
 
+# ------------------------------------------------------------- share cards ---
+
+# The picture a link unfurls into when it is sent to someone. Every address
+# worth sending has its own: the studio, the general project page, each of the six works,
+# the comic shelf, each of the three readers, and /projects.
+OG_CARDS = ["home", "project", "projects", "comics",
+            "samarqand", "ghamam", "hujra", "lis", "fasl", "qird",
+            "comic-hujra", "comic-samarqand", "comic-qird"]
+OG_SIZE = (1200, 630)
+CHROME = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "/Applications/Chromium.app/Contents/MacOS/Chromium",
+          "google-chrome", "chromium", "chromium-browser"]
+
+
+def build_og(only=None):
+    """tools/og/cards.html, photographed once per card into assets/og/.
+
+    The cards are laid out as a page (the real fonts, the real art), so a
+    headless Chrome takes the picture. They ship as JPEG, not WebP: the apps
+    that unfurl links do not all read WebP. Drawn at twice the size and
+    brought down, so the big masters are scaled cleanly.
+    """
+    chrome = next((c for c in CHROME if os.path.exists(c) or shutil.which(c)), None)
+    if not chrome:
+        print("og         no Chrome to take the pictures with, skipped")
+        return
+    d = os.path.join(OUT, "og")
+    os.makedirs(d, exist_ok=True)
+    page = "file://" + os.path.join(ROOT, "tools", "og", "cards.html").replace(" ", "%20")
+    total = 0
+    for name in OG_CARDS:
+        shot = os.path.join(d, f".{name}.png")
+        subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+                        "--allow-file-access-from-files", "--force-device-scale-factor=2",
+                        f"--window-size={OG_SIZE[0]},{OG_SIZE[1]}", "--virtual-time-budget=15000",
+                        f"--screenshot={shot}", f"{page}?card={name}"],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        im = Image.open(shot).convert("RGB").resize(OG_SIZE, Image.LANCZOS)
+        out = os.path.join(d, f"{name}.jpg")
+        im.save(out, "JPEG", quality=86, optimize=True, progressive=True)
+        os.remove(shot)
+        total += os.path.getsize(out)
+    print(f"og       {len(OG_CARDS):3d} files  {total / 1024:8.0f} KB")
+
 
 STEPS = [build_images, build_banners, build_covers, build_scenery, build_icons, build_award, build_wins, build_fall,
-         build_video, build_showreel, build_seam, build_avatars, build_community, build_stills, build_backgrounds]
+         build_video, build_showreel, build_seam, build_avatars, build_community, build_stills, build_backgrounds, build_og]
 
 if __name__ == "__main__":
     # no arguments builds everything; `build-assets.py avatars seam` builds

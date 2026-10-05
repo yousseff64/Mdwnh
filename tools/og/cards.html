@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>share cards</title>
+<!-- The card a link unfurls into when it is sent to someone. One template,
+     twelve cards: open it with ?card=<name> and `build-assets.py og`
+     photographs the 1200 by 630 frame into assets/og/<name>.jpg.
+     Nothing here ships: it reads the masters in Art/ directly. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=block">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; }
+body { font-family: 'Rubik', sans-serif; background: #FBFAF9; color: #323232; }
+.card { position: relative; width: 1200px; height: 630px; overflow: hidden; }
+.card > * { position: absolute; }
+
+.bg { inset: -30px; background-size: cover; background-position: var(--at, 50% 50%); filter: blur(var(--blur, 2.5px)); }
+.scrim { inset: 0; }
+
+/* the copy always stands on the right, where an Arabic line starts */
+.copy { top: 0; bottom: 0; right: 76px; width: 600px; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding-bottom: 60px; }
+.eyebrow { white-space: nowrap; font-size: 29px; font-weight: 600; color: var(--accent); }
+h1 { font-family: 'Baloo Bhaijaan 2', sans-serif; font-weight: 800; font-size: var(--size, 104px); line-height: 1.12; text-wrap: balance; }
+.line { font-size: 34px; font-weight: 500; line-height: 1.5; opacity: .92; text-wrap: balance; }
+.dark .copy { color: #fff; text-shadow: 0 2px 22px rgba(0, 0, 0, .45); }
+
+.logo { right: 76px; bottom: 44px; height: 64px; }
+
+/* a work's poster, the card the site's shelves are made of */
+.poster { filter: drop-shadow(0 26px 34px rgba(0, 0, 0, .42)); }
+.page { border-radius: 10px; object-fit: cover; object-position: top; box-shadow: 0 22px 44px rgba(50, 50, 50, .3), 0 2px 6px rgba(50, 50, 50, .2); }
+
+/* the brush marks: black art, worn only as a mask in one of the accents */
+.mark { background: var(--c); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+.cloud { opacity: var(--o, .9); }
+</style>
+</head>
+<body>
+<div class="card" id="card"></div>
+<script>
+const ART = '../../Art/', IMG = '../../assets/img/', ICON = '../../icons/', PAGES = '../../comics/pages/';
+const EMBER = '#F56549', SUN = '#F7D038', MINT = '#45C4B9', SKY = '#0084C1';
+
+/* The six works. `scrim` is laid over the painting so the copy reads, and a
+   light world (`light`) keeps dark ink the way its project page does. */
+const WORKS = {
+  samarqand: { name: 'قضية سمرقند', role: 'قصة مصورة', year: '٢٠٢٦', accent: '#a8551f', bg: 'Backgrounds/Samarqand.png', poster: 'projects/قضية سمرقند.PNG', light: true,
+    line: 'رسالة واحدة هي أمل المدينة، وفتى واحد يحملها.',
+    scrim: 'linear-gradient(to left, rgba(251,244,234,.9) 26%, rgba(251,244,234,.55) 52%, rgba(251,244,234,0) 78%)' },
+  ghamam: { name: 'غمام', role: 'فيلم قصير', year: '٢٠٢٦', accent: '#c9b4ff', bg: 'Backgrounds/ghamam.png', poster: 'projects/غمام.png',
+    line: 'نوبة هلع قبل العرض التقديمي، وطالب يحاول أن ينهض من جديد.',
+    scrim: 'linear-gradient(to left, rgba(22,6,24,.84) 26%, rgba(22,6,24,.5) 52%, rgba(22,6,24,.05) 80%)' },
+  hujra: { name: 'باب الحجرة', role: 'قصة مصورة', year: '٢٠٢٦', accent: '#8fd0ff', bg: 'Backgrounds/Hujra.png', poster: 'projects/باب الحجرة.png', at: '100% 40%',
+    line: 'قد يكون بابك مفتوحًا طوال الوقت، لكنك لم تمدّ يدك إلى المقبض بعد.',
+    scrim: 'linear-gradient(to left, rgba(20,8,40,.84) 26%, rgba(20,8,40,.5) 52%, rgba(20,8,40,.05) 80%)' },
+  lis: { name: 'اللص التقي', role: 'حكاية مرسومة', year: '٢٠٢٤', accent: '#f3d9a4', bg: 'Backgrounds/لص تقي.png', poster: 'projects/اللص التقي.png',
+    line: 'لصٌّ يتسلل إلى بيت، فيخرج منه بدرس في التقوى.',
+    scrim: 'linear-gradient(to left, rgba(8,14,44,.84) 26%, rgba(8,14,44,.5) 52%, rgba(8,14,44,.05) 80%)' },
+  fasl: { name: 'فصل عجيب', role: 'برنامج علمي', year: '٢٠٢٥', accent: '#ffd98a', bg: 'Backgrounds/عجيب.png', poster: 'projects/فصل عجيب.PNG',
+    line: 'السيد عجيب يبدأ من سؤال، ولا يتركك قبل الجواب.',
+    scrim: 'linear-gradient(to left, rgba(24,8,10,.84) 26%, rgba(24,8,10,.5) 52%, rgba(24,8,10,.05) 80%)' },
+  qird: { name: 'القرد والغيلم', role: 'قصة مصورة', year: '٢٠٢٥', accent: '#2f7d32', bg: 'Backgrounds/qird.png', poster: 'projects/القرد والغيلم.png', light: true, at: '0% 70%',
+    line: 'صداقة على شجرة تين، وقلبٌ مطلوب في عرض البحر.',
+    scrim: 'linear-gradient(to left, rgba(236,248,246,.9) 26%, rgba(236,248,246,.55) 52%, rgba(236,248,246,0) 78%)' },
+};
+
+/* The three readers. `tint` is the paper the book lies on. */
+const COMICS = {
+  'comic-hujra': { id: 'hujra', name: 'باب الحجرة', pages: '٤٣ صفحة', accent: SKY, tint: '#e9f1fb', marks: [SKY, SUN] },
+  'comic-samarqand': { id: 'samarqand', name: 'قضية سمرقند', pages: '٥١ صفحة', accent: EMBER, tint: '#fbeee2', marks: [EMBER, SUN] },
+  'comic-qird': { id: 'qird', name: 'القرد والغيلم', pages: '١٨ صفحة', accent: '#2f9d8f', tint: '#e8f6ee', marks: [MINT, SUN] },
+};
+
+const h = (html) => html;
+const mark = (name, c, css) => `<i class="mark" style="--m:url('${ICON}${name}.png');--c:${c};${css}"></i>`;
+const cloud = (css) => `<img class="cloud" src="${ART}cloud.png" style="${css}">`;
+const logo = (dark) => `<img class="logo" src="${IMG}${dark ? 'logo-white' : 'logo-dark'}.webp">`;
+
+function work(w) {
+  return h(`
+    <div class="bg" style="background-image:url('${ART}${w.bg}');--at:${w.at || '50% 50%'}"></div>
+    <div class="scrim" style="background:${w.scrim}"></div>
+    <img class="poster" src="${ART}${w.poster}" style="left:6px;top:-44px;height:720px;transform:rotate(-4deg)">
+    <div class="copy" style="--accent:${w.accent}">
+      <p class="eyebrow">${w.role} · ${w.year}</p>
+      <h1 style="--size:${w.name.length > 10 ? 92 : 108}px">${w.name}</h1>
+      <p class="line">${w.line}</p>
+    </div>
+    ${logo(!w.light)}`);
+}
+
+function comic(c) {
+  const p = (n) => `${PAGES}${c.id}/${n}.png`;
+  return h(`
+    <div class="scrim" style="background:radial-gradient(120% 120% at 20% 50%, #fff 0%, ${c.tint} 70%)"></div>
+    ${mark('swash', c.marks[0], 'left:-40px;top:330px;width:620px;height:300px;opacity:.22')}
+    ${mark('sparkles', c.marks[1], 'left:440px;top:60px;width:92px;height:100px;transform:rotate(12deg)')}
+    ${mark('asterisk', c.marks[0], 'left:36px;top:60px;width:64px;height:64px;transform:rotate(-10deg)')}
+    <img class="page" src="${p(3)}" style="left:228px;top:92px;width:300px;height:432px;transform:rotate(9deg);opacity:.95">
+    <img class="page" src="${p(2)}" style="left:66px;top:104px;width:300px;height:432px;transform:rotate(-11deg);opacity:.95">
+    <img class="page" src="${p(1)}" style="left:130px;top:50px;width:366px;height:528px;transform:rotate(-3deg)">
+    <div class="copy" style="--accent:${c.accent};width:560px">
+      <p class="eyebrow">قصة مصورة · ${c.pages}</p>
+      <h1 style="--size:${c.name.length > 10 ? 92 : 108}px">${c.name}</h1>
+      <p class="line">اقرأها كاملة، صفحة بصفحة.</p>
+    </div>
+    ${logo(false)}`);
+}
+
+const CARDS = {
+  /* the studio: its cast, its name, and the house clouds in front */
+  home: () => h(`
+    <div class="scrim" style="background:radial-gradient(90% 120% at 26% 46%, #7a4a9c 0%, #4a2a63 55%, #2c1640 100%)"></div>
+    ${mark('sparkles', SUN, 'left:560px;top:66px;width:70px;height:76px;transform:rotate(14deg)')}
+    ${mark('asterisk', MINT, 'right:60px;top:54px;width:54px;height:54px')}
+    ${cloud('left:-210px;top:-40px;width:420px;--o:.35;filter:blur(4px)')}
+    <img src="${ART}MdwnhArt.png" style="left:6px;top:-40px;height:700px;filter:drop-shadow(0 24px 30px rgba(0,0,0,.4))">
+    ${cloud('left:420px;top:520px;width:420px;transform:scaleX(-1);--o:.95')}
+    ${cloud('left:-230px;top:540px;width:420px;--o:.9;filter:blur(1.5px)')}
+    ${cloud('right:-200px;top:520px;width:440px;--o:.55;filter:blur(4px)')}
+    <div class="copy dark" style="color:#fff;width:520px;right:64px;align-items:flex-start;padding-bottom:20px;gap:22px">
+      <img src="${IMG}logo-white.webp" style="height:176px">
+      <h1 style="--size:66px;color:${SUN}">قِصَصٌ عَرَبِيَّةٌ أَصْلِيَّة</h1>
+      <p class="line" style="font-size:31px">ادخل عالم المدونة، وشارك في صناعة الفصل القادم.</p>
+    </div>`),
+
+  /* the shelf: the three first pages, fanned */
+  comics: () => {
+    const b = (id, css) => `<img class="page" src="${PAGES}${id}/1.png" style="width:270px;height:384px;${css}">`;
+    return h(`
+    <div class="scrim" style="background:radial-gradient(120% 120% at 25% 50%, #fff 0%, #f6efe6 75%)"></div>
+    ${mark('swash', SUN, 'left:10px;top:380px;width:640px;height:240px;opacity:.5')}
+    ${mark('sparkles', EMBER, 'left:590px;top:70px;width:76px;height:82px;transform:rotate(12deg)')}
+    ${mark('spiral', MINT, 'left:26px;top:36px;width:70px;height:70px')}
+    ${b('samarqand', 'left:44px;top:142px;transform:rotate(-12deg)')}
+    ${b('qird', 'left:372px;top:142px;transform:rotate(11deg)')}
+    ${b('hujra', 'left:196px;top:86px;width:310px;height:446px;transform:rotate(-2deg)')}
+    <div class="copy" style="--accent:${EMBER};width:480px">
+      <p class="eyebrow" style="font-size:25px">باب الحجرة · قضية سمرقند · القرد والغيلم</p>
+      <h1 style="--size:98px">قِصَصُنَا المُصَوَّرَة</h1>
+      <p class="line">ثلاث حكايات رسمناها صفحة بصفحة. اقرأها هنا كاملة.</p>
+    </div>
+    ${logo(false)}`);
+  },
+
+  /* the six posters in a row, under the page's own name */
+  projects: () => {
+    const ids = ['qird', 'fasl', 'lis', 'hujra', 'ghamam', 'samarqand'];
+    const row = ids.map((id, i) => `<img class="poster" src="${ART}${WORKS[id].poster}"
+      style="left:${-44 + i * 196}px;top:${i % 2 ? 196 : 170}px;height:500px;transform:rotate(${i % 2 ? 4 : -4}deg)">`).join('');
+    return h(`
+    <div class="scrim" style="background:radial-gradient(100% 130% at 50% 0%, #ffe46b 0%, ${SUN} 60%, #f0bf1e 100%)"></div>
+    ${mark('sparkles', '#fff', 'left:340px;top:84px;width:62px;height:68px;transform:rotate(-10deg)')}
+    <div class="copy" style="--accent:#8a4a00;inset:30px 76px auto 76px;width:auto;display:block;padding:0">
+      <p class="eyebrow" style="font-size:24px">قضية سمرقند · غمام · باب الحجرة · اللص التقي · فصل عجيب · القرد والغيلم</p>
+      <h1 style="--size:96px;margin-top:-4px">مَشَارِيعُنَا</h1>
+    </div>
+    ${row}
+    <img src="${IMG}logo-dark.webp" style="left:76px;top:88px;height:62px">`);
+  },
+
+  /* an old or unknown project link: the six, without picking one */
+  project: () => {
+    const ids = ['samarqand', 'ghamam', 'hujra', 'lis', 'fasl', 'qird'];
+    const fan = ids.map((id, i) => `<img class="poster" src="${ART}${WORKS[id].poster}"
+      style="left:${262 - i * 54}px;top:${70 + Math.abs(i - 2.5) * 16}px;height:500px;transform:rotate(${(2.5 - i) * 5}deg);z-index:${i}">`).join('');
+    return h(`
+    <div class="scrim" style="background:radial-gradient(100% 120% at 25% 50%, #2b2470 0%, #110e33 70%)"></div>
+    ${cloud('left:-160px;top:470px;width:460px;--o:.25;filter:blur(3px)')}
+    ${fan}
+    <div class="copy dark" style="--accent:${SUN};width:500px">
+      <p class="eyebrow">أفلام · قصص مصورة · برامج</p>
+      <h1 style="--size:104px">أَعْمَالُنَا</h1>
+      <p class="line">شاهد العمل، واعرف حكايته، وانتقل إلى التالي.</p>
+    </div>
+    ${logo(true)}`);
+  },
+};
+
+const name = new URLSearchParams(location.search).get('card') || 'home';
+const card = document.getElementById('card');
+const w = WORKS[name], c = COMICS[name];
+if ((w && !w.light) || name === 'home' || name === 'project') card.classList.add('dark');
+card.innerHTML = w ? work(w) : c ? comic(c) : (CARDS[name] || CARDS.home)();
+document.title = [...Object.keys(CARDS), ...Object.keys(WORKS), ...Object.keys(COMICS)].join(' ');
+</script>
+</body>
+</html>

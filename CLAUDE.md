@@ -66,6 +66,9 @@ live there is archived, whole and working, at `mdwn.studio/old`.
 /Ghailam              one reader per comic. These URLs are published, so they
                       keep their names even though the ids elsewhere are
                       hujra, samarqand and qird
+/work/<id>/           one small page per work: the address a work is sent
+                      around by. It carries that work's share card and hands
+                      over to project.html
 /old                  the previous site, archived and still reachable. It
                       links out to /comics/ and /analytics/ absolutely,
                       because those did not move with it
@@ -297,6 +300,30 @@ its flat colour and its scene's set piece: nothing requires a painting.
   because Safari's canvas has none.
 - With a painting, the hero drops the scene's set piece and far clouds (the
   painting already is both). The falling scenery and the near clouds stay.
+
+## The share cards
+
+Every address worth sending unfurls into its own picture: the home page,
+each of the six works, the comic shelf, each of the three readers, and
+/projects. The pictures are `assets/og/<name>.jpg`, 1200 by 630.
+
+- **They are drawn as a page.** `tools/og/cards.html?card=<name>` lays one
+  out with the real fonts and the masters in `Art/`, and `python3
+  tools/build-assets.py og` photographs each with a headless Chrome. JPEG,
+  not WebP, because the apps that unfurl links do not all read WebP.
+- **A crawler never runs the scripts**, so `project.html?id=` looks the same
+  to it whatever the id. Each work therefore has `/work/<id>/`, a few lines
+  of HTML with that work's card that forward to `project.html?id=<id>`, and
+  `js/project.js` puts `/work/<id>/` back in the address bar so that is the
+  link people copy. `project.html` has `<base href="/">` for that reason:
+  keep its paths relative to the root. Links inside the site can stay
+  `project.html?id=`.
+- **A new work needs** a row in `WORKS` in cards.html, its name in
+  `OG_CARDS` in build-assets.py, and a `work/<id>/index.html` copied from
+  one of the six.
+- `og:image` and `og:url` must be absolute (`https://mdwn.studio/...`).
+  After changing a card, the apps keep the old picture for days: WhatsApp
+  and Telegram cache by address.
 
 ## Accessibility floor
 

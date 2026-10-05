@@ -54,6 +54,21 @@ $('meta[name=theme-color]').setAttribute('content', th.sky);
 $('meta[name=description]').setAttribute('content', `${card.name}: ${p.tagline}`);
 document.title = `${card.name} | مدونة ستوديو`;
 
+/* The address worth copying is /work/<id>/: that file carries this work's
+   own share card, and a crawler never runs this script to find out which
+   work was asked for. It goes into the bar once everything that reads
+   ?id= has run. Only where the site is served from the root, which is where
+   project.html's <base> points. */
+if (location.pathname === '/project.html' && /^https?:$/.test(location.protocol)) {
+  addEventListener('load', () => history.replaceState(history.state, '', `/work/${id}/${location.hash}`), { once: true });
+}
+/* with a <base>, a bare #hash link would leave for the root. Spell out the
+   page it means just before the browser follows it */
+addEventListener('click', (e) => {
+  const a = e.target.closest?.('a[href^="#"]');
+  if (a) a.setAttribute('href', location.pathname + location.search + a.getAttribute('href'));
+}, true);
+
 /* The bar looks the same on every page: white logo, white ink. Only its
    glass takes this world's night. */
 const nav = $('#nav');
