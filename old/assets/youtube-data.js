@@ -7,7 +7,7 @@ window.MDWNH_YT = [
     "thumbnail": "https://i.ytimg.com/vi/aU4dZUsIVxk/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=aU4dZUsIVxk",
     "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+    "channelLogo": "https://yt3.googleusercontent.com/LUD-BevWr7WB2zBl_cNIRhJ3o8sRWYO1Hlhgw8P1c_jMA5GPh5ldKWB9xYOjkLolRqYdDSFp9g=s900-c-k-c0x00ffffff-no-rj"
   },
   {
     "videoId": "h_2FFW6mZ5g",
@@ -16,7 +16,7 @@ window.MDWNH_YT = [
     "thumbnail": "https://i.ytimg.com/vi/h_2FFW6mZ5g/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=h_2FFW6mZ5g",
     "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+    "channelLogo": "https://yt3.googleusercontent.com/LUD-BevWr7WB2zBl_cNIRhJ3o8sRWYO1Hlhgw8P1c_jMA5GPh5ldKWB9xYOjkLolRqYdDSFp9g=s900-c-k-c0x00ffffff-no-rj"
   },
   {
     "videoId": "bCkfuh_2yUE",
@@ -25,7 +25,7 @@ window.MDWNH_YT = [
     "thumbnail": "https://i.ytimg.com/vi/bCkfuh_2yUE/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=bCkfuh_2yUE",
     "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+    "channelLogo": "https://yt3.googleusercontent.com/LUD-BevWr7WB2zBl_cNIRhJ3o8sRWYO1Hlhgw8P1c_jMA5GPh5ldKWB9xYOjkLolRqYdDSFp9g=s900-c-k-c0x00ffffff-no-rj"
   },
   {
     "videoId": "00aH0qeo6dY",
@@ -34,7 +34,7 @@ window.MDWNH_YT = [
     "thumbnail": "https://i.ytimg.com/vi/00aH0qeo6dY/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=00aH0qeo6dY",
     "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+    "channelLogo": "https://yt3.googleusercontent.com/LUD-BevWr7WB2zBl_cNIRhJ3o8sRWYO1Hlhgw8P1c_jMA5GPh5ldKWB9xYOjkLolRqYdDSFp9g=s900-c-k-c0x00ffffff-no-rj"
   },
   {
     "videoId": "tJfiXnSMD0c",
@@ -43,7 +43,7 @@ window.MDWNH_YT = [
     "thumbnail": "https://i.ytimg.com/vi/tJfiXnSMD0c/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=tJfiXnSMD0c",
     "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+    "channelLogo": "https://yt3.googleusercontent.com/LUD-BevWr7WB2zBl_cNIRhJ3o8sRWYO1Hlhgw8P1c_jMA5GPh5ldKWB9xYOjkLolRqYdDSFp9g=s900-c-k-c0x00ffffff-no-rj"
   },
   {
     "videoId": "ftUknipRrKA",
@@ -52,6 +52,6 @@ window.MDWNH_YT = [
     "thumbnail": "https://i.ytimg.com/vi/ftUknipRrKA/hqdefault.jpg",
     "link": "https://www.youtube.com/watch?v=ftUknipRrKA",
     "channelName": "مدونة ستوديو",
-    "channelLogo": "https://yt3.googleusercontent.com/y_HFE_DTTPR5YjG15dUVMxuSsjIMxaKpf20-vtZhHvKs5_Tlf3HVsKge23XS-_0GRrxAG5fJ=s900-c-k-c0x00ffffff-no-rj"
+    "channelLogo": "https://yt3.googleusercontent.com/LUD-BevWr7WB2zBl_cNIRhJ3o8sRWYO1Hlhgw8P1c_jMA5GPh5ldKWB9xYOjkLolRqYdDSFp9g=s900-c-k-c0x00ffffff-no-rj"
   }
 ];
