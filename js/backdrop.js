@@ -25,7 +25,8 @@ const TALL = 9 / 16;
    edge (.pbg__pic in project.css holds the same number) */
 const OVER = 1.04;
 
-export function backdrop(id, bg) {
+/* `ground` is the page's own colour, the one the painting dissolves into */
+export function backdrop(id, bg, ground) {
   const base = `assets/img/bg/${id}`;
   const img = el('img', {
     class: 'pbg__img',
@@ -174,6 +175,47 @@ export function backdrop(id, bg) {
     img.addEventListener('load', measure);
   }
 
+  /* The colour of the painting behind a spot on the screen, as 'r,g,b' in
+     coarse steps, for scenery that takes on its surroundings (the figs in
+     القرد والغيلم). The picture is read once into a few dozen pixels. Under
+     the painting's foot, and before it has loaded, it is the page's own
+     ground. */
+  let map = null;
+  const step = (v) => (Math.round(v) >> 4 << 4) + 8;
+  const earth = (ground || '').match(/\w\w/g)?.map((h) => parseInt(h, 16)) || null;
+  function chart() {
+    try {
+      const w = 48;
+      const h = Math.max(1, Math.round(w * img.naturalHeight / img.naturalWidth));
+      const c = el('canvas', { width: w, height: h }).getContext('2d', { willReadFrequently: true });
+      c.drawImage(img, 0, 0, w, h);
+      map = { w, h, px: c.getImageData(0, 0, w, h).data };
+    } catch { map = null; }
+  }
+  if (img.complete && img.naturalWidth) chart();
+  img.addEventListener('load', chart);
+
+  function colourAt(x, y) {
+    if (!earth) return '';
+    if (!map) return earth.map(step).join(',');
+    const W = node.clientWidth;
+    const H = node.clientHeight;
+    const tall = phone.matches;
+    const ar = map.w / map.h;
+    const [ox, oy] = tall ? bg.atTall : bg.at;
+    const s = Math.max(W / ar, H) * ((tall ? bg.zoomTall : bg.zoom) || 1);
+    const w = ar * s;
+    /* the screen's y, back onto the page, less the painting's own lag */
+    const py = y + scrollY - Math.min(scrollY, H) * 0.24;
+    const u = (x - (W - w) * (ox / 100)) / w;
+    const v = (py - (H - s) * (oy / 100)) / s;
+    const i = (Math.min(map.h - 1, Math.max(0, Math.floor(v * map.h))) * map.w
+             + Math.min(map.w - 1, Math.max(0, Math.floor(u * map.w)))) * 4;
+    /* the foot of the painting dissolves into the ground (.pbg::after) */
+    const k = Math.min(1, Math.max(0, (py / H - 0.54) / 0.4));
+    return [0, 1, 2].map((c) => step(map.px[i + c] * (1 - k) + earth[c] * k)).join(',');
+  }
+
   /* The painting lags the scroll a little, so it sits behind the page and
      not on it. Returns the per frame hook, or null when motion is off. */
   let last = '';
@@ -184,5 +226,5 @@ export function backdrop(id, bg) {
     pic.style.setProperty('--sy', s);
   };
 
-  return { node, pic, light, drift };
+  return { node, pic, light, drift, colourAt };
 }

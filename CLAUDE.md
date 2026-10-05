@@ -290,6 +290,11 @@ its flat colour and its scene's set piece: nothing requires a painting.
   lamp, so on a phone its copy is dark and bare, with no glass.
 - **Every news card is the same height on a phone** (`level` in
   `js/hero.js`), or the stage jumps a line when the deck turns.
+- **القرد والغيلم's figs have depth** (`fig` in `js/scenes.js`): far ones
+  are small, slow and hazed, a few are right against the lens, and anything
+  off the focal plane is blurred. Each takes on the painting's colour behind
+  it (`colourAt` in `js/backdrop.js`). The blur is stamped, not `ctx.filter`,
+  because Safari's canvas has none.
 - With a painting, the hero drops the scene's set piece and far clouds (the
   painting already is both). The falling scenery and the near clouds stay.
 

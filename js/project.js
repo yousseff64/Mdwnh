@@ -37,7 +37,7 @@ document.body.classList.toggle('pp--light', !!th.light);
 /* The painted world, where the work has one (js/backdrop.js). It goes in
    before the scenery canvas, so the falling things fall in front of it, and
    it is asked for first: it is the largest thing on the first screen. */
-const world = p.bg ? backdrop(id, p.bg) : null;
+const world = p.bg ? backdrop(id, p.bg, th.bg) : null;
 if (world) {
   document.body.classList.add('pp--painted');
   root.style.setProperty('--pool', p.bg.pool);
@@ -288,7 +288,7 @@ sceneCanvas($('#pfx'), p.scene, th, (ptr) => {
     world.drift?.();
   }
   follow?.(ptr);
-});
+}, { back: world?.colourAt });
 
 new IntersectionObserver(([e], o) => {
   if (!e.isIntersecting) return;

@@ -35,6 +35,46 @@ const fig = () => {
   return FIG;
 };
 
+/* One fig's own sprite: the art, blurred by its depth, washed with the
+   colour behind it. Built when the fig is made and again only when that
+   colour changes (it is handed over in coarse steps), so a frame is still
+   one drawImage a fig. The blur is the art stamped round two rings and
+   averaged, not ctx.filter: Safari's canvas has none, and this has to look
+   the same on every device. */
+function figSprite(p, back) {
+  const img = p.img;
+  const h = p.size * p.z * 2;
+  const w = (h * img.naturalWidth) / img.naturalHeight;
+  const pad = Math.ceil(p.blur * 1.6) + 1;
+  const k = 2;                       // drawn at twice its size, for sharp screens
+  const cv = p.cv || document.createElement('canvas');
+  cv.width = Math.ceil((w + pad * 2) * k);
+  cv.height = Math.ceil((h + pad * 2) * k);
+  const c = cv.getContext('2d');
+  c.setTransform(k, 0, 0, k, 0, 0);
+  if (p.blur < 0.4) {
+    c.drawImage(img, pad, pad, w, h);
+  } else {
+    const spots = [[0, 0]];
+    for (const [r, n] of [[0.55, 6], [1, 10]]) {
+      for (let i = 0; i < n; i++) spots.push([Math.cos((i / n) * TAU) * r * p.blur, Math.sin((i / n) * TAU) * r * p.blur]);
+    }
+    c.globalCompositeOperation = 'lighter';
+    c.globalAlpha = 1 / spots.length;
+    for (const [dx, dy] of spots) c.drawImage(img, pad + dx, pad + dy, w, h);
+  }
+  if (back) {
+    c.globalCompositeOperation = 'source-atop';
+    c.globalAlpha = p.tint;
+    c.fillStyle = `rgb(${back})`;
+    c.fillRect(0, 0, w + pad * 2, h + pad * 2);
+  }
+  p.cv = cv;
+  p.key = back;
+  p.w = w + pad * 2;
+  p.h = h + pad * 2;
+}
+
 /* قضية سمرقند's own falling leaf (Art/1أ): two hand animated takes, packed
    by build-assets.py into one sheet with where each frame sat on its
    2338 x 1653 stage. A clip plays one whole take somewhere to the side of
@@ -155,25 +195,44 @@ const KINDS = {
     }
   },
 
+  /* Figs at every distance from the lens. z is the depth: a far fig is
+     small, slow, faint and hazed, a near one is big and quick, and both are
+     out of focus, because the lens is focused on the ones in between. Each
+     fig also takes on some of whatever is behind it (env.back, the painted
+     world's colour at that spot), the far ones most: air between you and a
+     thing tints it. The field is drawn far to near, so the near ones pass
+     in front. */
   fig: {
-    make: (W, H) => ({
-      x: rnd(0, W), y: rnd(0, H), z: rnd(0.5, 1.3), size: rnd(11, 17),
-      vy: rnd(30, 52), sw: rnd(10, 22), sf: rnd(0.4, 0.9), ph: rnd(0, TAU),
-      rot: rnd(-0.6, 0.6), vr: rnd(-0.6, 0.6), img: fig()
-    }),
+    make: (W, H) => {
+      /* mostly far and middling, and a few right up against the lens */
+      const pick = rnd(0, 1);
+      const z = pick < 0.42 ? rnd(0.34, 0.8) : pick < 0.84 ? rnd(0.8, 1.35) : rnd(1.7, 2.5);
+      const off = Math.abs(z - 1);
+      return {
+        x: rnd(0, W), y: rnd(0, H), z, size: rnd(11, 16),
+        vy: rnd(30, 52), sw: rnd(10, 22), sf: rnd(0.4, 0.9), ph: rnd(0, TAU),
+        rot: rnd(-0.6, 0.6), vr: rnd(-0.6, 0.6) * (0.5 + z * 0.5), img: fig(),
+        /* px of blur: none in the focal band, more the further out of it,
+           and never quite the same for two figs at one depth */
+        blur: off < 0.14 ? 0 : Math.min(9, (off - 0.1) * rnd(4.5, 8)),
+        tint: clamp(0.62 - z * 0.36, 0.08, 0.5),
+        a: clamp(0.5 + z * 0.42, 0.58, 0.96),
+        cv: null, key: ''
+      };
+    },
     move(p, dt, t) {
       p.y += p.vy * p.z * dt;
-      p.x += Math.sin(t * p.sf + p.ph) * p.sw * dt;
+      p.x += Math.sin(t * p.sf + p.ph) * p.sw * p.z * dt;
       p.rot += p.vr * dt;
     },
-    draw(ctx, p) {
+    draw(ctx, p, t, env) {
       const img = p.img;
       if (!img.naturalWidth) return;
-      const h = p.size * p.z * 2;
-      const w = (h * img.naturalWidth) / img.naturalHeight;
+      const back = env.back ? env.back(env.sx, env.sy) : '';
+      if (!p.cv || p.key !== back) figSprite(p, back);
       ctx.rotate(p.rot);
-      ctx.globalAlpha = 0.8 + 0.2 * Math.min(1, p.z);
-      ctx.drawImage(img, -w / 2, -h / 2, w, h);
+      ctx.globalAlpha = p.a;
+      ctx.drawImage(p.cv, -p.w / 2, -p.h / 2, p.w, p.h);
     }
   },
 
@@ -241,7 +300,7 @@ const RECIPES = {
   smoke: () => [['mote', 120]],
   eyes: () => [['bokeh', 30], ['star', 50]],
   sparkle: (th) => [['spark', 26], ['star', 60, { c: th.accent }]],
-  figs: () => [['fig', 14]]
+  figs: () => [['fig', 20]]
 };
 
 /* The share of the scroll the falling field takes, and whether depth slows
@@ -275,11 +334,13 @@ function glow(color) {
    on screen and the returned controller's run(true) says so (the news
    hero, one canvas per headline). `onFrame(ptr)` gets the smoothed pointer
    each frame, -1 to 1 across the screen, so DOM layers can follow it. */
-export function sceneCanvas(canvas, scene, th, onFrame, { box = null, density = 1 } = {}) {
+/* `back`: (x, y) on the screen to the colour behind that spot, as 'r,g,b',
+   for scenery that takes on its surroundings (the figs). */
+export function sceneCanvas(canvas, scene, th, onFrame, { box = null, density = 1, back = null } = {}) {
   const ctx = canvas.getContext('2d');
   const recipe = (RECIPES[scene] || (() => []))(th);
   const still = reduced.matches;
-  const env = { W: 0, H: 0, sx: 0, sy: 0, sprites: [glow(th.accent), glow(th.accent2)] };
+  const env = { W: 0, H: 0, sx: 0, sy: 0, back, sprites: [glow(th.accent), glow(th.accent2)] };
   const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
   let W = 0;
   let H = 0;
@@ -305,6 +366,8 @@ export function sceneCanvas(canvas, scene, th, onFrame, { box = null, density = 
     const area = clamp((W * H) / (1440 * 860), 0.4, 1.5) * density;
     parts = recipe.flatMap(([kind, n, o = {}]) =>
       Array.from({ length: o.fixed ? n : Math.round(n * area) }, () => Object.assign(KINDS[kind].make(W, H, th, o), { k: KINDS[kind] })));
+    /* far to near, where the scene has depth to show */
+    if (scene === 'figs') parts.sort((a, b) => a.z - b.z);
   }
 
   /* ---- a shooting star now and then, فصل عجيب only ---- */
