@@ -736,7 +736,7 @@ BACKGROUNDS = {
     "fasl": (("عجيب", "Fasl"), 0.50),
     "lis": (("لص", "Lis"), 0.47),
     "qird": (("قرد", "غيلم", "qird", "Qird"), 0.36),
-    "ghamam": (("غمام", "Ghamam"), 0.50),
+    "ghamam": (("غمام", "ghamam", "Ghamam"), 0.50),
 }
 
 

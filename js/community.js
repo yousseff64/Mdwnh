@@ -14,30 +14,32 @@
 
 import { $, $$, el, reduced, tick, whileVisible, cloudDrift, spring, step } from './util.js';
 
-/* What each سراج says when the ring comes round to them. They are meant to
-   sound like four people who already know each other and are half paying
-   attention, not like a feature list: someone is eating, someone missed the
-   vote, someone is still awake at four. Keep them that way. */
+/* What each سراج says when the ring comes round to them. مصباح is sharing
+   his screen and the studio's showreel is what is on it, so that is the only
+   thing anyone in the room talks about: he is showing it, the other three
+   are reacting to it. Each speaks their own dialect (Gulf, Egyptian,
+   Levantine, Maghrebi), because the club is spread across all four. Keep
+   every line about the reel. */
 const LINES = {
   misbah: [
-    'ثانية ثانية، خليني أشارك الشاشة',
-    'لا تحكموا عليها، لسا ما لونتها',
-    'طيب هذي اللقطة أعدتها ست مرات، ست'
+    'ركزوا معي، هذا الشوريل حقنا',
+    'شوفوا هاللقطة، تعبنا عليها واجد',
+    'لحظة، برجعه لكم من أوله'
   ],
   siraj: [
-    'طيب مين قال إني أشبه موزة',
-    'أنا أكلت، كملوا بدوني',
-    'ارسموني بلون جديد وأنا أحط الصورة'
+    'إيه الحلاوة دي يا جماعة',
+    'استنى استنى، رجّع اللقطة دي تاني',
+    'الشوريل ده لازم يتشاف مرتين'
   ],
   fanous: [
-    'هههههههه لا والله',
-    'قلت لكم من أول حلقة إنه هو',
-    'أنا نسيت أصوت، عادي؟'
+    'شو هالحلا، عن جد شغل مرتب',
+    'يا زلمة التحريك كتير ناعم',
+    'عيدو من الأول، ما شبعت منو'
   ],
   qandeel: [
-    'الساعة أربعة ولسا صاحي',
-    'خلصت الخلفية، بس ما تعجبني',
-    'وش صار على اقتراح الأسبوع اللي طاف'
+    'واعر بزاف هاد الشوريل',
+    'شحال من لقطة زوينة فيه',
+    'عاود ليا هاديك اللقطة عفاك'
   ]
 };
 

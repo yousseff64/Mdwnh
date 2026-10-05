@@ -133,11 +133,13 @@ export const STATS = [
    matters.
 
    The seven `hi` rows are real: comments people left under the work, copied
-   as written. Every other row is deliberate filler, noises and notes to
-   nobody, because the field behind them is decoration and the blur is not a
-   guarantee. If it ever fails to paint (an old browser, a dropped filter, a
-   screenshot) the page must not read as sixty testimonials the studio never
-   received. Never write a plausible compliment into a background row.
+   as written. Every other row is deliberate filler, and none of its words
+   reach the page: js/fall.js draws a filler row as bars, sized off the
+   length of its `x`, because the blur is not a guarantee (lite drops it, an
+   old browser ignores it, a screenshot loses it) and readers did see the
+   placeholder text when it failed. The text stays noises and notes to
+   nobody all the same. Never write a plausible compliment into a background
+   row.
 
      t     which surface it came from
              yt  a YouTube comment, dark card with an avatar
@@ -240,28 +242,29 @@ export const SOCIALS = [
    order they appear on the strip.
 
    To change one, drop a new file over Art/stills/<id>/<n>.jpg and rerun
-   `python3 v4/tools/build-assets.py stills`. It is cut to 16:9 for you, so
+   `python3 tools/build-assets.py stills`. It is cut to 16:9 for you, so
    the replacement does not have to be trimmed first. To add or drop a frame,
    add or drop the file and the line here. Every entry has a 480 wide twin
    built beside it (-sm.webp); js/stills.js asks for it on a phone.
 
    Where they came from: أعمال بالفيديو are frames off the film itself.
-   بَابُ الحُجْرَة and القِرْدُ وَالغَيْلَم are bands cut out of the comic,
-   because their videos are a teaser and an announcement, not the work.
+   قَضِيَّةُ سَمَرْقَنْد, بَابُ الحُجْرَة and القِرْدُ وَالغَيْلَم are bands
+   cut out of the comic, because the comic is the work and their videos are
+   a short film, a teaser and an announcement.
 --------------------------------------------------------------------------- */
 export const STILLS = {
   samarqand: [
-    { src: 'assets/img/stills/samarqand-1.webp', alt: 'الفتى في سوق سمرقند' },
-    { src: 'assets/img/stills/samarqand-2.webp', alt: 'صحن المسجد الكبير' },
-    { src: 'assets/img/stills/samarqand-3.webp', alt: 'وجه الفتى عن قرب' },
-    { src: 'assets/img/stills/samarqand-4.webp', alt: 'الفتى ورفيقه في الطريق' },
-    { src: 'assets/img/stills/samarqand-5.webp', alt: 'الفتى يشير ورفيقه يضحك' }
+    { src: 'assets/img/stills/samarqand-1.webp', alt: 'سمرقند من فوق أسطحها' },
+    { src: 'assets/img/stills/samarqand-2.webp', alt: 'الفتى يمضي وقبضته مشدودة' },
+    { src: 'assets/img/stills/samarqand-3.webp', alt: 'الفتى وحماره في أزقة دمشق' },
+    { src: 'assets/img/stills/samarqand-4.webp', alt: 'صحن الجامع الأموي' },
+    { src: 'assets/img/stills/samarqand-5.webp', alt: 'المصلون في صحن المسجد' }
   ],
   ghamam: [
     { src: 'assets/img/stills/ghamam-1.webp', alt: 'غمام بين زملائه' },
     { src: 'assets/img/stills/ghamam-2.webp', alt: 'غمام أمام حاسوبه ليلًا' },
     { src: 'assets/img/stills/ghamam-3.webp', alt: 'غمام خلف المنصة' },
-    { src: 'assets/img/stills/ghamam-4.webp', alt: 'العرض التقديمي على الشاشة' },
+    { src: 'assets/img/stills/ghamam-4.webp', alt: 'غمام غارق في سيل المقاطع' },
     { src: 'assets/img/stills/ghamam-5.webp', alt: 'القاعة تذوب في نوبة الهلع' }
   ],
   hujra: [
@@ -315,6 +318,8 @@ export const STILLS = {
                 tall    centre of the 9:16 column a phone gets. The build
                         step holds the same number: change both
                 at      object-position on a wide screen, atTall on a phone
+                zoomTall  enlarges the phone's column about atTall, to
+                        move the subject out from behind the copy
                 place   'side' moves the copy off centre on a wide screen
                 light   where the painting's light is, so the title can be
                         lit by it (js/backdrop.js). A point, or a cone with
@@ -328,6 +333,9 @@ export const STILLS = {
                         and poolK how much of it
                 zenith  a light sky deepens to this at the very top, so the
                         bar's white logo and ink still read over it
+                news    the news stage's own framing, where the page's
+                        would put the subject behind the card: at, atTall,
+                        and zoom, which closes in on that corner
                 plate   the painting is busy where the tagline falls, so
                         the tagline sits on a slip of frosted glass. 'phone'
                         when only the phone's column is that busy
@@ -417,7 +425,16 @@ export const PROJECT_PAGES = {
       { k: 'نُشر في', v: '٧ مايو ٢٠٢٦' },
       { k: 'المدة', v: '١٠:٣٧' }
     ],
-    theme: { bg: '#131317', sky: '#2a2a33', deep: '#08080a', ink: '#f3f3f6', accent: '#e8edf5', accent2: '#8e97a8', pop: '#c9d3e3', cloud: '#34343d' }
+    theme: { bg: '#2b0c23', sky: '#140a14', deep: '#0d050b', ink: '#f8eff8', accent: '#f3b9f4', accent2: '#9c4a88', pop: '#eeb0f0', cloud: '#4d2443' },
+    /* the hall, and the one pair of lit glasses in the middle of it. The
+       title is short, so the copy stands to one side and leaves him alone
+       in the centre, and what light there is on it comes from him, below */
+    bg: {
+      ar: 1.6696, tall: 0.5, at: [50, 50], atTall: [50, 0], zoomTall: 1.2, place: 'side',
+      light: { kind: 'point', at: [0.497, 0.455], r: 0.8 },
+      lit: ['#ffd9ff', '#f8eff8', '#b79ac0'],
+      cast: '#000000d0', pool: '#0d050b', poolK: 0.5
+    }
   },
   hujra: {
     name: 'بَابُ الحُجْرَة',
@@ -454,7 +471,10 @@ export const PROJECT_PAGES = {
       ar: 1.7778, tall: 0.3, at: [0, 30], atTall: [50, 100], place: 'side',
       light: { kind: 'point', at: [0.33, 0.38], r: 1.5 },
       lit: ['#ffffff', '#cfe6ff', '#a98be6'],
-      cast: '#05020ccc', pool: '#0d0617', poolK: 0.55, plate: 'phone'
+      cast: '#05020ccc', pool: '#0d0617', poolK: 0.55, plate: 'phone',
+      /* in the news the card already shows حسام, so the stage behind it
+         closes in on the side he is not on */
+      news: { at: [100, 22], atTall: [60, 0], zoom: 1.36 }
     }
   },
   lis: {

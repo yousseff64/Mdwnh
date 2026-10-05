@@ -13,7 +13,7 @@
    ============================================================ */
 
 import { NEWS, PROJECT_PAGES } from './data.js';
-import { $, afterLoad, cloudDrift, el, reduced, whileVisible } from './util.js';
+import { $, afterLoad, cloudDrift, el, lite, reduced, whileVisible } from './util.js';
 import { sceneCanvas, scenePiece, warmScene } from './scenes.js';
 
 const EASE = 'cubic-bezier(.22,.7,.24,1)';
@@ -161,6 +161,7 @@ export function initHero() {
     /* Press next and the deck advances leftwards: the current card exits to
        the left, the next one arrives from the right. */
     const dir = step > 0 ? 1 : -1;
+    const from = index;
     index = next;
     busy = true;
 
@@ -198,6 +199,8 @@ export function initHero() {
     const span = track.getBoundingClientRect().width * 1.15;
     const opts = { duration: SLIDE_MS, easing: EASE, fill: 'both' };
 
+    sweep(bgs[from], bgs[index], dir);
+
     slide(outgoing, 0, -dir * span, 1, 0, opts).then(() => outgoing.remove());
     slide(incoming, dir * span, 0, 0, 1, opts);
 
@@ -212,6 +215,33 @@ export function initHero() {
     slide(inFront, dir * front, 0, 0, 0.8, opts);
 
     setTimeout(() => { busy = false; }, SLIDE_MS * 0.72);
+  }
+
+  /* The paintings turn with the deck. They are the far layer, so they
+     travel least: a few percent of their own width, in the card's
+     direction, while the lens pulls focus. The one leaving slides away and
+     blurs out; the one arriving starts blurred on the other side and
+     sharpens as it settles. Both are drawn a little large for the trip, so
+     the stage never shows past a moving edge.
+
+     A turn made before the last one has finished picks each painting up
+     from wherever it is: the keyframe it starts from is left out, so it
+     starts from what is on screen. When a painting has settled its
+     animations are dropped and the stylesheet holds it again. */
+  function sweep(out, into, dir) {
+    /* a device that cannot keep up slides and fades, and skips the blur */
+    const far = lite.on ? 'none' : 'blur(26px)';
+    const near = lite.on ? 'none' : 'blur(0px)';
+    const away = (side) => ({ transform: `translate3d(${side * 6}%,0,0) scale(1.13)`, filter: far, opacity: 0 });
+    const home = { transform: 'translate3d(0,0,0) scale(1)', filter: near, opacity: 1 };
+    const opts = { duration: SLIDE_MS * 1.5, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'both' };
+    const moving = (n) => n.getAnimations().some((a) => a.playState === 'running');
+    const settle = (n, a) => a.finished.then(() => {
+      if (n.getAnimations().every((x) => x.playState !== 'running')) n.getAnimations().forEach((x) => x.cancel());
+    }).catch(() => {});
+
+    if (out) settle(out, out.animate(moving(out) ? [away(-dir)] : [home, away(-dir)], opts));
+    if (into) settle(into, into.animate(moving(into) ? [home] : [away(dir), home], opts));
   }
 
   function slide(node, fromX, toX, fromOp, toOp, opts) {
@@ -264,10 +294,15 @@ const painted = (item) => PROJECT_PAGES[item.id]?.bg;
    painting is a pale one. `foot` is the colour it ends in, at the seam. */
 function newsBg(item) {
   const bg = painted(item);
+  /* the stage's own framing where the work has one (bg.news), else the
+     project page's */
+  const frame = bg.news || {};
+  const at = frame.at || bg.at;
+  const atTall = frame.atTall || bg.atTall;
   const base = `assets/img/bg/${item.id}`;
   return el('div', {
     class: 'news__bg',
-    style: `--at:${bg.at[0]}% ${bg.at[1]}%;--at-tall:${bg.atTall[0]}% ${bg.atTall[1]}%;`
+    style: `--at:${at[0]}% ${at[1]}%;--at-tall:${atTall[0]}% ${atTall[1]}%;--zoom:${frame.zoom || 1};`
          + `--wash:${bg.zenith || item.tone.bg};--foot:${item.tone.bg}`
   }, el('picture', {},
     el('source', {

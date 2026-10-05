@@ -354,47 +354,47 @@ function buildField(back, front, pocket) {
   });
 }
 
+/* Filler rows never put a word on the page. Their text, handle, age and
+   count are drawn as plain bars sized off the row in data.js, so when the
+   blur is missing (lite drops it, an old browser ignores it, a screenshot
+   loses it) what shows is the shape of a comment and nothing anyone can
+   read. Only the featured rows, which are real, carry text. */
+const bar = (em) => el('i', { class: 'vbar', style: `width:${em.toFixed(1)}em` });
+function lines(text) {
+  const n = clamp(Math.ceil(text.length / 16), 1, 3);
+  const out = [];
+  for (let k = 0; k < n; k++) out.push(bar(k === n - 1 ? 3 + (text.length % 7) : 9 + ((text.length + k * 3) % 4)));
+  return out;
+}
+
 function card(c, i) {
+  const real = !!c.hi;
   if (c.t === 'wa' || c.t === 'wi') {
     return el('article', { class: `vmsg vmsg--${c.t}` },
-      el('p', { class: 'vmsg__t' }, c.x),
-      el('span', { class: 'vmsg__meta' }, TIMES[i % TIMES.length], c.t === 'wa' ? el('span', { class: 'vmsg__tick', html: TICK }) : null)
+      el('p', { class: 'vmsg__t' }, ...(real ? [c.x] : lines(c.x))),
+      el('span', { class: 'vmsg__meta' }, real ? TIMES[i % TIMES.length] : bar(1.8), c.t === 'wa' ? el('span', { class: 'vmsg__tick', html: TICK }) : null)
     );
   }
-  if (c.t === 'x') {
-    return el('article', { class: 'vcomment vcomment--x' },
-      el('span', { class: 'vcomment__pfp', style: `background:${pfp(i)}` }, c.u[1].toUpperCase()),
-      el('div', { class: 'vcomment__main' },
-        el('div', { class: 'vcomment__top' },
-          el('span', { class: 'vcomment__u' }, c.u),
-          el('span', { class: 'vcomment__at' }, `· ${c.at}`)
-        ),
-        el('p', { class: 'vcomment__t' }, c.x),
-        el('div', { class: 'vcomment__acts' },
-          el('span', { html: HEART }),
-          el('b', {}, arabicNum(c.n))
-        )
-      )
-    );
-  }
+  const x = c.t === 'x';
   /* the real avatar sits over the coloured initial, and drops out if it
      fails to load so the initial shows instead */
-  const face = c.av
+  const face = real && c.av
     ? el('img', { src: c.av, alt: '', width: 48, height: 48, decoding: 'async', onerror: (e) => e.target.remove() })
     : null;
-  return el('article', { class: 'vcomment' },
-    el('span', { class: 'vcomment__pfp', style: `background:${pfp(i)}` }, c.u[1].toUpperCase(), face),
+  return el('article', { class: x ? 'vcomment vcomment--x' : 'vcomment' },
+    el('span', { class: 'vcomment__pfp', style: `background:${pfp(i)}` }, real ? c.u[1].toUpperCase() : null, face),
     el('div', { class: 'vcomment__main' },
       el('div', { class: 'vcomment__top' },
-        el('span', { class: 'vcomment__u' }, c.u),
-        el('span', { class: 'vcomment__at' }, c.at)
+        ...(real
+          ? [el('span', { class: 'vcomment__u' }, c.u), el('span', { class: 'vcomment__at' }, x ? `· ${c.at}` : c.at)]
+          : [bar(4 + (i % 3)), bar(2.2)])
       ),
-      el('p', { class: 'vcomment__t' }, c.x),
+      el('p', { class: 'vcomment__t' }, ...(real ? [c.x] : lines(c.x))),
       el('div', { class: 'vcomment__acts' },
-        el('span', { html: THUMB }),
-        el('b', {}, arabicNum(c.n)),
-        el('span', { class: 'vcomment__reply' }, 'رد'),
-        c.loved ? el('span', { class: 'vcomment__loved', title: 'أعجب مدونة ستوديو بهذا التعليق', html: HEART }) : null
+        el('span', { html: x ? HEART : THUMB }),
+        real ? el('b', {}, arabicNum(c.n)) : bar(1.4),
+        x ? null : el('span', { class: 'vcomment__reply' }, real ? 'رد' : bar(1.2)),
+        !x && c.loved ? el('span', { class: 'vcomment__loved', title: 'أعجب مدونة ستوديو بهذا التعليق', html: HEART }) : null
       )
     )
   );

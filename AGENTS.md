@@ -13,7 +13,7 @@ Arabic animation studio. This repo holds the public website.
 - Copy is written from the reader's side of the screen. Say what a button does.
   A button that says `شاهد الآن` leads to something you can watch right now.
 
-## Working rules for Claude
+## Working rules for Codex
 
 - **Always load the `caveman` skill** at the start of work in this project and
   keep it on for every chat reply. Code, comments, copy and commits stay
@@ -73,7 +73,6 @@ live there is archived, whole and working, at `mdwn.studio/old`.
 /Art, /icons          source art. Hundreds of megabytes, untracked, never
                       shipped: only what build-assets.py writes is
 /Art/stills/<id>/     the five frames on each project page's strip
-/Art/Backgrounds/     one painted master per work, behind its project page
 /Art/comments/        the featured comment screenshots, named by handle
 /Art/showreel.mp4     the master behind the clip in the مُجْتَمَعُنَا call
 /scripts              fetch-stats.mjs    → assets/stats-data.js (the numbers)
@@ -192,12 +191,11 @@ plain black circle, a letter) drop the `av` and let the card paint its own
 coloured initial instead.
 
 **Every other row in that table is filler, and must stay filler.** They are
-noises and notes to nobody, and `js/fall.js` never prints them: a filler row
-is drawn as bars (`.vbar`) sized off its text, with no handle, age or count.
-The blur that softens the field is not a guarantee (lite mode drops it, an
-old browser or a screenshot can lose it), and readers reported seeing the
-placeholder words when it failed. Do not put text back into a background
-card, and never write a plausible compliment into a background row.
+noises and notes to nobody. The field behind سراج is decoration, and the blur
+that softens it is not a guarantee: a phone renders it unblurred, and an old
+browser or a screenshot can lose it entirely. A plausible compliment written
+into a background row becomes a testimonial the studio never received. Never
+write one.
 
 ## The numbers
 
@@ -238,50 +236,6 @@ so those stay hand entered in `data.js`.
   closes عَنِ الحِكَايَة, where the copy names the competition, and climbs into
   that section's bottom bay so it reads as the story's last line. Any other
   work that wins something gets the band by adding the same block.
-
-## The painted worlds
-
-Every work has a painting behind its project page's hero, and the two in the
-news wear the same painting behind the card. A work without one would keep
-its flat colour and its scene's set piece: nothing requires a painting.
-
-- **To change or add one**, drop a landscape master (16:9 or taller, 3840
-  wide) in `Art/Backgrounds/` and run `python3 tools/build-assets.py
-  backgrounds`. It cuts four files into `assets/img/bg/`: the frame at 1920
-  and 1280, and a phone's 9:16 column at 1080 and 720. A desktop pays 30 to
-  145 KB and a phone 13 to 75 KB. The home page pays that once for the first
-  headline, and asks for the second only after the first screen is in.
-- **A new work also needs a `bg` block** in `PROJECT_PAGES` (`js/data.js`,
-  the fields are documented there), its id in the `BACKGROUNDS` table in
-  build-assets.py, and its id in the preload script in `project.html`. The
-  phone column's centre (`tall`) lives in both data.js and the build table.
-- **The title is lit by the painting** (`js/backdrop.js`). `bg.light` says
-  where the painted lamp, moon or sun is on the master. That point is mapped
-  onto the page for whatever crop the screen got, each word is filled from
-  it, and the title's shadow falls away from it. فصل عجيب's lamp is a cone:
-  the letters it crosses turn dark against the light and the rest stay
-  chalk, and when the bulb stutters the room and the title dip together.
-  Keep that edge soft (`light.soft`): a hard one read as a cut across the
-  word, and the client rejected it.
-- **The news card is always centred.** A work whose copy stands to one side
-  on its own page (`place: 'side'`, where the video goes with it) still gets
-  a centred card in the news. Where that would put the painting's subject
-  behind the card, `bg.news` reframes the stage (باب الحجرة closes in on the
-  side حسام is not on, since the card already shows him).
-- **Turning the news deck carries the paintings** (`sweep` in `js/hero.js`):
-  the old one slides off the way the card went and blurs out, the new one
-  arrives blurred from the other side and sharpens as it settles. Reduced
-  motion gets a plain swap, and `lite` keeps the slide but drops the blur.
-- **The theme follows the painting.** `theme.bg` is what the painting
-  dissolves into at its foot, so it is picked from the painting's own floor.
-  سمرقند and القرد والغيلم are light worlds with dark ink, because their skies
-  are pale; `bg.zenith` deepens the top of a light sky so the bar still reads.
-- **Legibility is per world, not one scrim.** `pool` gathers behind the copy,
-  and `plate` puts the tagline on frosted glass where the painting is busy.
-  On a painted page the copy never fades as one block: opacity on a parent
-  cuts the glass's blur off, so each piece carries its own fade.
-- With a painting, the hero drops the scene's set piece and far clouds (the
-  painting already is both). The falling scenery and the near clouds stay.
 
 ## Accessibility floor
 
