@@ -25,14 +25,14 @@
 <!-- the live numbers (scripts/fetch-stats.mjs rewrites it hourly). A plain
      script so it is on window before any module runs; the page reads fine
      without it, because every figure is also written into the HTML. -->
-<script defer src="assets/stats-data.js?v=1791189680"></script>
-<link rel="stylesheet" href="css/base.css?v=1791189680">
-<link rel="stylesheet" href="css/cover.css?v=1791189680">
-<link rel="stylesheet" href="css/sections.css?v=1791189680">
+<script defer src="assets/stats-data.js?v=1791194668"></script>
+<link rel="stylesheet" href="css/base.css?v=1791194668">
+<link rel="stylesheet" href="css/cover.css?v=1791194668">
+<link rel="stylesheet" href="css/sections.css?v=1791194668">
 
 <!-- every module up front, so the imports load side by side instead of
      one level at a time -->
-<link rel="modulepreload" href="js/main.js?v=1791189680">
+<link rel="modulepreload" href="js/main.js?v=1791194668">
 <link rel="modulepreload" href="js/util.js">
 <link rel="modulepreload" href="js/data.js">
 <link rel="modulepreload" href="js/ambient.js">
@@ -103,10 +103,16 @@
 <section class="news" id="news" data-dark data-rail="LATEST · أَخْبَارُ المُدَوَّنَةِ" data-rail-end="بَابُ الحُجْرَة">
   <!-- each headline's world, behind the card and in front of it: built by
        js/hero.js from its project page's scenery -->
-  <!-- each headline's painted world, soft and far behind the card. The
-       first ships here so it paints with the page; js/hero.js adds the rest -->
+  <!-- each headline's painted world, the same painting its project page
+       wears. The first ships here so it paints with the page; js/hero.js
+       adds the rest, and writes this same markup (newsBg) -->
   <div class="news__bgs" id="newsBgs" aria-hidden="true">
-    <img class="news__bg is-on" src="assets/img/bg/hujra-soft.webp" alt="" width="960" height="540" decoding="async">
+    <div class="news__bg is-on" style="--at:0% 30%;--at-tall:50% 100%;--wash:#4a2a63;--foot:#4a2a63">
+      <picture>
+        <source media="(max-aspect-ratio: 4/5)" srcset="assets/img/bg/hujra-tall-720.webp 720w, assets/img/bg/hujra-tall-1080.webp 1080w" sizes="100vw">
+        <img src="assets/img/bg/hujra-1280.webp" srcset="assets/img/bg/hujra-1280.webp 1280w, assets/img/bg/hujra-1920.webp 1920w" sizes="max(100vw, 200vh)" alt="" decoding="async">
+      </picture>
+    </div>
   </div>
   <div class="news__worlds" id="newsWorlds" aria-hidden="true"></div>
   <div class="news__clouds" id="newsClouds"></div>
@@ -615,6 +621,6 @@
   </div>
 </footer>
 
-<script type="module" src="js/main.js?v=1791189680"></script>
+<script type="module" src="js/main.js?v=1791194668"></script>
 </body>
 </html>

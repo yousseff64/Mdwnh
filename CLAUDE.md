@@ -238,19 +238,18 @@ so those stay hand entered in `data.js`.
   that section's bottom bay so it reads as the story's last line. Any other
   work that wins something gets the band by adding the same block.
 
-## Accessibility floor
 ## The painted worlds
 
 Five works have a painting behind their project page's hero, and the two in
-the news wear a soft copy of it behind the card. غمام has none and keeps its
-flat colour and its lamp.
+the news wear the same painting behind the card, at the same crop. غمام has
+none and keeps its flat colour and its lamp.
 
 - **To change or add one**, drop a landscape master (16:9 or taller, 3840
   wide) in `Art/Backgrounds/` and run `python3 tools/build-assets.py
-  backgrounds`. It cuts five files into `assets/img/bg/`: the frame at 1920
-  and 1280, a phone's 9:16 column at 1080 and 720, and a small pre-blurred
-  copy for the news. A desktop pays 30 to 145 KB, a phone 13 to 75 KB, and the
-  home page 8 to 12 KB a headline.
+  backgrounds`. It cuts four files into `assets/img/bg/`: the frame at 1920
+  and 1280, and a phone's 9:16 column at 1080 and 720. A desktop pays 30 to
+  145 KB and a phone 13 to 75 KB. The home page pays that once for the first
+  headline, and asks for the second only after the first screen is in.
 - **A new work also needs a `bg` block** in `PROJECT_PAGES` (`js/data.js`,
   the fields are documented there), its id in the `BACKGROUNDS` table in
   build-assets.py, and its id in the preload script in `project.html`. The
@@ -261,6 +260,11 @@ flat colour and its lamp.
   it, and the title's shadow falls away from it. فصل عجيب's lamp is a cone:
   the letters it crosses turn dark against the light and the rest stay
   chalk, and when the bulb stutters the room and the title dip together.
+  Keep that edge soft (`light.soft`): a hard one read as a cut across the
+  word, and the client rejected it.
+- **The news card is always centred.** A work whose copy stands to one side
+  on its own page (`place: 'side'`, where the video goes with it) still gets
+  a centred card in the news: the painting's subject shows round it.
 - **The theme follows the painting.** `theme.bg` is what the painting
   dissolves into at its foot, so it is picked from the painting's own floor.
   سمرقند and القرد والغيلم are light worlds with dark ink, because their skies
@@ -272,6 +276,7 @@ flat colour and its lamp.
 - With a painting, the hero drops the scene's set piece and far clouds (the
   painting already is both). The falling scenery and the near clouds stay.
 
+## Accessibility floor
 
 Responsive to 360px. Visible keyboard focus. `prefers-reduced-motion` disables
 the parallax, the camera shake, the marquee, and the scroll driven fall, which

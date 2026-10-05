@@ -44,19 +44,19 @@ export function initHero() {
   const lean = leaner(['#newsBgs', '#newsClouds', '#newsFront', '#newsWorlds', '#newsTrack'].map((s) => $(s)));
   const worlds = NEWS.map((item) => buildWorld(item, stage, lean));
 
-  /* The painting behind each world (tools/build-assets.py backgrounds): one
-     small file per headline, already out of focus, because the card is the
-     thing in focus here. The first is in the HTML. The others are only asked
-     for once the first screen is in, and a headline whose work has no
-     painting keeps the flat colour. */
+  /* The painting behind each world: the one its project page wears, at the
+     same crop and from the same files (tools/build-assets.py backgrounds).
+     The first is in the HTML. The others are only asked for once the first
+     screen is in, and a headline whose work has no painting keeps the flat
+     colour and its set piece. */
   const bgHost = $('#newsBgs');
   const bgs = NEWS.map((item, i) => {
-    if (!PROJECT_PAGES[item.id]?.bg) return null;
+    /* no host: a page cached from before the paintings, running this file */
+    if (!bgHost || !painted(item)) return null;
     if (i === 0) return bgHost.querySelector('.news__bg');
-    const img = el('img', { class: 'news__bg', alt: '', width: 960, height: 540, decoding: 'async' });
-    bgHost.append(img);
-    afterLoad(() => { img.src = `assets/img/bg/${item.id}-soft.webp`; });
-    return img;
+    const node = newsBg(item);
+    afterLoad(() => bgHost.append(node));
+    return node;
   });
 
   const light = (i) => {
@@ -257,13 +257,44 @@ function buildSlide(item) {
   );
 }
 
+const painted = (item) => PROJECT_PAGES[item.id]?.bg;
+
+/* One headline's painting. `wash` is what the top of it deepens to, so the
+   header reads: the stage's own colour, or the sky's zenith where the
+   painting is a pale one. `foot` is the colour it ends in, at the seam. */
+function newsBg(item) {
+  const bg = painted(item);
+  const base = `assets/img/bg/${item.id}`;
+  return el('div', {
+    class: 'news__bg',
+    style: `--at:${bg.at[0]}% ${bg.at[1]}%;--at-tall:${bg.atTall[0]}% ${bg.atTall[1]}%;`
+         + `--wash:${bg.zenith || item.tone.bg};--foot:${item.tone.bg}`
+  }, el('picture', {},
+    el('source', {
+      media: '(max-aspect-ratio: 4/5)',
+      srcset: `${base}-tall-720.webp 720w, ${base}-tall-1080.webp 1080w`,
+      sizes: '100vw'
+    }),
+    el('img', {
+      src: `${base}-1280.webp`,
+      srcset: `${base}-1280.webp 1280w, ${base}-1920.webp 1920w`,
+      sizes: 'max(100vw, 200vh)',
+      alt: '',
+      decoding: 'async'
+    })
+  ));
+}
+
 /* A body written over more than one line keeps its breaks. */
 function lines(text) {
   return String(text).split('\n').flatMap((t, i) => (i ? [el('br'), t] : [t]));
 }
 
+/* Over a painting the far clouds stay out, as they do on its project page:
+   the painting is the far layer. The near ones are the house's, and stay. */
 function buildClouds(item, layer = 'clouds') {
   const set = el('div', { class: 'cloudset', style: 'position:absolute;inset:0' });
+  if (layer === 'clouds' && painted(item)) return set;
   (item[layer] || []).forEach((c) => {
     set.append(el('i', {
       class: 'cloud',
@@ -287,7 +318,8 @@ function buildWorld(item, stage, lean) {
   const style = `--accent:${th.accent};--accent2:${th.accent2}`;
   const back = el('div', { class: 'news__layer', style });
   $('#newsWorlds').append(back);
-  const piece = scenePiece(item.scene, th);
+  /* a painting already holds the eyes or the sun */
+  const piece = painted(item) ? null : scenePiece(item.scene, th);
   if (piece) back.append(piece.node);
 
   const layer = IN_FRONT.has(item.scene) ? el('div', { class: 'news__layer', style }) : back;

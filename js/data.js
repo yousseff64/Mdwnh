@@ -308,9 +308,6 @@ export const STILLS = {
                 accent  the thumbnail's loudest colour, accent2 the next
                 pop     accent for small text, when accent is too light
                 cloud   cloud tint. light: bg is light and ink is dark
-     name     the header, with tashkeel
-     read     the work's comic on mdwn.studio, when it has one
-     stats    four numbers. Views, likes and comments were read off each
      bg       the painted world behind the hero (Art/Backgrounds, cut by
               build-assets.py backgrounds). A work without one keeps its
               flat colour. Every position is a fraction of the master.
@@ -325,6 +322,8 @@ export const STILLS = {
                 lit     the title's fill: nearest the light, mid, farthest.
                         For a cone: inside it, outside it, far outside
                 cast    the shadow the title throws, away from the light
+                halo    a soft dark all round the letters, where the
+                        painting is bright behind them
                 pool    what gathers behind the copy so it always reads,
                         and poolK how much of it
                 zenith  a light sky deepens to this at the very top, so the
@@ -332,6 +331,9 @@ export const STILLS = {
                 plate   the painting is busy where the tagline falls, so
                         the tagline sits on a slip of frosted glass. 'phone'
                         when only the phone's column is that busy
+     name     the header, with tashkeel
+     read     the work's comic on mdwn.studio, when it has one
+     stats    four numbers. Views, likes and comments were read off each
               video's YouTube page on the date in STATS_AS_OF, and rounded
               down, never up. The like rate is likes over views. Page
               counts are the pages in the site's comic readers.
@@ -518,13 +520,15 @@ export const PROJECT_PAGES = {
       { k: 'المدة', v: '٣:٤٢' }
     ],
     theme: { bg: '#1a1420', sky: '#201b19', deep: '#0b080d', ink: '#fff4dc', accent: '#f1dd9a', accent2: '#c0483c', pop: '#f1dd9a', cloud: '#4a3334' },
-    /* the lamp over the board: where its cone crosses the title the letters
-       turn to shadow against the light, and outside it they are chalk */
+    /* the lamp over the board: the letters its cone falls on are lit warm
+       and bright, the rest are chalk in the dim, and the edge between them
+       is as soft as the lamp's own. A dark halo keeps the lit ones off the
+       bright board behind them */
     bg: {
       ar: 1.7778, tall: 0.5, at: [50, 0], atTall: [50, 0],
-      light: { kind: 'cone', at: [0.4985, -0.256], left: [0.367, 0.61], right: [0.648, 0.61], flicker: true },
-      lit: ['#17241d', '#fff4dc', '#cfd6b4'],
-      cast: '#000000b0', pool: '#120d10', poolK: 0, plate: true
+      light: { kind: 'cone', at: [0.4985, -0.256], left: [0.367, 0.61], right: [0.648, 0.61], soft: 5, flicker: true },
+      lit: ['#fffdf0', '#d3d8b6', '#aab596'],
+      cast: '#000000c8', halo: '#0b1510e6', pool: '#120d10', poolK: 0, plate: true
     }
   },
   qird: {

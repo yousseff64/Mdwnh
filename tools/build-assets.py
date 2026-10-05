@@ -744,13 +744,11 @@ def build_backgrounds():
     """The painted world behind each project page's hero, and behind its
     headline in the news.
 
-    Five files per work. A desktop takes the whole frame at 1920 or
-    1280, a phone takes a 9:16 column cut out of it at 1080 or 720, and the
-    news stage takes one small soft copy: the card is the thing in focus
-    there, so its backdrop ships already out of focus and costs a few KB.
-    A work with no master is skipped, and its page keeps its flat colour.
+    Four files per work. A desktop takes the whole frame at 1920 or 1280,
+    and a phone takes a 9:16 column cut out of it at 1080 or 720. The news
+    stage uses the same four. A work with no master is skipped, and its page
+    keeps its flat colour.
     """
-    from PIL import ImageFilter
     d = ensure("img", "bg")
     folder = next((f for f in listdir(ROOT) if f.lower() == "art"), "Art")
     sub = next((f for f in listdir(src(folder)) if f.lower() == "backgrounds"), None)
@@ -781,9 +779,7 @@ def build_backgrounds():
         tall = im.crop((x, 0, x + tw, h))
         total += save_webp(tall, os.path.join(d, f"{pid}-tall-1080.webp"), 1080, quality=80)
         total += save_webp(tall, os.path.join(d, f"{pid}-tall-720.webp"), 720, quality=78)
-        soft = im.resize((960, round(960 * h / w)), Image.LANCZOS).filter(ImageFilter.GaussianBlur(7))
-        total += save_webp(soft, os.path.join(d, f"{pid}-soft.webp"), quality=72)
-        files += 5
+        files += 4
     print(f"bg       {files:3d} files  {total / 1024:8.0f} KB")
 
 

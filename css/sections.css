@@ -393,11 +393,11 @@
 }
 
 /* ---- each headline's painted world (hero.js) ----
-   The furthest layer: the project page's painting, shipped small and
-   already blurred, so the card stays the one sharp thing on the stage. It
-   is laid a little past every edge for the pointer drift, and the stage's
-   own colour is washed over it: heavy at the top where the header reads,
-   and solid again at the foot, where the cloud seam takes over. */
+   The furthest layer: the painting the headline's project page wears, sharp
+   and at the same crop. It is laid a little past every edge for the pointer
+   drift. Its top deepens to --wash so the header reads, and its foot ends
+   in --foot, the stage's colour, where the cloud seam takes over. Each
+   painting carries its own two, so they cross fade with it. */
 .news__bgs {
   position: absolute;
   inset: 0;
@@ -407,26 +407,25 @@
 }
 .news__bg {
   position: absolute;
-  inset: -3%;
-  width: 106%;
-  height: 106%;
-  object-fit: cover;
+  inset: -2.5%;
   opacity: 0;
-  translate: calc(var(--px, 0) * -5px) calc(var(--py, 0) * -4px);
+  translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -4px);
   transition: opacity 900ms cubic-bezier(.4,0,.2,1);
 }
 .news__bg.is-on { opacity: 1; }
-.news__bgs::after {
+.news__bg img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--at); }
+.news__bg picture { display: block; width: 100%; height: 100%; }
+@media (max-aspect-ratio: 4/5) { .news__bg img { object-position: var(--at-tall); } }
+.news__bg::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom,
-    color-mix(in srgb, var(--tone-bg) 94%, transparent) 0,
-    color-mix(in srgb, var(--tone-bg) 82%, transparent) 20%,
-    color-mix(in srgb, var(--tone-bg) 36%, transparent) 42%,
-    color-mix(in srgb, var(--tone-bg) 24%, transparent) 66%,
-    var(--tone-bg) 96%);
-  transition: background 720ms cubic-bezier(.4,0,.2,1);
+    color-mix(in srgb, var(--wash) 86%, transparent) 0,
+    color-mix(in srgb, var(--wash) 58%, transparent) 14%,
+    transparent 34%,
+    transparent 74%,
+    var(--foot) 97%);
 }
 
 /* --px / --py: the smoothed pointer, -1 to 1 (hero.js). Each layer drifts

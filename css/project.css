@@ -110,7 +110,8 @@ body.pp--painted {
 .ph__title--lit {
   filter:
     drop-shadow(calc(var(--fx, 0) * 0.05em) calc(var(--fy, 1) * 0.05em) 0 var(--edge, color-mix(in srgb, var(--accent2) 55%, #000)))
-    drop-shadow(calc(var(--fx, 0) * 0.14em) calc(var(--fy, 1) * 0.14em) 0.3em var(--cast, #0008));
+    drop-shadow(calc(var(--fx, 0) * 0.14em) calc(var(--fy, 1) * 0.14em) 0.3em var(--cast, #0008))
+    drop-shadow(0 0 0.22em var(--halo, transparent));
 }
 .ph__title--flicker { animation: ph-dip 11s linear 2s infinite; }
 @keyframes ph-dip {
@@ -175,6 +176,9 @@ body.pp--painted {
   .pp--side .ph__tag { margin-inline: 0; }
   .pp--side .ph__acts { justify-content: flex-start; }
   .pp--side .pbg { --pool-x: 76%; }
+  /* the video stays in the copy's column, so the painting's subject keeps
+     its own side all the way down the first screen */
+  .pp--side .player { width: min(56%, 70rem); margin-inline: 0 auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {

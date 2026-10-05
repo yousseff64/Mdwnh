@@ -100,6 +100,7 @@ export function backdrop(id, bg) {
     title.classList.add('ph__title--lit');
     if (L.flicker) title.classList.add('ph__title--flicker');
     title.style.setProperty('--cast', bg.cast);
+    if (bg.halo) title.style.setProperty('--halo', bg.halo);
 
     /* Where a box sits on the page, from layout alone. A rect would also
        carry the word's entrance animation and the copy's scroll lift, and
@@ -142,7 +143,7 @@ export function backdrop(id, bg) {
         const foot = 'linear-gradient(to bottom, #0000 58%, #0000002e)';
         if (cone) {
           /* soft is the lamp's penumbra, in degrees either side of an edge */
-          const soft = 1.1;
+          const soft = L.soft || 1.1;
           const a = cone.wide;
           w.style.backgroundImage = `${foot}, conic-gradient(from ${(cone.from - soft).toFixed(2)}deg at ${x} ${y}, `
             + `${c1} 0deg, ${c0} ${soft * 2}deg, ${c0} ${a.toFixed(2)}deg, ${c1} ${(a + soft * 2).toFixed(2)}deg, `
