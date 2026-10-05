@@ -731,7 +731,7 @@ def build_stills():
 # as a fraction of the master's width: js/data.js carries the same number
 # (bg.tall) so the page can find the painted light again after the crop.
 BACKGROUNDS = {
-    "hujra": (("Hujra", "حجرة"), 0.30),
+    "hujra": (("Hujra", "حجرة"), 0.60),
     "samarqand": (("Samarqand", "سمرقند"), 0.50),
     "fasl": (("عجيب", "Fasl"), 0.50),
     "lis": (("لص", "Lis"), 0.47),

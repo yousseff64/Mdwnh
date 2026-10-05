@@ -44,7 +44,8 @@ if (world) {
   if (p.bg.place) document.body.classList.add(`pp--${p.bg.place}`);
   /* 'phone': only the phone's column is busy enough to need the glass */
   const narrow = matchMedia('(max-aspect-ratio: 4/5)');
-  const plate = () => document.body.classList.toggle('pp--plate', p.bg.plate === true || (p.bg.plate === 'phone' && narrow.matches));
+  const plate = () => document.body.classList.toggle('pp--plate',
+    p.bg.plate === true || p.bg.plate === (narrow.matches ? 'phone' : 'wide'));
   plate();
   narrow.addEventListener('change', plate);
   document.body.insertBefore(world.node, $('#pfx'));
@@ -256,6 +257,19 @@ initCovers(row);
 
 const follow = dressHero($('#phBack'), $('#phFront'), p.scene, th, !!world);
 world?.light(hero, $('.ph__title', hero), [...hero.querySelectorAll('.ph__w')]);
+
+/* Where a phone's column is the bright part of a dark painting, the hero
+   alone turns its colours over there (bg.phone): dark ink, and the light
+   ground its buttons and haze are cut from. The page under it keeps the
+   world's own. */
+if (p.bg?.phone) {
+  const phone = matchMedia('(max-aspect-ratio: 4/5)');
+  const turn = { '--tone-ink': p.bg.phone.ink, '--tone-bg': p.bg.phone.ground, '--pool': p.bg.phone.ground };
+  const dress = () => Object.entries(turn).forEach(([k, v]) =>
+    (phone.matches ? hero.style.setProperty(k, v) : hero.style.removeProperty(k)));
+  dress();
+  phone.addEventListener('change', dress);
+}
 
 const vars = new Map();
 const setVar = (node, name, v) => {

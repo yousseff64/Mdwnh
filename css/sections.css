@@ -654,7 +654,10 @@
   .news__nav { position: absolute; z-index: 6; inset-block-start: 38%; }
   .news__nav--prev { inset-inline-start: -0.5rem; }
   .news__nav--next { inset-inline-end: -0.5rem; }
-  .news__slide { border-radius: 14px; background: #12121a; }
+  /* every card as tall as the tallest (hero.js level), the spare room
+     shared round the copy */
+  .news__slide { border-radius: 14px; background: #12121a; min-height: var(--slide-h, 0px); display: flex; flex-direction: column; }
+  .news__slide .news__body { flex: 1; align-content: center; }
   .news__body {
     position: static;
     padding: 1.1rem 1.15rem 1.35rem;

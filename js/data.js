@@ -338,7 +338,10 @@ export const STILLS = {
                         and zoom, which closes in on that corner
                 plate   the painting is busy where the tagline falls, so
                         the tagline sits on a slip of frosted glass. 'phone'
-                        when only the phone's column is that busy
+                        or 'wide' when only that crop is so busy
+                phone   the hero's own colours on a phone, where its column
+                        is unlike the wide frame: ink, the light ground
+                        behind it, and the title's lit, cast, halo, edge
      name     the header, with tashkeel
      read     the work's comic on mdwn.studio, when it has one
      stats    four numbers. Views, likes and comments were read off each
@@ -466,15 +469,17 @@ export const PROJECT_PAGES = {
     ],
     theme: { bg: '#1c0d2e', sky: '#3b2450', deep: '#0d0617', ink: '#f6efff', accent: '#9fd8ff', accent2: '#b07de0', cloud: '#6b3d93' },
     /* حسام and the eyes fill the left of the frame, so on a wide screen the
-       copy stands in the dark he is facing away from */
+       copy stands in the dark he is facing away from. A phone has no room
+       for both, so its column is cut from that dark: the last of the eyes
+       along one edge, and the copy in the clear */
     bg: {
-      ar: 1.7778, tall: 0.3, at: [0, 30], atTall: [50, 100], place: 'side',
+      ar: 1.7778, tall: 0.6, at: [0, 30], atTall: [50, 50], place: 'side',
       light: { kind: 'point', at: [0.33, 0.38], r: 1.5 },
       lit: ['#ffffff', '#cfe6ff', '#a98be6'],
-      cast: '#05020ccc', pool: '#0d0617', poolK: 0.55, plate: 'phone',
+      cast: '#05020ccc', pool: '#0d0617', poolK: 0.55,
       /* in the news the card already shows حسام, so the stage behind it
          closes in on the side he is not on */
-      news: { at: [100, 22], atTall: [60, 0], zoom: 1.36 }
+      news: { at: [100, 22], zoom: 1.36 }
     }
   },
   lis: {
@@ -548,7 +553,14 @@ export const PROJECT_PAGES = {
       ar: 1.7778, tall: 0.5, at: [50, 0], atTall: [50, 0],
       light: { kind: 'cone', at: [0.4985, -0.256], left: [0.367, 0.61], right: [0.648, 0.61], soft: 5, flicker: true },
       lit: ['#fffdf0', '#d3d8b6', '#aab596'],
-      cast: '#000000c8', halo: '#0b1510e6', pool: '#120d10', poolK: 0, plate: true
+      cast: '#000000c8', halo: '#0b1510e6', pool: '#120d10', poolK: 0, plate: 'wide',
+      /* a phone's column is all lamp: the whole hero stands in the light,
+         so there the copy is dark on it, bare, with no glass */
+      phone: {
+        ink: '#16211b', ground: '#fff6dc',
+        lit: ['#101a15', '#16211b', '#1d2a22'],
+        cast: '#fff6dc8c', halo: '#fff6dc00', edge: '#fff6dc59'
+      }
     }
   },
   qird: {

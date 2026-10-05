@@ -124,6 +124,36 @@ export function initHero() {
     locked = true;
   }, { passive: false });
 
+  /* On a phone the copy sits under the art instead of on it, so a headline
+     whose words wrap to one more line made a taller card, and the whole
+     stage jumped by that line when the deck turned. Every card takes the
+     height of the tallest. Measured with the real slides, hidden, whenever
+     the width or the font changes. */
+  const phone = matchMedia('(max-width: 760px)');
+  let levelled = 0;
+  function level() {
+    track.style.removeProperty('--slide-h');
+    if (!phone.matches) return;
+    let tallest = 0;
+    for (const item of NEWS) {
+      const probe = buildSlide(item);
+      probe.style.cssText = 'position:absolute;inset:0 0 auto;visibility:hidden;animation:none';
+      track.append(probe);
+      tallest = Math.max(tallest, probe.offsetHeight);
+      probe.remove();
+    }
+    track.style.setProperty('--slide-h', `${tallest}px`);
+  }
+  level();
+  document.fonts?.ready.then(level);
+  phone.addEventListener('change', level);
+  new ResizeObserver(([e]) => {
+    const w = Math.round(e.contentRect.width);
+    if (w === levelled) return;
+    levelled = w;
+    level();
+  }).observe(track);
+
   /* The other headlines' art and scenery, fetched once the first screen is
      in, so the first turn of the deck never waits on the network or on a
      decode mid slide. */
@@ -235,9 +265,12 @@ export function initHero() {
     const away = (side) => ({ transform: `translate3d(${side * 6}%,0,0) scale(1.13)`, filter: far, opacity: 0 });
     const home = { transform: 'translate3d(0,0,0) scale(1)', filter: near, opacity: 1 };
     const opts = { duration: SLIDE_MS * 1.5, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'both' };
-    const moving = (n) => n.getAnimations().some((a) => a.playState === 'running');
+    /* only a sweep counts as moving: the stylesheet's own opacity
+       transition starts on every turn, and is not one */
+    const sweeps = (n) => n.getAnimations().filter((a) => !(a instanceof CSSTransition));
+    const moving = (n) => sweeps(n).some((a) => a.playState === 'running');
     const settle = (n, a) => a.finished.then(() => {
-      if (n.getAnimations().every((x) => x.playState !== 'running')) n.getAnimations().forEach((x) => x.cancel());
+      if (!moving(n)) sweeps(n).forEach((x) => x.cancel());
     }).catch(() => {});
 
     if (out) settle(out, out.animate(moving(out) ? [away(-dir)] : [home, away(-dir)], opts));

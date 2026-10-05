@@ -98,11 +98,8 @@ export function backdrop(id, bg) {
      per frame: nothing here follows the scroll. */
   function light(hero, title, words) {
     const L = bg.light;
-    const [c0, c1, c2] = bg.lit;
     title.classList.add('ph__title--lit');
     if (L.flicker) title.classList.add('ph__title--flicker');
-    title.style.setProperty('--cast', bg.cast);
-    if (bg.halo) title.style.setProperty('--halo', bg.halo);
 
     /* Where a box sits on the page, from layout alone. A rect would also
        carry the word's entrance animation and the copy's scroll lift, and
@@ -116,6 +113,15 @@ export function backdrop(id, bg) {
     };
 
     function measure() {
+      /* a phone's column can be so unlike the wide frame that the title
+         needs its own colours there (bg.phone) */
+      const look = (phone.matches && bg.phone) || {};
+      const [c0, c1, c2] = look.lit || bg.lit;
+      title.style.setProperty('--cast', look.cast || bg.cast);
+      title.style.setProperty('--halo', look.halo || bg.halo || 'transparent');
+      if (look.edge) title.style.setProperty('--edge', look.edge);
+      else title.style.removeProperty('--edge');
+
       const [lx, ly, H] = place(L.at[0], L.at[1]);
       if (glow) glow.style.translate = `${lx.toFixed(1)}px ${ly.toFixed(1)}px`;
 

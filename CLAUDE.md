@@ -280,6 +280,12 @@ its flat colour and its scene's set piece: nothing requires a painting.
   and `plate` puts the tagline on frosted glass where the painting is busy.
   On a painted page the copy never fades as one block: opacity on a parent
   cuts the glass's blur off, so each piece carries its own fade.
+- **A phone's column is its own picture.** It is cut from wherever the
+  painting is calm (`tall`), and where it is nothing like the wide frame the
+  hero takes its own colours there (`bg.phone`): فصل عجيب's column is all
+  lamp, so on a phone its copy is dark and bare, with no glass.
+- **Every news card is the same height on a phone** (`level` in
+  `js/hero.js`), or the stage jumps a line when the deck turns.
 - With a painting, the hero drops the scene's set piece and far clouds (the
   painting already is both). The falling scenery and the near clouds stay.
 
