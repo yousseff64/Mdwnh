@@ -14,6 +14,7 @@ Outputs
   v4/assets/fall/atlas.json   per frame source rect + draw offset
   v4/assets/video/cast*.mp4   the مَنْ نَحْنُ cast loop, AV1 + H.264, plus a poster
   v4/assets/img/seam-*.svg    the news / مَنْ نَحْنُ cloud seam, two vector bands
+  v4/assets/img/bg/*.webp     the painted world behind each project page and headline
 
 Needs ffmpeg with libsvtav1 and libx264 on PATH for the video step.
 """
@@ -723,8 +724,71 @@ def build_stills():
     print(f"stills   {files:3d} files  {total / 1024:8.0f} KB")
 
 
+# ------------------------------------------------------------ backgrounds ---
+
+# One landscape master per work in Art/Backgrounds/ (16:9, or taller),
+# matched by a piece of its file name. The second value is where the phone's 9:16 column is centred,
+# as a fraction of the master's width: js/data.js carries the same number
+# (bg.tall) so the page can find the painted light again after the crop.
+BACKGROUNDS = {
+    "hujra": (("Hujra", "حجرة"), 0.30),
+    "samarqand": (("Samarqand", "سمرقند"), 0.50),
+    "fasl": (("عجيب", "Fasl"), 0.50),
+    "lis": (("لص", "Lis"), 0.47),
+    "qird": (("قرد", "غيلم", "qird", "Qird"), 0.36),
+    "ghamam": (("غمام", "Ghamam"), 0.50),
+}
+
+
+def build_backgrounds():
+    """The painted world behind each project page's hero, and behind its
+    headline in the news.
+
+    Five files per work. A desktop takes the whole frame at 1920 or
+    1280, a phone takes a 9:16 column cut out of it at 1080 or 720, and the
+    news stage takes one small soft copy: the card is the thing in focus
+    there, so its backdrop ships already out of focus and costs a few KB.
+    A work with no master is skipped, and its page keeps its flat colour.
+    """
+    from PIL import ImageFilter
+    d = ensure("img", "bg")
+    folder = next((f for f in listdir(ROOT) if f.lower() == "art"), "Art")
+    sub = next((f for f in listdir(src(folder)) if f.lower() == "backgrounds"), None)
+    if not sub:
+        print("bg         no Art/Backgrounds folder")
+        return
+    total = 0
+    files = 0
+    for pid, (needles, tall_x) in BACKGROUNDS.items():
+        path = None
+        for n in needles:
+            try:
+                path = find(os.path.join(folder, sub), n)
+                break
+            except FileNotFoundError:
+                pass
+        if not path:
+            print(f"  - no background for {pid}")
+            continue
+        im = Image.open(path).convert("RGB")
+        w, h = im.size
+        # the master keeps its own shape (bg.ar in data.js): a taller one
+        # just gives the page more sky to crop from
+        total += save_webp(im, os.path.join(d, f"{pid}-1920.webp"), 1920, quality=80)
+        total += save_webp(im, os.path.join(d, f"{pid}-1280.webp"), 1280, quality=78)
+        tw = round(h * 9 / 16)
+        x = min(max(round(w * tall_x - tw / 2), 0), w - tw)
+        tall = im.crop((x, 0, x + tw, h))
+        total += save_webp(tall, os.path.join(d, f"{pid}-tall-1080.webp"), 1080, quality=80)
+        total += save_webp(tall, os.path.join(d, f"{pid}-tall-720.webp"), 720, quality=78)
+        soft = im.resize((960, round(960 * h / w)), Image.LANCZOS).filter(ImageFilter.GaussianBlur(7))
+        total += save_webp(soft, os.path.join(d, f"{pid}-soft.webp"), quality=72)
+        files += 5
+    print(f"bg       {files:3d} files  {total / 1024:8.0f} KB")
+
+
 STEPS = [build_images, build_banners, build_covers, build_scenery, build_icons, build_award, build_wins, build_fall,
-         build_video, build_showreel, build_seam, build_avatars, build_community, build_stills]
+         build_video, build_showreel, build_seam, build_avatars, build_community, build_stills, build_backgrounds]
 
 if __name__ == "__main__":
     # no arguments builds everything; `build-assets.py avatars seam` builds

@@ -311,6 +311,27 @@ export const STILLS = {
      name     the header, with tashkeel
      read     the work's comic on mdwn.studio, when it has one
      stats    four numbers. Views, likes and comments were read off each
+     bg       the painted world behind the hero (Art/Backgrounds, cut by
+              build-assets.py backgrounds). A work without one keeps its
+              flat colour. Every position is a fraction of the master.
+                ar      the master's width over its height
+                tall    centre of the 9:16 column a phone gets. The build
+                        step holds the same number: change both
+                at      object-position on a wide screen, atTall on a phone
+                place   'side' moves the copy off centre on a wide screen
+                light   where the painting's light is, so the title can be
+                        lit by it (js/backdrop.js). A point, or a cone with
+                        its apex and one point on each edge
+                lit     the title's fill: nearest the light, mid, farthest.
+                        For a cone: inside it, outside it, far outside
+                cast    the shadow the title throws, away from the light
+                pool    what gathers behind the copy so it always reads,
+                        and poolK how much of it
+                zenith  a light sky deepens to this at the very top, so the
+                        bar's white logo and ink still read over it
+                plate   the painting is busy where the tagline falls, so
+                        the tagline sits on a slip of frosted glass. 'phone'
+                        when only the phone's column is that busy
               video's YouTube page on the date in STATS_AS_OF, and rounded
               down, never up. The like rate is likes over views. Page
               counts are the pages in the site's comic readers.
@@ -349,7 +370,15 @@ export const PROJECT_PAGES = {
       { k: 'الموضوع', v: 'حكاية من التاريخ الإسلامي' },
       { k: 'القصة المصورة', v: '٥١ صفحة' }
     ],
-    theme: { bg: '#4f739b', sky: '#93b8dc', deep: '#2b211c', ink: '#fffaf2', accent: '#f1dcc2', accent2: '#c8733c', cloud: '#ffffff' }
+    /* the courtyard is all pale sky and haze, so this world reads dark on
+       light: the ink is the red of its own roof lines */
+    theme: { bg: '#efe6df', sky: '#cfdcea', deep: '#2b211c', ink: '#4a231f', accent: '#c8733c', accent2: '#e2b48d', pop: '#a4502a', cloud: '#ffffff', light: true },
+    bg: {
+      ar: 1.4436, tall: 0.5, at: [50, 30], atTall: [50, 40],
+      light: { kind: 'point', at: [0.07, 0.1], r: 1.15, glow: '#fff6e0' },
+      lit: ['#a35a3e', '#6d2f28', '#47201c'],
+      cast: '#fffaf0', pool: '#fff8f0', poolK: 0.42, zenith: '#3f6396'
+    }
   },
   ghamam: {
     name: 'غَمَام',
@@ -416,7 +445,15 @@ export const PROJECT_PAGES = {
       { k: 'القصة المصورة', v: '٤٣ صفحة' },
       { k: 'نسبة الإعجاب', v: '٧٫٣٪ من المشاهدات' }
     ],
-    theme: { bg: '#2a1340', sky: '#4b2a66', deep: '#12081d', ink: '#f6efff', accent: '#9fd8ff', accent2: '#b07de0', cloud: '#6b3d93' }
+    theme: { bg: '#1c0d2e', sky: '#3b2450', deep: '#0d0617', ink: '#f6efff', accent: '#9fd8ff', accent2: '#b07de0', cloud: '#6b3d93' },
+    /* حسام and the eyes fill the left of the frame, so on a wide screen the
+       copy stands in the dark he is facing away from */
+    bg: {
+      ar: 1.7778, tall: 0.3, at: [0, 30], atTall: [50, 100], place: 'side',
+      light: { kind: 'point', at: [0.33, 0.38], r: 1.5 },
+      lit: ['#ffffff', '#cfe6ff', '#a98be6'],
+      cast: '#05020ccc', pool: '#0d0617', poolK: 0.55, plate: 'phone'
+    }
   },
   lis: {
     name: 'اللِّصُّ التَّقِيّ',
@@ -444,7 +481,14 @@ export const PROJECT_PAGES = {
       { k: 'نُشر في', v: '٢٥ أبريل ٢٠٢٤' },
       { k: 'المدة', v: '٤:٥٠' }
     ],
-    theme: { bg: '#7a3f52', sky: '#9d5c6e', deep: '#2b1018', ink: '#fcebc8', accent: '#f6dfb0', accent2: '#79b9a6', cloud: '#b67a8b' }
+    theme: { bg: '#1d1a34', sky: '#1b2548', deep: '#0e0c1c', ink: '#fcebc8', accent: '#f6dfb0', accent2: '#79b9a6', cloud: '#5a5f9c' },
+    /* moonlight from above, lamplight from the doorways below */
+    bg: {
+      ar: 1.7778, tall: 0.47, at: [50, 20], atTall: [50, 30],
+      light: { kind: 'point', at: [0.414, 0.085], r: 0.95, glow: '#dfe9ff' },
+      lit: ['#ffffff', '#e4ebff', '#f7d795'],
+      cast: '#070a1fcc', pool: '#0b1030', poolK: 0.4
+    }
   },
   fasl: {
     name: 'فَصْلٌ عَجِيب',
@@ -453,7 +497,7 @@ export const PROJECT_PAGES = {
     year: '٢٠٢٥',
     length: 'أقل من ٤ دقائق',
     yt: 'DstPIXlD090',
-    scene: 'space',
+    scene: 'class',
     tagline: 'السيد عجيب يبدأ من سؤال، ولا يتركك قبل الجواب.',
     body: [
       'برنامج علمي طريف يقدمه السيد عجيب: يبدأ من سؤال، ثم يمضي بك في رحلة بحث بين الأسطر والكلمات حتى تصل معه إلى الجواب.',
@@ -473,7 +517,15 @@ export const PROJECT_PAGES = {
       { k: 'نُشر في', v: '٢٠ فبراير ٢٠٢٥' },
       { k: 'المدة', v: '٣:٤٢' }
     ],
-    theme: { bg: '#110e33', sky: '#241866', deep: '#060515', ink: '#ffffff', accent: '#c35bff', accent2: '#ff9f45', pop: '#d99bff', cloud: '#4b2a9a' }
+    theme: { bg: '#1a1420', sky: '#201b19', deep: '#0b080d', ink: '#fff4dc', accent: '#f1dd9a', accent2: '#c0483c', pop: '#f1dd9a', cloud: '#4a3334' },
+    /* the lamp over the board: where its cone crosses the title the letters
+       turn to shadow against the light, and outside it they are chalk */
+    bg: {
+      ar: 1.7778, tall: 0.5, at: [50, 0], atTall: [50, 0],
+      light: { kind: 'cone', at: [0.4985, -0.256], left: [0.367, 0.61], right: [0.648, 0.61], flicker: true },
+      lit: ['#17241d', '#fff4dc', '#cfd6b4'],
+      cast: '#000000b0', pool: '#120d10', poolK: 0, plate: true
+    }
   },
   qird: {
     name: 'القِرْدُ وَالغَيْلَم',
@@ -503,6 +555,12 @@ export const PROJECT_PAGES = {
       { k: 'نُشر الإعلان', v: '٢١ أغسطس ٢٠٢٥' },
       { k: 'مدة الإعلان', v: '٢٨ ثانية' }
     ],
-    theme: { bg: '#e2eff5', sky: '#bfe0ee', deep: '#1d3526', ink: '#1f2b30', accent: '#8cc63f', accent2: '#f5b92b', pop: '#3f7d1c', cloud: '#ffffff', light: true }
+    theme: { bg: '#f4ead2', sky: '#a5dfdf', deep: '#1d3526', ink: '#1f2b30', accent: '#8cc63f', accent2: '#f5b92b', pop: '#3f7d1c', cloud: '#ffffff', light: true },
+    bg: {
+      ar: 1.4286, tall: 0.36, at: [50, 100], atTall: [50, 100], place: 'side',
+      light: { kind: 'point', at: [0.5, -0.25], r: 1.2 },
+      lit: ['#2c6a49', '#1f3f36', '#1f2b30'],
+      cast: '#ffffffd0', pool: '#f2fffd', poolK: 0.3, zenith: '#23808a'
+    }
   }
 };

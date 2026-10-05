@@ -16,18 +16,39 @@
       href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap"></noscript>
 
-<link rel="stylesheet" href="css/base.css?v=1789277355">
-<link rel="stylesheet" href="css/cover.css?v=1789277355">
-<link rel="stylesheet" href="css/sections.css?v=1789277355">
-<link rel="stylesheet" href="css/project.css?v=1789277355">
+<link rel="stylesheet" href="css/base.css?v=1791189680">
+<link rel="stylesheet" href="css/cover.css?v=1791189680">
+<link rel="stylesheet" href="css/sections.css?v=1791189680">
+<link rel="stylesheet" href="css/project.css?v=1791189680">
 
-<link rel="modulepreload" href="js/project.js?v=1789277355">
+<!-- The painted world behind the hero is the largest thing on the first
+     screen, and only js/project.js knows which one it is. Asked for here, it
+     downloads beside the scripts instead of after them. The ids are the
+     works with a `bg` in js/data.js, and srcset and sizes are the ones
+     js/backdrop.js writes: keep all three in step, or it downloads twice. -->
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get('id');
+  if (!/^(samarqand|hujra|lis|fasl|qird)$/.test(id)) return;
+  var base = 'assets/img/bg/' + id;
+  [['(max-aspect-ratio: 4/5)', base + '-tall-720.webp 720w, ' + base + '-tall-1080.webp 1080w', 'max(100vw, 67vh)'],
+   ['not all and (max-aspect-ratio: 4/5)', base + '-1280.webp 1280w, ' + base + '-1920.webp 1920w', 'max(100vw, 200vh)']
+  ].forEach(function (s) {
+    var l = document.createElement('link');
+    l.rel = 'preload'; l.as = 'image'; l.media = s[0];
+    l.imageSrcset = s[1]; l.imageSizes = s[2]; l.fetchPriority = 'high';
+    document.head.appendChild(l);
+  });
+})();
+</script>
+<link rel="modulepreload" href="js/project.js?v=1791189680">
 <link rel="modulepreload" href="js/util.js">
 <link rel="modulepreload" href="js/data.js">
 <link rel="modulepreload" href="js/ambient.js">
 <link rel="modulepreload" href="js/navworks.js">
 <link rel="modulepreload" href="js/cover.js">
 <link rel="modulepreload" href="js/scenes.js">
+<link rel="modulepreload" href="js/backdrop.js">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
@@ -125,6 +146,6 @@
   </div>
 </footer>
 
-<script type="module" src="js/project.js?v=1789277355"></script>
+<script type="module" src="js/project.js?v=1791189680"></script>
 </body>
 </html>

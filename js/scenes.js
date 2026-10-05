@@ -235,6 +235,8 @@ const KINDS = {
    scale with the screen: three leaves are three leaves on any phone. */
 const RECIPES = {
   space: () => [['star', 190], ['glyph', 16]],
+  /* فصل عجيب's classroom: dust in the lamp, and sums drifting off the board */
+  class: () => [['mote', 110], ['glyph', 14]],
   leaves: () => [['clip', 3, { fixed: true }]],
   smoke: () => [['mote', 120]],
   eyes: () => [['bokeh', 30], ['star', 50]],
@@ -424,6 +426,7 @@ const CLOUD_LOOK = {
   eyes: { a: 0.5, b: 2 },
   sparkle: { a: 0.55, b: 1.4 },
   space: { a: 0.32, b: 4 },
+  class: { a: 0.4, b: 3.4 },
   figs: { a: 1, b: 1 }
 };
 
@@ -447,6 +450,7 @@ const MARKS = {
   eyes: [['asterisk', 'accent2', 80, 30, 3], ['asterisk', 'accent2', 13, 70, 2]],
   sparkle: [['sparkles', 'accent', 82, 22, 3.25], ['sparkles', 'accent', 10, 64, 2.5]],
   space: [['sparkles', 'accent2', 86, 70, 3]],
+  class: [['sparkles', 'accent', 86, 70, 3]],
   figs: [['smile', 'accent2', 84, 26, 3], ['sparkles', 'accent', 10, 30, 2.5]],
   smoke: []
 };
@@ -463,11 +467,15 @@ function cloud(c, look, tint) {
   });
 }
 
-export function dressHero(back, front, scene, th) {
+/* `painted`: the hero has a painting behind it (js/backdrop.js). It already
+   holds the sun, the eyes or the lamp, and it is the far layer itself, so
+   the set piece and the far clouds stay out. The near clouds stay: they are
+   the house's, in front of every world. */
+export function dressHero(back, front, scene, th, painted = false) {
   const look = CLOUD_LOOK[scene] || CLOUD_LOOK.leaves;
-  const piece = PIECES[scene]?.(th);
+  const piece = painted ? null : PIECES[scene]?.(th);
   if (piece) back.append(piece.node);
-  back.append(...BACK.map((c) => cloud(c, look, th.cloud)));
+  if (!painted) back.append(...BACK.map((c) => cloud(c, look, th.cloud)));
   (MARKS[scene] || []).forEach(([icon, key, x, y, s]) => back.append(el('i', {
     class: `mark mark--${icon} strew`,
     'aria-hidden': 'true',

@@ -13,6 +13,7 @@ import { initNav, initRails, initReveal, initFooter } from './ambient.js';
 import { coverCard, initCovers } from './cover.js';
 import { dressHero, sceneCanvas } from './scenes.js';
 import { stillsStrip } from './stills.js';
+import { backdrop } from './backdrop.js';
 
 const asked = new URLSearchParams(location.search).get('id');
 const id = PROJECT_PAGES[asked] ? asked : PROJECTS[0].id;
@@ -32,6 +33,22 @@ root.style.setProperty('--accent', th.accent);
 root.style.setProperty('--accent2', th.accent2);
 root.style.setProperty('--pop', th.pop || th.accent);
 document.body.classList.toggle('pp--light', !!th.light);
+
+/* The painted world, where the work has one (js/backdrop.js). It goes in
+   before the scenery canvas, so the falling things fall in front of it, and
+   it is asked for first: it is the largest thing on the first screen. */
+const world = p.bg ? backdrop(id, p.bg) : null;
+if (world) {
+  document.body.classList.add('pp--painted');
+  root.style.setProperty('--pool', p.bg.pool);
+  if (p.bg.place) document.body.classList.add(`pp--${p.bg.place}`);
+  /* 'phone': only the phone's column is busy enough to need the glass */
+  const narrow = matchMedia('(max-aspect-ratio: 4/5)');
+  const plate = () => document.body.classList.toggle('pp--plate', p.bg.plate === true || (p.bg.plate === 'phone' && narrow.matches));
+  plate();
+  narrow.addEventListener('change', plate);
+  document.body.insertBefore(world.node, $('#pfx'));
+}
 $('meta[name=theme-color]').setAttribute('content', th.sky);
 $('meta[name=description]').setAttribute('content', `${card.name}: ${p.tagline}`);
 document.title = `${card.name} | مدونة ستوديو`;
@@ -237,7 +254,8 @@ initReveal();
 initFooter();
 initCovers(row);
 
-const follow = dressHero($('#phBack'), $('#phFront'), p.scene, th);
+const follow = dressHero($('#phBack'), $('#phFront'), p.scene, th, !!world);
+world?.light(hero, $('.ph__title', hero), [...hero.querySelectorAll('.ph__w')]);
 
 const vars = new Map();
 const setVar = (node, name, v) => {
@@ -250,6 +268,11 @@ const setVar = (node, name, v) => {
 sceneCanvas($('#pfx'), p.scene, th, (ptr) => {
   setVar(hero, '--px', ptr.x);
   setVar(hero, '--py', ptr.y);
+  if (world) {
+    setVar(world.pic, '--px', ptr.x);
+    setVar(world.pic, '--py', ptr.y);
+    world.drift?.();
+  }
   follow?.(ptr);
 });
 

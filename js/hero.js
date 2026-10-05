@@ -41,9 +41,28 @@ export function initHero() {
   paintTone(NEWS[0]);
 
   /* each headline's world, only the current one lit */
-  const lean = leaner(['#newsClouds', '#newsFront', '#newsWorlds', '#newsTrack'].map((s) => $(s)));
+  const lean = leaner(['#newsBgs', '#newsClouds', '#newsFront', '#newsWorlds', '#newsTrack'].map((s) => $(s)));
   const worlds = NEWS.map((item) => buildWorld(item, stage, lean));
-  const light = (i) => worlds.forEach((w, j) => w.show(i === j));
+
+  /* The painting behind each world (tools/build-assets.py backgrounds): one
+     small file per headline, already out of focus, because the card is the
+     thing in focus here. The first is in the HTML. The others are only asked
+     for once the first screen is in, and a headline whose work has no
+     painting keeps the flat colour. */
+  const bgHost = $('#newsBgs');
+  const bgs = NEWS.map((item, i) => {
+    if (!PROJECT_PAGES[item.id]?.bg) return null;
+    if (i === 0) return bgHost.querySelector('.news__bg');
+    const img = el('img', { class: 'news__bg', alt: '', width: 960, height: 540, decoding: 'async' });
+    bgHost.append(img);
+    afterLoad(() => { img.src = `assets/img/bg/${item.id}-soft.webp`; });
+    return img;
+  });
+
+  const light = (i) => {
+    worlds.forEach((w, j) => w.show(i === j));
+    bgs.forEach((b, j) => b?.classList.toggle('is-on', i === j));
+  };
   light(0);
 
   NEWS.forEach((item, i) => {

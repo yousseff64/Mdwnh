@@ -73,6 +73,7 @@ live there is archived, whole and working, at `mdwn.studio/old`.
 /Art, /icons          source art. Hundreds of megabytes, untracked, never
                       shipped: only what build-assets.py writes is
 /Art/stills/<id>/     the five frames on each project page's strip
+/Art/Backgrounds/     one painted master per work, behind its project page
 /Art/comments/        the featured comment screenshots, named by handle
 /Art/showreel.mp4     the master behind the clip in the مُجْتَمَعُنَا call
 /scripts              fetch-stats.mjs    → assets/stats-data.js (the numbers)
@@ -238,6 +239,39 @@ so those stay hand entered in `data.js`.
   work that wins something gets the band by adding the same block.
 
 ## Accessibility floor
+## The painted worlds
+
+Five works have a painting behind their project page's hero, and the two in
+the news wear a soft copy of it behind the card. غمام has none and keeps its
+flat colour and its lamp.
+
+- **To change or add one**, drop a landscape master (16:9 or taller, 3840
+  wide) in `Art/Backgrounds/` and run `python3 tools/build-assets.py
+  backgrounds`. It cuts five files into `assets/img/bg/`: the frame at 1920
+  and 1280, a phone's 9:16 column at 1080 and 720, and a small pre-blurred
+  copy for the news. A desktop pays 30 to 145 KB, a phone 13 to 75 KB, and the
+  home page 8 to 12 KB a headline.
+- **A new work also needs a `bg` block** in `PROJECT_PAGES` (`js/data.js`,
+  the fields are documented there), its id in the `BACKGROUNDS` table in
+  build-assets.py, and its id in the preload script in `project.html`. The
+  phone column's centre (`tall`) lives in both data.js and the build table.
+- **The title is lit by the painting** (`js/backdrop.js`). `bg.light` says
+  where the painted lamp, moon or sun is on the master. That point is mapped
+  onto the page for whatever crop the screen got, each word is filled from
+  it, and the title's shadow falls away from it. فصل عجيب's lamp is a cone:
+  the letters it crosses turn dark against the light and the rest stay
+  chalk, and when the bulb stutters the room and the title dip together.
+- **The theme follows the painting.** `theme.bg` is what the painting
+  dissolves into at its foot, so it is picked from the painting's own floor.
+  سمرقند and القرد والغيلم are light worlds with dark ink, because their skies
+  are pale; `bg.zenith` deepens the top of a light sky so the bar still reads.
+- **Legibility is per world, not one scrim.** `pool` gathers behind the copy,
+  and `plate` puts the tagline on frosted glass where the painting is busy.
+  On a painted page the copy never fades as one block: opacity on a parent
+  cuts the glass's blur off, so each piece carries its own fade.
+- With a painting, the hero drops the scene's set piece and far clouds (the
+  painting already is both). The falling scenery and the near clouds stay.
+
 
 Responsive to 360px. Visible keyboard focus. `prefers-reduced-motion` disables
 the parallax, the camera shake, the marquee, and the scroll driven fall, which
