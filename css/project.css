@@ -745,13 +745,32 @@ body.pp--painted {
 
 /* the shared footer (sections.css), in this work's own night */
 .pp .pfoot { --foot-bg: var(--tone-deep); --foot-accent: var(--accent); }
-/* The bank of clouds over the footer. The near row is the footer's own
-   colour, and on a dark world that is nearly the page's colour too, so a far
-   row stands behind it in the world's cloud tint and gives it an edge. */
-.pp .pfoot__clouds .cloud.is-back {
-  --cloud-color: color-mix(in srgb, var(--foot-bg) 38%, var(--tone-cloud));
-  bottom: -14%;
+/* The bank of clouds over the footer. In sections.css it hangs above the
+   footer's own box, and WebKit (Safari, Orion) did not paint it there on
+   these pages while Chromium did. The cause was never pinned down from a
+   WebKit build (the likeliest is the footer's sideways clip taking what
+   stands above it too), so the fix does not depend on it: here nothing
+   stands outside the box. The footer starts one cloud's
+   height early (--rise, the tallest cloud in project.html: min(34rem, 66vw)
+   wide at 721:372), that much of its top is clear instead of filled, and
+   the bank sits inside it exactly where it was. The clear part lets clicks
+   through to the page it overlaps. */
+.pp .pfoot {
+  --rise: min(17.6rem, 34.2vw);
+  margin-top: calc(var(--rise) * -1);
+  padding-top: calc(var(--rise) + clamp(2rem, 5vw, 4rem));
+  background: linear-gradient(to bottom, transparent var(--rise), var(--foot-bg) var(--rise));
+  pointer-events: none;
 }
+.pp .pfoot .shell { pointer-events: auto; }
+.pp .pfoot__clouds {
+  bottom: auto;
+  top: calc(var(--rise) - clamp(4rem, 9vw, 8rem) + 2px);
+  /* its own layer, so nothing composited in the page under it can end up
+     painted over it */
+  transform: translateZ(0);
+}
+.pp .pfoot__mark { top: var(--rise); }
 
 /* ===================================================== reduced motion === */
 
