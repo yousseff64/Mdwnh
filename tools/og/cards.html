@@ -109,7 +109,9 @@ function comic(c) {
 }
 
 const CARDS = {
-  /* the studio: its cast, its name, and the house clouds in front */
+  /* the studio: its cast, its name, and the house clouds in front. Only the
+     fallback: with a finished master in Art/ the build ships that instead
+     (OG_MASTERS in build-assets.py) */
   home: () => h(`
     <div class="scrim" style="background:radial-gradient(90% 120% at 26% 46%, #7a4a9c 0%, #4a2a63 55%, #2c1640 100%)"></div>
     ${mark('sparkles', SUN, 'left:560px;top:66px;width:70px;height:76px;transform:rotate(14deg)')}
@@ -148,16 +150,16 @@ const CARDS = {
   projects: () => {
     const ids = ['qird', 'fasl', 'lis', 'hujra', 'ghamam', 'samarqand'];
     const row = ids.map((id, i) => `<img class="poster" src="${ART}${WORKS[id].poster}"
-      style="left:${-44 + i * 196}px;top:${i % 2 ? 196 : 170}px;height:500px;transform:rotate(${i % 2 ? 4 : -4}deg)">`).join('');
+      style="left:${-44 + i * 196}px;top:${i % 2 ? 222 : 196}px;height:500px;transform:rotate(${i % 2 ? 4 : -4}deg)">`).join('');
     return h(`
     <div class="scrim" style="background:radial-gradient(100% 130% at 50% 0%, #ffe46b 0%, ${SUN} 60%, #f0bf1e 100%)"></div>
-    ${mark('sparkles', '#fff', 'left:340px;top:84px;width:62px;height:68px;transform:rotate(-10deg)')}
+    ${mark('sparkles', '#fff', 'left:340px;top:108px;width:62px;height:68px;transform:rotate(-10deg)')}
     <div class="copy" style="--accent:#8a4a00;inset:30px 76px auto 76px;width:auto;display:block;padding:0">
       <p class="eyebrow" style="font-size:24px">قضية سمرقند · غمام · باب الحجرة · اللص التقي · فصل عجيب · القرد والغيلم</p>
-      <h1 style="--size:96px;margin-top:-4px">مَشَارِيعُنَا</h1>
+      <h1 style="--size:96px;margin-top:22px">مَشَارِيعُنَا</h1>
     </div>
     ${row}
-    <img src="${IMG}logo-dark.webp" style="left:76px;top:88px;height:62px">`);
+    <img src="${IMG}logo-dark.webp" style="left:76px;top:112px;height:62px">`);
   },
 
   /* an old or unknown project link: the six, without picking one */

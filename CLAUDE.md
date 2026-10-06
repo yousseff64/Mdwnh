@@ -311,6 +311,10 @@ each of the six works, the comic shelf, each of the three readers, and
   out with the real fonts and the masters in `Art/`, and `python3
   tools/build-assets.py og` photographs each with a headless Chrome. JPEG,
   not WebP, because the apps that unfurl links do not all read WebP.
+- **The home card is finished by hand.** Its master is `Art/Main site
+  thumbnail.png` (1920 by 1080), and the build cuts it to shape instead of
+  laying a card out (`OG_MASTERS` in build-assets.py). To change it, replace
+  that file and rerun the step.
 - **A crawler never runs the scripts**, so `project.html?id=` looks the same
   to it whatever the id. Each work therefore has `/work/<id>/`, a few lines
   of HTML with that work's card that forward to `project.html?id=<id>`, and

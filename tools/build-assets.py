@@ -804,6 +804,11 @@ OG_CARDS = ["home", "project", "projects", "comics",
             "samarqand", "ghamam", "hujra", "lis", "fasl", "qird",
             "comic-hujra", "comic-samarqand", "comic-qird"]
 OG_SIZE = (1200, 630)
+# A card that was finished by hand ships as it is instead of being laid out:
+# the name is matched against the files at the top of Art/, and the box is
+# the part of the master to keep (it drops the white edge the artboard was
+# exported with, and is already the card's shape).
+OG_MASTERS = {"home": ("thumbnail", (20, 46, 1905, 1036))}
 CHROME = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
           "/Applications/Chromium.app/Contents/MacOS/Chromium",
           "google-chrome", "chromium", "chromium-browser"]
@@ -826,6 +831,15 @@ def build_og(only=None):
     page = "file://" + os.path.join(ROOT, "tools", "og", "cards.html").replace(" ", "%20")
     total = 0
     for name in OG_CARDS:
+        out = os.path.join(d, f"{name}.jpg")
+        try:
+            needle, box = OG_MASTERS[name]
+            im = Image.open(find("Art", needle)).convert("RGB").crop(box).resize(OG_SIZE, Image.LANCZOS)
+            im.save(out, "JPEG", quality=88, optimize=True, progressive=True)
+            total += os.path.getsize(out)
+            continue
+        except (KeyError, FileNotFoundError):
+            pass
         shot = os.path.join(d, f".{name}.png")
         subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars",
                         "--allow-file-access-from-files", "--force-device-scale-factor=2",
@@ -833,7 +847,6 @@ def build_og(only=None):
                         f"--screenshot={shot}", f"{page}?card={name}"],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         im = Image.open(shot).convert("RGB").resize(OG_SIZE, Image.LANCZOS)
-        out = os.path.join(d, f"{name}.jpg")
         im.save(out, "JPEG", quality=86, optimize=True, progressive=True)
         os.remove(shot)
         total += os.path.getsize(out)
