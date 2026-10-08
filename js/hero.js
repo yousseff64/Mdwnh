@@ -16,8 +16,8 @@ import { NEWS, PROJECT_PAGES } from './data.js';
 import { $, afterLoad, cloudDrift, el, lite, reduced, whileVisible } from './util.js';
 import { sceneCanvas, scenePiece, warmScene } from './scenes.js';
 
-const EASE = 'cubic-bezier(.45,.05,.15,1)';
-const SLIDE_MS = 1150;
+const EASE = 'cubic-bezier(.22,.7,.24,1)';
+const SLIDE_MS = 720;
 /* scenes whose canvas draws in front of the card rather than behind it */
 const IN_FRONT = new Set(['leaves']);
 
@@ -249,16 +249,15 @@ export function initHero() {
     slide(outFront, 0, -dir * front, 0.8, 0, opts).then(() => outFront.remove());
     slide(inFront, dir * front, 0, 0, 0.8, opts);
 
-    setTimeout(() => { busy = false; }, SLIDE_MS * 0.6);
+    setTimeout(() => { busy = false; }, SLIDE_MS * 0.72);
   }
 
-  /* The paintings turn with the deck. They slide the way the card goes,
-     a whole width of their own, so the two pass like frames on a strip
-     while the lens pulls focus. The one leaving slides away and blurs out;
-     the one arriving starts blurred on the other side and sharpens as it
-     settles. Nothing is scaled: the client read a scale as the painting
-     growing into place instead of arriving. They are the far layer, so
-     they take a little longer over the trip than the card does.
+  /* The paintings turn with the deck. They are the far layer, so they
+     travel least: a few percent of their own width, in the card's
+     direction, while the lens pulls focus. The one leaving slides away and
+     blurs out; the one arriving starts blurred on the other side and
+     sharpens as it settles. Both are drawn a little large for the trip, so
+     the stage never shows past a moving edge.
 
      A turn made before the last one has finished picks each painting up
      from wherever it is. Where it is, is read off the screen and written
@@ -275,9 +274,9 @@ export function initHero() {
     /* a device that cannot keep up slides and fades, and skips the blur */
     const far = lite.on ? 'none' : 'blur(26px)';
     const near = lite.on ? 'none' : 'blur(0px)';
-    const away = (side) => ({ transform: `translate3d(${side * 100}%,0,0)`, filter: far, opacity: 0 });
-    const home = { transform: 'translate3d(0,0,0)', filter: near, opacity: 1 };
-    const opts = { duration: SLIDE_MS * 1.18, easing: EASE, fill: 'both' };
+    const away = (side) => ({ transform: `translate3d(${side * 6}%,0,0) scale(1.13)`, filter: far, opacity: 0 });
+    const home = { transform: 'translate3d(0,0,0) scale(1)', filter: near, opacity: 1 };
+    const opts = { duration: SLIDE_MS * 1.5, easing: 'cubic-bezier(.2,.75,.2,1)', fill: 'both' };
     const sweeps = (n) => n.getAnimations().filter((x) => !(x instanceof CSSTransition));
 
     const run = (n, rest, to) => {
