@@ -200,6 +200,9 @@
 .jfield [aria-invalid] { border-color: #ff9d91; }
 .jfield__hint { display: flex; justify-content: space-between; gap: 1rem; color: var(--chalk-45); font-size: 0.85rem; }
 .jfield__hint b { font-weight: 500; flex: none; }
+/* the one reminder on the form that costs an application if it is skipped */
+.jfield__warn { color: var(--chalk-70); line-height: 1.6; }
+.jfield__warn b { flex: initial; font-weight: 600; color: var(--sun); }
 
 /* off the page, not display none: a script that fills every field finds it */
 .jform__trap { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }

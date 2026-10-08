@@ -75,6 +75,7 @@ function sprung(node, prop, response, damping) {
 const form = $('#joinForm');
 const card = $('#joinCard');
 const email = $('#joinEmail');
+const link = $('#joinLink');
 const message = $('#joinMessage');
 const trap = $('#joinTrap');
 const send = $('#joinSend');
@@ -105,16 +106,28 @@ function setRole(id) {
 function fail(text, field) {
   error.textContent = text;
   error.hidden = !text;
-  [email, message].forEach((f) => f.toggleAttribute('aria-invalid', f === field));
+  [email, link, message].forEach((f) => f.toggleAttribute('aria-invalid', f === field));
   if (field) field.focus();
 }
 
 const SAY = {
   email: () => ['اكتب بريدًا صحيحًا لنرد عليك.', email],
+  link: () => ['ضع رابط أعمالك كاملًا، مثل https://… وتأكد أنه مفتوح لمن يحمله.', link],
   short: () => [`اكتب ${arabize(MIN)} حرفًا على الأقل، لنعرف من أنت.`, message],
   slow: () => ['أرسلت أكثر من طلب للتو. حاول مرة أخرى بعد ساعة.', null],
   full: () => [`استقبلنا طلبات كثيرة اليوم. حاول غدًا، أو راسلنا على ${MAIL}.`, null]
 };
+
+/* The work link as an address: "behance.net/me" is taken as https://, and
+   anything that is not a web address with a real host is refused. */
+function workLink(raw) {
+  const t = raw.trim().replace(/\s+/g, '');
+  if (!t) return '';
+  try {
+    const u = new URL(/^https?:\/\//i.test(t) ? t : `https://${t}`);
+    return /^[^.]+(\.[^.]+)+$/.test(u.hostname) ? u.href : '';
+  } catch (_) { return ''; }
+}
 
 async function submit(e) {
   e.preventDefault();
@@ -122,6 +135,9 @@ async function submit(e) {
   const mail = email.value.trim();
   const text = message.value.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@.]{2,}$/.test(mail)) return fail(...SAY.email());
+  const work = workLink(link.value);
+  if (!work) return fail(...SAY.link());
+  link.value = work;
   if (text.length < MIN) return fail(...SAY.short());
   fail('');
 
@@ -134,7 +150,7 @@ async function submit(e) {
     const res = await fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'content-type': 'text/plain' },
-      body: JSON.stringify({ e: mail, m: text, r: role, w: trap.value })
+      body: JSON.stringify({ e: mail, l: work, m: text, r: role, w: trap.value })
     });
     out = await res.json();
   } catch (_) { out = null; }
@@ -161,7 +177,7 @@ function initForm() {
   const tally = () => { count.textContent = `${arabize(message.value.length)} / ${arabize(MAX)}`; };
   message.addEventListener('input', tally);
   tally();
-  [email, message].forEach((f) => f.addEventListener('input', () => { if (!error.hidden) fail(''); }));
+  [email, link, message].forEach((f) => f.addEventListener('input', () => { if (!error.hidden) fail(''); }));
   $('#joinRoleClear').addEventListener('click', () => { setRole(''); email.focus(); });
   form.addEventListener('submit', submit);
 }

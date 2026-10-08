@@ -328,7 +328,10 @@ lit options, and the general contact address.
   form's header links down to the crafts too, because the crafts are below
   the form and some readers never scroll that far. The count on the button
   is written in the HTML: change it when `ROLES` changes.
-- **There is one form.** Sent as it is, it is the general application.
+- **There is one form**, with three fields: the address to answer, the link
+  to the applicant's work (its own field, required, with a reminder to check
+  that the link is open to whoever holds it: the leader's call), and what
+  they write. Sent as it is, it is the general application.
   Pressing a craft tags the same form with it and brings it back into view;
   `/careers/#<id>` opens it already tagged.
 - **The crafts are `ROLES` in `js/careers.js`**, and the same ids are in the

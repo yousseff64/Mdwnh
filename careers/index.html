@@ -39,7 +39,7 @@
      page wears. Everything else on this page is careers.css. -->
 <link rel="stylesheet" href="../css/base.css?v=1791267544">
 <link rel="stylesheet" href="../css/sections.css?v=1791267544">
-<link rel="stylesheet" href="careers.css?v=3">
+<link rel="stylesheet" href="careers.css?v=4">
 
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
@@ -119,11 +119,19 @@
                  placeholder="name@example.com" maxlength="250" required aria-describedby="joinError">
         </label>
 
+        <!-- its own field, and required: an application is read through its work -->
+        <label class="jfield">
+          <span>رابط أعمالك</span>
+          <input type="url" name="link" id="joinLink" autocomplete="url" inputmode="url" dir="ltr"
+                 placeholder="https://" maxlength="500" required aria-describedby="joinLinkHint joinError">
+          <small class="jfield__hint jfield__warn" id="joinLinkHint"><span>رابط واحد يجمع أعمالك. <b>تأكد أنه مفتوح لكل من يحمله</b>: الرابط المقفل لا نستطيع فتحه، فلا نرى عملك.</span></small>
+        </label>
+
         <label class="jfield">
           <span>مضمون التقديم</span>
           <textarea name="message" id="joinMessage" rows="7" maxlength="1500" required aria-describedby="joinHint joinError"
-                    placeholder="عرّفنا بنفسك، وبما تتقنه، وضع روابط أعمالك إن وُجدت."></textarea>
-          <small class="jfield__hint" id="joinHint"><span>يكفينا ما يعرّفنا بك وبعملك.</span><b id="joinCount" aria-hidden="true">٠ / ١٥٠٠</b></small>
+                    placeholder="عرّفنا بنفسك، وبما تتقنه، وبما تحب أن تعمل عليه."></textarea>
+          <small class="jfield__hint" id="joinHint"><span>يكفينا ما يعرّفنا بك.</span><b id="joinCount" aria-hidden="true">٠ / ١٥٠٠</b></small>
         </label>
 
         <!-- not for people: a field only a script fills in -->
@@ -243,7 +251,7 @@
   </div>
 </footer>
 
-<script type="module" src="../js/careers.js?v=3"></script>
+<script type="module" src="../js/careers.js?v=4"></script>
 
 </body>
 </html>
