@@ -9,7 +9,7 @@
 
 import { PROJECTS, PROJECT_PAGES, STATS_AS_OF } from './data.js';
 import { $, arabize, clamp, el, reduced, tick, whileVisible } from './util.js';
-import { initNav, initRails, initReveal, initFooter } from './ambient.js';
+import { initNav, initRails, initReveal, initFooter } from './ambient.js?v=2';
 import { coverCard, initCovers } from './cover.js';
 import { dressHero, sceneCanvas } from './scenes.js';
 import { stillsStrip } from './stills.js';

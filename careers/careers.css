@@ -1,0 +1,331 @@
+/* ============================================================
+   اِنْضَمَّ إِلَيْنَا
+
+   One dark page, deliberately plain: the library as a cover
+   strip, the general application, the crafts as lamps, and the
+   studio's address. The navbar is the site's own (sections.css).
+   Nothing here is bright: the only colour on the page is the
+   warm white of the library's lamps.
+
+   --h, --lit, --pulse and --nod are springs written by
+   ../js/careers.js. Without the script each one is 0.
+   ============================================================ */
+
+.join {
+  --night: #08080c;
+  --lamp: #ffe2b0;          /* the bulbs in the painting */
+  --chalk: #f4f1ea;
+  --chalk-70: #f4f1eab3;
+  --chalk-45: #f4f1ea73;
+  --line: #f4f1ea1f;
+  background: var(--night);
+  color: var(--chalk);
+  color-scheme: dark;
+}
+.join :focus-visible { outline-color: var(--lamp); }
+.join ::selection { background: var(--lamp); color: #17120a; }
+.join .eyebrow { color: var(--chalk-45); }
+
+/* ---------------------------------------------------------------- cover --- */
+
+/* A strip, not a full screen: the form has to be in sight when the page
+   opens. The picture is held by its vanishing point (the door at the end of
+   the aisle), so any width keeps the lamps and the door. */
+.jcover {
+  position: relative;
+  height: clamp(19rem, 56svh, 34rem);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  isolation: isolate;
+}
+.jcover__art { position: absolute; inset: 0; z-index: -2; }
+.jcover__art img {
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  translate: 0 calc(var(--y, 0) * 0.12px);
+  animation: breathe 26s ease-in-out infinite alternate;
+}
+/* the aisle draws you in, very slowly */
+@keyframes breathe {
+  from { scale: 1; }
+  to   { scale: 1.06; }
+}
+.jcover__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to bottom, #08080c8c 0%, transparent 26%, transparent 46%, #08080ccc 80%, var(--night) 100%),
+    radial-gradient(80% 90% at 50% 40%, transparent 40%, #08080c99 100%);
+}
+.jcover__copy { text-align: center; padding-block-end: clamp(1.25rem, 4vh, 2.5rem); }
+.jcover__copy .eyebrow { justify-content: center; color: #f4f1ea99; }
+.jcover__title {
+  font-size: clamp(3.25rem, 10vw, 7.5rem);
+  line-height: 1.2;
+  color: #fff;
+  text-shadow: 0 0 2.2rem #ffe2b055, 0 0.2rem 1.4rem #000000b3;
+}
+
+/* ---------------------------------------------------------------- apply --- */
+
+.japply { position: relative; padding: clamp(1.5rem, 5vh, 3.5rem) 0 clamp(3rem, 8vh, 5.5rem); }
+.japply__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  max-width: 76rem;
+}
+
+.jcard {
+  position: relative;
+  padding: clamp(1.4rem, 3vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  background: #111117;
+  scale: calc(1 + var(--pulse, 0) * 0.006);
+  box-shadow:
+    0 0 0 calc(var(--pulse, 0) * 3px) #ffe2b040,
+    0 2.5rem 5rem -2.5rem #000;
+}
+.jcard__head p { margin: 0.5rem 0 0; color: var(--chalk-70); max-width: 44ch; }
+
+.jform { display: grid; gap: 1.1rem; margin-block-start: 1.5rem; }
+.jform[hidden], .jcard__head[hidden], .jdone[hidden] { display: none; }
+
+.jform__role {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding-block: 0.35rem;
+  padding-inline: 0.9rem 0.4rem;
+  border-radius: 999px;
+  background: #ffe2b01f;
+  box-shadow: inset 0 0 0 1px #ffe2b066;
+  color: var(--lamp);
+  animation: arrive 420ms cubic-bezier(.3,1.4,.5,1) both;
+}
+.jform__role[hidden] { display: none; }
+.jform__role span { font-size: 0.9rem; color: #ffe2b0b3; }
+.jform__role b { font-family: var(--display); font-weight: 700; font-size: 1.1rem; }
+.jform__role button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  background: #ffe2b026;
+  color: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 140ms ease, scale 120ms ease;
+}
+.jform__role button:hover { background: #ffe2b040; }
+.jform__role button:active { scale: 0.9; }
+@keyframes arrive {
+  from { opacity: 0; scale: 0.85; translate: 0 0.4rem; }
+}
+
+.jfield { display: grid; gap: 0.45rem; }
+.jfield > span { font-weight: 600; }
+.jfield input,
+.jfield textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #f4f1ea33;
+  border-radius: 0.9rem;
+  background: #08080c;
+  color: var(--chalk);
+  font: inherit;
+  font-size: max(1rem, 16px);      /* under 16px a phone zooms the page on focus */
+  line-height: 1.7;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.jfield textarea { resize: vertical; min-height: 9rem; }
+.jfield input::placeholder,
+.jfield textarea::placeholder { color: #f4f1ea59; }
+.jfield input:hover,
+.jfield textarea:hover { border-color: #f4f1ea66; }
+.jfield input:focus-visible,
+.jfield textarea:focus-visible {
+  outline: none;
+  border-color: var(--lamp);
+  box-shadow: 0 0 0 3px #ffe2b033, 0 0 1.6rem -0.4rem #ffe2b066;
+}
+.jfield [aria-invalid] { border-color: #ff9d91; }
+.jfield__hint { display: flex; justify-content: space-between; gap: 1rem; color: var(--chalk-45); font-size: 0.85rem; }
+.jfield__hint b { font-weight: 500; flex: none; }
+
+/* off the page, not display none: a script that fills every field finds it */
+.jform__trap { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.jform__error {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.8rem;
+  background: #ff9d911f;
+  color: #ffc4bc;
+}
+.jform__error[hidden] { display: none; }
+.jform__error a { color: inherit; }
+
+.jform__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.25rem; }
+.jform__foot small { color: var(--chalk-45); font-size: 0.85rem; }
+.join .btn { --btn-bg: var(--chalk); --btn-fg: #101014; }
+.join .btn:hover { box-shadow: 0 0 2rem -0.5rem #ffe2b099; }
+.jform__send { min-width: 9.5rem; justify-content: center; }
+.jform__send:disabled { opacity: 0.6; cursor: progress; transform: none; }
+
+.jdone { text-align: center; padding-block: clamp(1rem, 4vh, 2.5rem); outline: none; }
+.jdone p { color: var(--chalk-70); max-width: 38ch; margin: 0.6rem auto 1.4rem; }
+.jdone p b { color: var(--chalk); font-weight: 600; }
+
+/* the words beside the form */
+.jwords { display: grid; justify-items: start; gap: 1.5rem; }
+.jwords__head {
+  width: clamp(6rem, 11vw, 9.5rem);
+  height: auto;
+  rotate: calc(-7deg + var(--nod, 0) * 5deg);
+  translate: 0 calc(var(--nod, 0) * -0.35rem);
+  filter: drop-shadow(0 0 1.8rem #ffe2b040);
+}
+.jwords ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
+.jwords li {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.3;
+  color: var(--chalk);
+}
+.jwords li:nth-child(2) { color: #f4f1eaa6; }
+.jwords li:nth-child(3) { color: #f4f1ea66; }
+
+@media (max-width: 900px) {
+  .japply__grid { grid-template-columns: 1fr; }
+  /* the form first: it is what the page is for */
+  .jwords { grid-template-columns: auto 1fr; align-items: center; gap: 1rem 1.25rem; }
+  .jwords__head { width: 5rem; }
+  .jwords li { font-size: 1.35rem; }
+}
+
+/* ---------------------------------------------------------------- roles --- */
+
+.jroles { position: relative; padding: clamp(2rem, 6vh, 4rem) 0 clamp(3.5rem, 9vh, 6rem); border-block-start: 1px solid var(--line); }
+.jroles__head { text-align: center; }
+.jroles__head .eyebrow { justify-content: center; }
+.jroles__head .h2 { font-size: clamp(2rem, 5vw, 3.75rem); }
+.jroles__head .lead { margin: 0.8rem auto 0; color: var(--chalk-70); }
+
+.jroles__grid {
+  list-style: none;
+  margin: clamp(1.75rem, 5vh, 3rem) auto 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.8rem, 1.6vw, 1.25rem);
+  max-width: 68rem;
+}
+.jroles__grid li { flex: 1 1 15rem; max-width: 21rem; display: flex; }
+
+/* A craft is a lamp. It hangs dim, warms under the pointer (--h), and burns
+   once it is the one chosen (--lit). The two add, so the chosen lamp still
+   answers a hover. */
+.lamp {
+  --on: clamp(0, calc(var(--h, 0) * 0.55 + var(--lit, 0)), 1.25);
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-height: 9.5rem;
+  padding: 1.15rem 1.25rem 1.1rem;
+  border: 0;
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(120% 90% at 50% -10%, color-mix(in srgb, var(--lamp) calc(var(--on) * 22%), transparent) 0%, transparent 70%),
+    #111117;
+  color: var(--chalk);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  translate: 0 calc(var(--h, 0) * -0.25rem);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--lamp) calc(12% + var(--on) * 55%), transparent),
+    0 0 calc(var(--on) * 2.6rem) calc(var(--on) * -0.5rem) color-mix(in srgb, var(--lamp) 70%, transparent);
+}
+.lamp:active { scale: 0.975; transition: scale 90ms ease; }
+.lamp:focus-visible { outline: 3px solid var(--lamp); outline-offset: 3px; }
+.lamp__bulb {
+  width: 0.8rem;
+  aspect-ratio: 1;
+  margin-block-end: 0.7rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lamp) calc(35% + var(--on) * 65%), #2a2a33);
+  box-shadow:
+    0 0 calc(0.4rem + var(--on) * 1.1rem) calc(var(--on) * 0.25rem) color-mix(in srgb, var(--lamp) calc(25% + var(--on) * 60%), transparent);
+}
+.lamp__name { font-family: var(--display); font-weight: 800; font-size: 1.55rem; line-height: 1.3; }
+.lamp__note { font-size: 0.9rem; color: var(--chalk-45); }
+.lamp__cta {
+  margin-block-start: auto;
+  padding-block-start: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--lamp) calc(var(--on) * 100%), var(--chalk-45));
+}
+.lamp[aria-pressed='true'] .lamp__cta::before { content: '✓ '; }
+
+/* --------------------------------------------------------------- footer --- */
+
+.jfoot { border-block-start: 1px solid var(--line); padding: clamp(2rem, 6vh, 3.5rem) 0 1.75rem; }
+.jfoot__mail { text-align: center; }
+.jfoot__mail .eyebrow { justify-content: center; translate: none; margin-block-end: 0.3rem; font-size: 0.9rem; letter-spacing: 0; }
+.jfoot__addr {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  line-height: 1.3;
+  color: var(--chalk);
+  text-decoration: none;
+  transition: color 160ms ease, text-shadow 200ms ease;
+}
+.jfoot__addr:hover { color: var(--lamp); text-shadow: 0 0 2rem #ffe2b066; }
+.jfoot__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-block-start: clamp(2rem, 5vh, 3rem);
+  padding-block-start: 1.25rem;
+  border-block-start: 1px solid var(--line);
+  color: var(--chalk-45);
+  font-size: 0.88em;
+}
+.jfoot__logo img { height: 2rem; width: auto; opacity: 0.8; }
+.jfoot__bar a { color: inherit; text-decoration: none; }
+.jfoot__bar a:hover { color: var(--chalk); }
+
+/* ------------------------------------------------------- reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .jcover__art img { animation: none; translate: none; height: 100%; }
+  .jform__role { animation: none; }
+  .jcard, .lamp, .lamp:active, .jwords__head { scale: 1; translate: none; }
+  .jwords__head { rotate: -7deg; }
+}
+@media (prefers-contrast: more) {
+  .join { --chalk-70: #f4f1ea; --chalk-45: #f4f1eacc; --line: #f4f1ea66; }
+  .jfield input, .jfield textarea { border-color: var(--chalk); }
+}

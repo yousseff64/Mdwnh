@@ -66,6 +66,9 @@ live there is archived, whole and working, at `mdwn.studio/old`.
 /Ghailam              one reader per comic. These URLs are published, so they
                       keep their names even though the ids elsewhere are
                       hujra, samarqand and qird
+/careers              انضم إلينا: the application form and the crafts wanted,
+                      on base.css + sections.css (for the navbar) +
+                      careers.css, with js/careers.js
 /work/<id>/           one small page per work: the address a work is sent
                       around by. It carries that work's share card and hands
                       over to project.html
@@ -78,6 +81,7 @@ live there is archived, whole and working, at `mdwn.studio/old`.
 /Art/stills/<id>/     the five frames on each project page's strip
 /Art/Backgrounds/     one painted master per work, behind its project page
 /Art/comments/        the featured comment screenshots, named by handle
+/Art/careers/         the library cover and the سراج head on /careers
 /Art/showreel.mp4     the master behind the clip in the مُجْتَمَعُنَا call
 /scripts              fetch-stats.mjs    → assets/stats-data.js (the numbers)
                       fetch-youtube.mjs  → old/assets/youtube-data.js. This
@@ -301,11 +305,44 @@ its flat colour and its scene's set piece: nothing requires a painting.
 - With a painting, the hero drops the scene's set piece and far clouds (the
   painting already is both). The falling scenery and the near clouds stay.
 
+## The careers page
+
+`/careers/` (اِنْضَمَّ إِلَيْنَا) is for المبدع, and the leader set its shape:
+one plain dark page with four things on it and nothing else. The library as
+a cover strip with the title, the general application, the crafts wanted as
+lit options, and the general contact address.
+
+- **It shows nothing of how the team works inside.** No internal workspace, no
+  picture of one, no tools, no points, no rooms, no rituals, not even as a
+  teaser. The leader's reasoning: the internal system is a competitive edge,
+  and a company says "flexible hours", it does not publish how it runs them.
+  Do not add "life at the studio" material to this page.
+- **Black and quiet.** The only colour is the warm white of the library's
+  lamps (`--lamp`). No clouds, no brush marks, no accent colours here: this
+  page is the one exception to "no negative space".
+- **There is one form.** Sent as it is, it is the general application.
+  Pressing a craft tags the same form with it and brings it back into view;
+  `/careers/#<id>` opens it already tagged.
+- **The crafts are `ROLES` in `js/careers.js`**, and the same ids are in the
+  relay (below). Only the id is sent: the relay writes the label.
+- **Where an application goes.** The form posts to the studio's relay (a
+  Cloudflare Worker kept outside this repo, `POST /join`), which
+  checks the origin, a honeypot field, the address and the length, limits
+  each sender, and hands it to the team's inbox. This site stores nothing,
+  and this page holds no database address. A page on a new domain has to be
+  added to `JOIN_ORIGINS` there; `localhost` is already allowed for testing.
+- **The navbar is the site's own** (`.nav` from sections.css, `initNav`), not
+  a copy. `انضم إلينا` in every navbar and footer leads here; `شارك معنا` is
+  the كيف أساهم section on the home page.
+- Sources are `Art/careers/library.jpg` and `Art/careers/siraj-head.png`
+  (black line art: the build fills what the outline encloses with white).
+  `python3 tools/build-assets.py careers` rebuilds them.
+
 ## The share cards
 
 Every address worth sending unfurls into its own picture: the home page,
-each of the six works, the comic shelf, each of the three readers, and
-/projects. The pictures are `assets/og/<name>.jpg`, 1200 by 630.
+each of the six works, the comic shelf, each of the three readers,
+/projects and /careers. The pictures are `assets/og/<name>.jpg`, 1200 by 630.
 
 - **They are drawn as a page.** `tools/og/cards.html?card=<name>` lays one
   out with the real fonts and the masters in `Art/`, and `python3

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>انضم إلينا | مدونة ستوديو</title>
+<meta name="description" content="قدّم للانضمام إلى فريق مدونة ستوديو: تقديم عام، أو على أحد التخصصات التي نبحث عنها الآن.">
+<meta name="theme-color" content="#08080c">
+
+<!-- The card this link unfurls into when it is sent to someone. The picture is
+     assets/og/careers.jpg, drawn by tools/og/cards.html (build-assets.py og). -->
+<meta property="og:site_name" content="مدونة ستوديو">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mdwn.studio/careers/">
+<meta property="og:title" content="انضم إلينا | مدونة ستوديو">
+<meta property="og:description" content="تقديم عام، أو على أحد التخصصات التي نبحث عنها الآن.">
+<meta property="og:image" content="https://mdwn.studio/assets/og/careers.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="انضم إلينا | مدونة ستوديو">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="انضم إلينا | مدونة ستوديو">
+<meta name="twitter:description" content="تقديم عام، أو على أحد التخصصات التي نبحث عنها الآن.">
+<meta name="twitter:image" content="https://mdwn.studio/assets/og/careers.jpg">
+<link rel="canonical" href="https://mdwn.studio/careers/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap"></noscript>
+<link rel="preload" as="image" href="../assets/img/careers/library.webp"
+      imagesrcset="../assets/img/careers/library-sm.webp 960w, ../assets/img/careers/library.webp 1920w" imagesizes="100vw" fetchpriority="high">
+
+<!-- sections.css is here for the site's own navbar, the same bar every other
+     page wears. Everything else on this page is careers.css. -->
+<link rel="stylesheet" href="../css/base.css?v=1791267544">
+<link rel="stylesheet" href="../css/sections.css?v=1791267544">
+<link rel="stylesheet" href="careers.css?v=2">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="../site.webmanifest">
+</head>
+
+<body class="join" id="top">
+
+<a href="#apply" class="sr">تخطَّ إلى نموذج التقديم</a>
+
+<!-- ===================================================== navbar ======== -->
+<header class="nav" id="nav" data-on-tone>
+  <a class="nav__logo" href="../" aria-label="مدونة ستوديو، الرئيسية">
+    <img id="navLogo" src="../assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155">
+  </a>
+
+  <button class="nav__burger" id="burger" aria-expanded="false" aria-controls="navLinks" aria-label="القائمة">
+    <span></span>
+  </button>
+
+  <ul class="nav__links" id="navLinks">
+    <li><a href="../">الرئيسية</a></li>
+    <li><a href="../#about">من نحن؟</a></li>
+    <li><a href="../#work">أعمالنا</a></li>
+    <li><a href="../#community">مجتمعنا</a></li>
+    <li><a href="./" aria-current="true">انضم إلينا</a></li>
+  </ul>
+
+  <a class="btn nav__cta" href="#apply">قدّم الآن</a>
+</header>
+
+<main>
+
+<!-- ============================================== the cover: the library == -->
+<section class="jcover" data-dark data-glass="#08080c">
+  <picture class="jcover__art" id="coverArt">
+    <img src="../assets/img/careers/library.webp"
+         srcset="../assets/img/careers/library-sm.webp 960w, ../assets/img/careers/library.webp 1920w"
+         sizes="100vw" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
+  </picture>
+  <div class="jcover__shade" aria-hidden="true"></div>
+  <div class="shell jcover__copy">
+    <p class="eyebrow"><span>تقديم عام</span><span>تقديم متخصص</span></p>
+    <h1 class="jcover__title">اِنْضَمَّ إِلَيْنَا</h1>
+  </div>
+</section>
+
+<!-- ================================================ the general application == -->
+<section class="japply" id="apply" data-dark data-glass="#08080c">
+  <div class="shell japply__grid">
+
+    <div class="jcard" id="joinCard">
+      <header class="jcard__head">
+        <h2 class="h3">التَّقْدِيمُ العَامّ</h2>
+        <p>اكتب لنا من أنت وماذا تتقن. وإن كنت تقدّم على تخصص بعينه، فاختره من الأسفل.</p>
+      </header>
+
+      <form class="jform" id="joinForm" novalidate>
+        <!-- shown once a craft below is pressed: the same form, tagged with it -->
+        <p class="jform__role" id="joinRole" hidden>
+          <span>تقدّم على</span>
+          <b id="joinRoleName"></b>
+          <button type="button" id="joinRoleClear" aria-label="ألغِ التخصص وعد إلى التقديم العام">✕</button>
+        </p>
+
+        <label class="jfield">
+          <span>بريدك الإلكتروني</span>
+          <input type="email" name="email" id="joinEmail" autocomplete="email" inputmode="email" dir="ltr"
+                 placeholder="name@example.com" maxlength="250" required aria-describedby="joinError">
+        </label>
+
+        <label class="jfield">
+          <span>مضمون التقديم</span>
+          <textarea name="message" id="joinMessage" rows="7" maxlength="1500" required aria-describedby="joinHint joinError"
+                    placeholder="عرّفنا بنفسك، وبما تتقنه، وضع روابط أعمالك إن وُجدت."></textarea>
+          <small class="jfield__hint" id="joinHint"><span>يكفينا ما يعرّفنا بك وبعملك.</span><b id="joinCount" aria-hidden="true">٠ / ١٥٠٠</b></small>
+        </label>
+
+        <!-- not for people: a field only a script fills in -->
+        <div class="jform__trap" aria-hidden="true">
+          <label>Website<input type="text" name="website" id="joinTrap" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <p class="jform__error" id="joinError" role="alert" hidden></p>
+
+        <div class="jform__foot">
+          <button class="btn jform__send" id="joinSend" type="submit">أرسل طلبك</button>
+          <small>لا نستخدم بريدك إلا للرد على طلبك.</small>
+        </div>
+      </form>
+
+      <div class="jdone" id="joinDone" hidden tabindex="-1">
+        <h2 class="h3">وَصَلَنَا طَلَبُكَ</h2>
+        <p>نقرأ الطلبات، ونرد على <b class="ltr" id="joinDoneMail"></b> إن وافق طلبك ما نبحث عنه الآن.</p>
+        <a class="btn btn--ghost" href="../">عد إلى الموقع</a>
+      </div>
+
+      <noscript><p class="jform__error">النموذج يحتاج إلى جافاسكربت. راسلنا مباشرة على <a href="mailto:contact@mdwn.studio">contact@mdwn.studio</a>.</p></noscript>
+    </div>
+
+    <aside class="jwords" aria-label="ما تجده معنا">
+      <img class="jwords__head" id="joinHead" src="../assets/img/careers/siraj-head.webp" alt="" width="512" height="494" decoding="async">
+      <ul>
+        <li>تجربة عمل فريدة ومميزة</li>
+        <li>تجارب تطوّر خبرتك</li>
+        <li>فريق يصنع قصصًا عربية أصلية</li>
+      </ul>
+    </aside>
+
+  </div>
+</section>
+
+<!-- ==================================================== the crafts wanted == -->
+<section class="jroles" id="roles" data-dark data-glass="#08080c">
+  <div class="shell">
+    <header class="jroles__head">
+      <p class="eyebrow"><span>مونتاج</span><span>تحريك</span><span>تصميم</span><span>ثري دي</span><span>صوت</span></p>
+      <h2 class="h2">التَّخَصُّصَاتُ المَطْلُوبَة</h2>
+      <p class="lead">اضغط تخصصك، فيُفتح لك النموذج نفسه موسومًا به.</p>
+    </header>
+
+    <!-- built by ../js/careers.js from ROLES, so the list is edited in one place -->
+    <ul class="jroles__grid" id="rolesGrid"></ul>
+  </div>
+</section>
+
+</main>
+
+<!-- ================================================= the general address == -->
+<footer class="jfoot" id="contact" data-dark data-glass="#08080c">
+  <div class="shell jfoot__grid">
+    <div class="jfoot__mail">
+      <p class="eyebrow"><span>بريد التواصل العام</span></p>
+      <a class="jfoot__addr ltr" href="mailto:contact@mdwn.studio">contact@mdwn.studio</a>
+    </div>
+    <div class="jfoot__bar">
+      <a class="jfoot__logo" href="../" aria-label="مدونة ستوديو، الرئيسية"><img src="../assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155" loading="lazy"></a>
+      <span>© ٢٠٢٦ مدونة ستوديو. كل الحقوق محفوظة.</span>
+      <a href="#top">العودة إلى الأعلى ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="../js/careers.js?v=2"></script>
+
+</body>
+</html>

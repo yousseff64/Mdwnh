@@ -797,10 +797,37 @@ def build_backgrounds():
 
 # ------------------------------------------------------------- share cards ---
 
+def build_careers():
+    """انضم إلينا: the library that is the page's cover, and the سراج head
+    beside the form. The head's master is black line art on nothing, so it
+    is filled: everything the outline encloses turns white, and the lines
+    stay as ink on top of it."""
+    d = ensure("img", "careers")
+    lib = Image.open(src("Art", "careers", "library.jpg")).convert("RGB")
+    total = save_webp(lib, os.path.join(d, "library.webp"), 1920, quality=74)
+    total += save_webp(lib, os.path.join(d, "library-sm.webp"), 960, quality=70)
+
+    head = Image.open(src("Art", "careers", "siraj-head.png")).convert("RGBA")
+    head = head.crop(head.getbbox())
+    pad = 8
+    alpha = Image.new("L", (head.width + pad * 2, head.height + pad * 2), 0)
+    alpha.paste(head.getchannel("A"), (pad, pad))
+    # the outside is whatever a flood from the corner can reach without
+    # crossing a line; what is left is the head
+    solid = alpha.point(lambda v: 255 if v > 40 else 0)
+    ImageDraw.floodfill(solid, (0, 0), 128)
+    inside = solid.point(lambda v: 0 if v == 128 else 255)
+    out = Image.new("RGBA", alpha.size, (255, 255, 255, 0))
+    out.paste((255, 255, 255, 255), mask=inside)
+    out.paste((22, 20, 28, 255), mask=alpha)
+    total += save_webp(out, os.path.join(d, "siraj-head.webp"), 512, quality=90)
+    print(f"careers    3 files  {total / 1024:8.0f} KB")
+
+
 # The picture a link unfurls into when it is sent to someone. Every address
 # worth sending has its own: the studio, the general project page, each of the six works,
 # the comic shelf, each of the three readers, and /projects.
-OG_CARDS = ["home", "project", "projects", "comics",
+OG_CARDS = ["home", "project", "projects", "comics", "careers",
             "samarqand", "ghamam", "hujra", "lis", "fasl", "qird",
             "comic-hujra", "comic-samarqand", "comic-qird"]
 OG_SIZE = (1200, 630)
@@ -854,7 +881,7 @@ def build_og(only=None):
 
 
 STEPS = [build_images, build_banners, build_covers, build_scenery, build_icons, build_award, build_wins, build_fall,
-         build_video, build_showreel, build_seam, build_avatars, build_community, build_stills, build_backgrounds, build_og]
+         build_video, build_showreel, build_seam, build_avatars, build_community, build_stills, build_backgrounds, build_careers, build_og]
 
 if __name__ == "__main__":
     # no arguments builds everything; `build-assets.py avatars seam` builds

@@ -5,7 +5,7 @@ import { initAbout } from './about.js';
 import { initContribute } from './contribute.js';
 import { initWins } from './wins.js';
 import { initCommunity } from './community.js';
-import { initNav, initRails, initReveal, initCards, initFooter } from './ambient.js';
+import { initNav, initRails, initReveal, initCards, initFooter } from './ambient.js?v=2';
 import { afterLoad } from './util.js';
 import { paintLive } from './live.js';
 

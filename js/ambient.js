@@ -62,6 +62,7 @@ export function initNav() {
 
   /* current section in the navbar */
   const targets = links
+    .filter((a) => a.getAttribute('href').startsWith('#'))
     .map((a) => ({ a, sec: document.querySelector(a.getAttribute('href')) }))
     .filter((t) => t.sec);
 

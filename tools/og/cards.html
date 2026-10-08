@@ -127,6 +127,17 @@ const CARDS = {
       <p class="line" style="font-size:31px">ادخل عالم المدونة، وشارك في صناعة الفصل القادم.</p>
     </div>`),
 
+  /* انضم إلينا: the library the page opens on, its title, and the سراج head */
+  careers: () => h(`
+    <div class="bg" style="background-image:url('${ART}careers/library.jpg');--at:50% 40%;--blur:0px;inset:-10px"></div>
+    <div class="scrim" style="background:linear-gradient(to bottom, rgba(8,8,12,.55) 0%, rgba(8,8,12,.15) 30%, rgba(8,8,12,.55) 62%, rgba(8,8,12,.96) 100%), radial-gradient(70% 90% at 50% 42%, transparent 35%, rgba(8,8,12,.6) 100%)"></div>
+    <div class="copy dark" style="inset:0;width:auto;right:0;align-items:center;text-align:center;padding:120px 0 0;gap:34px">
+      <p class="eyebrow" style="font-size:27px;color:#ffe2b0">تقديم عام · تقديم متخصص</p>
+      <h1 style="--size:150px;color:#fff;text-shadow:0 0 60px rgba(255,226,176,.4), 0 6px 30px rgba(0,0,0,.7)">اِنْضَمَّ إِلَيْنَا</h1>
+    </div>
+    <img src="${IMG}careers/siraj-head.webp" style="left:64px;bottom:40px;height:104px;transform:rotate(-8deg);filter:drop-shadow(0 0 30px rgba(255,226,176,.35))">
+    ${logo(true)}`),
+
   /* the shelf: the three first pages, fanned */
   comics: () => {
     const b = (id, css) => `<img class="page" src="${PAGES}${id}/1.png" style="width:270px;height:384px;${css}">`;
@@ -183,7 +194,7 @@ const CARDS = {
 const name = new URLSearchParams(location.search).get('card') || 'home';
 const card = document.getElementById('card');
 const w = WORKS[name], c = COMICS[name];
-if ((w && !w.light) || name === 'home' || name === 'project') card.classList.add('dark');
+if ((w && !w.light) || name === 'home' || name === 'project' || name === 'careers') card.classList.add('dark');
 card.innerHTML = w ? work(w) : c ? comic(c) : (CARDS[name] || CARDS.home)();
 document.title = [...Object.keys(CARDS), ...Object.keys(WORKS), ...Object.keys(COMICS)].join(' ');
 </script>
