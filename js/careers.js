@@ -28,13 +28,13 @@ const MAX = 1500;
    sent; the relay has the same ids and writes the label itself, so a new
    craft is a row here AND a row there (JOIN_ROLES in the relay). */
 const ROLES = [
-  { id: 'edit', name: 'مونتير وموشن' },
-  { id: 'anim', name: 'أنيميتر', note: 'كليب ستوديو · إن بتوين · كي فريم' },
-  { id: 'char', name: 'مصمم شخصيات' },
-  { id: 'concept', name: 'مصمم كونسبت آرت' },
-  { id: 'brand', name: 'مصمم هويات بصرية' },
-  { id: '3d', name: 'ثري دي أنيميشن', note: 'ريق' },
-  { id: 'voice', name: 'ممثل صوتي' }
+  { id: 'edit', name: 'مونتير وموشن', mark: 'swash', c: 'var(--ember)' },
+  { id: 'anim', name: 'أنيميتر', note: 'كليب ستوديو · إن بتوين · كي فريم', mark: 'sparkles', c: 'var(--sun)' },
+  { id: 'char', name: 'مصمم شخصيات', mark: 'smile', c: 'var(--mint)' },
+  { id: 'concept', name: 'مصمم كونسبت آرت', mark: 'spiral', c: '#4db5e6' },
+  { id: 'brand', name: 'مصمم هويات بصرية', mark: 'asterisk', c: 'var(--ember)' },
+  { id: '3d', name: 'ثري دي أنيميشن', note: 'ريق', mark: 'hash', c: 'var(--mint)' },
+  { id: 'voice', name: 'ممثل صوتي', mark: 'question', c: 'var(--sun)' }
 ];
 
 const still = reduced.matches;
@@ -170,8 +170,10 @@ function initForm() {
 function initRoles() {
   const grid = $('#rolesGrid');
   ROLES.forEach((r) => {
-    const btn = el('button', { class: 'lamp', type: 'button', 'aria-pressed': 'false' },
-      el('i', { class: 'lamp__bulb', 'aria-hidden': 'true' }),
+    /* each craft wears one of the house brush marks, in one of the accents:
+       that mark is the lamp's bulb */
+    const btn = el('button', { class: 'lamp', type: 'button', 'aria-pressed': 'false', style: `--c: ${r.c}` },
+      el('i', { class: `mark mark--${r.mark} lamp__bulb`, 'aria-hidden': 'true' }),
       el('span', { class: 'lamp__name' }, r.name),
       r.note ? el('span', { class: 'lamp__note' }, r.note) : null,
       el('span', { class: 'lamp__cta' }, 'قدّم على هذا التخصص ', el('span', { 'aria-hidden': 'true' }, '↑')));
@@ -206,6 +208,21 @@ function initRoles() {
   }
 }
 
+/* The buttons that lead down to the crafts. When the crafts come into view
+   the lamps answer in a wave, one after the other, so the eye lands on them. */
+function initWave() {
+  const sec = $('#roles');
+  if (!sec || still || !('IntersectionObserver' in window)) return;
+  let asked = false;
+  $$('[data-to-roles]').forEach((a) => a.addEventListener('click', () => { asked = true; }));
+  new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting || !asked) return;
+    asked = false;
+    let i = 0;
+    for (const b of lamps.values()) setTimeout(() => b.lit.kick(5), 90 * i++);
+  }, { threshold: 0.35 }).observe(sec);
+}
+
 /* The cover leans back a little as the page leaves it. One property, written
    only while the cover is on screen. */
 function initCover() {
@@ -222,6 +239,7 @@ initNav();
 initRoles();
 initForm();
 initCover();
+initWave();
 
 /* a link straight to a craft: /careers/#voice */
 const want = location.hash.slice(1);

@@ -39,7 +39,7 @@
      page wears. Everything else on this page is careers.css. -->
 <link rel="stylesheet" href="../css/base.css?v=1791267544">
 <link rel="stylesheet" href="../css/sections.css?v=1791267544">
-<link rel="stylesheet" href="careers.css?v=2">
+<link rel="stylesheet" href="careers.css?v=3">
 
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" href="../favicon-32x32.png" type="image/png" sizes="32x32">
@@ -85,6 +85,12 @@
   <div class="shell jcover__copy">
     <p class="eyebrow"><span>تقديم عام</span><span>تقديم متخصص</span></p>
     <h1 class="jcover__title">اِنْضَمَّ إِلَيْنَا</h1>
+    <!-- both ways in are named before anything is scrolled: the crafts sit
+         below the form, and some readers never get that far -->
+    <div class="jcover__acts">
+      <a class="btn" href="#apply">التقديم العام</a>
+      <a class="btn jcover__roles" href="#roles" data-to-roles>التخصصات المطلوبة<b>٧</b><span aria-hidden="true">↓</span></a>
+    </div>
   </div>
 </section>
 
@@ -95,7 +101,8 @@
     <div class="jcard" id="joinCard">
       <header class="jcard__head">
         <h2 class="h3">التَّقْدِيمُ العَامّ</h2>
-        <p>اكتب لنا من أنت وماذا تتقن. وإن كنت تقدّم على تخصص بعينه، فاختره من الأسفل.</p>
+        <p>اكتب لنا من أنت وماذا تتقن.</p>
+        <a class="jcard__roles" href="#roles" data-to-roles>تقدّم على تخصص بعينه؟ <b>اختر من التخصصات المطلوبة <span aria-hidden="true">↓</span></b></a>
       </header>
 
       <form class="jform" id="joinForm" novalidate>
@@ -169,22 +176,74 @@
 
 </main>
 
-<!-- ================================================= the general address == -->
-<footer class="jfoot" id="contact" data-dark data-glass="#08080c">
-  <div class="shell jfoot__grid">
-    <div class="jfoot__mail">
+<!-- ============================================================ footer == -->
+<!-- The site's own footer. Its call to action is this page's fourth part:
+     the studio's general address. -->
+<footer class="pfoot" id="contact" data-dark data-glass="#08080c">
+  <div class="pfoot__clouds" aria-hidden="true">
+    <i class="cloud" style="left: -6%; width: min(30rem, 60vw);"></i>
+    <i class="cloud" style="left: 22%; width: min(22rem, 44vw); transform: scaleX(-1);"></i>
+    <i class="cloud" style="left: 44%; width: min(34rem, 66vw);"></i>
+    <i class="cloud" style="left: 76%; width: min(28rem, 56vw); transform: scaleX(-1);"></i>
+  </div>
+  <div class="pfoot__mark" aria-hidden="true"><img src="../assets/img/logo-white.webp" alt="" width="340" height="155" loading="lazy"></div>
+
+  <div class="shell">
+    <div class="pfoot__cta">
       <p class="eyebrow"><span>بريد التواصل العام</span></p>
-      <a class="jfoot__addr ltr" href="mailto:contact@mdwn.studio">contact@mdwn.studio</a>
+      <h2 class="h2 pfoot__h jmail"><a class="ltr" href="mailto:contact@mdwn.studio">contact@mdwn.studio</a></h2>
+      <p>للاستفسارات العامة وما لا يسعه النموذج. أما طلب الانضمام، فمكانه النموذج في أعلى الصفحة.</p>
+      <div class="pfoot__acts">
+        <a class="btn" href="#apply">قدّم الآن</a>
+        <a class="btn btn--ghost" href="mailto:contact@mdwn.studio">راسلنا على البريد</a>
+      </div>
     </div>
-    <div class="jfoot__bar">
-      <a class="jfoot__logo" href="../" aria-label="مدونة ستوديو، الرئيسية"><img src="../assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155" loading="lazy"></a>
+
+    <div class="pfoot__grid">
+      <div class="pfoot__brand">
+        <img src="../assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155" loading="lazy">
+        <p>استوديو أنيميشن عربي منذ ٢٠١٧. نكتب ونرسم ونحرّك قصصًا عربية أصلية، من الفكرة الأولى إلى آخر إطار.</p>
+      </div>
+      <nav aria-label="الأعمال">
+        <h3>الأَعْمَال</h3>
+        <ul>
+          <li><a href="../project.html?id=samarqand">قضية سمرقند</a></li>
+          <li><a href="../project.html?id=ghamam">غمام</a></li>
+          <li><a href="../project.html?id=hujra">باب الحجرة</a></li>
+          <li><a href="../project.html?id=lis">اللص التقي</a></li>
+          <li><a href="../project.html?id=fasl">فصل عجيب</a></li>
+          <li><a href="../project.html?id=qird">القرد والغيلم</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="الاستوديو">
+        <h3>الاسْتُودْيُو</h3>
+        <ul>
+          <li><a href="../#about">من نحن</a></li>
+          <li><a href="../#work">أعمالنا</a></li>
+          <li><a href="../#community">مجتمعنا</a></li>
+          <li><a href="./" aria-current="page">انضم إلينا</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="تابعنا">
+        <h3>تَابِعْنَا</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/@Mdwn.c" target="_blank" rel="noopener">يوتيوب</a></li>
+          <li><a href="https://www.instagram.com/mdwn.c/" target="_blank" rel="noopener">إنستغرام</a></li>
+          <li><a href="https://www.tiktok.com/@mdwn.c" target="_blank" rel="noopener">تيك توك</a></li>
+          <li><a href="https://discord.gg/RBtp2JVXm6" target="_blank" rel="noopener">ديسكورد</a></li>
+          <li><a href="https://www.patreon.com/mdwn" target="_blank" rel="noopener">باتريون</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="pfoot__bar">
       <span>© ٢٠٢٦ مدونة ستوديو. كل الحقوق محفوظة.</span>
-      <a href="#top">العودة إلى الأعلى ↑</a>
+      <a class="pfoot__up" href="#top">العودة إلى الأعلى ↑</a>
     </div>
   </div>
 </footer>
 
-<script type="module" src="../js/careers.js?v=2"></script>
+<script type="module" src="../js/careers.js?v=3"></script>
 
 </body>
 </html>

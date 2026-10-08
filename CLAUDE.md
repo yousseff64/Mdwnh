@@ -317,9 +317,17 @@ lit options, and the general contact address.
   teaser. The leader's reasoning: the internal system is a competitive edge,
   and a company says "flexible hours", it does not publish how it runs them.
   Do not add "life at the studio" material to this page.
-- **Black and quiet.** The only colour is the warm white of the library's
-  lamps (`--lamp`). No clouds, no brush marks, no accent colours here: this
-  page is the one exception to "no negative space".
+- **Black, with the brand on what you press.** The page itself stays dark
+  and plain, lit by the warm white of the library's lamps. The brand lives
+  on the controls: the buttons are sun yellow, each craft wears one of the
+  house brush marks in one of the accents (that mark is its lamp), and the
+  footer is the site's own, cloud bank included, with the studio's address
+  as its headline. Do not scatter clouds or marks over the rest of the page.
+- **Both ways in are named on the cover.** `التقديم العام` and
+  `التخصصات المطلوبة` (with how many are open) sit under the title, and the
+  form's header links down to the crafts too, because the crafts are below
+  the form and some readers never scroll that far. The count on the button
+  is written in the HTML: change it when `ROLES` changes.
 - **There is one form.** Sent as it is, it is the general application.
   Pressing a craft tags the same form with it and brings it back into view;
   `/careers/#<id>` opens it already tagged.
