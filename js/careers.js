@@ -33,7 +33,7 @@ const ROLES = [
   { id: 'char', name: 'مصمم شخصيات', mark: 'smile', c: 'var(--mint)' },
   { id: 'concept', name: 'مصمم كونسبت آرت', mark: 'spiral', c: '#4db5e6' },
   { id: 'brand', name: 'مصمم هويات بصرية', mark: 'asterisk', c: 'var(--ember)' },
-  { id: '3d', name: 'ثري دي أنيميشن', note: 'ريق', mark: 'hash', c: 'var(--mint)' },
+  { id: '3d', name: 'ثري دي أنيميشن', note: 'ريق · موديلنق · صناعة خامات', mark: 'hash', c: 'var(--mint)' },
   { id: 'voice', name: 'ممثل صوتي', mark: 'question', c: 'var(--sun)' }
 ];
 
