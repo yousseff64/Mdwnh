@@ -14,10 +14,10 @@
 
 import { $, $$, el, reduced, tick, whileVisible, cloudDrift, spring, step } from './util.js';
 
-/* What each سراج says when the ring comes round to them. مصباح is sharing
-   his screen and the studio's showreel is what is on it, so that is the only
-   thing anyone in the room talks about: he is showing it, the other three
-   are reacting to it. They speak Gulf, Egyptian and Levantine, the
+/* What each سراج says when the ring comes round to them. The blue سراج is
+   sharing his screen and the studio's showreel is what is on it, so that
+   is the only thing anyone in the room talks about: he is showing it,
+   the other three are reacting to it. They speak Gulf, Egyptian and Levantine, the
    dialects most of the club reads without effort. There was a Maghrebi
    voice too, and the client had it taken out: do not bring it back. Keep
    every line about the reel. */
