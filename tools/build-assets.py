@@ -78,9 +78,6 @@ def build_images():
         (src("Art", "shekih.png"), "sheikh.webp", 400),
         (src("Art", "Safi.png"), "safi.webp", 260),
         (src("Art", "ryan.png"), "ryan.webp", 260),
-        (src("logo.png"), "logo-white.webp", 340),
-        (src("footer-logo.png"), "logo-dark.webp", 380),
-        (src("Circle Logo.png"), "logo-mark.webp", 200),
     ]
     # The eight full body سراج poses, numbered in file order.
     poses = [src("Art", f) for f in listdir(src("Art"))
@@ -96,6 +93,41 @@ def build_images():
             im = im.crop(bb)  # trim dead alpha so the CSS box matches the art
         total += save_webp(im, os.path.join(d, name), width)
     print(f"img      {len(jobs):3d} files  {total / 1024:8.0f} KB")
+
+
+def build_logos():
+    """The studio's logos, from the 2026 rebrand masters in Art/brand/ (each
+    one is the brand's own SVG rendered large, transparent). Also writes the
+    favicons at the root: the black mark on white, the way the tabs show it."""
+    d = ensure("img")
+    jobs = [
+        ("lockup-ar-white.png", "logo-white.webp", 340),  # mark + مدونة STUDIO
+        ("lockup.png", "logo-dark.webp", 380),            # MDWNH + mark + مدونة
+        ("mark-white.png", "logo-mark.webp", 200),
+    ]
+    total = 0
+    for name, out, width in jobs:
+        im = Image.open(src("Art", "brand", name)).convert("RGBA")
+        im = im.crop(im.getbbox())
+        total += save_webp(im, os.path.join(d, out), width, quality=90)
+
+    mark = Image.open(src("Art", "brand", "mark.png")).convert("RGBA")
+    mark = mark.crop(mark.getbbox())
+
+    def tile(size):
+        # the mark fills 86% of the square, as it did before the rebrand
+        m = mark.copy()
+        m.thumbnail((round(size * 0.86),) * 2, Image.LANCZOS)
+        im = Image.new("RGBA", (size, size), (255, 255, 255, 255))
+        im.alpha_composite(m, ((size - m.width) // 2, (size - m.height) // 2))
+        return im.convert("RGB")
+
+    for size, name in [(16, "favicon-16x16.png"), (32, "favicon-32x32.png"),
+                       (180, "apple-touch-icon.png"), (192, "android-chrome-192x192.png"),
+                       (512, "android-chrome-512x512.png")]:
+        tile(size).save(src(name), optimize=True)
+    tile(256).save(src("favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
+    print(f"logos      3 files  {total / 1024:8.0f} KB  + favicons")
 
 
 def build_banners():
@@ -880,7 +912,7 @@ def build_og(only=None):
     print(f"og       {len(OG_CARDS):3d} files  {total / 1024:8.0f} KB")
 
 
-STEPS = [build_images, build_banners, build_covers, build_scenery, build_icons, build_award, build_wins, build_fall,
+STEPS = [build_images, build_logos, build_banners, build_covers, build_scenery, build_icons, build_award, build_wins, build_fall,
          build_video, build_showreel, build_seam, build_avatars, build_community, build_stills, build_backgrounds, build_careers, build_og]
 
 if __name__ == "__main__":

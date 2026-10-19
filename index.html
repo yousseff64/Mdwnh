@@ -26,22 +26,16 @@
 <meta name="twitter:description" content="استوديو أنيميشن عربي. ادخل عالم المدونة وشارك في صناعة الفصل القادم.">
 <meta name="twitter:image" content="https://mdwn.studio/assets/og/home.jpg">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Only the weights the page uses. Loaded without blocking the first paint:
-     the text shows in the fallback face and swaps once the fonts land. -->
-<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=swap"></noscript>
+<link rel="preload" href="fonts/norsal.woff2" as="font" type="font/woff2" crossorigin>
 
 <link rel="preload" as="image" href="assets/img/hujra.webp" fetchpriority="high">
 <!-- the live numbers (scripts/fetch-stats.mjs rewrites it hourly). A plain
      script so it is on window before any module runs; the page reads fine
      without it, because every figure is also written into the HTML. -->
-<script defer src="assets/stats-data.js?v=1791267544"></script>
-<link rel="stylesheet" href="css/base.css?v=1791267544">
-<link rel="stylesheet" href="css/cover.css?v=1791267544">
-<link rel="stylesheet" href="css/sections.css?v=1791267544">
+<script defer src="assets/stats-data.js?v=1792440790"></script>
+<link rel="stylesheet" href="css/base.css?v=1792440790">
+<link rel="stylesheet" href="css/cover.css?v=1792440790">
+<link rel="stylesheet" href="css/sections.css?v=1792440790">
 
 <!-- every module up front, so the imports load side by side instead of
      one level at a time -->
@@ -91,7 +85,7 @@
 <!-- ===================================================== navbar ======== -->
 <header class="nav" id="nav" data-on-tone>
   <a class="nav__logo" href="#news" aria-label="مدونة ستوديو">
-    <img id="navLogo" src="assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155">
+    <img id="navLogo" src="assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="176">
   </a>
 
   <button class="nav__burger" id="burger" aria-expanded="false" aria-controls="navLinks" aria-label="القائمة">
@@ -577,7 +571,7 @@
     <i class="cloud" data-seed="8" style="--x: 62%; --s: 0.58"></i>
     <i class="cloud" data-seed="9" data-flip="1" style="--x: 84%; --s: 0.76"></i>
   </div>
-  <div class="pfoot__mark" aria-hidden="true"><img src="assets/img/logo-white.webp" alt="" width="340" height="155" loading="lazy"></div>
+  <div class="pfoot__mark" aria-hidden="true"><img src="assets/img/logo-white.webp" alt="" width="340" height="176" loading="lazy"></div>
 
   <div class="shell">
     <div class="pfoot__cta">
@@ -593,7 +587,7 @@
 
     <div class="pfoot__grid">
       <div class="pfoot__brand">
-        <img src="assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="155" loading="lazy">
+        <img src="assets/img/logo-white.webp" alt="مدونة ستوديو" width="340" height="176" loading="lazy">
         <p>استوديو أنيميشن عربي منذ ٢٠١٧. نكتب ونرسم ونحرّك قصصًا عربية أصلية، من الفكرة الأولى إلى آخر إطار.</p>
       </div>
       <nav aria-label="الأعمال">

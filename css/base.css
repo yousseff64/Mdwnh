@@ -3,6 +3,17 @@
    reuses: eyebrows, headers, buttons, brush icons, clouds, rails.
    ============================================================ */
 
+/* Norsal, the house face since the 2026 rebrand. It is not on Google Fonts,
+   so it ships here: one variable file carries every weight from 100 to 900,
+   Arabic, Latin and tashkeel. */
+@font-face {
+  font-family: 'Norsal';
+  src: url('../fonts/norsal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* brand */
   --paper: #FBFAF9;
@@ -11,6 +22,8 @@
   --sun: #F7D038;
   --mint: #45C4B9;
   --sky: #0084C1;
+  --amber: #F29A2E;
+  --plum: #713AB8;
 
   /* derived */
   --ink-70: #323232b3;
@@ -35,8 +48,8 @@
   --bay: clamp(4.5rem, min(6vw, 10svh), 7rem);
 
   /* type */
-  --display: 'Baloo Bhaijaan 2', 'Rubik', system-ui, sans-serif;
-  --body: 'Rubik', system-ui, -apple-system, sans-serif;
+  --display: 'Norsal', system-ui, -apple-system, sans-serif;
+  --body: 'Norsal', system-ui, -apple-system, sans-serif;
 
   --t-hero: clamp(2.75rem, 8.5vw, 7rem);
   --t-h2: clamp(2.25rem, 6.5vw, 5.25rem);

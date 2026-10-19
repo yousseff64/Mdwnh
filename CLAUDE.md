@@ -94,6 +94,11 @@ live there is archived, whole and working, at `mdwn.studio/old`.
 art at the top of `Art/`, and those files now live in `Art/projects/`. Run one
 step at a time (`build-assets.py stills`) until the paths are reconciled.
 
+The logos are their own step, `build-assets.py logos`. It reads the 2026
+rebrand masters in `Art/brand/` (the brand's SVGs, rendered large and
+transparent) and writes `logo-white.webp`, `logo-dark.webp`,
+`logo-mark.webp`, and the favicons at the root.
+
 ## Assets
 
 `assets/` is **generated output**. To change an asset, change the source in
@@ -125,8 +130,17 @@ and ES modules served statically from Firebase Hosting.
 | sun | `#F7D038` | accent |
 | mint | `#45C4B9` | accent |
 | sky | `#0084C1` | accent |
+| amber | `#F29A2E` | accent, added in the 2026 rebrand |
+| plum | `#713AB8` | accent, added in the 2026 rebrand |
 
-Fonts: **Rubik** for body and UI, **Baloo Bhaijaan 2** for display headers.
+Font: **Norsal** (Baianat) for everything, body and display alike. It is not
+on Google Fonts, so it ships from `fonts/norsal.woff2`: one variable file,
+58 KB, every weight from 100 to 900, upright only. Each stylesheet that is
+loaded on its own (`css/base.css`, `comics/viewer/style.css`,
+`analytics/styles.css`) declares it, and every page preloads it. Headers are
+800, `.h3`, buttons and nav are 700, body is 400. The file was cut from the
+copy installed on the studio Mac (`~/Library/Fonts/alfont_com_NorsalGX.ttf`)
+with the italic axis pinned to upright.
 Never apply `letter-spacing` to Arabic text: it breaks the joins. Latin
 marginalia may be tracked.
 

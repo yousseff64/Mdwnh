@@ -159,7 +159,7 @@ const KINDS = {
       ctx.rotate(p.rot);
       ctx.globalAlpha = 0.07 + 0.15 * Math.min(1, p.z);
       ctx.fillStyle = p.c;
-      ctx.font = `600 ${(p.size * p.z).toFixed(1)}px Rubik, system-ui, sans-serif`;
+      ctx.font = `600 ${(p.size * p.z).toFixed(1)}px Norsal, system-ui, sans-serif`;
       ctx.fillText(p.s, 0, 0);
     }
   },
@@ -575,7 +575,7 @@ const PIECES = {
       }
       svg += `<g class="orbit__ring" style="--spin:${Math.abs(s)}s;animation-direction:${s < 0 ? 'reverse' : 'normal'}">`
         + `<circle r="${r}" fill="none" stroke="${th.accent}" stroke-width="${w}" stroke-opacity="${(0.85 - i * 0.12).toFixed(2)}"/>`
-        + `<g fill="${th.accent}" fill-opacity="${(0.75 - i * 0.1).toFixed(2)}" font-size="${22 - i * 1.5}" font-family="Rubik, sans-serif" font-weight="600">${marks}</g></g>`;
+        + `<g fill="${th.accent}" fill-opacity="${(0.75 - i * 0.1).toFixed(2)}" font-size="${22 - i * 1.5}" font-family="Norsal, sans-serif" font-weight="600">${marks}</g></g>`;
     });
     svg += `<circle r="120" fill="url(#holeRing)"/><circle r="86" fill="#04030c"/></svg>`;
     return { node: el('div', { class: 'orbit', html: svg }) };

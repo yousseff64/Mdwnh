@@ -7,11 +7,11 @@
      twelve cards: open it with ?card=<name> and `build-assets.py og`
      photographs the 1200 by 630 frame into assets/og/<name>.jpg.
      Nothing here ships: it reads the masters in Art/ directly. -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@700;800&family=Rubik:wght@400;500;600;700&display=block">
 <style>
+@font-face { font-family: 'Norsal'; src: url('../../fonts/norsal.woff2') format('woff2'); font-weight: 100 900; font-display: block; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 1200px; height: 630px; overflow: hidden; }
-body { font-family: 'Rubik', sans-serif; background: #FBFAF9; color: #323232; }
+body { font-family: 'Norsal', sans-serif; background: #FBFAF9; color: #323232; }
 .card { position: relative; width: 1200px; height: 630px; overflow: hidden; }
 .card > * { position: absolute; }
 
@@ -21,7 +21,7 @@ body { font-family: 'Rubik', sans-serif; background: #FBFAF9; color: #323232; }
 /* the copy always stands on the right, where an Arabic line starts */
 .copy { top: 0; bottom: 0; right: 76px; width: 600px; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding-bottom: 60px; }
 .eyebrow { white-space: nowrap; font-size: 29px; font-weight: 600; color: var(--accent); }
-h1 { font-family: 'Baloo Bhaijaan 2', sans-serif; font-weight: 800; font-size: var(--size, 104px); line-height: 1.12; text-wrap: balance; }
+h1 { font-family: 'Norsal', sans-serif; font-weight: 800; font-size: var(--size, 104px); line-height: 1.12; text-wrap: balance; }
 .line { font-size: 34px; font-weight: 500; line-height: 1.5; opacity: .92; text-wrap: balance; }
 .dark .copy { color: #fff; text-shadow: 0 2px 22px rgba(0, 0, 0, .45); }
 

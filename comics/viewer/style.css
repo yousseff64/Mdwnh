@@ -1,14 +1,22 @@
 /* The reader's own chrome, dressed to match the site it sits inside:
    the house night, the house accent, and the display face on the title.
    The flipbook itself is untouched. */
+@font-face {
+    font-family: 'Norsal';
+    src: url('../../fonts/norsal.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --bg-color: #0B0B12;
     --nav-bg: rgba(11, 11, 18, 0.82);
     --text-primary: #FFFDF7;
     --text-secondary: #fffdf78f;
     --accent: #F7D038;
-    --font-main: 'Rubik', system-ui, sans-serif;
-    --font-display: 'Baloo Bhaijaan 2', 'Rubik', system-ui, sans-serif;
+    --font-main: 'Norsal', system-ui, sans-serif;
+    --font-display: 'Norsal', system-ui, sans-serif;
 }
 
 * {

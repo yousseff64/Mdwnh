@@ -2,6 +2,14 @@
    Was inline in index.html; split out so the browser can cache it and so the
    markup stays readable.                                                      */
 
+@font-face {
+    font-family: 'Norsal';
+    src: url('../fonts/norsal.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --black:    #0e0e10;
     --raisin:   #16161a;
@@ -21,7 +29,7 @@
     --purple:   #a78bfa;
     --orange:   #fb923c;
     --pink:     #f472b6;
-    --font:     'Rubik', system-ui, sans-serif;
+    --font:     'Norsal', system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }

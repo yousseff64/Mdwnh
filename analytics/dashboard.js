@@ -1053,7 +1053,7 @@ function buildScopeNav() {
     }
 
     /* Re-measure from whatever the active pill currently is. A single early
-       requestAnimationFrame was not enough: the Rubik webfont swaps in after
+       requestAnimationFrame was not enough: the Norsal webfont swaps in after
        it runs and changes every pill's width, so the highlight sat a little
        off until the first tap re-measured it — and if the tab is opened in the
        background the frame never fires at all, leaving it at 0. Re-sync on
@@ -1217,7 +1217,7 @@ function initDashboard() {
 
     Chart.defaults.color = 'rgba(245,244,242,0.5)';
     Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
-    Chart.defaults.font.family = "'Rubik', sans-serif";
+    Chart.defaults.font.family = "'Norsal', sans-serif";
     Chart.defaults.font.size = 11;
     Chart.defaults.animation.duration = 400;
 
