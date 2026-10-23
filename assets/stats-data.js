@@ -3,7 +3,7 @@
    what can be read off a public page. */
 window.MDWNH_STATS = {
   "ytViews": 1395739,
-  "ytSubsText": "37.3 ألف مشترك",
+  "ytSubsText": "37.4 ألف مشترك",
   "ytVideos": 101,
   "discMembers": 1356,
   "at": "2026-10-23"
