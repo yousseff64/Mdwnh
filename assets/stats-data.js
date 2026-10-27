@@ -5,6 +5,6 @@ window.MDWNH_STATS = {
   "ytViews": 1396381,
   "ytSubsText": "37.3 ألف مشترك",
   "ytVideos": 101,
-  "discMembers": 1358,
+  "discMembers": 1357,
   "at": "2026-10-27"
 };
