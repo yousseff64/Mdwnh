@@ -2,9 +2,9 @@
    The hand entered numbers live in v4/js/data.js; this file only carries
    what can be read off a public page. */
 window.MDWNH_STATS = {
-  "ytViews": 1397653,
+  "ytViews": 1397728,
   "ytSubsText": "37.3 ألف مشترك",
   "ytVideos": 101,
   "discMembers": 1357,
-  "at": "2026-11-02"
+  "at": "2026-11-03"
 };
