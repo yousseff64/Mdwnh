@@ -3,7 +3,7 @@
 
     cd production && python3 tools/build-assets.py [step]
 
-Steps: hero, brand, fonts, works, titles, og. With no step, all but `fonts`
+Steps: hero-loop, hero, brand, fonts, works, titles, og. With no step, all but `fonts`
 and `og` run (those two need fontTools and Chrome). Needs Pillow and cwebp.
 Every file it writes is committed, so this only has to be run when a master
 changes, but when one does, run it rather than editing a derivative by hand.
@@ -32,8 +32,9 @@ def report(path):
 
 
 # ── the two big pictures that are not a work ──────────────────────────
-# hero.png is the library render behind المدونة's own banner (Logos/BG2.png
-# in the identity folder: the aisle of books looking up into the stars).
+# hero.png is the library render behind المدونة's own banner: a frame of the
+# shot the hero loop is made from, written there by `hero-loop` so the still
+# and the video's first frame are the same picture.
 # It is held down a little in the file itself, so the white wordmark reads
 # on it without a CSS filter or an overlay. about.jpg is the second library
 # render (Logos/BG.jpg: the reading table under the lamps).
@@ -55,6 +56,80 @@ def build_hero():
             subprocess.run(args, check=True)
             report(out)
         os.remove(tmp)
+
+
+# ── the hero, moving ──────────────────────────────────────────────
+# The hero's library is one frame of a rendered shot: the camera tilting up
+# the aisle, 240 frames at 1920x1080 in the campaign folder (HERO_SEQ, read
+# only, never copied: it is 660 MB). This turns it into a silent loop:
+#
+#   * Every frame is kept and played at 24 fps, so the pan never stutters.
+#   * The last LOOP_FADE frames dissolve into the first ones (smoothstep), so
+#     the loop has no jump: 240 - 48 = 192 frames, 8 seconds.
+#   * The file starts on a pure frame, f[LOOP_FADE], and that same frame
+#     (undarkened) is written to masters/hero.png, so the still the page
+#     paints first and the video's first frame are one picture and the
+#     video fades in over it without a seam. Run `hero` after this step.
+#   * Each frame is held down to 0.6 like the still.
+#   * Two cuts: 1920x1080 for wide screens, and a 576x720 middle column for
+#     phones, where the hero is taller than it is wide and a 16:9 file would
+#     spend most of its bytes off screen. x264 at veryslow with aq-mode 3,
+#     which keeps the fog's dark gradients from banding.
+#
+# The page never waits for any of this: the still is what paints, and
+# script.js asks for the video only after the page has loaded (see there).
+HERO_SEQ = "/Volumes/Sigma Drive/الشغل 2/المدونة/حملة الفراغ/shot 14 +/env"
+LOOP_FADE = 48
+LOOP_FPS = 24
+LOOP_LIGHT = 0.6
+
+
+def build_hero_loop():
+    import glob
+    frames = sorted(f for f in glob.glob(f"{HERO_SEQ}/e*.png") if not os.path.basename(f).startswith("._"))
+    if not frames:
+        print("  hero-loop: the sequence is not mounted, skipped")
+        return
+    n, F = len(frames), LOOP_FADE
+    M = n - F
+    # the file's frame j is the loop's frame F + j: pure frames f[F..M-1],
+    # then the dissolve from the tail f[M..n-1] into the head f[0..F-1]
+    order = [("one", F + j) for j in range(M - F)] + [("mix", i) for i in range(F)]
+
+    def frame(k):
+        return Image.open(frames[k]).convert("RGB")
+
+    Image.open(frames[F]).convert("RGB").save(f"{SRC}/hero.png")
+    print(f"  hero.png is frame {F + 1} of {n}")
+
+    def enc(out, size, crf):
+        w, h = size
+        return subprocess.Popen(
+            ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{w}x{h}",
+             "-r", str(LOOP_FPS), "-i", "-", "-an", "-c:v", "libx264", "-preset", "veryslow",
+             "-crf", str(crf), "-x264-params", "aq-mode=3:aq-strength=0.9", "-pix_fmt", "yuv420p",
+             "-vf", "scale=out_color_matrix=bt709:out_range=tv", "-colorspace", "bt709",
+             "-color_primaries", "bt709", "-color_trc", "bt709", "-movflags", "+faststart", out],
+            stdin=subprocess.PIPE)
+
+    wide = enc(f"{OUT}/hero-loop.mp4", (1920, 1080), 21)
+    tall = enc(f"{OUT}/hero-loop-tall.mp4", (576, 720), 22)
+    col = (1920 - 864) // 2            # a 4:5 column from the middle, 864x1080
+    for kind, k in order:
+        if kind == "one":
+            im = frame(k)
+        else:
+            t = (k + .5) / F
+            t = t * t * (3 - 2 * t)        # smoothstep: the dissolve eases in and out
+            im = Image.blend(frame(M + k), frame(k), t)
+        im = ImageEnhance.Brightness(im).enhance(LOOP_LIGHT)
+        wide.stdin.write(im.tobytes())
+        tall.stdin.write(im.crop((col, 0, col + 864, 1080)).resize((576, 720), Image.LANCZOS).tobytes())
+    for p in (wide, tall):
+        p.stdin.close()
+        p.wait()
+    report(f"{OUT}/hero-loop.mp4")
+    report(f"{OUT}/hero-loop-tall.mp4")
 
 
 # ── the asterisk, favicon, install tiles ─────────────────────────────
@@ -240,7 +315,7 @@ body{{position:relative;font-family:N,sans-serif}}
     report(out)
 
 
-STEPS = {"hero": build_hero, "brand": build_brand,
+STEPS = {"hero-loop": build_hero_loop, "hero": build_hero, "brand": build_brand,
          "fonts": build_fonts, "works": build_works, "titles": build_titles, "og": build_og}
 
 if __name__ == "__main__":

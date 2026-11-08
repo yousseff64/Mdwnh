@@ -48,7 +48,7 @@ import re
 import struct
 
 # Bump when styles.css or script.js change: nothing here fingerprints them.
-VER = "20261108m2"
+VER = "20261108m3"
 
 SITE = "https://mdwn.studio/production"
 
@@ -1291,7 +1291,7 @@ def home_body(p):
     lang, root = p["lang"], p["root"]
     hero = still(HERO)
     return f"""<section class="hero" data-hero>
-  <div class="hero-bg">{pic(root, hero, lang, "hero-img", eager=True, alt="")}</div>
+  <div class="hero-bg" data-hero-loop data-src="{root}assets/hero-loop.mp4" data-src-tall="{root}assets/hero-loop-tall.mp4">{pic(root, hero, lang, "hero-img", eager=True, alt="")}</div>
   <div class="hero-mark">
     <h1 class="hero-logo">{logo('word', lang, 'logo', T(lang, 'المدونة ستوديو، قسم الإنتاج', 'Mdwnh Studio, Production'))}</h1>
     <p class="hero-dept" aria-hidden="true">{T(lang, *DEPT)}</p>

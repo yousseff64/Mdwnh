@@ -171,6 +171,43 @@ if (mq) {
   addEventListener("pointercancel", release);
 }
 
+/* ── The hero, moving ──
+   The hero paints as a still (preloaded, a few KB) and nothing on the first
+   screen waits for the video. Only once the page has loaded, and the
+   browser is idle, is the loop asked for: the 8 second camera tilt up the
+   library, dissolving back into its start (tools/build-assets.py
+   hero-loop). It starts on the very frame the still shows and fades in over
+   it, so the moment it takes over is invisible. Phones (the hero is taller
+   than wide there) get the narrow cut, a fifth of the size. Never under
+   reduced motion, never on Save-Data or a 2G/3G connection, and it pauses
+   whenever the hero is off screen. Silent: muted, and the file has no
+   audio track at all. */
+const heroLoop = document.querySelector("[data-hero-loop]");
+if (heroLoop && !reduced) {
+  const net = navigator.connection;
+  const slow = net && (net.saveData || /2g|3g/.test(net.effectiveType || ""));
+  if (!slow) {
+    const start = () => {
+      const v = document.createElement("video");
+      v.className = "hero-vid";
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto";
+      v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
+      v.setAttribute("aria-hidden", "true");
+      v.disablePictureInPicture = true;
+      v.src = matchMedia("(max-width: 600px)").matches ? heroLoop.dataset.srcTall : heroLoop.dataset.src;
+      v.addEventListener("playing", () => v.classList.add("on"), { once: true });
+      heroLoop.append(v);
+      new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      }).observe(heroLoop);
+    };
+    const later = () => (window.requestIdleCallback ? requestIdleCallback(start, { timeout: 1500 }) : setTimeout(start, 200));
+    if (document.readyState === "complete") later();
+    else addEventListener("load", later, { once: true });
+  }
+}
+
 /* ── Entrances: one observer for every .reveal ──
    Fires once the element's top is a little way into the screen, so it
    plays where the eye is, not in the corner of it. */

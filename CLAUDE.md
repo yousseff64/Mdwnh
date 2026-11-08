@@ -442,6 +442,16 @@ in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
   and English on English ones. The hero is the identity's own banner: the
   library render (`masters/hero.png`, held down in the file) with the
   wordmark centred and the contact line under it.
+- **The hero moves, without costing the first screen.** The library is a
+  frame of a rendered tilt (240 PNGs in `الشغل 2/المدونة/حملة الفراغ/shot
+  14 +/env`, read in place). `build-assets.py hero-loop` keeps every frame
+  at 24 fps, dissolves the last 2 s into the first, and writes an 8 s loop
+  (`assets/hero-loop.mp4`, 1920x1080, ~1.6 MB) and a phone column
+  (`hero-loop-tall.mp4`, 576x720, ~0.4 MB), plus `masters/hero.png`, the
+  loop's first frame, so run `hero` after it: the still and the video's
+  first frame are one picture. The page paints the still; script.js asks
+  for the video only after `load`, fades it in, pauses it off screen, and
+  skips it under reduced motion, Save-Data or 2G/3G.
 - **Pictures are data**: `masters/works/<id>/manifest.json`, web copies in
   `assets/works/<id>/`, `build-assets.py works` for the phone sizes. The
   heavy masters are gitignored like /Art. Every rule from Satr holds: never
