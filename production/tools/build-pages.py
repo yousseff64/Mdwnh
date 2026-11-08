@@ -355,7 +355,7 @@ WORKS = [
         # title lettering's purple (the manifest's accent) was the loudest
         # card on the rail
         tint="#380820",
-        original=True,
+        title_logo=True,   # the page is titled with the film's own lettering (client)
         name=("غمام", "Ghamam"),
         kind=("فيلم أنيميشن قصير", "Short animated film"),
         kinds=["animation"],
@@ -380,11 +380,10 @@ WORKS = [
         did=[],
         result=("المركز الثاني", ("مسابقة الإنتاج المرئي للنشء", "Second place in the youth visual production competition.")),
         result_label=("الإنجاز", "Recognition"),
-        links=[(("شاهد الفيلم", "Watch the film"), "https://www.youtube.com/watch?v=bCkfuh_2yUE", True)],
     ),
     dict(
         id="samarqand", accent="#3F5D80",
-        original=True,
+        title_logo=True,
         name=("قضية سمرقند", "The Samarkand Case"),
         kind=("قصة مصورة", "Comic"),
         kinds=["comics"],
@@ -406,9 +405,9 @@ WORKS = [
                   "We turned real events into a comic: we wrote its dialogue, designed its characters, and drew it."),
         did=[],
         result=None,
-        # the reader lives on this same domain, so it opens in the same tab
-        links=[(("اقرأ القصة المصورة", "Read the comic"), "../Samrqand/", False),
-               (("شاهد الفيلم", "Watch the film"), "https://www.youtube.com/watch?v=aU4dZUsIVxk", True)],
+        # the reader lives on this same domain, so it opens in the same tab.
+        # No link to the film: the client took «شاهد الفيلم» off both pages
+        links=[(("اقرأ القصة المصورة", "Read the comic"), "../Samrqand/", False)],
     ),
     dict(
         id="blnz", accent="#002F26",
@@ -951,12 +950,21 @@ def case_page(p):
                if os.path.exists(f"assets/works/{pid}/{n}.{e}")), "")
     clogo = (f'<img class="c-logo" src="{root}{lg}" alt="{T(lang, *w["name"])}" loading="eager">'
              if lg and not w.get("logo_on_dark") else "")
-    crumb_kind = T(lang, *w['kind'])
-    if w.get("original"):
-        crumb_kind = T(lang, "إنتاج أصلي", "Original production") + ' <span aria-hidden="true">/</span> ' + crumb_kind
+    # A work with its own title lettering is titled with it, in its own
+    # colours, instead of the name set in type; the small mark above would
+    # then say the same thing twice, so it goes (client). The breadcrumb
+    # (الأعمال / kind) is gone from every page: the client found it noise.
+    tl = f"assets/works/{pid}/title-logo.webp"
+    if w.get("title_logo") and os.path.exists(tl):
+        tw, th = webp_size(tl)
+        title = (f'<h1 class="c-title c-title-logo enter blur"><img src="{root}{tl}" width="{tw}" height="{th}" '
+                 f'alt="{T(lang, *w["name"])}" fetchpriority="high"></h1>')
+        clogo = ""
+    else:
+        title = f'<h1 class="c-title enter blur">{T(lang, *w["name"])}</h1>'
     out.append(f"""<section class="c-head wrap">
-  {clogo}<p class="crumb"><a href="{root}{url(lang, 'projects')}">{T(lang, 'الأعمال', 'Work')}</a> <span aria-hidden="true">/</span> {crumb_kind}</p>
-  <h1 class="c-title enter blur">{T(lang, *w['name'])}</h1>
+  {clogo}
+  {title}
   <div class="c-intro"><p class="c-line enter">{T(lang, *w['line'])}</p>{case_links(w, lang, root)}</div>
   {meta_list(w, lang)}
 </section>
@@ -1316,17 +1324,20 @@ def about_body(p):
     big = still(ABOUT, ("مكتبة المدونة", "The Mdwnh library"))
     steps = "".join(f'<li><span class="sv-n" dir="ltr">{i:02d}</span><span class="sv-name">{T(lang, *n)}</span>'
                     f'<span class="sv-d">{T(lang, *d)}</span></li>' for i, (n, d) in enumerate(STEPS, 1))
-    # «من نحن» is the 2026 profile's own page 09 («من وراء المدونة؟»)
+    # This site is قسم الإنتاج, المدونة's department for clients: an agency
+    # for that one purpose, separate from the المدونة its audience knows. So
+    # none of the fan world's voice belongs here («عالم خيالي ماتع» was
+    # taken off this page by the client). Written at the client's request.
     return f"""<section class="p-head wrap">
-  <h1 class="h1 enter blur">{T(lang, 'عن المدونة', 'About Mdwnh')}</h1>
-  <p class="p-sub enter">{T(lang, 'عالم خيالي ماتع يعج بالقصص والشخصيات الأصيلة.', 'A world full of original stories and characters.')}</p>
+  <h1 class="h1 enter blur">{T(lang, 'قسم الإنتاج', 'Mdwnh Production')}</h1>
+  <p class="p-sub enter">{T(lang, 'قسم في المدونة مخصص لإنتاج أعمال عالية الجودة للعملاء.', 'A department of Mdwnh dedicated to making high-quality work for clients.')}</p>
 </section>
 {bleed(root, big, lang) if os.path.exists(ABOUT) else ''}
 <section class="blk wrap">
   <h2 class="blk-label">{T(lang, 'من نحن', 'Who we are')}</h2>
   <div class="blk-body">
-    <p class="lead">{T(lang, 'أكثر من 25 مبدعًا من شتى بلدان العالم والتخصصات، اجتمعوا لخدمة هذه الرسالة.', 'More than 25 creatives from many countries and many crafts, brought together by one purpose.')}</p>
-    <p>{T(lang, 'تتكامل مواهبهم في ستة تخصصات، من كتابة القصص وبناء عوالمها، إلى الرسم والتحريك والتصميم والمونتاج والأداء الصوتي، ليخرجوا الأفكار من حيز الخيال إلى أعمال يراها الناس ويتفاعلون معها.', 'Their work meets across six crafts, from writing stories and building their worlds to drawing, animation, design, editing and voice, to take ideas out of the imagination and into work people watch and answer.')}</p>
+    <p class="lead">{T(lang, 'قسم الإنتاج هو ذراع المدونة للعملاء: فريق يصنع أعمالًا عالية الجودة للشركات والجهات والجمعيات، ويتولى المشروع من الفكرة حتى التسليم.', 'The production department is Mdwnh’s arm for clients: a team that makes high-quality work for companies, organisations and non-profits, and runs each project from the idea to delivery.')}</p>
+    <p>{T(lang, 'وهو منفصل عن المدونة التي يعرفها الجمهور بقصصها وشخصياتها وأعمالها الأصلية. هنا نعمل كوكالة إنتاج: نصنع ما يحتاجه العميل، من الأنيميشن والموشن جرافيك إلى التصوير والمونتاج والبودكاست والهوية البصرية وتغطية الفعاليات، ونستند في ذلك إلى فريق المدونة، أكثر من 25 مبدعًا في الكتابة والرسم والتحريك والتصميم والمونتاج والأداء الصوتي.', 'It is separate from the Mdwnh audiences know, with its stories, characters and original work. Here we work as a production agency: we make what the client needs, from animation and motion graphics to filming, editing, podcasts, visual identity and event coverage, drawing on Mdwnh’s team of more than 25 creatives in writing, drawing, animation, design, editing and voice.')}</p>
   </div>
 </section>
 <section class="blk wrap">
@@ -1389,8 +1400,9 @@ def pages():
                             title=T(lang, f"{w['name'][0]} | أعمال المدونة", f"{w['name'][1]} | Mdwnh Studio"),
                             desc=T(lang, *w["line"])))
         out.append(dict(lang=lang, slug="about", body=about_body, cls="about",
-                        title=T(lang, "عن المدونة | المدونة ستوديو", "About | Mdwnh Studio"),
-                        desc=T(lang, "من نحن، كيف نعمل، وماذا نصنع.", "Who we are, how we work and what we make.")))
+                        title=T(lang, "قسم الإنتاج | المدونة ستوديو", "Production | Mdwnh Studio"),
+                        desc=T(lang, "قسم الإنتاج في المدونة: فريق مخصص لإنتاج أعمال عالية الجودة للعملاء.",
+                               "Mdwnh's production department: a team dedicated to making high-quality work for clients.")))
         out.append(dict(lang=lang, slug="contact", body=contact_body, cls="contact",
                         title=T(lang, "تواصل | المدونة ستوديو", "Contact | Mdwnh Studio"),
                         desc=T(lang, f"احكِ لنا عن مشروعك: {MAIL}", f"Tell us about your project: {MAIL}")))

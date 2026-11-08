@@ -443,6 +443,15 @@ in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
   comic pages or the teaser stills (client). Its loops are the chase from
   the film and the map and the letter from the teaser, which the client
   liked. The comic is reached by the page's link to the reader.
+- **This site is قسم الإنتاج**, المدونة's department for clients: an agency
+  for that purpose, separate from the المدونة its audience knows. Never use
+  the fan world's voice here (`عالم خيالي ماتع` was taken off the About
+  page by the client).
+- **A work with its own title lettering is titled with it** (`title_logo`
+  in WORKS, `build-assets.py titles` from `masters/works/<id>/
+  title-logo.png`), in its own colours, with no small logo above: غمام and
+  قضية سمرقند. No work page has a breadcrumb, and neither original links
+  out to its film (client).
 - **There is no brief form.** Satr's wrote to Satr's own Firebase, which
   this site must never touch. Contact is the mailbox and the accounts until
   the studio picks a path. المدونة publishes no phone or WhatsApp number,

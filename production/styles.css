@@ -290,12 +290,13 @@ html[lang="en"] .lead{line-height:1.55}
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gap);
   padding-block:clamp(36px,5vw,80px) clamp(36px,4.5vw,70px);
 }
-.crumb{grid-column:1 / span 8;grid-row:1;align-self:center;font-size:14px;color:var(--muted)}
 .c-logo{grid-column:9 / -1;grid-row:1;justify-self:end;height:clamp(48px,5vw,84px);width:auto;max-width:100%;object-fit:contain}
-.crumb a{color:var(--ember);transition:color var(--fast)}
-.crumb a:hover{color:var(--fg)}
-.crumb span{margin-inline:.4em;opacity:.5}
 .c-title{grid-column:1 / -1;font-size:clamp(64px,11.5vw,210px);line-height:1;margin:clamp(14px,2vw,28px) 0 clamp(18px,2.4vw,36px)}
+/* a work titled with its own lettering: the logo at about the height the
+   name had in type, in its own colours, and no dot after it */
+.c-title-logo{line-height:0;margin-top:0}
+.c-title-logo img{height:clamp(96px,12vw,210px);width:auto;max-width:100%}
+.c-title-logo::after{display:none}
 .c-intro{grid-column:1 / span 5}
 .c-line{font-size:clamp(18px,1.5vw,22px);line-height:1.65}
 /* watch / read: plain links with the red underline, never buttons */

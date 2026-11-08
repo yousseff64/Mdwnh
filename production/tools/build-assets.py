@@ -3,7 +3,7 @@
 
     cd production && python3 tools/build-assets.py [step]
 
-Steps: paper, hero, brand, fonts, works, og. With no step, all but `fonts`
+Steps: paper, hero, brand, fonts, works, titles, og. With no step, all but `fonts`
 and `og` run (those two need fontTools and Chrome). Needs Pillow and cwebp.
 Every file it writes is committed, so this only has to be run when a master
 changes, but when one does, run it rather than editing a derivative by hand.
@@ -179,6 +179,24 @@ def build_works():
     print(f"  {made} smaller copies written")
 
 
+def build_titles():
+    """A work whose page is titled with its own logo (`title_logo` in WORKS)
+    has the lettering, in its own colours, at masters/works/<id>/
+    title-logo.png. It is cropped to its ink and written as WebP with alpha,
+    at most 1000px wide: the title shows it at up to about 450px, so that
+    covers a retina screen."""
+    import glob
+    for src in sorted(glob.glob("masters/works/*/title-logo.png")):
+        pid = src.split("/")[2]
+        im = Image.open(src).convert("RGBA")
+        im = im.crop(im.getchannel("A").getbbox())
+        if im.width > 1000:
+            im = im.resize((1000, round(im.height * 1000 / im.width)), Image.LANCZOS)
+        out = f"assets/works/{pid}/title-logo.webp"
+        im.save(out, "WEBP", quality=90, alpha_quality=90, method=6)
+        report(out)
+
+
 def build_og():
     """The link-preview image: the hero itself (the library, the wordmark in
     paper white, the contact line in red under it) rendered by headless
@@ -223,10 +241,10 @@ body{{position:relative;font-family:N,sans-serif}}
 
 
 STEPS = {"paper": build_paper, "hero": build_hero, "brand": build_brand,
-         "fonts": build_fonts, "works": build_works, "og": build_og}
+         "fonts": build_fonts, "works": build_works, "titles": build_titles, "og": build_og}
 
 if __name__ == "__main__":
-    want = sys.argv[1:] or ["paper", "hero", "brand", "works"]
+    want = sys.argv[1:] or ["paper", "hero", "brand", "works", "titles"]
     for step in want:
         STEPS[step]()
     print("\ndone.")
