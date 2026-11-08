@@ -22,7 +22,7 @@ SRC = "masters"
 OUT = "assets"
 
 PAPER = (251, 250, 249)   # #FBFAF9, the brand's paper and this site's text
-DEEP = (14, 14, 19)       # #0E0E13, the page
+DEEP = (10, 10, 10)       # #0A0A0A, the page
 
 os.makedirs(OUT, exist_ok=True)
 
@@ -287,7 +287,7 @@ def build_og():
 <style>
 @font-face{{font-family:N;src:url("../../fonts/norsal-latin.woff2")}}
 @font-face{{font-family:N2;src:url("../../fonts/norsal-arabic.woff2")}}
-html,body{{margin:0;width:1200px;height:630px;overflow:hidden;background:#0E0E13}}
+html,body{{margin:0;width:1200px;height:630px;overflow:hidden;background:#0A0A0A}}
 body{{position:relative;font-family:N,sans-serif}}
 .bg{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}}
 .logo{{position:absolute;left:50%;top:262px;width:300px;translate:-50% -50%;fill:#FBFAF9;stroke:#FBFAF9}}

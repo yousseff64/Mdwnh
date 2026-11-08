@@ -34,11 +34,13 @@
      2026 identity's own pages are; --deep-2 is the sunk bands (work rail,
      footer, menu). The brand's ink is the hairline, its paper is the text,
      and its red is the accent (the studio's production colour: the client
-     asked for it over the yellow). --ink is only ever text ON red. */
+     asked for it over the yellow). --ink is only ever text ON red.
+     The blacks are neutral, with no blue in them: Satr's page is navy, and
+     the client found a blue black too close to it. */
   --paper:#FBFAF9;
-  --ink:#0E0E13;
-  --deep:#0E0E13;
-  --deep-2:#08080C;
+  --ink:#0A0A0A;
+  --deep:#0A0A0A;
+  --deep-2:#040404;
   --slate:#323232;
   --ember:#F56549;
 

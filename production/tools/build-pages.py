@@ -663,7 +663,7 @@ def head(p):
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{OG_IMAGE}">
-<meta name="theme-color" content="#0E0E13">
+<meta name="theme-color" content="#0A0A0A">
 <link rel="icon" type="image/png" href="{root}favicon.png">
 <link rel="manifest" href="{root}site.webmanifest">
 <link rel="apple-touch-icon" href="{root}assets/apple-touch-icon.png">

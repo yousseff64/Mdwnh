@@ -422,8 +422,9 @@ fades (script.js; transforms only, off under reduced motion).
   shared with Satr keep what Satr verified (counted numbers, BLNZ's
   designer notes). Headers carry no tashkeel here: the doc's headers have
   none and this site copies the doc.
-- **Brand:** dark by default, no toggle. `--deep #0E0E13` page,
-  `--deep-2 #08080C` sunk bands, the brand ink `#323232` as the hairline,
+- **Brand:** dark by default, no toggle. `--deep #0A0A0A` page,
+  `--deep-2 #040404` sunk bands (neutral blacks: the client found a blue
+  black too close to Satr's navy), the brand ink `#323232` as the hairline,
   paper `#FBFAF9` as text, and **ember `#F56549` as the one accent**, used as
   Satr uses its red: marks, never fills behind text. Red is the studio's
   production colour (the client's call, over the yellow).
