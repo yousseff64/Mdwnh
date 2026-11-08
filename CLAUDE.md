@@ -456,10 +456,14 @@ in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
   for that purpose, separate from the المدونة its audience knows. Never use
   the fan world's voice here (`عالم خيالي ماتع` was taken off the About
   page by the client).
-- **A work with its own title lettering is titled with it** (`title_logo`
-  in WORKS, `build-assets.py titles` from `masters/works/<id>/
-  title-logo.png`), in its own colours, with no small logo above: غمام and
-  قضية سمرقند. No work page has a breadcrumb, and neither original links
+- **Every work page is titled with the work's logo**, never its name set
+  in type (client). `build-assets.py titles` takes
+  `masters/works/<id>/title-logo.png` (a work's own lettering) or else its
+  white logo, and paints the works in `TITLE_WHITE` white (غمام). Titles are
+  sized by area (`--th`), so مع الله's tall calligraphy and حراساثون's long
+  mark weigh the same; مع الله's navy opening no longer repeats its
+  calligraphy. A mark that is hard to read has its name beside it in a
+  medium weight (`title_name`: مع الله). No work page has a breadcrumb, and neither original links
   out to its film (client).
 - **«شركاء النجاح» is Satr's partners marquee**, brought over as it is
   (Satr commits 59b014c and 9467a7f): 22 white marks (`CLIENTS`,

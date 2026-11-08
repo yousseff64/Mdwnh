@@ -288,6 +288,9 @@ WORKS = [
     dict(
         id="maa-allah", accent="#0C133B",
         name=("مع الله", "Ma'a Allah"),
+        # the calligraphy is hard to read on its own, so the name is set
+        # beside it in a medium weight (client)
+        title_name=True,
         kind=("موشن، أنيميشن، مونتاج", "Motion, animation, editing"),
         kinds=["motion", "animation", "video"],
         line=("محتوى إيماني بأسلوب معاصر وجذاب عبر المنصات الرقمية الحديثة؛ لنشر رسالة إيمانية مؤثرة تصل إلى مختلف الفئات المستهدفة بقالب الفيديوهات القصيرة.",
@@ -314,7 +317,6 @@ WORKS = [
         result=("+8,500,000", ("مشاهدة، حققتها منصات «مع الله» خلال 12 شهرًا من الإنتاج والنشر المتواصل.",
                                "views across Ma'a Allah's platforms in twelve months of continuous production and publishing.")),
         theme="maa",
-        logo_on_dark=True,   # white calligraphy: shown on the navy section
     ),
     dict(
         id="maknoon", accent="#0E4738",
@@ -360,7 +362,6 @@ WORKS = [
         # title lettering's purple (the manifest's accent) was the loudest
         # card on the rail
         tint="#380820",
-        title_logo=True,   # the page is titled with the film's own lettering (client)
         name=("غمام", "Ghamam"),
         kind=("فيلم أنيميشن قصير", "Short animated film"),
         kinds=["animation"],
@@ -388,7 +389,6 @@ WORKS = [
     ),
     dict(
         id="samarqand", accent="#3F5D80",
-        title_logo=True,
         name=("قضية سمرقند", "The Samarkand Case"),
         kind=("قصة مصورة", "Comic"),
         kinds=["comics"],
@@ -949,26 +949,28 @@ def case_page(p):
     out = []
 
     # ── title ──
-    # the site is dark, so the client's mark is shown in white (white marks
-    # that are the work's own calligraphy go on their own ground further down)
-    lg = next((f"assets/works/{pid}/{n}.{e}" for n in ("logo-white", "logo") for e in ("webp", "png")
-               if os.path.exists(f"assets/works/{pid}/{n}.{e}")), "")
-    clogo = (f'<img class="c-logo" src="{root}{lg}" alt="{T(lang, *w["name"])}" loading="eager">'
-             if lg and not w.get("logo_on_dark") else "")
-    # A work with its own title lettering is titled with it, in its own
-    # colours, instead of the name set in type; the small mark above would
-    # then say the same thing twice, so it goes (client). The breadcrumb
-    # (الأعمال / kind) is gone from every page: the client found it noise.
+    # Every work is titled with its own logo, not its name set in type
+    # (client): the work's own lettering where it has one, else its white
+    # mark (build-assets.py titles). Marks are sized by area, as on the
+    # partner wall: --th grows a tall mark (مع الله's calligraphy) and
+    # shrinks a long one, so each title carries about the same weight. The
+    # name set in type is only the fallback for a work with no logo. The
+    # breadcrumb (الأعمال / kind) is gone from every page: the client found
+    # it noise.
     tl = f"assets/works/{pid}/title-logo.webp"
-    if w.get("title_logo") and os.path.exists(tl):
+    if os.path.exists(tl):
         tw, th = webp_size(tl)
+        k = max(.8, min(1.5, (2 / (tw / th)) ** .5))
+        # a mark that is hard to read (title_name) has its name beside it;
+        # the picture is then decoration and the words are the heading
+        named = w.get("title_name")
+        alt = "" if named else T(lang, *w["name"])
+        name = f'<span class="c-title-name">{T(lang, *w["name"])}</span>' if named else ""
         title = (f'<h1 class="c-title c-title-logo enter blur"><img src="{root}{tl}" width="{tw}" height="{th}" '
-                 f'alt="{T(lang, *w["name"])}" fetchpriority="high"></h1>')
-        clogo = ""
+                 f'style="--th:{k:.2f}" alt="{alt}" fetchpriority="high">{name}</h1>')
     else:
         title = f'<h1 class="c-title enter blur">{T(lang, *w["name"])}</h1>'
     out.append(f"""<section class="c-head wrap">
-  {clogo}
   {title}
   <div class="c-intro"><p class="c-line enter">{T(lang, *w['line'])}</p>{case_links(w, lang, root)}</div>
   {meta_list(w, lang)}
@@ -1135,7 +1137,10 @@ def maa_hero(p):
       <figcaption><span class="reel-ep">{esc(x.get('episode_' + lang) or x.get('caption_' + lang, ''))}</span>
       <span class="reel-type"><span class="maa-dot" aria-hidden="true"></span>{T(lang, *TYPE_LABEL.get(x.get('type'), ('', '')))}</span></figcaption>
     </figure>""" for x in reels)
-    logo_html = f'<img class="maa-hero-logo" src="{lw}" alt="">' if lw else ""
+    # the calligraphy is the page's title now, so the opening does not
+    # repeat it beside the line
+    logo_html = ("" if os.path.exists("assets/works/maa-allah/title-logo.webp") else
+                 f'<img class="maa-hero-logo" src="{lw}" alt="">' if lw else "")
     return f"""<section class="maa-hero">
   <div class="maa-hero-top wrap">
     <p class="maa-hero-line">{T(lang, 'سلسلة واحدة، وثلاث صنعات: موشن جرافيك، أنيميشن، ومونتاج. مقطع قصير كل يومين تقريبًا، لمدة عام.', 'One series, three crafts: motion graphics, animation and editing. A short every couple of days, for a year.')}

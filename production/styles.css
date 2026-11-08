@@ -313,12 +313,14 @@ html[lang="en"] .lead{line-height:1.55}
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gap);
   padding-block:clamp(36px,5vw,80px) clamp(36px,4.5vw,70px);
 }
-.c-logo{grid-column:9 / -1;grid-row:1;justify-self:end;height:clamp(48px,5vw,84px);width:auto;max-width:100%;object-fit:contain}
 .c-title{grid-column:1 / -1;font-size:clamp(64px,11.5vw,210px);line-height:1;margin:clamp(14px,2vw,28px) 0 clamp(18px,2.4vw,36px)}
-/* a work titled with its own lettering: the logo at about the height the
-   name had in type, in its own colours, and no dot after it */
-.c-title-logo{line-height:0;margin-top:0}
-.c-title-logo img{height:clamp(96px,12vw,210px);width:auto;max-width:100%}
+/* every work is titled with its own logo: at about the height the name had
+   in type, scaled by area (--th, from the generator), and no mark after it */
+.c-title-logo{line-height:0;margin-top:0;display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+/* the name beside a mark that is hard to read: medium weight, a size that
+   names the work without competing with the mark (client) */
+.c-title-name{font:500 clamp(30px,3.6vw,58px)/1.15 var(--f-head)}
+.c-title-logo img{height:calc(var(--th,1) * clamp(96px,12vw,210px));width:auto;max-width:100%}
 .c-title-logo::after{display:none}
 .c-intro{grid-column:1 / span 5}
 .c-line{font-size:clamp(18px,1.5vw,22px);line-height:1.65}

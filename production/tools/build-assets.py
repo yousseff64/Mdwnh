@@ -165,20 +165,31 @@ def build_works():
     print(f"  {made} smaller copies written")
 
 
+# Every work page is titled with the work's own logo, never its name set in
+# type (client). The source is the work's own lettering where it has one
+# (masters/works/<id>/title-logo.png), else its white logo. Each is cropped
+# to its ink and written as WebP with alpha, at most 1000px on its long
+# side: the title shows it at up to about 500px, so that covers a retina
+# screen. Works in TITLE_WHITE are painted white whatever the source's
+# colours: غمام's purple lettering (client).
+TITLE_SOURCES = ("title-logo.png", "logo-white.png", "new-logo-white.png")
+TITLE_WHITE = ("ghamam",)
+
+
 def build_titles():
-    """A work whose page is titled with its own logo (`title_logo` in WORKS)
-    has the lettering, in its own colours, at masters/works/<id>/
-    title-logo.png. It is cropped to its ink and written as WebP with alpha,
-    at most 1000px wide: the title shows it at up to about 450px, so that
-    covers a retina screen."""
-    import glob
-    for src in sorted(glob.glob("masters/works/*/title-logo.png")):
-        pid = src.split("/")[2]
+    for mdir in sorted(os.listdir("masters/works")):
+        src = next((f"masters/works/{mdir}/{n}" for n in TITLE_SOURCES
+                    if os.path.exists(f"masters/works/{mdir}/{n}")), None)
+        if not src or not os.path.isdir(f"assets/works/{mdir}"):
+            continue
         im = Image.open(src).convert("RGBA")
         im = im.crop(im.getchannel("A").getbbox())
-        if im.width > 1000:
-            im = im.resize((1000, round(im.height * 1000 / im.width)), Image.LANCZOS)
-        out = f"assets/works/{pid}/title-logo.webp"
+        if mdir in TITLE_WHITE:
+            white = Image.new("RGBA", im.size, (*PAPER, 0))
+            white.putalpha(im.getchannel("A"))
+            im = white
+        im.thumbnail((1000, 1000), Image.LANCZOS)
+        out = f"assets/works/{mdir}/title-logo.webp"
         im.save(out, "WEBP", quality=90, alpha_quality=90, method=6)
         report(out)
 
