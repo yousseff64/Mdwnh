@@ -1234,17 +1234,19 @@ CLIENTS = [
     (("تأصيل التعليمية", "Ta'seel"), "assets/works/taseel/logo-white.webp"),
     (("بلنز", "BLNZ"), "assets/works/blnz/logo-white.webp"),
     # the client's own list (8 November 2026), in its order. Still without a
-    # logo, so not here: مركز فقهاء، وزارة الثقافة، سراج العقارية، جمعية وسم
-    # الصبا.
+    # logo, so not here: مركز فقهاء، وزارة الثقافة. The list wrote «سراج
+    # العقارية»; the company's own logo says سياج, so that is the name used.
     (("ملعقة", "Mllaqah"), "assets/clients/mllaqah.webp"),
     (("فلق", "Falaq"), "assets/clients/falaq.webp"),
     (("مركز لطف للاستشارات التعليمية والتربوية", "Lutf Center"), "assets/clients/lutf.webp"),
     (("نادي الاعتماد الرياضي", "Al-Eetemad Club"), "assets/clients/aletemad.webp"),
+    (("سياج العقارية", "SYAJ Real Estate"), "assets/clients/syaj.webp"),
     (("جمعية إجلال لرعاية الأيتام", "Ejlal Orphans' Association"), "assets/clients/ejlal.webp"),
     (("عزومة", "Azomah"), "assets/clients/azomah.webp"),
     (("مطابخ اكسينا", "Axina Kitchens"), "assets/clients/axina.webp"),
     (("دار العز", "Dar Alezz"), "assets/clients/daralezz.webp"),
     (("جمعية منهاج لعلوم القرآن والسنة", "Minhaj Association"), "assets/clients/minhaj.webp"),
+    (("جمعية وسم الصبا", "Wasm Alsiba Charity"), "assets/clients/wasm.webp"),
     (("جزيل", "Jazeel"), "assets/clients/jazeel.webp"),
     (("أناناس", "Ananas"), "assets/clients/ananas.webp"),
     (("التحول التقني", "TTS"), "assets/clients/tts.webp"),
