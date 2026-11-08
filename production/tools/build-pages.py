@@ -48,7 +48,7 @@ import re
 import struct
 
 # Bump when styles.css or script.js change: nothing here fingerprints them.
-VER = "20261108m3"
+VER = "20261108m4"
 
 SITE = "https://mdwn.studio/production"
 

@@ -403,7 +403,10 @@ read only) rebranded, because the two studios are practically one team. Its
 design rules are Satr's: read the public-site sections of Satr's CLAUDE.md
 (Conventions, The redesign, The case studies, Speed, Assets, Things that
 will bite you → The public site). Nothing of the fan site's language comes
-in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
+in: no clouds, no سراج, no marginalia, no motion beyond Satr's, except
+the hero's (client): its library loop, and a scroll parallax where the
+library falls behind at a third of the scroll and the wordmark drifts and
+fades (script.js; transforms only, off under reduced motion).
 
 - **Every page is generated.** `cd production && python3
   tools/build-pages.py` writes the 22 pages (Arabic at /production, English

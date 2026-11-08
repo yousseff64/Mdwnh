@@ -171,6 +171,39 @@ if (mq) {
   addEventListener("pointercancel", release);
 }
 
+/* ── The hero, parallax ──
+   As the page scrolls past the hero, the library (the still and its loop)
+   travels down at a third of the scroll, so it falls behind the page, and
+   the wordmark drifts a little and fades as it goes. Transforms and
+   opacity only, written once per frame from a passive scroll listener: the
+   wheel and touch are never intercepted. It runs only while the hero is on
+   screen, and not at all under reduced motion. The section clips, so the
+   picture never shows an edge: it only ever moves down, behind the part of
+   the hero that has already scrolled away. */
+const hero = document.querySelector("[data-hero]");
+if (hero && !reduced) {
+  const bg = hero.querySelector(".hero-bg");
+  const mark = hero.querySelector(".hero-mark");
+  let seen = true, queued = false;
+  const draw = () => {
+    queued = false;
+    const h = hero.offsetHeight;
+    // how far the page has scrolled past the hero's resting place
+    const d = Math.min(Math.max(hero.offsetTop - hero.getBoundingClientRect().top, 0), h);
+    bg.style.transform = `translate3d(0,${(d * .33).toFixed(1)}px,0)`;
+    if (mark) {
+      mark.style.transform = `translate3d(0,${(d * .18).toFixed(1)}px,0)`;
+      mark.style.opacity = Math.max(0, 1 - d / (h * .7)).toFixed(3);
+    }
+  };
+  const queue = () => { if (seen && !queued) { queued = true; requestAnimationFrame(draw); } };
+  bg.style.willChange = "transform";
+  addEventListener("scroll", queue, { passive: true });
+  addEventListener("resize", queue);
+  new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) queue(); }).observe(hero);
+  draw();
+}
+
 /* ── The hero, moving ──
    The hero paints as a still (preloaded, a few KB) and nothing on the first
    screen waits for the video. Only once the page has loaded, and the
