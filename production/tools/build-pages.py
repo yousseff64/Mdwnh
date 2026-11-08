@@ -957,8 +957,12 @@ def case_page(p):
     # name set in type is only the fallback for a work with no logo. The
     # breadcrumb (الأعمال / kind) is gone from every page: the client found
     # it noise.
+    # On the English pages a mark in Arabic lettering would hide the name
+    # from the reader, so they keep the English name in type (client); only
+    # a work whose name stands beside its mark (title_name: مع الله) keeps
+    # the mark there too.
     tl = f"assets/works/{pid}/title-logo.webp"
-    if os.path.exists(tl):
+    if os.path.exists(tl) and (lang == "ar" or w.get("title_name")):
         tw, th = webp_size(tl)
         k = max(.8, min(1.5, (2 / (tw / th)) ** .5))
         # a mark that is hard to read (title_name) has its name beside it;

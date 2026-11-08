@@ -466,8 +466,10 @@ in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
   for that purpose, separate from the المدونة its audience knows. Never use
   the fan world's voice here (`عالم خيالي ماتع` was taken off the About
   page by the client).
-- **Every work page is titled with the work's logo**, never its name set
-  in type (client). `build-assets.py titles` takes
+- **Every Arabic work page is titled with the work's logo**, never its name
+  set in type (client). English pages keep the English name in type, since
+  the marks are Arabic lettering; only مع الله keeps its mark there, with
+  its name beside it. `build-assets.py titles` takes
   `masters/works/<id>/title-logo.png` (a work's own lettering) or else its
   white logo, and paints the works in `TITLE_WHITE` white (غمام). Titles are
   sized by area (`--th`), so مع الله's tall calligraphy and حراساثون's long
