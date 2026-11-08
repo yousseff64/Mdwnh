@@ -3,7 +3,7 @@
 
     cd production && python3 tools/build-assets.py [step]
 
-Steps: paper, hero, brand, fonts, works, titles, og. With no step, all but `fonts`
+Steps: hero, brand, fonts, works, titles, og. With no step, all but `fonts`
 and `og` run (those two need fontTools and Chrome). Needs Pillow and cwebp.
 Every file it writes is committed, so this only has to be run when a master
 changes, but when one does, run it rather than editing a derivative by hand.
@@ -29,32 +29,6 @@ os.makedirs(OUT, exist_ok=True)
 
 def report(path):
     print(f"{os.path.basename(path):28} {os.path.getsize(path) / 1024:7.1f} KB")
-
-
-# ── the grain ─────────────────────────────────────────────────────────
-# A 192px tile of specks, dark and light, mostly transparent, tiled over the
-# hero and the footer the way Satr does it. It costs one paint and no blend
-# mode.
-def build_paper():
-    import random
-    rnd = random.Random(1405)          # fixed seed: the tile is reproducible
-    n = 192
-    g = Image.new("RGBA", (n, n), (0, 0, 0, 0))
-    px = g.load()
-    for y in range(n):
-        for x in range(n):
-            r = rnd.random()
-            # three populations, the way printed grain actually reads: a fine
-            # dark tooth everywhere, fewer light flecks, and rare heavy dust
-            if r < 0.30:
-                px[x, y] = (24, 26, 30, rnd.randint(10, 26))
-            elif r < 0.42:
-                px[x, y] = (255, 255, 255, rnd.randint(14, 34))
-            elif r < 0.4235:
-                px[x, y] = (18, 20, 24, rnd.randint(70, 120))
-    p = os.path.join(OUT, "grain.webp")
-    g.save(p, "WEBP", lossless=True, method=6)
-    report(p)
 
 
 # ── the two big pictures that are not a work ──────────────────────────
@@ -83,33 +57,45 @@ def build_hero():
         os.remove(tmp)
 
 
-# ── favicon, install tiles ────────────────────────────────────────────
-# The smile mark alone: the lockup at 16px is a smudge. The favicon keeps the
-# paper background (read against browser chrome that is usually light); the
-# install tiles put the white mark on the page's own dark plate, because a
-# home screen is somebody else's wallpaper. `any` and `maskable` are never
-# the same file: the maskable copy is inset far enough that the mask only
-# ever cuts plate.
-def build_brand():
-    black = Image.open(f"{SRC}/brand/mark.png").convert("RGBA")
-    black = black.crop(black.getbbox())
-    white = Image.open(f"{SRC}/brand/mark-white.png").convert("RGBA")
-    white = white.crop(white.getbbox())
+# ── the asterisk, favicon, install tiles ─────────────────────────────
+# قسم الإنتاج's own mark is the brand's red brush asterisk (the department
+# icon in Logos/icons/الانتاج.png), where Satr's is a red dot. asterisk.webp
+# is that brush mark as an alpha mask: the stylesheet paints it red wherever
+# Satr had its dot. The favicon and the install tiles are the department
+# icon made flat (no gradient, no pattern): the white asterisk on a red
+# plate. `any` and `maskable` are never the same file: the maskable copy is
+# inset far enough that the mask only ever cuts plate.
+EMBER = (245, 101, 73)    # #F56549
 
-    def square(mark, size, inset, bg):
-        plate = Image.new("RGBA", (size, size), (*bg, 255))
-        m = mark.copy()
+
+def build_brand():
+    star = Image.open(f"{SRC}/brand/asterisk.png").convert("RGBA")
+    star = star.crop(star.getchannel("A").getbbox())
+
+    mask = Image.new("RGBA", star.size, (255, 255, 255, 0))
+    mask.putalpha(star.getchannel("A"))
+    mask.thumbnail((160, 160), Image.LANCZOS)
+    p = os.path.join(OUT, "asterisk.webp")
+    mask.save(p, "WEBP", quality=90, alpha_quality=90, method=6)
+    report(p)
+
+    white = Image.new("RGBA", star.size, (*PAPER, 0))
+    white.putalpha(star.getchannel("A"))
+
+    def tile(size, inset):
+        plate = Image.new("RGBA", (size, size), (*EMBER, 255))
+        m = white.copy()
         m.thumbnail((int(size * inset),) * 2, Image.LANCZOS)
         plate.alpha_composite(m, ((size - m.width) // 2, (size - m.height) // 2))
         return plate.convert("RGB")
 
-    square(black, 512, .86, PAPER).save("favicon.png", "PNG", optimize=True)
+    tile(512, .66).save("favicon.png", "PNG", optimize=True)
     report("favicon.png")
-    for size, inset, name in [(192, .7, "icon-192.png"), (512, .7, "icon-512.png"),
-                              (512, .56, "icon-maskable-512.png"),
-                              (180, .7, "apple-touch-icon.png")]:
+    for size, inset, name in [(192, .6, "icon-192.png"), (512, .6, "icon-512.png"),
+                              (512, .46, "icon-maskable-512.png"),
+                              (180, .6, "apple-touch-icon.png")]:
         p = os.path.join(OUT, name)
-        square(white, size, inset, DEEP).save(p, "PNG", optimize=True)
+        tile(size, inset).save(p, "PNG", optimize=True)
         report(p)
 
 
@@ -199,7 +185,8 @@ def build_titles():
 
 def build_og():
     """The link-preview image: the hero itself (the library, the wordmark in
-    paper white, the contact line in red under it) rendered by headless
+    paper white, قسم الإنتاج under it with its red asterisk, the contact
+    line in red) rendered by headless
     Chrome from masters/og/share.html at 2x and cut to 1200x630. The HTML is
     written here from the brand's own SVG, so the picture can always be
     rebuilt.
@@ -213,16 +200,18 @@ def build_og():
     html = f"""<!doctype html><meta charset="utf-8">
 <style>
 @font-face{{font-family:N;src:url("../../fonts/norsal-latin.woff2")}}
+@font-face{{font-family:N2;src:url("../../fonts/norsal-arabic.woff2")}}
 html,body{{margin:0;width:1200px;height:630px;overflow:hidden;background:#0E0E13}}
 body{{position:relative;font-family:N,sans-serif}}
 .bg{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}}
-.grain{{position:absolute;inset:0;background:url("../../assets/grain.webp");opacity:.3}}
-.logo{{position:absolute;left:50%;top:282px;width:300px;translate:-50% -50%;fill:#FBFAF9;stroke:#FBFAF9}}
+.logo{{position:absolute;left:50%;top:262px;width:300px;translate:-50% -50%;fill:#FBFAF9;stroke:#FBFAF9}}
+.dept{{position:absolute;left:0;right:0;top:362px;display:flex;justify-content:center;align-items:center;gap:12px;color:#FBFAF9;font:700 26px N2,sans-serif}}
+.dept i{{width:24px;height:24px;background:#F56549;-webkit-mask:url("../../assets/asterisk.webp") center/contain no-repeat}}
 .foot{{position:absolute;left:0;right:0;bottom:34px;display:flex;justify-content:center;gap:88px;color:#F56549;font-size:20px;font-weight:500}}
 </style>
 <img class="bg" src="../../assets/hero.webp">
-<div class="grain"></div>
 <svg class="logo" viewBox="489 108 442 242">{shapes}</svg>
+<div class="dept" dir="rtl"><i></i>قسم الإنتاج</div>
 <div class="foot"><span>contact@mdwn.studio</span><span>mdwn.studio</span></div>
 """
     os.makedirs("masters/og", exist_ok=True)
@@ -234,17 +223,17 @@ body{{position:relative;font-family:N,sans-serif}}
                     "--window-size=1200,630", "--virtual-time-budget=2000", "--allow-file-access-from-files",
                     f"--screenshot={png}", "file://" + os.path.abspath("masters/og/share.html")],
                    check=True, capture_output=True)
-    out = f"{OUT}/og-share-2026-11.jpg"
+    out = f"{OUT}/og-production-2026-11.jpg"
     Image.open(png).convert("RGB").resize((1200, 630), Image.LANCZOS).save(
         out, "JPEG", quality=86, optimize=True, progressive=True)
     report(out)
 
 
-STEPS = {"paper": build_paper, "hero": build_hero, "brand": build_brand,
+STEPS = {"hero": build_hero, "brand": build_brand,
          "fonts": build_fonts, "works": build_works, "titles": build_titles, "og": build_og}
 
 if __name__ == "__main__":
-    want = sys.argv[1:] or ["paper", "hero", "brand", "works", "titles"]
+    want = sys.argv[1:] or ["hero", "brand", "works", "titles"]
     for step in want:
         STEPS[step]()
     print("\ndone.")

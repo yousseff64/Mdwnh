@@ -99,7 +99,10 @@ html[lang="en"] :is(h1,h2,h3,.intro-big,.ft-ask,.stat-n,.result-n,.menu-links a,
   transition:translate .35s var(--ease);
 }
 .hd.up{translate:0 -100%}
+.hd-brand{display:flex;align-items:center;gap:16px}
 .hd-logo{width:104px;display:block}
+.hd-dept{display:flex;align-items:center;font-size:14px;font-weight:700;white-space:nowrap;padding-inline-start:16px;border-inline-start:1px solid var(--line);transition:color var(--fast)}
+.hd-brand:hover .hd-dept{color:var(--ember)}
 .hd-nav{display:flex;gap:30px;justify-content:flex-end;font-size:15px;font-weight:500}
 .hd-nav a{padding-block:6px;transition:color var(--fast)}
 .hd-nav a:hover{color:var(--ember)}
@@ -140,11 +143,8 @@ html[lang="en"] .lead{line-height:1.55}
 }
 .hero-bg{position:absolute;inset:0;z-index:-2}
 .hero-img{width:100%;height:100%;object-fit:cover}
-.hero::before{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:url("assets/grain.webp");opacity:.3;
-}
-.hero-mark{position:relative;display:grid;place-items:center}
+.hero-mark{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(14px,1.6vw,24px)}
+.hero-dept{display:flex;align-items:center;font-size:clamp(16px,1.35vw,21px);font-weight:700;color:var(--paper)}
 .hero-logo{width:var(--lw);line-height:0;color:var(--paper)}
 .hero-foot{
   display:flex;justify-content:center;flex-wrap:wrap;gap:6px clamp(28px,6vw,110px);
@@ -247,18 +247,23 @@ html[lang="en"] .lead{line-height:1.55}
   display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gap);
   padding-block:clamp(48px,6vw,100px);
 }
-/* the logo's own dot opens every section label */
-.blk-label{grid-column:1 / span 3;font:600 15px/1.6 var(--f-body);color:var(--ember);padding-top:.45em}
-.blk-label::before,.rail-head .h2::before,.sub h2::before{
-  content:"";display:inline-block;width:.42em;height:.42em;border-radius:50%;background:var(--ember);
-  margin-inline-end:.55em;vertical-align:.12em
-}
-.rail-head .h2::before,.sub h2::before{width:.26em;height:.26em;vertical-align:.18em}
-/* page titles end on the dot, the way the logo's line does */
+/* THE ASTERISK. Satr's mark is its red dot; قسم الإنتاج's is the brand's
+   red brush asterisk (its department icon), so wherever Satr puts the dot,
+   this site puts the asterisk: before every section label and heading, as
+   the list bullet, beside the department's name, and raised at the end of
+   every page title. One alpha mask (assets/asterisk.webp) painted ember.
+   The labels themselves are paper, not red: red is kept for the marks. */
+.blk-label{grid-column:1 / span 3;font:700 15px/1.6 var(--f-body);color:var(--fg);padding-top:.45em}
+.blk-label::before,.rail-head .h2::before,.sub h2::before,.did li::before,.hd-dept::before,.hero-dept::before,
 .c-title::after,.p-head .h1::after{
-  content:"";display:inline-block;width:.13em;height:.13em;border-radius:50%;background:var(--ember);
-  margin-inline-start:.06em
+  content:"";display:inline-block;flex:none;width:.9em;height:.9em;background:var(--ember);
+  -webkit-mask:url("assets/asterisk.webp") center/contain no-repeat;mask:url("assets/asterisk.webp") center/contain no-repeat;
+  margin-inline-end:.5em;vertical-align:-.1em
 }
+.rail-head .h2::before,.sub h2::before{width:.55em;height:.55em;vertical-align:.08em;margin-inline-end:.4em}
+/* page titles end on the asterisk, raised to the top of the letters */
+.c-title::after,.p-head .h1::after{width:.24em;height:.24em;margin:0;margin-inline-start:.1em;vertical-align:.62em}
+.hd-dept::before{width:1.15em;height:1.15em;margin-inline-end:.4em}
 .blk-body{grid-column:5 / span 7}
 .blk-body > p + p{margin-top:1.1em;color:var(--muted)}
 
@@ -307,21 +312,21 @@ html[lang="en"] .lead{line-height:1.55}
 [dir="rtl"] .c-links .arw{scale:-1 1}
 .meta{grid-column:7 / -1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px var(--gap);margin:0;align-content:start}
 .meta div{border-top:1px solid var(--line);padding-top:10px}
-.meta dt{font-size:13px;color:var(--ember)}
+.meta dt{font-size:13px;color:var(--muted)}
 .meta dd{margin:2px 0 0;font-size:15px;line-height:1.6}
 
 .stats{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--gap);
   padding-block:clamp(16px,2vw,32px) clamp(24px,3vw,48px);
 }
-.stat{border-top:2px solid var(--ember);padding-top:14px}
+.stat{border-top:1px solid var(--line);padding-top:14px}
 .stat-n{font:800 clamp(52px,6.4vw,104px)/1 var(--f-head)}
 .stat-l{margin-top:10px;font-size:15px;color:var(--muted);max-width:18em}
 
 .did-g + .did-g{margin-top:28px}
 .did-h{font-size:20px;margin-bottom:6px}
 .did li{padding-block:10px;border-top:1px solid var(--line);font-size:17px;display:flex;gap:12px;align-items:baseline}
-.did li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--ember);translate:0 -.15em}
+.did li::before{width:.75em;height:.75em;margin:0}
 .did li:last-child{border-bottom:1px solid var(--line)}
 .blk-body .lead + .did-g{margin-top:24px}
 .result-n{font:800 clamp(56px,8.4vw,150px)/1 var(--f-head);color:var(--ember);margin-bottom:18px}
@@ -353,7 +358,8 @@ html[lang="en"] .lead{line-height:1.55}
 .maa-col:last-child{padding-inline-end:0}
 .maa-col + .maa-col{border-inline-start:1px solid color-mix(in srgb,var(--fg) 18%,transparent)}
 .maa-h{font-size:clamp(24px,2.2vw,34px);display:flex;align-items:center;gap:12px}
-.maa-dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+/* the crafts are told apart by the asterisk in their colour, not by dots */
+.maa-dot{width:13px;height:13px;flex:none;background:var(--c);-webkit-mask:url("assets/asterisk.webp") center/contain no-repeat;mask:url("assets/asterisk.webp") center/contain no-repeat}
 .maa-col[data-type="motion"]{--c:var(--motion)}
 .maa-col[data-type="animation"]{--c:var(--animation)}
 .maa-col[data-type="montage"]{--c:var(--montage)}
@@ -443,7 +449,6 @@ html[lang="en"] .lead{line-height:1.55}
   position:relative;isolation:isolate;overflow:hidden;background:var(--deep-2);color:var(--fg);
   --muted:color-mix(in srgb,var(--paper) 55%,var(--deep-2));
 }
-.ft::before{content:"";position:absolute;inset:0;z-index:-1;background:url("assets/grain.webp");opacity:.18;pointer-events:none}
 .ft-main{
   display:grid;grid-template-columns:repeat(12,1fr);gap:28px var(--gap);
   padding-block:clamp(48px,6vw,96px) clamp(36px,4vw,64px);
@@ -452,7 +457,7 @@ html[lang="en"] .lead{line-height:1.55}
 .ft-reach{grid-column:6 / span 3}
 .ft-acc{grid-column:9 / span 2}
 .ft-pages{grid-column:11 / span 2}
-.ft-k{font-size:13px;color:var(--ember);margin-bottom:8px}
+.ft-k{font-size:13px;color:var(--muted);margin-bottom:8px}
 .ft-col ul{display:grid;gap:2px;font-size:15px;line-height:1.8}
 .ft-col a{transition:color var(--fast)}
 .ft-col a:hover{color:var(--ember)}
@@ -511,6 +516,8 @@ html[lang="en"] .lead{line-height:1.55}
   .hd-nav,.hd-lang{display:none}
   .hd-menu{display:block;justify-self:end}
   .hd-logo{width:88px}
+  .hd-brand{gap:12px}
+  .hd-dept{font-size:13px;padding-inline-start:12px}
   .rail-btn{display:none}
   /* on a phone the rail is a swipe; three wrapped lines of filters only
      crowd it (client), every card is still there */

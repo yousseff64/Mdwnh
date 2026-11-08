@@ -424,6 +424,15 @@ in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
   paper `#FBFAF9` as text, and **ember `#F56549` as the one accent**, used as
   Satr uses its red: marks, never fills behind text. Red is the studio's
   production colour (the client's call, over the yellow).
+- **The red asterisk is the department's mark, not Satr's dot** (client:
+  keep it visibly apart from Satr). The brand's brush asterisk
+  (`assets/asterisk.webp`, a mask painted ember; the department icon is
+  `Logos/icons/الانتاج.png`) stands wherever Satr has its dot: before
+  section labels and headings, as list bullets, raised after page titles,
+  in مع الله's craft labels. Labels are paper, not red. No grain. The
+  favicon and install tiles are the white asterisk on a flat red plate.
+  "✱ قسم الإنتاج" stands beside the logo, under the hero's wordmark and
+  in the legal line.
 - **Norsal** is cut into `fonts/norsal-arabic.woff2` and
   `norsal-latin.woff2` from the root `fonts/norsal.woff2`
   (`tools/build-assets.py fonts`, needs fontTools). Its Latin passed, so it

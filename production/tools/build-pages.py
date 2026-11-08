@@ -59,6 +59,11 @@ SITE = "https://mdwn.studio/production"
 MAIL = "contact@mdwn.studio"
 DOMAIN = "mdwn.studio"
 
+# This site is the studio's production department. Its name stands beside
+# the logo, under the hero's wordmark and in the legal line, so nobody takes
+# it for the المدونة its audience knows (or for Satr, whose site it copies).
+DEPT = ("قسم الإنتاج", "Production")
+
 SOCIAL = [
     ("Instagram", "إنستقرام", "https://www.instagram.com/mdwn.c/"),
     ("YouTube", "يوتيوب", "https://www.youtube.com/@Mdwn.c"),
@@ -561,7 +566,7 @@ def depth_root(lang, slug):
 # ═════════════════════════════════════════════════════════════════════════
 #  HEAD
 # ═════════════════════════════════════════════════════════════════════════
-OG_IMAGE = f"{SITE}/assets/og-share-2026-11.jpg"
+OG_IMAGE = f"{SITE}/assets/og-production-2026-11.jpg"
 
 ORG = f"""{{
       "@type": "ProfessionalService",
@@ -690,7 +695,7 @@ def header(p):
         [("", ("الرئيسية", "Home"))] + NAV)
     switch = T(lang, "English", "العربية")
     return f"""<header class="hd" data-hd>
-  <a class="hd-logo" href="{root}{url(lang, '')}" aria-label="{T(lang, 'المدونة ستوديو، الرئيسية', 'Mdwnh Studio, home')}">{logo('lockup', lang)}</a>
+  <a class="hd-brand" href="{root}{url(lang, '')}" aria-label="{T(lang, 'المدونة ستوديو، قسم الإنتاج، الرئيسية', 'Mdwnh Studio, Production, home')}"><span class="hd-logo">{logo('lockup', lang)}</span><span class="hd-dept" aria-hidden="true">{T(lang, *DEPT)}</span></a>
   <nav class="hd-nav" aria-label="{T(lang, 'الرئيسية', 'Main')}">{links}</nav>
   <a class="hd-lang" href="{root}{url(other, slug)}" hreflang="{other}" lang="{other}">{switch}</a>
   <button class="hd-menu" type="button" aria-expanded="false" aria-controls="menu">{T(lang, 'القائمة', 'Menu')}</button>
@@ -736,7 +741,7 @@ def footer(p):
   </div>
   <div class="ft-legal wrap">
     <a class="ft-logo" href="{root}{url(lang, '')}" aria-label="{T(lang, 'المدونة ستوديو', 'Mdwnh Studio')}">{logo('lockup', lang)}</a>
-    <p>© 2026 {T(lang, 'المدونة ستوديو', 'Mdwnh Studio')}</p>
+    <p>© 2026 {T(lang, 'المدونة ستوديو، قسم الإنتاج', 'Mdwnh Studio, Production')}</p>
   </div>
 </footer>
 """
@@ -1257,7 +1262,8 @@ def home_body(p):
     return f"""<section class="hero" data-hero>
   <div class="hero-bg">{pic(root, hero, lang, "hero-img", eager=True, alt="")}</div>
   <div class="hero-mark">
-    <h1 class="hero-logo">{logo('word', lang, 'logo', T(lang, 'المدونة ستوديو', 'Mdwnh Studio'))}</h1>
+    <h1 class="hero-logo">{logo('word', lang, 'logo', T(lang, 'المدونة ستوديو، قسم الإنتاج', 'Mdwnh Studio, Production'))}</h1>
+    <p class="hero-dept" aria-hidden="true">{T(lang, *DEPT)}</p>
   </div>
   <ul class="hero-foot">
     <li><a href="mailto:{MAIL}" dir="ltr">{MAIL}</a></li>
