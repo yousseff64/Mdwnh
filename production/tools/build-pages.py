@@ -48,7 +48,7 @@ import re
 import struct
 
 # Bump when styles.css or script.js change: nothing here fingerprints them.
-VER = "20261108m1"
+VER = "20261108m2"
 
 SITE = "https://mdwn.studio/production"
 
@@ -1212,17 +1212,39 @@ SERVICES = [
     (("إدارة المحتوى", "Content & publishing"), ("كتابة ونشر وإدارة حسابات، بلا انقطاع.", "Writing, publishing and running accounts, without gaps.")),
 ]
 
-# «عملنا مع» names the ORGANISATIONS, never our own project names: not
+# «شركاء النجاح» names the ORGANISATIONS, never our own project names: not
 # «مع الله» but the body that asked for it. Shown as their own marks in
-# white, Meshbak's way. A body joins the list when its logo file exists
-# (new ones go in assets/clients/), and one without a logo is left out
-# rather than set in type beside the marks.
+# white. A body joins the list when its logo file exists (new ones go in
+# assets/clients/), and one without a logo is left out rather than set in
+# type beside the marks. The list and the marks are Satr's (its commits
+# 59b014c and 9467a7f, 8 November 2026), brought over on the client's word.
 CLIENTS = [
     (("مكنون", "Maknoon"), "assets/works/maknoon/logo-white.webp"),
     # cut from the presenter card at the end of the Hirasathon film
     (("النصبان للحراسات الأمنية", "Al-Nasban Security Guards"), "assets/works/hirasathon/client-logo-white.webp"),
     (("تأصيل التعليمية", "Ta'seel"), "assets/works/taseel/logo-white.webp"),
     (("بلنز", "BLNZ"), "assets/works/blnz/logo-white.webp"),
+    # the client's own list (8 November 2026), in its order. Still without a
+    # logo, so not here: مركز فقهاء، وزارة الثقافة، سراج العقارية، اكسينا،
+    # جمعية وسم الصبا، التحول التقني.
+    (("ملعقة", "Mllaqah"), "assets/clients/mllaqah.webp"),
+    (("فلق", "Falaq"), "assets/clients/falaq.webp"),
+    (("مركز لطف للاستشارات التعليمية والتربوية", "Lutf Center"), "assets/clients/lutf.webp"),
+    (("نادي الاعتماد الرياضي", "Al-Eetemad Club"), "assets/clients/aletemad.webp"),
+    (("جمعية إجلال لرعاية الأيتام", "Ejlal Orphans' Association"), "assets/clients/ejlal.webp"),
+    (("عزومة", "Azomah"), "assets/clients/azomah.webp"),
+    (("دار العز", "Dar Alezz"), "assets/clients/daralezz.webp"),
+    (("جمعية منهاج لعلوم القرآن والسنة", "Minhaj Association"), "assets/clients/minhaj.webp"),
+    (("جزيل", "Jazeel"), "assets/clients/jazeel.webp"),
+    (("أناناس", "Ananas"), "assets/clients/ananas.webp"),
+    (("ميلاف", "Milaf"), "assets/clients/milaf.webp"),
+    (("جمعية صاعد لتنمية الشباب", "Saed Youth Association"), "assets/clients/saed.webp"),
+    (("شركة أوقاف مركز باحثات", "Bahithat Center Endowment"), "assets/clients/bahithat.webp"),
+    (("أسمى", "Asma"), "assets/clients/asma.webp"),
+    (("أكاديمية ألوان", "Alwan Academy"), "assets/clients/alwan.webp"),
+    (("نادي الإبل", "Camel Club"), "assets/clients/camelclub.webp"),
+    (("XP-Pen", "XP-Pen"), "assets/clients/xppen.webp"),
+    (("نبراس", "Nibras"), "assets/clients/nibras.webp"),
 ]
 
 
@@ -1237,11 +1259,15 @@ def clients_block(lang, root):
         w, h = webp_size(src) or (1, 1)
         k = min(1.0, .8 / (w / h) ** .5)
         marks.append(f'<li><img src="{root}{src}" width="{w}" height="{h}" style="--h:{k:.2f}" '
-                     f'alt="{T(lang, *name)}" loading="lazy" decoding="async"></li>')
-    marks = "".join(marks)
-    return f"""<section class="blk wrap clients">
-  <h2 class="blk-label">{T(lang, 'عملنا مع', 'We have worked with')}</h2>
-  <div class="blk-body"><ul class="cl">{marks}</ul></div>
+                     f'alt="{T(lang, *name)}" loading="lazy" decoding="async" draggable="false"></li>')
+    # Two rows, half the marks each, drifting opposite ways and draggable
+    # (client). Without script.js each row is a plain sideways scroller.
+    half = (len(marks) + 1) // 2
+    rows = "".join(f'<div class="cl-row" data-mq-row><ul class="cl">{"".join(part)}</ul></div>'
+                   for part in (marks[:half], marks[half:]))
+    return f"""<section class="clients">
+  <div class="blk wrap cl-head"><h2 class="blk-label">{T(lang, 'شركاء النجاح', 'Partners in success')}</h2></div>
+  <div class="cl-mq" data-mq>{rows}</div>
 </section>
 """
 

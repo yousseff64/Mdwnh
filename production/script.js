@@ -85,6 +85,92 @@ document.querySelectorAll("[data-works]").forEach(sec => {
   }));
 });
 
+/* ── Partners: two rows drifting opposite ways, and draggable ──
+   Satr's, brought over as it is. Each row's marks are cloned until a copy
+   can always fill the screen, and the track moves by transform; x wraps by
+   one set's width, so the loop has no seam. A drag moves the row under the
+   pointer and lets go with its own speed, which eases back to the drift.
+   Move/up listen on window and the mouse pointerdown is preventDefault'ed:
+   a native image drag or a text selection would otherwise steal the
+   gesture. Touch keeps the page's own vertical scroll (touch-action:pan-y):
+   only a sideways drag is ours, and the wheel is never touched. Under
+   reduced motion the rows hold still but still drag. Off screen, the loop
+   stops. */
+const mq = document.querySelector("[data-mq]");
+if (mq) {
+  const DRIFT = reduced ? 0 : 26;                  // px per second
+  const rows = [...mq.querySelectorAll("[data-mq-row]")].map((row, i) => ({
+    row, track: row.firstElementChild, dir: i % 2 ? 1 : -1, x: 0, w: 0, v: 0, drag: null
+  }));
+  const wrap = r => { if (r.w) { r.x %= r.w; if (r.x > 0) r.x -= r.w; } };
+  const place = r => { r.track.style.transform = `translate3d(${r.x}px,0,0)`; };
+  const fill = () => {
+    mq.classList.add("on");
+    rows.forEach((r, i) => {
+      r.track.querySelectorAll("[data-clone]").forEach(n => n.remove());
+      const set = [...r.track.children];
+      r.w = r.track.getBoundingClientRect().width;
+      if (!r.w) return;
+      const copies = Math.ceil(r.row.clientWidth / r.w) + 1;
+      for (let c = 0; c < copies; c++) set.forEach(li => {
+        const n = li.cloneNode(true);
+        n.dataset.clone = "";
+        n.setAttribute("aria-hidden", "true");
+        n.querySelector("img").alt = "";
+        r.track.append(n);
+      });
+      if (!r.x) r.x = -r.w * (i ? .5 : 0);       // the second row starts mid-set
+      wrap(r); place(r);
+    });
+  };
+  fill();
+  let rw = innerWidth;
+  addEventListener("resize", () => { if (innerWidth !== rw) { rw = innerWidth; fill(); } });
+
+  let raf = 0, last = 0;
+  const tick = t => {
+    const dt = Math.min(.05, (t - (last || t)) / 1000);
+    last = t;
+    rows.forEach(r => {
+      if (r.drag) return;
+      r.v += (r.dir * DRIFT - r.v) * (1 - Math.exp(-dt * 4));
+      r.x += r.v * dt;
+      wrap(r); place(r);
+    });
+    raf = requestAnimationFrame(tick);
+  };
+  new IntersectionObserver(([e]) => {
+    cancelAnimationFrame(raf); last = 0;
+    if (e.isIntersecting) raf = requestAnimationFrame(tick);
+  }).observe(mq);
+
+  rows.forEach(r => r.row.addEventListener("pointerdown", e => {
+    if (e.button > 0 || r.drag) return;
+    if (e.pointerType === "mouse") e.preventDefault();
+    r.drag = { id: e.pointerId, px: e.clientX, x0: r.x, lx: e.clientX, lt: e.timeStamp };
+    r.v = 0;
+    r.row.classList.add("drag");
+  }));
+  addEventListener("pointermove", e => rows.forEach(r => {
+    const d = r.drag;
+    if (!d || d.id !== e.pointerId) return;
+    r.x = d.x0 + e.clientX - d.px;
+    const dt = (e.timeStamp - d.lt) / 1000;
+    if (dt > 0) r.v = r.v * .6 + (e.clientX - d.lx) / dt * .4;
+    d.lx = e.clientX; d.lt = e.timeStamp;
+    wrap(r); place(r);
+  }));
+  const release = e => rows.forEach(r => {
+    if (!r.drag || r.drag.id !== e.pointerId) return;
+    if (e.timeStamp - r.drag.lt > 80) r.v = 0;     // held still before letting go: no fling
+    r.v = Math.max(-2400, Math.min(2400, r.v));
+    r.drag = null;
+    r.row.classList.remove("drag");
+  });
+  addEventListener("pointerup", release);
+  addEventListener("pointercancel", release);
+}
+
 /* ── Entrances: one observer for every .reveal ──
    Fires once the element's top is a little way into the screen, so it
    plays where the eye is, not in the corner of it. */

@@ -461,6 +461,12 @@ in: no clouds, no سراج, no marginalia, no motion beyond Satr's.
   title-logo.png`), in its own colours, with no small logo above: غمام and
   قضية سمرقند. No work page has a breadcrumb, and neither original links
   out to its film (client).
+- **«شركاء النجاح» is Satr's partners marquee**, brought over as it is
+  (Satr commits 59b014c and 9467a7f): 22 white marks (`CLIENTS`,
+  `assets/clients/`) in two rows drifting opposite ways, draggable, on the
+  home page and the About page. `.cl-row` stays `direction:ltr` and the gap
+  stays padding on each mark, or the loop breaks. The browser pane paints
+  no frames, so test the drift in real headless Chrome.
 - **There is no brief form.** Satr's wrote to Satr's own Firebase, which
   this site must never touch. Contact is the mailbox and the accounts until
   the studio picks a path. المدونة publishes no phone or WhatsApp number,

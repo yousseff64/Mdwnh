@@ -281,10 +281,28 @@ html[lang="en"] .lead{line-height:1.55}
 .sv-2 li:last-child{border-bottom:0}
 .sv-2 .sv-d{grid-column:2}
 
-/* the client wall, Meshbak's: white marks in a plain grid, no boxes */
-.cl{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(28px,3.4vw,56px) var(--gap);align-items:center}
-.cl li{display:grid;place-items:center;height:clamp(84px,7vw,120px)}
-.cl img{width:auto;height:calc(var(--h,1) * 100%);max-width:92%;object-fit:contain}
+/* شركاء النجاح (Satr's, brought over): white marks, no boxes, in two
+   full-bleed rows that drift opposite ways and can be dragged (script.js).
+   Until script.js takes them (.on) each row is a plain sideways scroller, so
+   nothing is ever out of reach.
+   The mark's height is a share of --ch, never a percentage: a % height
+   resolves against a box sized by the picture itself, and tall marks grew
+   past their cells. The gap is padding on each mark rather than flex gap, so
+   one set's width is exactly the distance to its copy and the loop has no
+   seam. The row is direction:ltr: the track's offset is a coordinate, not
+   reading order. In an RTL row it would hang off the right edge and x=0
+   would mean nothing. */
+.cl-head{padding-bottom:clamp(18px,2.2vw,34px)}
+.clients{padding-bottom:clamp(48px,6vw,100px)}
+.cl-mq{--ch:clamp(72px,6vw,104px);--cg:clamp(36px,4.4vw,76px);display:grid;row-gap:clamp(14px,2vw,30px)}
+.cl-row{direction:ltr;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding-inline:var(--m)}
+.cl-row::-webkit-scrollbar{display:none}
+.cl{display:flex;width:max-content}
+.cl li{flex:0 0 auto;display:grid;place-items:center;height:var(--ch);padding-inline:calc(var(--cg) / 2)}
+.cl img{width:auto;height:calc(var(--h,1) * var(--ch));pointer-events:none;user-select:none;-webkit-user-drag:none}
+.cl-mq.on .cl-row{overflow:hidden;padding-inline:0;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.cl-mq.on .cl-row.drag{cursor:grabbing}
+.cl-mq.on .cl{will-change:transform}
 
 /* ═════════ PAGE HEADS ═════════ */
 .p-head{padding-block:clamp(56px,8vw,130px) clamp(36px,4vw,64px)}
@@ -534,7 +552,7 @@ html[lang="en"] .lead{line-height:1.55}
   .blnz-icon{max-width:200px}
   .sv li{grid-template-columns:2.6em 1fr}
   .sv-d{grid-column:2}
-  .cl{grid-template-columns:repeat(2,1fr)}
+  .cl-mq{--ch:56px;--cg:30px}
 }
 @media (max-width:600px){
   body{font-size:16px}
