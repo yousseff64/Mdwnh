@@ -1,0 +1,303 @@
+{
+  "id": "blnz",
+  "accent": "#56BC78",
+  "accent2": "#002F26",
+  "facts": {
+    "palette": [
+      "#002F26",
+      "#56BC78",
+      "#93FE60",
+      "#EBFFE1"
+    ],
+    "palette_rgb": [
+      "0, 47, 38",
+      "86, 188, 120",
+      "147, 254, 96",
+      "235, 255, 225"
+    ],
+    "type": {
+      "latin": "Libertinus Serif",
+      "arabic": "Tajarib"
+    },
+    "intro_title_ar": "مقدمة",
+    "intro_ar": "تجسّد الهوية البصرية لبلنز رؤيةً تجمع بين أصالة الجذور العربية وروح العمارة المعاصرة، لتصنع لغة بصرية تعبّر عن الثبات، والتوازن، والاستمرارية. ومن وحي الجمل، بما يحمله من دلالات الصبر والاعتمادية والارتباط بالبيئة العربية، تنطلق ملامح هوية تسعى إلى ترسيخ حضور مميز يعكس جوهر العلامة وتطلعاتها.\n\nولا تقتصر هذه الهوية على كونها مجموعة من العناصر البصرية، بل تمثل انعكاسًا لفلسفة بلنز في بناء قيمة تتجاوز حدود المكان، وتجمع بين الرؤية المدروسة والتصميم المتوازن. فمن الشعار وألوانه إلى الخطوط والعناصر المساندة، صُمّم كل تفصيل ليؤدي دورًا في تشكيل شخصية متكاملة، تجمع بين البساطة والتميّز، وتوازن بين الهوية الثقافية والتوجّه المعاصر.\n\nيقدّم هذا الملف دليلًا متكاملًا لعناصر الهوية البصرية وتطبيقاتها، موضحًا أسس استخدامها وتوظيفها بما يضمن الاتساق والوضوح في جميع نقاط التواصل. كما يهدف إلى توحيد الطريقة التي تظهر بها العلامة، والحفاظ على ملامحها المميزة عبر مختلف الوسائط والمواقف، سواء في التطبيقات الملموسة أو المنصات الرقمية.\n\nومن خلال الالتزام بالإرشادات الواردة في هذا الدليل، نضمن أن تظل هوية بلنز واضحة ومتناسقة وقادرة على التعبير عن قيمها في كل ظهور. فهي ليست مجرد هوية تُرى، بل تجربة متكاملة تُبنى تفاصيلها بعناية، لتترك انطباعًا راسخًا وتعكس طموح العلامة نحو مستقبل تُصنع فيه الأماكن برؤية، وتُرسّخ فيه القيمة بالثبات والاستمرارية.",
+    "icon_title_ar": "الأيقونة",
+    "icon_ar": "تستمد أيقونة بلنز شكلها من الجمل، رمز الثبات والاعتمادية في الثقافة العربية، لتجمع بين الأصالة والحداثة في تصميم هندسي مبسّط يعكس هوية العلامة ويمنحها حضورًا بصريًا مميزًا.",
+    "colours_title_ar": "الألوان",
+    "colours_page_text": "HEX #002F26 RGB 0, 47, 38 | HEX #56BC78 RGB 86, 188, 120 | HEX #93FE60 RGB 147, 254, 96 | HEX #EBFFE11 RGB 235, 255, 225",
+    "colours_note": "Page 13 carries no prose, only the four swatch labels (transcribed verbatim above). The fourth is printed «#EBFFE11», a typo: its RGB 235, 255, 225 is #EBFFE1, which is what the palette uses.",
+    "source": "Brand Guidelines Blnz V3.pdf (October 2026, V1.0, 30 pages; each page is one 1920x1080 JPEG); old logo from the client's old logo file. Arabic transcribed from pages 2 (مقدمة), 8 (الأيقونة) and 13 (الألوان)."
+  },
+  "items": [
+    {
+      "file": "01-cover",
+      "kind": "cover",
+      "w": 486,
+      "h": 1080,
+      "focus": "50% 62%",
+      "caption_ar": "بطاقة عمل بلنز بين الأصابع",
+      "caption_en": "A BLNZ business card held between the fingers",
+      "source": "PDF page 20"
+    },
+    {
+      "file": "02-hero",
+      "kind": "hero",
+      "w": 1632,
+      "h": 918,
+      "focus": "49% 58%",
+      "caption_ar": "بطاقات العمل على مسند كرسي خشبي",
+      "caption_en": "Business cards on a wooden chair arm",
+      "source": "PDF page 19"
+    },
+    {
+      "file": "03-before",
+      "kind": "before",
+      "w": 1200,
+      "h": 1200,
+      "focus": "50% 50%",
+      "caption_ar": "الشعار القديم",
+      "caption_en": "The old logo",
+      "source": "old logo file"
+    },
+    {
+      "file": "04-after",
+      "kind": "after",
+      "w": 1200,
+      "h": 1200,
+      "focus": "50% 50%",
+      "caption_ar": "الشعار الجديد بألوان الهوية",
+      "caption_en": "The new logo in the identity colours",
+      "source": "PDF page 6 (lockup)"
+    },
+    {
+      "file": "05-before-after",
+      "kind": "comparison",
+      "w": 2400,
+      "h": 1200,
+      "focus": "50% 50%",
+      "caption_ar": "الشعار القديم والجديد جنبا إلى جنب",
+      "caption_en": "Old and new logo side by side",
+      "source": "old logo file + PDF page 6"
+    },
+    {
+      "file": "06-logo-green",
+      "kind": "wide",
+      "w": 1920,
+      "h": 1080,
+      "focus": "50% 50%",
+      "caption_ar": "الشعار على الأخضر",
+      "caption_en": "The logo on the brand green",
+      "source": "PDF page 5",
+      "hide": true,
+      "hide_reason": "same lockup as 04-after"
+    },
+    {
+      "file": "07-construction",
+      "kind": "detail",
+      "w": 1387,
+      "h": 780,
+      "focus": "50% 50%",
+      "caption_ar": "شبكة بناء الشعار",
+      "caption_en": "Logo construction grid",
+      "source": "PDF page 6"
+    },
+    {
+      "file": "08-colours",
+      "kind": "wide",
+      "w": 1920,
+      "h": 1080,
+      "focus": "50% 50%",
+      "caption_ar": "أيقونة الجمل على ألوان الهوية الثلاثة",
+      "caption_en": "The camel icon on the three greens",
+      "source": "PDF page 14"
+    },
+    {
+      "file": "09-pattern",
+      "kind": "detail",
+      "w": 1400,
+      "h": 560,
+      "focus": "50% 50%",
+      "caption_ar": "نمط الجمل",
+      "caption_en": "The camel pattern",
+      "source": "PDF page 11"
+    },
+    {
+      "file": "10-card-hand",
+      "kind": "mockup",
+      "w": 1400,
+      "h": 788,
+      "focus": "45% 50%",
+      "caption_ar": "الوجه الأخضر لبطاقة العمل",
+      "caption_en": "The green face of the business card",
+      "source": "PDF page 20"
+    },
+    {
+      "file": "11-badge",
+      "kind": "mockup",
+      "w": 1400,
+      "h": 788,
+      "focus": "46% 55%",
+      "caption_ar": "بطاقة تعريف بشريط أخضر",
+      "caption_en": "ID badge on a green lanyard",
+      "source": "PDF page 21"
+    },
+    {
+      "file": "12-paper",
+      "kind": "wide",
+      "w": 1920,
+      "h": 1080,
+      "focus": "60% 55%",
+      "caption_ar": "ورقة رسمية تلتف على ظهرها الأخضر",
+      "caption_en": "Letterhead curling over its green back",
+      "source": "PDF page 22"
+    },
+    {
+      "file": "13-folder",
+      "kind": "mockup",
+      "w": 1293,
+      "h": 970,
+      "focus": "50% 50%",
+      "caption_ar": "الملف والورقة الرسمية",
+      "caption_en": "Folder and letterhead",
+      "source": "PDF page 25"
+    },
+    {
+      "file": "14-brochure",
+      "kind": "mockup",
+      "w": 1400,
+      "h": 788,
+      "focus": "48% 48%",
+      "caption_ar": "مطوية ثلاثية",
+      "caption_en": "Tri-fold brochure",
+      "source": "PDF page 23"
+    },
+    {
+      "file": "15-app",
+      "kind": "mockup",
+      "w": 1120,
+      "h": 840,
+      "focus": "40% 60%",
+      "caption_ar": "أيقونة التطبيق على شاشة الجوال",
+      "caption_en": "App icon on a phone home screen",
+      "source": "PDF page 26"
+    },
+    {
+      "file": "16-poster-value-1",
+      "kind": "detail",
+      "w": 512,
+      "h": 770,
+      "focus": "50% 50%",
+      "caption_ar": "إعلان «نمنح المكان قيمة» في الرياض",
+      "caption_en": "“We give the place value” poster, Riyadh",
+      "source": "PDF page 27"
+    },
+    {
+      "file": "17-poster-value-2",
+      "kind": "detail",
+      "w": 512,
+      "h": 770,
+      "focus": "50% 50%",
+      "caption_ar": "إعلان «نمنح المكان قيمة» في مكة",
+      "caption_en": "“We give the place value” poster, Makkah",
+      "source": "PDF page 27"
+    },
+    {
+      "file": "18-poster-value-3",
+      "kind": "detail",
+      "w": 512,
+      "h": 770,
+      "focus": "50% 50%",
+      "caption_ar": "إعلان «نمنح المكان قيمة» في جدة",
+      "caption_en": "“We give the place value” poster, Jeddah",
+      "source": "PDF page 27"
+    },
+    {
+      "file": "19-poster-vision-1",
+      "kind": "detail",
+      "w": 501,
+      "h": 753,
+      "focus": "50% 50%",
+      "caption_ar": "إعلان «حيث تلتقي الرؤية بالواقع» بصورة مطبخ",
+      "caption_en": "“Where vision meets reality” poster, kitchen",
+      "source": "PDF page 28"
+    },
+    {
+      "file": "20-poster-vision-2",
+      "kind": "detail",
+      "w": 501,
+      "h": 753,
+      "focus": "50% 50%",
+      "caption_ar": "إعلان «حيث تلتقي الرؤية بالواقع» بصورة مطبخ داكن",
+      "caption_en": "“Where vision meets reality” poster, dark kitchen",
+      "source": "PDF page 28",
+      "hide": true,
+      "hide_reason": "same poster as 19, other photo"
+    },
+    {
+      "file": "21-poster-vision-3",
+      "kind": "detail",
+      "w": 501,
+      "h": 753,
+      "focus": "50% 50%",
+      "caption_ar": "إعلان «حيث تلتقي الرؤية بالواقع» بصورة صالة",
+      "caption_en": "“Where vision meets reality” poster, living room",
+      "source": "PDF page 28",
+      "hide": true,
+      "hide_reason": "same poster as 19, other photo"
+    },
+    {
+      "file": "22-website",
+      "kind": "wide",
+      "w": 1920,
+      "h": 1080,
+      "focus": "50% 50%",
+      "caption_ar": "الموقع الإلكتروني على الحاسوب",
+      "caption_en": "The website on a laptop",
+      "source": "PDF page 29"
+    },
+    {
+      "file": "logo-white",
+      "ext": "png",
+      "kind": "logo",
+      "w": 600,
+      "h": 305,
+      "focus": "50% 50%",
+      "caption_ar": "شعار بلنز الجديد بالأبيض",
+      "caption_en": "New BLNZ logo, white",
+      "source": "PDF page 6"
+    },
+    {
+      "file": "logo",
+      "ext": "png",
+      "kind": "logo",
+      "w": 600,
+      "h": 305,
+      "focus": "50% 50%",
+      "caption_ar": "شعار بلنز الجديد",
+      "caption_en": "New BLNZ logo",
+      "source": "PDF page 6"
+    },
+    {
+      "file": "old-logo",
+      "ext": "png",
+      "kind": "logo",
+      "w": 600,
+      "h": 334,
+      "focus": "50% 50%",
+      "caption_ar": "شعار بلنز القديم",
+      "caption_en": "Old BLNZ logo, white",
+      "source": "old logo file"
+    },
+    {
+      "file": "new-icon-white",
+      "ext": "png",
+      "kind": "logo",
+      "w": 600,
+      "h": 635,
+      "focus": "50% 50%",
+      "caption_ar": "أيقونة الجمل بالأبيض",
+      "caption_en": "Camel icon, white",
+      "source": "PDF page 8"
+    }
+  ]
+}

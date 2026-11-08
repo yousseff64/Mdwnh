@@ -1,0 +1,296 @@
+{
+  "id": "maknoon",
+  "accent": "#2A8068",
+  "accent2": "#BC9B6A",
+  "facts": {
+    "podcast_episode": {
+      "title": "المعنى القرآني للصيام 🌙 | سلام مكنون",
+      "duration": "1:28:54",
+      "duration_s": 5334,
+      "views": 2655,
+      "likes": 80,
+      "upload_date": "2026-03-03",
+      "channel": "جمعية مكنون",
+      "url": "https://youtu.be/NBYt33ZIAwQ",
+      "guest": "أ.د أيمن الحمدان",
+      "host": "أ. عبدالكريم الخنيفر",
+      "chapters": 8,
+      "source": "yt-dlp --dump-json, fetched 2026-11-07 (views/likes are a snapshot)"
+    },
+    "podcast_palette": {
+      "colors": [
+        "#C2FFEF",
+        "#8AD4C1",
+        "#2E806B",
+        "#0E4738",
+        "#0A3227"
+      ],
+      "typeface": "Arabic UI Display",
+      "source": "identity PDF page 3"
+    },
+    "coverage": [
+      {
+        "title_ar": "زيارة رئيس مجلس إدارة جمعية مكنون — مجمع آل عياف التعليمي",
+        "date_hijri": "ليلة ٨ رمضان ١٤٤٧هـ",
+        "duration_s": 202.3,
+        "source": "on-screen title card, تغطية ١/تغطية زيارة مكنون.mp4"
+      },
+      {
+        "title_ar": "زيارة مدير إدارة الخدمات المشتركة بجمعية مكنون — مجمع جامع الأميرة سارة",
+        "date_hijri": "ليلة ١٤ رمضان ١٤٤٧هـ",
+        "duration_s": 145.5,
+        "source": "on-screen title card, تغطية ٢/زيارة مجمع حلقات الاميرة سارة.mp4"
+      },
+      {
+        "title_ar": "تغطية التصفيات النهائية لمسابقة NHC في مجمع الخزام",
+        "date_hijri": "ليلة ١٥ رمضان ١٤٤٧هـ",
+        "duration_s": 125.9,
+        "source": "on-screen title card, تغطية ٣/تغطية ٣.mp4"
+      }
+    ],
+    "ramadan_teaser": {
+      "hashtag": "#يطرق_بابك",
+      "line": "ترقبوا في رمضان",
+      "versions": 2,
+      "format": "1080x1920",
+      "source": "on-screen text, تشويقة رمضان/تشويقة مكنون ٢.mp4"
+    },
+    "accent_source": "logo green #2A8068 / gold #BC9B6A from the vector logo in Maknon_Guideline PDF (user upload reads #288168 / #BE9C6B)"
+  },
+  "logos": {
+    "logo": "logo.png",
+    "logo_white": "logo-white.png",
+    "logo_podcast": "logo-podcast.png",
+    "logo_podcast_white": "logo-podcast-white.png"
+  },
+  "items": [
+    {
+      "file": "01-cover-studio-wall",
+      "kind": "cover",
+      "group": "podcast",
+      "w": 972,
+      "h": 2160,
+      "focus": "50% 50%",
+      "caption_ar": "جدار استوديو سلام مكنون تحت ظلال الأوراق",
+      "caption_en": "The Salam Maknoon studio wall under a leaf-shadow light",
+      "source": "YouTube NBYt33ZIAwQ «المعنى القرآني للصيام | سلام مكنون» @ 1:27:46.0, 4K, channel bugs removed, cropped 9:20"
+    },
+    {
+      "file": "02-hero-guest",
+      "kind": "hero",
+      "group": "podcast",
+      "w": 3840,
+      "h": 2160,
+      "focus": "28% 40%",
+      "caption_ar": "ضيف الحلقة يستمع بابتسامة هادئة",
+      "caption_en": "The guest listening, with a quiet smile",
+      "source": "YouTube NBYt33ZIAwQ «المعنى القرآني للصيام | سلام مكنون» @ 16:02.5, 4K, channel bugs removed"
+    },
+    {
+      "file": "04-mic-detail",
+      "kind": "detail",
+      "group": "podcast",
+      "w": 1100,
+      "h": 1375,
+      "focus": "45% 45%",
+      "caption_ar": "الميكروفون وذراعه أمام الضيف",
+      "caption_en": "The mic and its boom arm in front of the guest",
+      "source": "YouTube NBYt33ZIAwQ «المعنى القرآني للصيام | سلام مكنون» @ 56:11.0, 4K crop",
+      "hide": true,
+      "hide_reason": "same guest, same shot as 02-hero"
+    },
+    {
+      "file": "06-host-lamp",
+      "kind": "wide",
+      "group": "podcast",
+      "w": 3840,
+      "h": 2160,
+      "focus": "62% 35%",
+      "caption_ar": "المحاور في زاويته والمصباح خلفه",
+      "caption_en": "The host in his corner, the lamp behind him",
+      "source": "YouTube NBYt33ZIAwQ «المعنى القرآني للصيام | سلام مكنون» @ 1:46.0, 4K, channel bugs removed"
+    },
+    {
+      "file": "07-identity-cover",
+      "kind": "mockup",
+      "group": "podcast",
+      "w": 4096,
+      "h": 2363,
+      "focus": "50% 50%",
+      "caption_ar": "غلاف هوية بودكاست سلام مكنون",
+      "caption_en": "Cover board of the Salam Maknoon podcast identity",
+      "source": "الهوية_البصرية_لبودكاست_سلام_مكنون.pdf, page 1"
+    },
+    {
+      "file": "08-identity-logo",
+      "kind": "mockup",
+      "group": "podcast",
+      "w": 4096,
+      "h": 2363,
+      "focus": "50% 50%",
+      "caption_ar": "الرمز والشعار الأساسي والشعار الكامل",
+      "caption_en": "Symbol, primary logo and full logo",
+      "source": "الهوية_البصرية_لبودكاست_سلام_مكنون.pdf, page 2"
+    },
+    {
+      "file": "09-identity-type-colour",
+      "kind": "mockup",
+      "group": "podcast",
+      "w": 4096,
+      "h": 2363,
+      "focus": "50% 50%",
+      "caption_ar": "الخط وخمس درجات من الأخضر",
+      "caption_en": "The typeface and five greens",
+      "source": "الهوية_البصرية_لبودكاست_سلام_مكنون.pdf, page 3"
+    },
+    {
+      "file": "10-identity-reel",
+      "kind": "mockup",
+      "group": "podcast",
+      "w": 4096,
+      "h": 2363,
+      "focus": "20% 50%",
+      "caption_ar": "قالب المقاطع القصيرة على ريلز",
+      "caption_en": "The short-clip template, shown as a reel",
+      "source": "الهوية_البصرية_لبودكاست_سلام_مكنون.pdf, page 4",
+      "hide": true,
+      "hide_reason": "same guest and title as 11-identity-frame"
+    },
+    {
+      "file": "11-identity-frame",
+      "kind": "mockup",
+      "group": "podcast",
+      "w": 4096,
+      "h": 2363,
+      "focus": "50% 50%",
+      "caption_ar": "قالب إطار الحلقة وعنوانها",
+      "caption_en": "The episode frame with its title layout",
+      "source": "الهوية_البصرية_لبودكاست_سلام_مكنون.pdf, page 5"
+    },
+    {
+      "file": "12-quran-hall",
+      "kind": "detail",
+      "group": "events",
+      "w": 1920,
+      "h": 1080,
+      "focus": "68% 55%",
+      "caption_ar": "مصحف على حامله، وحلقات التحفيظ خلفه في مجمع الخزام",
+      "caption_en": "A mushaf on its stand, study circles behind it at Al-Khuzam complex",
+      "source": "تغطية ٣/ترتيب لقطات  تغطية NHC.mov @ 13.0s (clean shot-order render of coverage 3, no branded band)"
+    },
+    {
+      "file": "13-reciter",
+      "kind": "detail",
+      "group": "events",
+      "w": 1920,
+      "h": 1080,
+      "focus": "42% 48%",
+      "caption_ar": "تلاوة أمام لجنة التحكيم في التصفيات النهائية لمسابقة NHC",
+      "caption_en": "Reciting for the judges at the NHC competition finals",
+      "source": "تغطية ٣/ترتيب لقطات  تغطية NHC.mov @ 1.5s"
+    },
+    {
+      "file": "14-contestant-mic",
+      "kind": "detail",
+      "group": "events",
+      "w": 1920,
+      "h": 1080,
+      "focus": "66% 40%",
+      "caption_ar": "متسابق يتلو والميكروفون في يده",
+      "caption_en": "A contestant reciting, mic in hand",
+      "source": "تغطية ٣/ترتيب لقطات  تغطية NHC.mov @ 66.5s"
+    },
+    {
+      "file": "15-judges",
+      "kind": "detail",
+      "group": "events",
+      "w": 1920,
+      "h": 1080,
+      "focus": "55% 40%",
+      "caption_ar": "لجنة التحكيم بين تلاوتين",
+      "caption_en": "The judging panel between recitations",
+      "source": "تغطية ٣/ترتيب لقطات  تغطية NHC.mov @ 89.0s"
+    },
+    {
+      "file": "16-hall-rows",
+      "kind": "detail",
+      "group": "events",
+      "w": 1920,
+      "h": 800,
+      "focus": "50% 55%",
+      "caption_ar": "حلقات التحفيظ في مجمع جامع الأميرة سارة ليلة ١٤ رمضان",
+      "caption_en": "Memorisation circles at the Princess Sarah mosque complex on the night of 14 Ramadan",
+      "source": "تغطية ٢/زيارة مجمع حلقات الاميرة سارة.mp4 @ 135.5s, branded lower band unmixed, cropped to 2.4:1"
+    },
+    {
+      "file": "17-smartboard",
+      "kind": "detail",
+      "group": "events",
+      "w": 1680,
+      "h": 820,
+      "focus": "40% 45%",
+      "caption_ar": "طالب يشير إلى الآية على السبورة الذكية أثناء الزيارة",
+      "caption_en": "A student points to the verse on the smart board during the visit",
+      "source": "تغطية ٢/زيارة مجمع حلقات الاميرة سارة.mp4 @ 21.5s, branded lower band unmixed, cropped"
+    },
+    {
+      "file": "18-sofa-reader",
+      "kind": "detail",
+      "group": "events",
+      "w": 1200,
+      "h": 800,
+      "focus": "55% 60%",
+      "caption_ar": "قارئ في زاوية هادئة من المجمع",
+      "caption_en": "A reader in a quiet corner of the complex",
+      "source": "تغطية ٢/زيارة مجمع حلقات الاميرة سارة.mp4 @ 66.5s, branded lower band unmixed, cropped 3:2"
+    },
+    {
+      "file": "19-elder-mic",
+      "kind": "detail",
+      "group": "events",
+      "w": 1422,
+      "h": 800,
+      "focus": "75% 40%",
+      "caption_ar": "رئيس مجلس إدارة الجمعية يتحدث للطلاب في مجمع آل عياف ليلة ٨ رمضان",
+      "caption_en": "The association's board chairman speaking to students at the Al Ayyaf complex, 8 Ramadan",
+      "source": "تغطية ١/تغطية زيارة مكنون.mp4 @ 172.5s, branded lower band unmixed, cropped"
+    },
+    {
+      "file": "20-teaser-door",
+      "kind": "detail",
+      "group": "events",
+      "w": 1080,
+      "h": 1920,
+      "focus": "50% 45%",
+      "caption_ar": "الباب المضيء في تشويقة رمضان «يطرق بابك»",
+      "caption_en": "The lit door from the Ramadan teaser «يطرق بابك»",
+      "source": "تشويقة رمضان/تشويقة مكنون ٢.mp4 @ 12.5s"
+    },
+    {
+      "file": "21-host-listening",
+      "kind": "wide",
+      "group": "podcast",
+      "w": 3840,
+      "h": 1600,
+      "focus": "68% 45%",
+      "caption_ar": "المحاور يصغي، والمصباح يضيء الزاوية خلفه",
+      "caption_en": "The host listening, the lamp lighting the corner behind him",
+      "source": "YouTube NBYt33ZIAwQ «المعنى القرآني للصيام | سلام مكنون» @ 18:51.5, 4K, channel bugs removed, cropped 2.4:1",
+      "hide": true,
+      "hide_reason": "same host as 06-host-lamp (repeat); available if wanted"
+    },
+    {
+      "file": "22-guest-close",
+      "kind": "wide",
+      "group": "podcast",
+      "w": 3200,
+      "h": 1333,
+      "focus": "22% 45%",
+      "caption_ar": "الضيف عن قرب، وظلال الأوراق على الجدار خلفه",
+      "caption_en": "The guest up close, leaf shadows on the wall behind",
+      "source": "YouTube NBYt33ZIAwQ «المعنى القرآني للصيام | سلام مكنون» @ 1:14:44, 4K, channel bugs removed, cropped 2.4:1",
+      "hide": true,
+      "hide_reason": "same guest as the hero (repeat); available if wanted"
+    }
+  ]
+}

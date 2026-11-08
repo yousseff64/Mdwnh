@@ -8,6 +8,18 @@
 /Art/
 /icons/
 
+# The production site's masters: the full-size stills, frames and renders
+# its pictures are cut from. Same rule as /Art: only what
+# production/tools/build-assets.py writes ships. The manifests, the brand
+# SVGs and the share card's HTML stay tracked.
+/production/masters/**/*.jpg
+/production/masters/**/*.jpeg
+/production/masters/**/*.png
+/production/masters/**/*.webp
+/production/masters/**/*.mp4
+/production/masters/**/*.mov
+/production/masters/**/*.pdf
+
 # Scratch
 REBUILD_PLAN.md
 

@@ -1,0 +1,845 @@
+{
+  "id": "taseel",
+  "accent": "#2D4968",
+  "accent2": "#BA956C",
+  "facts": {
+    "client": {
+      "name_ar": "تأصيل التعليمية",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/شعار تأصــيل.png (logo lockup)"
+    },
+    "scope": {
+      "value": [
+        "montage",
+        "motion graphics"
+      ],
+      "source": "client doc (as given in brief)"
+    },
+    "social_handle": {
+      "value": "j_taseel",
+      "source": "end cards of مع النبي episodes"
+    },
+    "series": {
+      "layali": {
+        "name_ar": "ليال عشر",
+        "logo_text": "وليالٍ عشر / THE BLESSED TEN",
+        "discipline": "montage (client doc)",
+        "episode_count": 4,
+        "total_duration_s": 178.8,
+        "file_date_range": [
+          "2026-05-19",
+          "2026-05-25"
+        ],
+        "format": "vertical 1080x1920, 16 fps",
+        "episodes": [
+          {
+            "title": "الأضحية",
+            "file": "الشغل 2/المدونة/تاصيل - وليال عشر/اضحية/تأصيل اضحية.mp4",
+            "duration_s": 43.69,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-05-19",
+            "note": "folder اضحية; voice-over file named «تأصيل أضحية - الاول»"
+          },
+          {
+            "title": "الاستلاف للأضحية",
+            "file": "الشغل 2/المدونة/تاصيل - وليال عشر/الاستلاف/الاستلاف.mp4",
+            "duration_s": 44.62,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-05-21",
+            "note": "folder الاستلاف; voice-over file named «الاضحية للمعسر - الثاني»"
+          },
+          {
+            "title": "يوم عرفة",
+            "file": "الشغل 2/المدونة/تاصيل - وليال عشر/عرفة/تاصيل يوم عرفة.mp4",
+            "duration_s": 50.06,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-05-25"
+          },
+          {
+            "title": "الأخذ من الشعر",
+            "file": "الشغل 2/المدونة/تاصيل - وليال عشر/الاخذ من الشعر/الاخذ من الشعر.mp4",
+            "duration_s": 40.44,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-05-24"
+          }
+        ],
+        "source": "الشغل 2/المدونة/تاصيل - وليال عشر/ (one final mp4 per episode folder)"
+      },
+      "maa-alnabi": {
+        "name_ar": "مع النبي",
+        "discipline": "motion graphics (client doc)",
+        "episode_count": 20,
+        "live_action_episode_count": 5,
+        "total_duration_s": 666.5,
+        "file_date_range": [
+          "2025-10-29",
+          "2026-02-09"
+        ],
+        "format": "vertical, 1080x1920 (one at 1090x1920)",
+        "episodes": [
+          {
+            "title": "أمير الرحلة",
+            "file": "الشغل 2/المدونة/مع النبي/أمير الرحلة2.mp4",
+            "duration_s": 40.38,
+            "resolution": "1080x1920",
+            "fps": 60.0,
+            "file_date": "2026-01-20",
+            "note": "live-action; header carries the «شتوية تأصيل» mark, not the «مع النبي» mark"
+          },
+          {
+            "title": "أحسن من القمر",
+            "file": "الشغل 2/المدونة/مع النبي/احسن من القمر/في ليلة اضحيان.mp4",
+            "duration_s": 26.75,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2025-11-21"
+          },
+          {
+            "title": "استنار وجهه",
+            "file": "الشغل 2/المدونة/مع النبي/استنار وجهه/استنار وجهه.mp4",
+            "duration_s": 43.62,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2025-11-04"
+          },
+          {
+            "title": "أقرب إلى أحدكم",
+            "file": "الشغل 2/المدونة/مع النبي/اقرب الى احدكم/اقرب الى احدكم.mp4",
+            "duration_s": 90.76,
+            "resolution": "1080x1920",
+            "fps": 25.0,
+            "file_date": "2025-12-22",
+            "note": "filmed presenter / live-action footage (seen on contact sheet)"
+          },
+          {
+            "title": "أكثر تبسما",
+            "file": "الشغل 2/المدونة/مع النبي/اكثر تبسم/اكثـــــــــــــــــــــــر تبسمًا.mp4",
+            "duration_s": 12.0,
+            "resolution": "1080x1920",
+            "fps": 15.0,
+            "file_date": "2025-12-25",
+            "note": "three near-identical exports in folder; latest-named one used"
+          },
+          {
+            "title": "الحلو البارد",
+            "file": "الشغل 2/المدونة/مع النبي/الحلو البارد/الحلو البارد.mp4",
+            "duration_s": 12.69,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-02-09"
+          },
+          {
+            "title": "كان أفلج الثنيتين",
+            "file": "الشغل 2/المدونة/مع النبي/العينة الاولى/كان افلج الثنيتين.mp4",
+            "duration_s": 15.0,
+            "resolution": "1080x1920",
+            "fps": 15.0,
+            "file_date": "2025-10-29",
+            "note": "folder named «العينة الاولى» (the first sample); earliest file date in the series"
+          },
+          {
+            "title": "وأنا خاتم النبيين",
+            "file": "الشغل 2/المدونة/مع النبي/انا خاتم النبيين/وانا خاتم النبيين.mp4",
+            "duration_s": 65.38,
+            "resolution": "1090x1920",
+            "fps": 24.0,
+            "file_date": "2025-11-24",
+            "note": "filmed presenter / live-action footage (seen on contact sheet) plus composited building sequence"
+          },
+          {
+            "title": "بالبياض من الثياب",
+            "file": "الشغل 2/المدونة/مع النبي/بالبياض من الثياب/بالبياض من الثياب.mp4",
+            "duration_s": 27.6,
+            "resolution": "1080x1920",
+            "fps": 15.0,
+            "file_date": "2026-01-29"
+          },
+          {
+            "title": "لم يكن بالطويل ولا بالقصير",
+            "file": "الشغل 2/المدونة/مع النبي/بالطويل ولا بالقصير/بالطويل ولا بالقصيـــــــــــر.mp4",
+            "duration_s": 27.44,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2025-12-18"
+          },
+          {
+            "title": "تعليم الجاهل",
+            "file": "الشغل 2/المدونة/مع النبي/تعليم الجاهل/تعليم الجاهل 2.mp4",
+            "duration_s": 63.58,
+            "resolution": "1080x1920",
+            "fps": 24.0,
+            "file_date": "2026-01-12",
+            "note": "filmed presenter / live-action footage (seen on contact sheet)"
+          },
+          {
+            "title": "حديث بين فصل",
+            "file": "الشغل 2/المدونة/مع النبي/حديث بين فصل/كلام بين فصل.mp4",
+            "duration_s": 29.44,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2025-12-04"
+          },
+          {
+            "title": "سماه باسمه",
+            "file": "الشغل 2/المدونة/مع النبي/سماه باسمه/سماه باسمه.mp4",
+            "duration_s": 31.67,
+            "resolution": "1080x1920",
+            "fps": 15.0,
+            "file_date": "2026-01-02"
+          },
+          {
+            "title": "سكة يتطيب منها",
+            "file": "الشغل 2/المدونة/مع النبي/سُكة يتطيب منها/سكة يتطيب منها.mp4",
+            "duration_s": 10.87,
+            "resolution": "1080x1920",
+            "fps": 15.0,
+            "file_date": "2026-01-08"
+          },
+          {
+            "title": "كفه اليمنى تحت خده الأيمن",
+            "file": "الشغل 2/المدونة/مع النبي/كفه اليُمنى تحت خده الايمن/وضع كفه.mp4",
+            "duration_s": 15.5,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2025-11-27"
+          },
+          {
+            "title": "يحب التيمن",
+            "file": "الشغل 2/المدونة/مع النبي/لا يحب التيمن/ليحب التيمن.mp4",
+            "duration_s": 24.94,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-01-22"
+          },
+          {
+            "title": "لم يكن بالجعد ولا بالسبط",
+            "file": "الشغل 2/المدونة/مع النبي/لم يكن بالجعد ولا بالسبط/بالجعد ولا بالسبط.mp4",
+            "duration_s": 17.31,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2025-11-13"
+          },
+          {
+            "title": "ليهنك العلم",
+            "file": "الشغل 2/المدونة/مع النبي/لينهك العلم/ليهنك العلم.mp4",
+            "duration_s": 78.0,
+            "resolution": "1080x1920",
+            "fps": 24.0,
+            "file_date": "2025-11-10",
+            "note": "filmed presenter / live-action footage (seen on contact sheet); folder spelled «لينهك العلم», a 4K export also exists"
+          },
+          {
+            "title": "ما حجبني النبي",
+            "file": "الشغل 2/المدونة/مع النبي/ما حجبني النبي/ما حجبني النبي.mp4",
+            "duration_s": 13.25,
+            "resolution": "1080x1920",
+            "fps": 16.0,
+            "file_date": "2026-02-05"
+          },
+          {
+            "title": "ما شبع رسول الله",
+            "file": "الشغل 2/المدونة/مع النبي/ما شبع رسول الله/ما شبع رسول الله.mp4",
+            "duration_s": 20.33,
+            "resolution": "1080x1920",
+            "fps": 15.0,
+            "file_date": "2026-01-15"
+          }
+        ],
+        "source": "الشغل 2/المدونة/مع النبي/ (18 episode folders + أمير الرحلة at folder root)",
+        "page_note": "the case-study section uses motion-graphics episodes only; no filmed footage and nothing from «أمير الرحلة» / «شتوية تأصيل»"
+      },
+      "short": {
+        "name_ar": "قصير تأصيل",
+        "film_count": 3,
+        "total_duration_s": 530.6,
+        "file_date_range": [
+          "2026-03-10",
+          "2026-05-09"
+        ],
+        "films": [
+          {
+            "title": "حين يشتد العزم",
+            "file": "الشغل 2/المدونة/قصير تآصيل/حين يشتد العزم/حين يشتد العزم.mp4",
+            "duration_s": 92.72,
+            "resolution": "1080x1920",
+            "fps": 25.0,
+            "file_date": "2026-03-10",
+            "note": "end card dated 2026/3/10 and 1447/9/21"
+          },
+          {
+            "title": "خلوة الروح",
+            "file": "الشغل 2/المدونة/قصير تآصيل/خلوة الروح/خلوة الروح.mp4",
+            "duration_s": 96.5,
+            "resolution": "1080x1920",
+            "fps": 12.0,
+            "file_date": "2026-03-14",
+            "note": "end card reads 1447 / 2026"
+          },
+          {
+            "title": "تقرير حفل تأصيل",
+            "file": "الشغل 2/المدونة/قصير تآصيل/تقرير - حفل تأصيل_3.mp4",
+            "duration_s": 341.38,
+            "resolution": "1920x1080",
+            "fps": 24.0,
+            "file_date": "2026-05-09",
+            "note": "event report; picture is letterboxed to about 1920x786 (2.44:1) inside 16:9"
+          }
+        ],
+        "source": "الشغل 2/المدونة/قصير تآصيل/"
+      }
+    },
+    "production_dates_hint": {
+      "value": "file dates run from 2025-10-29 (first مع النبي sample) to 2026-05-25 (يوم عرفة)",
+      "source": "file modification dates of the final renders; hints only"
+    },
+    "palette": {
+      "Colors.png": [
+        "#93714D",
+        "#768492",
+        "#383838",
+        "#E8D4C1",
+        "#30506D"
+      ],
+      "logo": [
+        "#2D4968",
+        "#BA956C"
+      ],
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/Colors.png (pixel-sampled; its printed HEX labels are placeholder text) and شعار تأصــيل.png"
+    }
+  },
+  "items": [
+    {
+      "file": "01-cover-caravan",
+      "kind": "cover",
+      "series": "maa-alnabi",
+      "w": 729,
+      "h": 1620,
+      "web": {
+        "file": "01-cover-caravan.webp",
+        "w": 729,
+        "h": 1620
+      },
+      "focus": "48% 14%",
+      "caption_ar": "قافلة في عاصفة رملية، من حلقة أقرب إلى أحدكم",
+      "caption_en": "A caravan in a sandstorm, from the episode Aqrab ila Ahadikum",
+      "source": "الشغل 2/المدونة/مع النبي/اقرب الى احدكم/اقرب الى احدكم.mp4 @ 22.9s; cropped 729x1620 from x=175 y=300 to drop the header logos",
+      "note": "untinted; caravan sits in the top fifth, middle is plain dust and dunes for the logo; no text in the crop"
+    },
+    {
+      "file": "01-cover-istanar-desert",
+      "kind": "cover",
+      "series": "maa-alnabi",
+      "w": 729,
+      "h": 1620,
+      "web": {
+        "file": "01-cover-istanar-desert.webp",
+        "w": 729,
+        "h": 1620
+      },
+      "focus": "50% 26%",
+      "caption_ar": "كثبان في غبش الغروب وسطر وكان رسول الله، من حلقة استنار وجهه",
+      "caption_en": "Hazy dunes under the line 'and the Messenger of God was', from the episode Istanara Wajhuh",
+      "source": "الشغل 2/المدونة/مع النبي/استنار وجهه/استنار وجهه.mp4 @ 27.5s; cropped 729x1620 from x=175 y=300 to drop the header logos",
+      "note": "untinted; motion-graphics frame. One line of type sits at about 26% from the top, the middle is plain dunes for the logo",
+      "hide": true,
+      "hide_reason": "client preferred the caravan cover (no text)"
+    },
+    {
+      "file": "02-hero-strip",
+      "kind": "hero",
+      "series": "mixed",
+      "w": 3840,
+      "h": 2160,
+      "web": {
+        "file": "02-hero-strip.webp",
+        "w": 2400,
+        "h": 1350
+      },
+      "focus": "50% 50%",
+      "caption_ar": "خمس لقطات من السلاسل: ليال عشر، مع النبي، والأفلام القصيرة",
+      "caption_en": "Five frames from across the work: Layalin Ashr, Ma'a al-Nabi and the short films",
+      "source": "composite on #383838, panels left to right: الشغل 2/المدونة/تاصيل - وليال عشر/عرفة/تاصيل يوم عرفة.mp4 @ 10.85s (layali) | الشغل 2/المدونة/مع النبي/استنار وجهه/استنار وجهه.mp4 @ 18.5s (maa-alnabi) | الشغل 2/المدونة/مع النبي/احسن من القمر/في ليلة اضحيان.mp4 @ 19.0s (maa-alnabi) | الشغل 2/المدونة/مع النبي/انا خاتم النبيين/وانا خاتم النبيين.mp4 @ 29.4s (maa-alnabi) | الشغل 2/المدونة/قصير تآصيل/خلوة الروح/خلوة الروح.mp4 @ 70.9s (short)",
+      "series_parts": [
+        "layali",
+        "maa-alnabi",
+        "maa-alnabi",
+        "maa-alnabi",
+        "short"
+      ],
+      "bg": "#383838",
+      "hide": true,
+      "hide_reason": "its first panel is the loop-01 thobe frame; hero is 05 instead",
+      "hide_note": "also contains the khatam building and the qamar moon-ring frames, now both loops"
+    },
+    {
+      "file": "03-wide-maa-alnabi-thumbnails",
+      "kind": "wide",
+      "series": "maa-alnabi",
+      "w": 3840,
+      "h": 2160,
+      "web": {
+        "file": "03-wide-maa-alnabi-thumbnails.webp",
+        "w": 2400,
+        "h": 1350
+      },
+      "focus": "50% 50%",
+      "caption_ar": "أغلفة خمس حلقات من مع النبي",
+      "caption_en": "Covers of five Ma'a al-Nabi episodes",
+      "source": "composite on #383838 of the episodes' thumbnails, left to right: ما شبع رسول الله/صورة مصغرة.png | العينة الاولى/ثمبنيل.png (كان أفلج الثنيتين) | حديث بين فصل/صورة مصغرة.png | سُكة يتطيب منها/صورة مصغرة.png | لا يحب التيمن/صورة مصغره.png (all under الشغل 2/المدونة/مع النبي/); motion-graphics episodes only",
+      "bg": "#383838"
+    },
+    {
+      "file": "04-wide-layali-episodes",
+      "kind": "wide",
+      "series": "layali",
+      "w": 3840,
+      "h": 2160,
+      "web": {
+        "file": "04-wide-layali-episodes.webp",
+        "w": 2400,
+        "h": 1350
+      },
+      "focus": "50% 50%",
+      "caption_ar": "حلقات ليال عشر الأربع: الأضحية، الاستلاف، يوم عرفة، الأخذ من الشعر",
+      "caption_en": "The four Layalin Ashr episodes: the sacrifice, borrowing for it, the Day of Arafah, cutting hair",
+      "source": "composite on #383838, left to right: الشغل 2/المدونة/تاصيل - وليال عشر/اضحية/تأصيل اضحية.mp4 @ 4.05s | الاستلاف/الاستلاف.mp4 @ 4.13s | عرفة/تاصيل يوم عرفة.mp4 @ 6.9s | الاخذ من الشعر/الاخذ من الشعر.mp4 @ 12.42s",
+      "bg": "#383838",
+      "hide": true,
+      "hide_reason": "its third panel is the loop-01 thobe frame"
+    },
+    {
+      "file": "05-wide-ceremony-report",
+      "kind": "wide",
+      "series": "short",
+      "w": 1920,
+      "h": 786,
+      "web": {
+        "file": "05-wide-ceremony-report.webp",
+        "w": 1920,
+        "h": 786
+      },
+      "focus": "50% 55%",
+      "caption_ar": "الشعار على أفق الأرض في ختام تقرير حفل تأصيل",
+      "caption_en": "The Taseel mark over the earth's horizon, closing the ceremony report",
+      "source": "الشغل 2/المدونة/قصير تآصيل/تقرير - حفل تأصيل_3.mp4 @ 331.0s; letterbox bars cropped (y 147-933), 2.44:1"
+    },
+    {
+      "file": "06-layali-adhiya-name",
+      "kind": "detail",
+      "series": "layali",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "06-layali-adhiya-name.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 36%",
+      "caption_ar": "اسم محمد تحيط به النقاط، من حلقة الأضحية",
+      "caption_en": "The name Muhammad ringed with dots, from the sacrifice episode",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/اضحية/تأصيل اضحية.mp4 @ 31.6s",
+      "hide": true,
+      "hide_reason": "same subject («محمد» as a name design) as 11-maa-alnabi-istanar-name"
+    },
+    {
+      "file": "07-layali-arafa-typography",
+      "kind": "detail",
+      "series": "layali",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "07-layali-arafa-typography.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 36%",
+      "caption_ar": "حديث الصلوات الخمس كتابة متحركة، من حلقة يوم عرفة",
+      "caption_en": "The hadith of the five prayers set as moving type, from the Day of Arafah episode",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/عرفة/تاصيل يوم عرفة.mp4 @ 32.4s"
+    },
+    {
+      "file": "08-layali-hair-hadith-book",
+      "kind": "detail",
+      "series": "layali",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "08-layali-hair-hadith-book.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 50%",
+      "caption_ar": "حديث الأخذ من الشعر على صفحة كتاب",
+      "caption_en": "The hadith on cutting hair shown on a book page",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/الاخذ من الشعر/الاخذ من الشعر.mp4 @ 5.5s"
+    },
+    {
+      "file": "11-maa-alnabi-istanar-name",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "11-maa-alnabi-istanar-name.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "55% 40%",
+      "caption_ar": "اسم محمد في دائرة فوق الصحراء وظل يمر أمامه، من حلقة استنار وجهه",
+      "caption_en": "The name Muhammad in a disc over the desert as a silhouette passes, from Istanara Wajhuh",
+      "source": "الشغل 2/المدونة/مع النبي/استنار وجهه/استنار وجهه.mp4 @ 18.5s"
+    },
+    {
+      "file": "12-maa-alnabi-shabi-bread",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "12-maa-alnabi-shabi-bread.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 45%",
+      "caption_ar": "عداد النسبة فوق رسم رغيف، من حلقة ما شبع رسول الله",
+      "caption_en": "A percentage counter over a sketched loaf, from Ma Shabi'a Rasul Allah",
+      "source": "الشغل 2/المدونة/مع النبي/ما شبع رسول الله/ما شبع رسول الله.mp4 @ 12.9s"
+    },
+    {
+      "file": "13-maa-alnabi-hajab-door",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "13-maa-alnabi-hajab-door.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 45%",
+      "caption_ar": "باب مرسوم مفتوح على كلمة منذ أسلمت، من حلقة ما حجبني النبي",
+      "caption_en": "A drawn door open on the words 'since I became Muslim', from Ma Hajabani al-Nabi",
+      "source": "الشغل 2/المدونة/مع النبي/ما حجبني النبي/ما حجبني النبي.mp4 @ 7.5s",
+      "hide": true,
+      "hide_reason": "client asked for more interesting frames"
+    },
+    {
+      "file": "14-maa-alnabi-tawil-typography",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "14-maa-alnabi-tawil-typography.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 30%",
+      "caption_ar": "كلمتا الكراديس والرأس مع شرح المعنى، من حلقة لم يكن بالطويل ولا بالقصير",
+      "caption_en": "The words al-karadis and al-ra's with their meaning beneath, from Lam Yakun bil-Tawil wala bil-Qasir",
+      "source": "الشغل 2/المدونة/مع النبي/بالطويل ولا بالقصير/بالطويل ولا بالقصيـــــــــــر.mp4 @ 11.3s",
+      "hide": true,
+      "hide_reason": "client asked for more interesting frames"
+    },
+    {
+      "file": "18-maa-alnabi-hulw-cup",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "18-maa-alnabi-hulw-cup.webp",
+        "w": 1000,
+        "h": 1778
+      },
+      "web_720": {
+        "file": "18-maa-alnabi-hulw-cup-720.webp",
+        "w": 720,
+        "h": 1280
+      },
+      "focus": "45% 50%",
+      "caption_ar": "كوب زجاجي مرسوم أمام رسم مسجد، من حلقة الحلو البارد",
+      "caption_en": "A sketched glass cup in front of a line drawing of a mosque, from al-Hulw al-Barid",
+      "source": "الشغل 2/المدونة/مع النبي/الحلو البارد/الحلو البارد.mp4 @ 6.4s"
+    },
+    {
+      "file": "19-maa-alnabi-kaff-room",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "19-maa-alnabi-kaff-room.webp",
+        "w": 1000,
+        "h": 1778
+      },
+      "web_720": {
+        "file": "19-maa-alnabi-kaff-room-720.webp",
+        "w": 720,
+        "h": 1280
+      },
+      "focus": "50% 50%",
+      "caption_ar": "غرفة مرسومة بفراشها وستارتها وسطر إذا أخذ مضجعه، من حلقة كفه اليمنى تحت خده الأيمن",
+      "caption_en": "A drawn bedroom with its bedding and canopy under the line 'when he lay down to sleep', from Kaffuhu al-Yumna Taht Khaddihi al-Ayman",
+      "source": "الشغل 2/المدونة/مع النبي/كفه اليُمنى تحت خده الايمن/وضع كفه.mp4 @ 7.6s",
+      "hide": true,
+      "hide_reason": "client asked to replace"
+    },
+    {
+      "file": "20-maa-alnabi-aflaj-light",
+      "kind": "detail",
+      "series": "maa-alnabi",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "20-maa-alnabi-aflaj-light.webp",
+        "w": 1000,
+        "h": 1778
+      },
+      "web_720": {
+        "file": "20-maa-alnabi-aflaj-light-720.webp",
+        "w": 720,
+        "h": 1280
+      },
+      "focus": "50% 45%",
+      "caption_ar": "نور يخرج من بين الثنايا فوق كلمة الثنيتين، من حلقة كان أفلج الثنيتين",
+      "caption_en": "A glow breaking through the word al-thaniyyatayn, from Kana Aflaj al-Thaniyyatayn",
+      "source": "الشغل 2/المدونة/مع النبي/العينة الاولى/كان افلج الثنيتين.mp4 @ 11.5s"
+    },
+    {
+      "file": "15-short-khalwa-thoughts",
+      "kind": "detail",
+      "series": "short",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "15-short-khalwa-thoughts.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 55%",
+      "caption_ar": "أفكار متشابكة فوق رأس رجل، من فيلم خلوة الروح",
+      "caption_en": "Tangled thoughts drawn over a man's head, from the short film Khalwat al-Rooh",
+      "source": "الشغل 2/المدونة/قصير تآصيل/خلوة الروح/خلوة الروح.mp4 @ 17.6s",
+      "hide": true,
+      "hide_reason": "same moment as loop-05-short-khalwa-thoughts"
+    },
+    {
+      "file": "16-short-azm-calendar",
+      "kind": "detail",
+      "series": "short",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "16-short-azm-calendar.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 45%",
+      "caption_ar": "تقويم الشهر وأيامه المظللة، من فيلم حين يشتد العزم",
+      "caption_en": "A month calendar with its days highlighted, from Heena Yashtadd al-Azm",
+      "source": "الشغل 2/المدونة/قصير تآصيل/حين يشتد العزم/حين يشتد العزم.mp4 @ 37.67s"
+    },
+    {
+      "file": "17-short-azm-hadith-book",
+      "kind": "detail",
+      "series": "short",
+      "w": 1080,
+      "h": 1920,
+      "web": {
+        "file": "17-short-azm-hadith-book.webp",
+        "w": 1080,
+        "h": 1920
+      },
+      "focus": "50% 45%",
+      "caption_ar": "حديث العشر الأواخر على صفحة كتاب، من فيلم حين يشتد العزم",
+      "caption_en": "The hadith of the last ten nights on a book page, from Heena Yashtadd al-Azm",
+      "source": "الشغل 2/المدونة/قصير تآصيل/حين يشتد العزم/حين يشتد العزم.mp4 @ 75.33s",
+      "hide": true,
+      "hide_reason": "same open-book template as 08-layali-hair-hadith-book"
+    },
+    {
+      "file": "loop-01-layali-arafa-thobe",
+      "kind": "loop",
+      "series": "layali",
+      "w": 720,
+      "h": 1280,
+      "duration_s": 3.5,
+      "bytes": 258548,
+      "poster": "loop-01-layali-arafa-thobe.webp",
+      "focus": "50% 50%",
+      "caption_ar": "الثوب المتسخ يعود أبيض، من حلقة يوم عرفة",
+      "caption_en": "The stained thobe turns white again, from the Day of Arafah episode",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/عرفة/تاصيل يوم عرفة.mp4 7.9s +3.5s; silent, 30 fps, poster is the first frame"
+    },
+    {
+      "file": "loop-02-maa-alnabi-khatam-brick",
+      "kind": "loop",
+      "series": "maa-alnabi",
+      "w": 720,
+      "h": 1268,
+      "duration_s": 4.7,
+      "bytes": 509723,
+      "poster": "loop-02-maa-alnabi-khatam-brick.webp",
+      "focus": "50% 50%",
+      "caption_ar": "اللبنة الناقصة تطير إلى مكانها في البناء، من حلقة وأنا خاتم النبيين",
+      "caption_en": "The missing brick flies in and fills the gap in the building, from Wa Ana Khatam al-Nabiyyin",
+      "source": "الشغل 2/المدونة/مع النبي/انا خاتم النبيين/وانا خاتم النبيين.mp4 35.6s +4.7s (ends before the flash to the presenter at 40.6s); silent, 30 fps, poster is the first frame"
+    },
+    {
+      "file": "loop-03-maa-alnabi-qamar-moon",
+      "kind": "loop",
+      "series": "maa-alnabi",
+      "w": 720,
+      "h": 1280,
+      "duration_s": 3.37,
+      "bytes": 321861,
+      "poster": "loop-03-maa-alnabi-qamar-moon.webp",
+      "focus": "50% 50%",
+      "caption_ar": "القمر في دائرة من الخط ثم سطر فلهو عندي أحسن من القمر",
+      "caption_en": "The moon inside a ring of calligraphy, then the line 'to me he is more beautiful than the moon'",
+      "source": "الشغل 2/المدونة/مع النبي/احسن من القمر/في ليلة اضحيان.mp4 18.34s +3.36s (from the cut into the moon, ends before the social bar); silent, 30 fps, poster is the first frame"
+    },
+    {
+      "file": "loop-04-maa-alnabi-bayad-ring",
+      "kind": "loop",
+      "series": "maa-alnabi",
+      "w": 720,
+      "h": 1280,
+      "duration_s": 4.6,
+      "bytes": 411556,
+      "poster": "loop-04-maa-alnabi-bayad-ring.webp",
+      "focus": "50% 50%",
+      "caption_ar": "نص الحديث يلتف دائرة حول الثوب الأبيض، من حلقة بالبياض من الثياب",
+      "caption_en": "The hadith text wraps into a ring around the white thobe, from Bil-Bayad min al-Thiyab",
+      "source": "الشغل 2/المدونة/مع النبي/بالبياض من الثياب/بالبياض من الثياب.mp4 17.0s +4.6s; silent, 30 fps, poster is the first frame"
+    },
+    {
+      "file": "loop-05-short-khalwa-thoughts",
+      "kind": "loop",
+      "series": "short",
+      "w": 720,
+      "h": 1280,
+      "duration_s": 4.0,
+      "bytes": 312212,
+      "poster": "loop-05-short-khalwa-thoughts.webp",
+      "focus": "50% 50%",
+      "caption_ar": "خطوط حمراء تتشابك والنص يكتب سطرا سطرا",
+      "caption_en": "Red lines tangle while the text builds line by line",
+      "source": "الشغل 2/المدونة/قصير تآصيل/خلوة الروح/خلوة الروح.mp4 15.95s +4.0s; silent, 30 fps, poster is the first frame"
+    },
+    {
+      "file": "loop-06-maa-alnabi-sammah-cloth",
+      "kind": "loop",
+      "series": "maa-alnabi",
+      "w": 720,
+      "h": 1280,
+      "duration_s": 4.6,
+      "bytes": 1274891,
+      "poster": "loop-06-maa-alnabi-sammah-cloth.webp",
+      "focus": "50% 50%",
+      "caption_ar": "قطعة قماش مرسومة ترتفع وتظهر حولها كلمات قميص وعمامة وثوب، من حلقة سماه باسمه",
+      "caption_en": "A hand-drawn piece of cloth rises as the words shirt, turban and thobe appear, from Sammahu bi-Ismih",
+      "source": "الشغل 2/المدونة/مع النبي/سماه باسمه/سماه باسمه.mp4 8.2s +4.6s; crf 30 to stay under 1.5 MB; silent, 30 fps, poster is the first frame"
+    },
+    {
+      "file": "logo",
+      "kind": "logo",
+      "series": null,
+      "w": 1330,
+      "h": 595,
+      "web": {
+        "file": "logo.png",
+        "w": 600,
+        "h": 268
+      },
+      "focus": "50% 50%",
+      "caption_ar": "شعار تأصيل التعليمية",
+      "caption_en": "Taseel logo",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/شعار تأصــيل.png (trimmed, 2% pad)"
+    },
+    {
+      "file": "logo-white",
+      "kind": "logo",
+      "series": null,
+      "w": 1330,
+      "h": 595,
+      "web": {
+        "file": "logo-white.png",
+        "w": 600,
+        "h": 268
+      },
+      "focus": "50% 50%",
+      "caption_ar": "شعار تأصيل التعليمية بالأبيض",
+      "caption_en": "Taseel logo, white",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/شعار تأصــيل.png recoloured white, alpha kept"
+    },
+    {
+      "file": "logo-layali",
+      "kind": "logo",
+      "series": "layali",
+      "w": 2251,
+      "h": 1040,
+      "web": {
+        "file": "logo-layali.png",
+        "w": 600,
+        "h": 277
+      },
+      "focus": "50% 50%",
+      "caption_ar": "شعار وليال عشر",
+      "caption_en": "Layalin Ashr series mark",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/شعار وليال عشر.ai rendered at 300 dpi; black plate keyed out by luminance, filled #383838"
+    },
+    {
+      "file": "logo-layali-white",
+      "kind": "logo",
+      "series": "layali",
+      "w": 2251,
+      "h": 1040,
+      "web": {
+        "file": "logo-layali-white.png",
+        "w": 600,
+        "h": 277
+      },
+      "focus": "50% 50%",
+      "caption_ar": "شعار وليال عشر بالأبيض",
+      "caption_en": "Layalin Ashr series mark, white",
+      "source": "الشغل 2/المدونة/تاصيل - وليال عشر/شعار وليال عشر.ai rendered at 300 dpi; black plate keyed out by luminance"
+    },
+    {
+      "file": "logo-maa-alnabi",
+      "kind": "logo",
+      "series": "maa-alnabi",
+      "w": 2473,
+      "h": 2405,
+      "web": {
+        "file": "logo-maa-alnabi.png",
+        "w": 600,
+        "h": 584
+      },
+      "focus": "50% 50%",
+      "caption_ar": "شعار مع النبي",
+      "caption_en": "Ma'a al-Nabi series mark",
+      "source": "الشغل 2/المدونة/مع النبي/شعار مع النبي.png (trimmed, 2% pad)"
+    },
+    {
+      "file": "logo-maa-alnabi-white",
+      "kind": "logo",
+      "series": "maa-alnabi",
+      "w": 2247,
+      "h": 2396,
+      "web": {
+        "file": "logo-maa-alnabi-white.png",
+        "w": 600,
+        "h": 640
+      },
+      "focus": "50% 50%",
+      "caption_ar": "شعار مع النبي بالأبيض",
+      "caption_en": "Ma'a al-Nabi series mark, white",
+      "source": "الشغل 2/المدونة/مع النبي/شعار مع النبي 1.png (trimmed, 2% pad)"
+    }
+  ]
+}

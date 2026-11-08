@@ -1,0 +1,353 @@
+{
+  "id": "samarqand",
+  "accent": "#3F5D80",
+  "accent_source": "the fan site's deep blue for this world (js/data.js theme.deep), close to the film's sky",
+  "facts": {
+    "comic_pages": {
+      "value": 51,
+      "source": "comics/pages/samarqand/1.png to 51.png, 1517x2149 each"
+    },
+    "opening_caption": {
+      "value": "بلاد ما وراء النهر، سمرقند ٩٢ هـ",
+      "source": "comic page 2"
+    },
+    "damascus_caption": {
+      "value": "دمشق، عاصمة الخلافة الأموية ٩٣هـ",
+      "source": "comic page 19"
+    },
+    "teaser_duration_s": {
+      "value": 35.71,
+      "source": "ffprobe of «تشويقة_قضية سمرقند.mp4»; picture 1920x862 inside 1920x1080, 24 fps"
+    },
+    "teaser_partner_logo": {
+      "value": "505 ERROR, Arab manga creators platform",
+      "source": "teaser 2.5-3.5 s, after the studio's logo"
+    }
+  },
+  "notes": "Stills 1-5 of Art/stills/samarqand are 1:1 crops of comic pages 2, 3, 19, 25 and 38; they were located in the pages and re-cut from the lossless PNGs. The teaser has narration subtitles burned into the picture (rows 852-905). Its frames and loops are cut from the subtitle-free top of the picture at the teaser's own 2.23:1 (crop=1637:735:141:110); the eyes frame is cut at 2.39:1 because that shot has its own black bar at the top.",
+  "logo_source": {
+    "logo-white.webp": "«شعار قضية سمرقند.png» in /Volumes/Sigma Drive/Downloads Archive - Sep 2026 (cream lettering with a brown extruded shadow, 646x360). The cream faces were kept and recoloured white, the brown shadow dropped, 400 px wide. The file is the one the teaser's After Effects project links as ملحقات/شعار قضية سمرقند.png"
+  },
+  "items": [
+    {
+      "file": "13-film-sky-cover.jpg",
+      "kind": "cover",
+      "caption_ar": "سماء بغيوم بيضاء وطيور",
+      "caption_en": "A blue sky with white clouds and birds",
+      "source": "the film (youtube aU4dZUsIVxk) at 1:55",
+      "focus": "45% 50%"
+    },
+    {
+      "file": "14-film-courtyard.jpg",
+      "kind": "hero",
+      "caption_ar": "صحن الجامع بقبته وأروقته",
+      "caption_en": "The mosque courtyard, its dome and arcades",
+      "source": "the film (youtube aU4dZUsIVxk) at 1:05"
+    },
+    {
+      "file": "15-film-arcade.jpg",
+      "kind": "wide",
+      "caption_ar": "الفتى يرفع نظره إلى الأروقة",
+      "caption_en": "The boy looks up along the arcade",
+      "source": "the film (youtube aU4dZUsIVxk) at 0:52"
+    },
+    {
+      "file": "16-film-inscribed-wall.jpg",
+      "kind": "wide",
+      "caption_ar": "الفتى أمام جدار منقوش",
+      "caption_en": "The boy before an inscribed wall",
+      "source": "the film (youtube aU4dZUsIVxk) at 2:42"
+    },
+    {
+      "file": "17-film-market.jpg",
+      "kind": "detail",
+      "caption_ar": "الفتى الأحمر الشعر في السوق",
+      "caption_en": "The red-haired youth in the market",
+      "source": "the film (youtube aU4dZUsIVxk) at 0:25"
+    },
+    {
+      "file": "18-film-alley.jpg",
+      "kind": "detail",
+      "caption_ar": "زقاق بين بيوت عالية وشرفة",
+      "caption_en": "An alley between tall houses and a balcony",
+      "source": "the film (youtube aU4dZUsIVxk) at 0:31"
+    },
+    {
+      "file": "19-film-potter.jpg",
+      "kind": "detail",
+      "caption_ar": "بائع الجرار وخلفه الفتيان",
+      "caption_en": "The potter, with the two boys behind him",
+      "source": "the film (youtube aU4dZUsIVxk) at 0:45"
+    },
+    {
+      "file": "21-film-doorway.jpg",
+      "kind": "detail",
+      "caption_ar": "الفتيان عند الباب",
+      "caption_en": "The two boys at a doorway",
+      "source": "the film (youtube aU4dZUsIVxk) at 1:24"
+    },
+    {
+      "file": "23-film-handshake.jpg",
+      "kind": "detail",
+      "caption_ar": "مصافحة",
+      "caption_en": "A handshake",
+      "source": "the film (youtube aU4dZUsIVxk) at 1:44"
+    },
+    {
+      "file": "24-film-wall-path.jpg",
+      "kind": "detail",
+      "caption_ar": "الفتيان على طريق بمحاذاة سور",
+      "caption_en": "The two boys on a path along a wall",
+      "source": "the film (youtube aU4dZUsIVxk) at 2:05"
+    },
+    {
+      "file": "25-film-dots.jpg",
+      "kind": "detail",
+      "caption_ar": "الفتى يحاجّ صاحبه",
+      "caption_en": "The boy argues his case",
+      "source": "the film (youtube aU4dZUsIVxk) at 2:15"
+    },
+    {
+      "file": "loop-03-chase.mp4",
+      "kind": "loop",
+      "caption_ar": "الفتى ينقضّ على صاحبه",
+      "caption_en": "The boy lunges at his friend",
+      "source": "the film at 1:35.55, 2.55 s, its own shot"
+    },
+    {
+      "file": "loop-01-map",
+      "kind": "loop",
+      "focus": "50% 50%",
+      "caption_ar": "خيل تعدو في الغبار ثم خريطة قديمة تظهر عليها سمرقند",
+      "caption_en": "A horse runs through dust, then an old map with Samarkand on it",
+      "w": 1280,
+      "h": 574,
+      "poster": "loop-01-map.webp",
+      "source": "تشويقة_قضية سمرقند.mp4 4.30–8.70s (4.40 s), crop 1637:735:141:110, silent"
+    },
+    {
+      "file": "loop-02-letter",
+      "kind": "loop",
+      "focus": "50% 50%",
+      "caption_ar": "رسالة ملفوفة تدور في العتمة فوق رجال وقباب",
+      "caption_en": "A rolled letter tumbles through the dark past robed men and domes",
+      "w": 1280,
+      "h": 574,
+      "poster": "loop-02-letter.webp",
+      "source": "تشويقة_قضية سمرقند.mp4 9.15–11.85s (2.70 s), crop 1637:735:141:110, silent"
+    },
+    {
+      "file": "01-cover-night-sky",
+      "kind": "cover",
+      "focus": "50% 50%",
+      "caption_ar": "هلال وسحب فوق أسطح المدينة ليلا",
+      "caption_en": "A crescent moon and clouds over the city's rooftops at night",
+      "w": 640,
+      "h": 1422,
+      "source": "comic page 2 (the opening splash), sky crop 9:20",
+      "crop": [
+        20,
+        200,
+        660,
+        1622
+      ],
+      "web_note": "web copy descreened (Gaussian blur 1.2 px) before cwebp -q 80: the halftone dots cost 470 KB as they are, 80 KB descreened, and the card darkens and tints it anyway",
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "02-hero-courtyard",
+      "kind": "hero",
+      "focus": "50% 55%",
+      "caption_ar": "صحن مسجد تحيط به الأروقة، ومئذنة في ضوء النهار",
+      "caption_en": "A mosque courtyard lined with arcades, a minaret in the daylight",
+      "w": 3840,
+      "h": 2160,
+      "source": "Art/Backgrounds/Samarqand.png (painted master 3840x2659), cut to 16:9",
+      "crop": [
+        0,
+        400,
+        3840,
+        2560
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "03-eyes",
+      "kind": "wide",
+      "focus": "50% 50%",
+      "caption_ar": "عينا الفتى عن قرب، ووهج ضوء يعبر الإطار",
+      "caption_en": "The boy's eyes up close, a streak of light across the frame",
+      "w": 1628,
+      "h": 681,
+      "source": "تشويقة_قضية سمرقند.mp4 @ 15.00s, above the burned-in subtitle",
+      "crop": [
+        146,
+        164,
+        1774,
+        845
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "04-boy-profile",
+      "kind": "detail",
+      "focus": "45% 40%",
+      "caption_ar": "الفتى بقلنسوته المطرزة، والعرق على جبينه",
+      "caption_en": "The boy in his embroidered cap, a bead of sweat on his brow",
+      "w": 1061,
+      "h": 597,
+      "source": "comic page 3, panel crop [228, 874, 1289, 1471] (= Art/stills/samarqand/2.jpg)",
+      "crop": [
+        228,
+        874,
+        1289,
+        1471
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "05-damascus-street",
+      "kind": "detail",
+      "focus": "50% 50%",
+      "caption_ar": "الفتى يقود حمارا بين المارة في أحد شوارع دمشق",
+      "caption_en": "The boy leads a donkey through a busy street in Damascus",
+      "w": 1243,
+      "h": 700,
+      "source": "comic page 19, panel crop [137, 455, 1380, 1155] (= Art/stills/samarqand/3.jpg)",
+      "crop": [
+        137,
+        455,
+        1380,
+        1155
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "06-prayer-rows",
+      "kind": "detail",
+      "focus": "50% 50%",
+      "caption_ar": "صفوف المصلين من أعلى في صحن المسجد",
+      "caption_en": "Rows of worshippers in the mosque courtyard, seen from above",
+      "w": 1402,
+      "h": 788,
+      "source": "comic page 38, panel crop [30, 0, 1432, 788] (= Art/stills/samarqand/5.jpg)",
+      "crop": [
+        30,
+        0,
+        1432,
+        788
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "07-horses",
+      "kind": "detail",
+      "focus": "50% 50%",
+      "caption_ar": "قوائم خيل تعبر غابة يلفها الضباب",
+      "caption_en": "Horses' legs crossing a misty forest",
+      "w": 1059,
+      "h": 323,
+      "source": "comic page 17, panel crop [229, 285, 1288, 608]",
+      "crop": [
+        229,
+        285,
+        1288,
+        608
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "08-hand-letter",
+      "kind": "detail",
+      "focus": "40% 50%",
+      "caption_ar": "يد تقبض على رسالة ملفوفة",
+      "caption_en": "A hand gripping a rolled letter",
+      "w": 1637,
+      "h": 735,
+      "source": "تشويقة_قضية سمرقند.mp4 @ 13.70s, above the burned-in subtitle",
+      "crop": [
+        141,
+        110,
+        1778,
+        845
+      ],
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "09-page-forest",
+      "kind": "detail",
+      "focus": "50% 50%",
+      "caption_ar": "صفحة من القصة المصورة: غابة في الليل ومدخل كهف",
+      "caption_en": "A page of the comic: a forest at night and the mouth of a cave",
+      "w": 1517,
+      "h": 2149,
+      "source": "comic page 9, whole page",
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "10-page-last",
+      "kind": "detail",
+      "focus": "50% 50%",
+      "caption_ar": "الصفحة الأخيرة من القصة المصورة: الفتى يمد يده والأوراق تتساقط",
+      "caption_en": "The comic's last page: the boy reaching out as leaves fall",
+      "w": 1517,
+      "h": 2149,
+      "source": "comic page 47, whole page",
+      "hide": true,
+      "hide_reason": "comic art and teaser stills; replaced by frames from the film itself (client, 8 November 2026)"
+    },
+    {
+      "file": "11-city",
+      "kind": "detail",
+      "hide": true,
+      "hide_reason": "same splash image (comic page 2) as 01-cover-night-sky (Art/stills/samarqand/1.jpg)",
+      "caption_ar": "المدينة من أعلى",
+      "caption_en": "The city from above",
+      "w": 1517,
+      "h": 853,
+      "source": "comic page 2, panel crop [0, 1168, 1517, 2021] (= Art/stills/samarqand/1.jpg)",
+      "crop": [
+        0,
+        1168,
+        1517,
+        2021
+      ]
+    },
+    {
+      "file": "12-courtyard-pavilion",
+      "kind": "detail",
+      "hide": true,
+      "hide_reason": "the same courtyard seen the same way, down the arcades, as 02-hero-courtyard (Art/stills/samarqand/4.jpg)",
+      "caption_ar": "صحن المسجد والقبة على أعمدتها",
+      "caption_en": "The mosque courtyard and its domed pavilion",
+      "w": 1032,
+      "h": 580,
+      "source": "comic page 25, panel crop [212, 765, 1244, 1345] (= Art/stills/samarqand/4.jpg)",
+      "crop": [
+        212,
+        765,
+        1244,
+        1345
+      ]
+    },
+    {
+      "file": "logo-white",
+      "kind": "logo",
+      "w": 400,
+      "h": 219,
+      "focus": "50% 50%",
+      "caption_ar": "شعار قضية سمرقند بالأبيض",
+      "caption_en": "Qadiyyat Samarqand title lettering, white",
+      "source": "logo"
+    }
+  ]
+}

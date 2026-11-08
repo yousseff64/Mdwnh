@@ -1,0 +1,724 @@
+{
+ "id": "maa-allah",
+ "accent": "#023564",
+ "accent2": "#0C133B",
+ "type_colors": {
+  "montage": "#8CCBFF",
+  "motion": "#F3CB7E",
+  "animation": "#C8B4FF"
+ },
+ "type_labels": {
+  "montage": "مونتاج",
+  "motion": "موشن",
+  "animation": "انيميشن"
+ },
+ "facts": {
+  "youtube_channel": {
+   "value": "@maa_allah0 (UCKHXqwiwsx4l-2qJyCNnkHA), about 13.6K subscribers",
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "shorts_on_channel": {
+   "value": 172,
+   "note": "171 series shorts uploaded 2025-03-01 to 2026-11-07, plus one unrelated upload from 2020-04-13",
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "first_twelve_months": {
+   "value": "144 shorts between March 2025 and February 2026, 10 to 14 every month",
+   "note": "fits the client doc's \"12 months non-stop\"; output then drops to 1-7 a month from March 2026",
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07 (upload_date per video)"
+  },
+  "youtube_shorts_views_total": {
+   "value": 1232348,
+   "note": "YouTube Shorts only, all 172. The client doc's 8,500,000+ is across all platforms and cannot be checked from YouTube alone",
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "shorts_over_50k_views": {
+   "value": 8,
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "shorts_over_10k_views": {
+   "value": 18,
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "top_shorts": {
+   "value": [
+    {
+     "title": "حكم التدخين 🚬",
+     "views": 125846,
+     "likes": 4729,
+     "seconds": 29,
+     "uploaded": "2026-07-08",
+     "url": "https://www.youtube.com/shorts/2fGr-RpvmPc"
+    },
+    {
+     "title": "{ وَلَا تَتَّبِعُواْ خُطُوَٰتِ ٱلشَّيۡطَٰنِِۚ }",
+     "views": 122853,
+     "likes": 6689,
+     "seconds": 31,
+     "uploaded": "2026-09-29",
+     "url": "https://www.youtube.com/shorts/Cnf7WpwQqQ4"
+    },
+    {
+     "title": "الأهل والالتزام 👨‍👩‍👧‍👦",
+     "views": 97274,
+     "likes": 6519,
+     "seconds": 30,
+     "uploaded": "2026-08-28",
+     "url": "https://www.youtube.com/shorts/HW-Wm7UKZjc"
+    },
+    {
+     "title": "{ فَمَا ظَنُّكُم بِرَبِّ ٱلۡعَٰلَمِينَ }",
+     "views": 81307,
+     "likes": 5403,
+     "seconds": 34,
+     "uploaded": "2026-09-21",
+     "url": "https://www.youtube.com/shorts/7i7LVTd-Ntw"
+    },
+    {
+     "title": "ترك الهوى✋🏻🚫",
+     "views": 68031,
+     "likes": 4985,
+     "seconds": 23,
+     "uploaded": "2026-07-04",
+     "url": "https://www.youtube.com/shorts/cQpMSQRu7ZY"
+    },
+    {
+     "title": "{ لَتَرۡكَبُنَّ طَبَقًا عَن طَبَقٖ }",
+     "views": 58082,
+     "likes": 3516,
+     "seconds": 26,
+     "uploaded": "2026-10-11",
+     "url": "https://www.youtube.com/shorts/qivdGxjRPlg"
+    }
+   ],
+   "note": "of the top ten, nine are animation and one (حكم التدخين) is motion, judged from the frames",
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "duration_seconds": {
+   "value": {
+    "median": 29,
+    "middle_half": [
+     24.0,
+     44.0
+    ],
+    "min": 12,
+    "max": 83
+   },
+   "source": "yt-dlp --flat-playlist -J https://www.youtube.com/@maa_allah0/shorts plus yt-dlp -j per video, fetched 2026-11-07"
+  },
+  "render_spec": {
+   "value": "1080x1920 H.264 masters at 12-25 fps for animation and motion (montage master 60 fps)",
+   "source": "ffprobe of the local renders in /Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/"
+  },
+  "client_montage_shorts": {
+   "zSJBAVp4w1A": "الصلاة ومقدار اهتمامك, 62 s, 2025-06-09",
+   "vY1htfIQTHY": "قسوة القلب, 61 s, 2026-10-30",
+   "M7jlp5l6Re8": "لحظة مابعد الموت, 49 s, 2025-05-24",
+   "source": "yt-dlp metadata, 2026-11-07"
+  }
+ },
+ "items": [
+  {
+   "file": "01-cover-earth-horizon",
+   "kind": "cover",
+   "type": "motion",
+   "w": 864,
+   "h": 1920,
+   "focus": "50% 60%",
+   "caption_ar": "الأرض من فيديو متاع الغرور، من نسخة التحريك قبل إضافة النص",
+   "caption_en": "The earth from «متاع الغرور», taken from the animation render before the text was added",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/جناح البعوضة/AE.mp4 @ 5.4s (text-free After Effects render), centre crop 864x1920; published as https://www.youtube.com/shorts/ZHyX5y_4E90 (2025-06-18, 381 views on 2026-11-07)",
+   "crop": "9:20 centre crop of a 1080x1920 frame; untinted, no logo — tint and logo are applied by the card"
+  },
+  {
+   "file": "02-hero-strip-three-types",
+   "kind": "hero",
+   "type": "mixed",
+   "w": 2400,
+   "h": 1350,
+   "focus": "50% 50%",
+   "caption_ar": "خمس لقطات من السلسلة جنبا إلى جنب: انيميشن وموشن ومونتاج",
+   "caption_en": "Five frames from the series side by side: animation, motion and editing",
+   "source": "Composite on #0C133B, 5 frames 432x768, 40px gutters, 14px radius. Every frame is used nowhere else (not a detail, not inside a loop).",
+   "frames": [
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١١ - لتركبن طبقًا/لتركبن طبقًا عن طبق.mp4 @ 8.0s",
+     "published": "https://www.youtube.com/shorts/qivdGxjRPlg",
+     "type": "animation"
+    },
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/اثر الغناء/اثر الغناء.mp4 @ 13.5s",
+     "published": "https://www.youtube.com/shorts/Kx83XBCSkFU",
+     "type": "motion"
+    },
+    {
+     "from": "YouTube download @ 1.9s",
+     "published": "https://www.youtube.com/shorts/Nuzd_GrZYVE",
+     "type": "montage"
+    },
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/صلة الرحم/صلة الرحم.mp4 @ 18.5s",
+     "published": "https://www.youtube.com/shorts/aRNNTc4JFh0",
+     "type": "motion"
+    },
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ٩ - الطيارة/فما ظنكم برب العالمين.mp4 @ 3.2s",
+     "published": "https://www.youtube.com/shorts/7i7LVTd-Ntw",
+     "type": "animation"
+    }
+   ],
+   "safe_band": "frames occupy y 291-1059; the navy above and below can be cropped away (e.g. to 21:9) without touching a frame"
+  },
+  {
+   "file": "03-wide-strip-three-types",
+   "kind": "wide",
+   "type": "mixed",
+   "w": 2400,
+   "h": 1350,
+   "focus": "50% 50%",
+   "caption_ar": "خمس لقطات أخرى من الأنواع الثلاثة",
+   "caption_en": "Five more frames across the three types",
+   "source": "Composite on #0C133B, same grid as 02. Every frame is used nowhere else (not a detail, not inside a loop).",
+   "frames": [
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/انيميشن 46 - ترك الجدال/ترك الجدال.mp4 @ 10.4s",
+     "published": "https://www.youtube.com/shorts/z3NtxB31lNE",
+     "type": "animation"
+    },
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/حكم التدخين/حكم التدخين.mp4 @ 8.8s",
+     "published": "https://www.youtube.com/shorts/2fGr-RpvmPc",
+     "type": "motion"
+    },
+    {
+     "from": "YouTube download @ 14.4s",
+     "published": "https://www.youtube.com/shorts/7yb6VlxbSxg",
+     "type": "montage"
+    },
+    {
+     "from": "YouTube download @ 25.4s",
+     "published": "https://www.youtube.com/shorts/GPs8nEkibZU",
+     "type": "montage"
+    },
+    {
+     "from": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١٢ - حفت الجنة بالمكاره/حفت الجنة بالمكاره.mp4 @ 28.6s",
+     "published": "https://www.youtube.com/shorts/8sCMy0r7ktY",
+     "type": "animation"
+    }
+   ],
+   "safe_band": "frames occupy y 291-1059",
+   "hide": true,
+   "hide_reason": "a second strip of shorts repeats the hero strip (client: repeated section)"
+  },
+  {
+   "file": "04-anim-haram-bubble",
+   "kind": "detail",
+   "type": "animation",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 35%",
+   "caption_ar": "لحظة الإغراء في خطوات الشيطان: الفكرة تنقلب حمراء ومكتوب عليها حرام",
+   "caption_en": "The temptation beat in «خطوات الشيطان»: the thought turns red and reads حرام",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١٠ - المال الحرام/خطوات الشيطان.mp4 @ 5.6s; published as https://www.youtube.com/shorts/Cnf7WpwQqQ4 (2026-09-29, 122,853 views on 2026-11-07)"
+  },
+  {
+   "file": "05-anim-miner-cave",
+   "kind": "detail",
+   "type": "animation",
+   "w": 1080,
+   "h": 1920,
+   "focus": "62% 55%",
+   "caption_ar": "عامل منجم تحت ضوء خوذته، من لتركبن طبقا عن طبق",
+   "caption_en": "A miner lit by his own helmet lamp, from «لتركبن طبقا عن طبق»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١١ - لتركبن طبقًا/لتركبن طبقًا عن طبق.mp4 @ 16.4s; published as https://www.youtube.com/shorts/qivdGxjRPlg (2026-10-11, 58,082 views on 2026-11-07)"
+  },
+  {
+   "file": "06-anim-nightmare",
+   "kind": "detail",
+   "type": "animation",
+   "w": 1080,
+   "h": 1920,
+   "focus": "45% 45%",
+   "caption_ar": "كابوس بالأزرق فوق ضوء الصباح، من حفت الجنة بالمكاره",
+   "caption_en": "A blue nightmare hanging over warm morning light, from «حفت الجنة بالمكاره»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١٢ - حفت الجنة بالمكاره/حفت الجنة بالمكاره.mp4 @ 9.6s; published as https://www.youtube.com/shorts/8sCMy0r7ktY (2026-10-22, 38,587 views on 2026-11-07)"
+  },
+  {
+   "file": "07-anim-argument",
+   "kind": "detail",
+   "type": "animation",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 55%",
+   "caption_ar": "اثنان يتجادلان على الطاولة وثالث ساكت في الخلف، من ترك الجدال",
+   "caption_en": "Two argue across a table while a third stays out of it, from «ترك الجدال»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/انيميشن 46 - ترك الجدال/ترك الجدال.mp4 @ 0.6s; published as https://www.youtube.com/shorts/z3NtxB31lNE (2026-02-19, 55,971 views on 2026-11-07)"
+  },
+  {
+   "file": "08-anim-plane-organs",
+   "kind": "detail",
+   "type": "animation",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 40%",
+   "caption_ar": "في الطائرة، القلب والمعدة يطفوان فوق المقاعد، من فما ظنكم برب العالمين",
+   "caption_en": "Mid-flight, a heart and a stomach float above the seats, from «فما ظنكم برب العالمين»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ٩ - الطيارة/فما ظنكم برب العالمين.mp4 @ 26.0s; published as https://www.youtube.com/shorts/7i7LVTd-Ntw (2026-09-21, 81,307 views on 2026-11-07)",
+   "hide": true,
+   "hide_reason": "same plane-seat scene as a panel of 02-hero-strip"
+  },
+  {
+   "file": "09-anim-controller",
+   "kind": "detail",
+   "type": "animation",
+   "w": 1080,
+   "h": 1920,
+   "focus": "40% 55%",
+   "caption_ar": "يد ترتفع أمام يد التحكم، من ترك الهوى",
+   "caption_en": "A hand raised over the game controller, from «ترك الهوى»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١ - ترك الهوى/ترك الهوى.mp4 @ 0.5s; published as https://www.youtube.com/shorts/cQpMSQRu7ZY (2026-07-04, 68,031 views on 2026-11-07)"
+  },
+  {
+   "file": "10-motion-red-figure",
+   "kind": "detail",
+   "type": "motion",
+   "w": 1080,
+   "h": 1920,
+   "focus": "40% 60%",
+   "caption_ar": "رجل من مضلعات حمراء بجانب نوتة معدنية، من أثر الغناء",
+   "caption_en": "A low-poly figure in red beside a chrome note, from «أثر الغناء»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/اثر الغناء/اثر الغناء.mp4 @ 25.3s; published as https://www.youtube.com/shorts/Kx83XBCSkFU (2025-06-11, 340 views on 2026-11-07)"
+  },
+  {
+   "file": "11-motion-chrome-note",
+   "kind": "detail",
+   "type": "motion",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 50%",
+   "caption_ar": "نوتة معدنية على خشب داكن، أول لقطة في أثر الغناء",
+   "caption_en": "A chrome note on dark wood grain, the opening shot of «أثر الغناء»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/اثر الغناء/اثر الغناء.mp4 @ 1.8s; published as https://www.youtube.com/shorts/Kx83XBCSkFU (2025-06-11, 340 views on 2026-11-07)",
+   "hide": true,
+   "hide_reason": "same episode and motif (music note) as 10-motion-red-figure"
+  },
+  {
+   "file": "12-motion-boxers-earth",
+   "kind": "detail",
+   "type": "motion",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 55%",
+   "caption_ar": "ملاكمان يتقاتلان فوق الكرة الأرضية: يتنافس عليها الناس، من متاع الغرور",
+   "caption_en": "Two boxers fight on top of the globe — \"people compete over it\" — from «متاع الغرور»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/جناح البعوضة/متاع الغرور.mp4 @ 7.8s; published as https://www.youtube.com/shorts/ZHyX5y_4E90 (2025-06-18, 381 views on 2026-11-07)"
+  },
+  {
+   "file": "13-motion-dragonfly-wing",
+   "kind": "detail",
+   "type": "motion",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 55%",
+   "caption_ar": "جناح بعوضة مكبر بالأبعاد الثلاثة، من متاع الغرور",
+   "caption_en": "A 3D insect wing up close for the \"wing of a mosquito\" line, from «متاع الغرور»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/جناح البعوضة/متاع الغرور.mp4 @ 16.8s; published as https://www.youtube.com/shorts/ZHyX5y_4E90 (2025-06-18, 381 views on 2026-11-07)"
+  },
+  {
+   "file": "14-motion-karaha-type",
+   "kind": "detail",
+   "type": "motion",
+   "w": 1080,
+   "h": 1920,
+   "focus": "45% 55%",
+   "caption_ar": "كلمة الكراهة وسيجارة مطفأة تحتها، من حكم التدخين",
+   "caption_en": "Kinetic type: الكراهة with a stubbed-out cigarette, from «حكم التدخين»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/حكم التدخين/حكم التدخين.mp4 @ 2.9s; published as https://www.youtube.com/shorts/2fGr-RpvmPc (2026-07-08, 125,846 views on 2026-11-07)"
+  },
+  {
+   "file": "15-motion-heart",
+   "kind": "detail",
+   "type": "motion",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 50%",
+   "caption_ar": "قلب ثلاثي الأبعاد على خلفية بنفسجية، من سلامة القلب",
+   "caption_en": "A 3D heart on a violet field, from «سلامة القلب»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/انيميشن 10/ســـــــــــــــــلامة القلب.mp4 @ 15.6s; published as https://www.youtube.com/shorts/Uc_k6E9-7oo (2025-05-15, 406 views on 2026-11-07)",
+   "hide": true,
+   "hide_reason": "another 3D heart, same as loop-04-motion-heart-3d"
+  },
+  {
+   "file": "16-montage-reading-window",
+   "kind": "detail",
+   "type": "montage",
+   "w": 1080,
+   "h": 1920,
+   "focus": "40% 60%",
+   "caption_ar": "رجل يقرأ في المصحف تحت نوافذ المسجد، من الأسماء الحسنى",
+   "caption_en": "A man reading the mushaf under the mosque windows, from «الأسماء الحسنى»",
+   "source": "https://www.youtube.com/shorts/GPs8nEkibZU (2025-11-25, 1,796 views on 2026-11-07) @ 20.6s (video-only download, 1080x1920)",
+   "hide": true,
+   "hide_reason": "montage column is gifs only (client)"
+  },
+  {
+   "file": "17-montage-boy-kneeling",
+   "kind": "detail",
+   "type": "montage",
+   "w": 1080,
+   "h": 1920,
+   "focus": "45% 55%",
+   "caption_ar": "ظل ولد جالس للصلاة في ضوء النافذة، من وصية الإمام أحمد",
+   "caption_en": "A boy kneeling in silhouette against window light, from «وصية الإمام أحمد»",
+   "source": "https://www.youtube.com/shorts/WMi9jYS_ksg (2025-03-01, 4,814 views on 2026-11-07) @ 11.3s (video-only download, 1080x1920)",
+   "hide": true,
+   "hide_reason": "montage column is gifs only (client)"
+  },
+  {
+   "file": "18-montage-prayer-window",
+   "kind": "detail",
+   "type": "montage",
+   "w": 1080,
+   "h": 1920,
+   "focus": "70% 65%",
+   "caption_ar": "رجل يدعو في غرفة مظلمة وضوء النافذة يقع عليه، من سكينة الجوارح",
+   "caption_en": "A man at prayer in a dark room, one arched window lighting him, from «سكينة الجوارح»",
+   "source": "https://www.youtube.com/shorts/VwyjFeO89IM (2026-01-16, 1,096 views on 2026-11-07) @ 4.8s (video-only download, 1080x1920)",
+   "hide": true,
+   "hide_reason": "third window-light shot beside 16 and 17"
+  },
+  {
+   "file": "19-montage-walker-shaft",
+   "kind": "detail",
+   "type": "montage",
+   "w": 1080,
+   "h": 1920,
+   "focus": "50% 45%",
+   "caption_ar": "شخص وحيد يمشي في شريط من الضوء وظله طويل، من سلاح التائب",
+   "caption_en": "One figure walking through a shaft of light, long shadow behind, from «سلاح التائب»",
+   "source": "https://www.youtube.com/shorts/7yb6VlxbSxg (2026-08-19, 3,705 views on 2026-11-07) @ 2.4s (video-only download, 1080x1920)",
+   "hide": true,
+   "hide_reason": "montage column is gifs only (client)"
+  },
+  {
+   "file": "loop-01-anim-door-peek",
+   "kind": "loop",
+   "type": "animation",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "الباب ينفتح ويطل منه، ثم يد تمتد من السرير، من حفت الجنة بالمكاره",
+   "caption_en": "The door opens and he peeks in, cut to a hand reaching from the bed, from «حفت الجنة بالمكاره»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١٢ - حفت الجنة بالمكاره/حفت الجنة بالمكاره.mp4 @ 0.1s for 3.5s; published as https://www.youtube.com/shorts/8sCMy0r7ktY (2026-10-22, 38,587 views on 2026-11-07)",
+   "duration": 3.5,
+   "bytes": 121023,
+   "poster": "loop-01-anim-door-peek.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-02-anim-stomp",
+   "kind": "loop",
+   "type": "animation",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "قدم تدوس السيجارة، آخر لقطة في ترك الهوى",
+   "caption_en": "A foot stamps out the cigarette, the last shot of «ترك الهوى»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١ - ترك الهوى/ترك الهوى.mp4 @ 19.2s for 4.1s; published as https://www.youtube.com/shorts/cQpMSQRu7ZY (2026-07-04, 68,031 views on 2026-11-07)",
+   "duration": 4.12,
+   "bytes": 133134,
+   "poster": "loop-02-anim-stomp.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-03-motion-counter-99",
+   "kind": "loop",
+   "type": "motion",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "عداد نقطي يصعد حتى 99",
+   "caption_en": "A dot-matrix counter climbs to 99",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/داء/دواء من 99 داء.mp4 @ 13.36s for 3.62s; published as https://www.youtube.com/shorts/FmTBbzQOY88 (2025-03-25, 255 views on 2026-11-07)",
+   "duration": 3.67,
+   "bytes": 258341,
+   "poster": "loop-03-motion-counter-99.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-04-motion-heart-3d",
+   "kind": "loop",
+   "type": "motion",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "قلب ثلاثي الأبعاد يتحول من الأحمر إلى خطوط ثم يسود، من أثر الغناء",
+   "caption_en": "A 3D heart turns from red to line art and then goes dark, from «أثر الغناء»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/اثر الغناء/اثر الغناء.mp4 @ 4.3s for 4.7s; published as https://www.youtube.com/shorts/Kx83XBCSkFU (2025-06-11, 340 views on 2026-11-07)",
+   "duration": 4.72,
+   "bytes": 620555,
+   "poster": "loop-04-motion-heart-3d.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-05-montage-quran-cuts",
+   "kind": "loop",
+   "type": "montage",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "ستة متحدثين في ثلاث ثوان ونصف، افتتاحية أثر القرآن",
+   "caption_en": "Six speakers in three and a half seconds: the cold open of «أثر القرآن»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/اثر القران/أثر القرآن.mp4 @ 0.36s for 3.52s; published as https://www.youtube.com/shorts/Va2e4QfDIQs (2025-03-09, 383 views on 2026-11-07)",
+   "duration": 3.53,
+   "bytes": 360419,
+   "poster": "loop-05-montage-quran-cuts.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-06-montage-city-to-car",
+   "kind": "loop",
+   "type": "montage",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "مدينة في الضباب، خط أحمر يرتفع ويهبط، ثم مقود سيارة تحت المطر، من سكينة الجوارح",
+   "caption_en": "City in fog, a red line charting over it, then a dashboard in the rain, from «سكينة الجوارح»",
+   "source": "https://www.youtube.com/shorts/VwyjFeO89IM (2026-01-16, 1,096 views on 2026-11-07) @ 10.6s for 4.8s (video-only download)",
+   "duration": 4.8,
+   "bytes": 329944,
+   "poster": "loop-06-montage-city-to-car.webp",
+   "audio": false,
+   "hide": true,
+   "hide_reason": "client replaced the montage column with the three shorts they picked"
+  },
+  {
+   "file": "loop-07-montage-sky-to-sunset",
+   "kind": "loop",
+   "type": "montage",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "سماء زرقاء تذوب في غروب برتقالي خلف رجل، من وماذا يأتي بعد الصبر",
+   "caption_en": "A blue sky dissolves into an orange sunset behind a man, from «وماذا يأتي بعد الصبر؟»",
+   "source": "https://www.youtube.com/shorts/224vJh2p8Pw (2025-03-16, 4,193 views on 2026-11-07) @ 8.75s for 4.4s (video-only download)",
+   "duration": 4.4,
+   "bytes": 525334,
+   "poster": "loop-07-montage-sky-to-sunset.webp",
+   "audio": false,
+   "hide": true,
+   "hide_reason": "client replaced the montage column with the three shorts they picked"
+  },
+  {
+   "file": "logo-white",
+   "kind": "logo",
+   "type": null,
+   "w": 1890,
+   "h": 2605,
+   "focus": "50% 50%",
+   "caption_ar": "شعار مع الله بالخط العربي، أبيض على شفاف",
+   "caption_en": "The «مع الله» calligraphy mark, white on transparent",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/شعار مع الله الجديد.png (1819x2505 RGBA), trimmed to alpha box + 2% padding",
+   "web": "logo-white.png (600px wide in assets/)"
+  },
+  {
+   "file": "logo",
+   "kind": "logo",
+   "type": null,
+   "w": 1890,
+   "h": 2605,
+   "focus": "50% 50%",
+   "caption_ar": "شعار مع الله بالخط العربي، أبيض على شفاف",
+   "caption_en": "The «مع الله» calligraphy mark, white on transparent",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/شعار مع الله الجديد.png (1819x2505 RGBA), trimmed to alpha box + 2% padding",
+   "web": "logo.png (600px wide in assets/)"
+  },
+  {
+   "file": "loop-12-montage-tv-glitch",
+   "kind": "loop",
+   "type": "montage",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "«الصلاة ومقدار اهتمامك»: تلفاز قديم يشتغل في غرفة مظلمة وتقفز الصورة",
+   "caption_en": "«Prayer and how much you care»: an old TV flickers on in a dark room",
+   "source": "https://www.youtube.com/shorts/zSJBAVp4w1A 0.15s+4.9s",
+   "picked_by": "client"
+  },
+  {
+   "file": "loop-13-montage-qaswa-cut",
+   "kind": "loop",
+   "type": "montage",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "«قسوة القلب»: قطع من اللقطة الواسعة إلى لقطة جانبية قريبة",
+   "caption_en": "«The hard heart»: a cut from the wide shot to a close profile",
+   "source": "https://www.youtube.com/shorts/vY1htfIQTHY 22.6s+4.6s",
+   "picked_by": "client"
+  },
+  {
+   "file": "loop-14-montage-cliff-verse",
+   "kind": "loop",
+   "type": "montage",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "«لحظة ما بعد الموت»: رجل على حافة جرف وتُكتب الآية فوقه",
+   "caption_en": "«The moment after death»: a figure on a cliff edge as the verse writes in",
+   "source": "https://www.youtube.com/shorts/M7jlp5l6Re8 15.3s+4.6s",
+   "picked_by": "client"
+  },
+  {
+   "file": "loop-08-anim-thought-labels",
+   "kind": "loop",
+   "type": "animation",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "تحت ضوء واحد، كلام الناس يتكاثر فوق رأسه على أوراق صغيرة، من ومن يتق الله",
+   "caption_en": "Under a single spotlight, other people's words pile up over his head on little slips, from «ومن يتق الله»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/انيميشن 33/من يـتق الله.mp4 @ 4.15s for 5.0s; published as https://www.youtube.com/shorts/CuxYhZi89Lg (2025-11-10, 44,447 views on 2026-11-07)",
+   "duration": 5.0,
+   "bytes": 234632,
+   "poster": "loop-08-anim-thought-labels.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-09-anim-litter-pile",
+   "kind": "loop",
+   "type": "animation",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "كومة القمامة تكبر على الرصيف، من ما ضريت أحد صح؟",
+   "caption_en": "A pile of litter grows on the pavement, from «ما ضريت أحد صح؟»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/انيميشن 37 - ما ضريت احد/الفديو.mp4 @ 22.6s for 3.6s; published as https://www.youtube.com/shorts/7Rbtxzftnoo (2025-12-17, 14,654 views on 2026-11-07)",
+   "duration": 3.62,
+   "bytes": 49235,
+   "poster": "loop-09-anim-litter-pile.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-10-motion-hourglass-lock",
+   "kind": "loop",
+   "type": "motion",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "ساعة رملية تصير بابا يغلق عليه قفل، من كيف نستغل رمضان؟",
+   "caption_en": "An hourglass becomes a door, then a padlock snaps shut on it, from «كيف نستغل رمضان؟»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/رمضان فرصة/رمضان فرصة.mp4 @ 1.9s for 4.7s; published as https://www.youtube.com/shorts/5O1PeBYLTu4 (2025-03-05, 228 views on 2026-11-07)",
+   "duration": 4.72,
+   "bytes": 48913,
+   "poster": "loop-10-motion-hourglass-lock.webp",
+   "audio": false
+  },
+  {
+   "file": "loop-11-motion-kinetic-calligraphy",
+   "kind": "loop",
+   "type": "motion",
+   "w": 720,
+   "h": 1280,
+   "focus": "50% 50%",
+   "caption_ar": "كلمة الآخرة تكتب نفسها ثم تنزل لوحة سوداء عليها وإن الدار الآخرة، من ما هي الحياة الحقيقية؟",
+   "caption_en": "الآخرة writes itself in, then a black plaque drops in with «وإن الدار الآخرة», from «ما هي الحياة الحقيقية؟»",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/ما هي الحياة الحقيقية؟/ما هي الحياة الحقيقية.mp4 @ 3.2s for 5.0s; published as https://www.youtube.com/shorts/TfWJIubzDKA (2025-04-15, 824 views on 2026-11-07)",
+   "duration": 5.0,
+   "bytes": 350485,
+   "poster": "loop-11-motion-kinetic-calligraphy.webp",
+   "audio": false
+  },
+  {
+   "file": "reel-01",
+   "kind": "reel",
+   "type": "animation",
+   "w": 540,
+   "h": 960,
+   "focus": "50% 50%",
+   "episode_ar": "لتركبن طبقا عن طبق",
+   "episode_en": "You will pass from stage to stage",
+   "caption_ar": "من باب الجامعة إلى التخرج إلى مكتب العمل، مراحل العمر في ثلاث لقطات",
+   "caption_en": "From the university gate to graduation to an office desk: three stages of life in three shots",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ١١ - لتركبن طبقًا/لتركبن طبقًا عن طبق.mp4 @ 6.35s for 4.5s; published as https://www.youtube.com/shorts/qivdGxjRPlg (2026-10-11, 58,082 views on 2026-11-07)",
+   "duration": 4.5,
+   "bytes": 156773,
+   "poster": "reel-01.webp",
+   "audio": false,
+   "strip_slot": 1
+  },
+  {
+   "file": "reel-02",
+   "kind": "reel",
+   "type": "motion",
+   "w": 540,
+   "h": 960,
+   "focus": "50% 50%",
+   "episode_ar": "ابتل إيمانك بالقرآن",
+   "episode_en": "Steep your faith in the Quran",
+   "caption_ar": "مصحف ثلاثي الأبعاد يتشكل من الضوء وينفتح على خلفية سوداء",
+   "caption_en": "A 3D mushaf forms out of light and opens on a black field",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/ابتل نفسك بالقرآن/ابتل ايمانك بالقرآن.mp4 @ 18.2s for 3.3s; published as https://www.youtube.com/shorts/3sJszvOfrRs (2025-07-20, 718 views on 2026-11-07)",
+   "duration": 3.31,
+   "bytes": 181783,
+   "poster": "reel-02.webp",
+   "audio": false,
+   "strip_slot": 2,
+   "note": "replaces the strip's «أثر الغناء» crowd frame: that episode is already loop-04"
+  },
+  {
+   "file": "reel-03",
+   "kind": "reel",
+   "type": "montage",
+   "w": 540,
+   "h": 960,
+   "focus": "50% 50%",
+   "episode_ar": "الدعاء",
+   "episode_en": "Supplication",
+   "caption_ar": "رجل يدعو في مسجد مضاء، والكلمات تكتب نفسها فوقه: لا تظن أن الدعاء مجرد طلب لمصلحتك",
+   "caption_en": "A man at prayer in a lit mosque while the words write in above him: «don't think dua is only asking for what suits you»",
+   "source": "YouTube download (video only) @ 1.55s for 4.4s; published as https://www.youtube.com/shorts/Nuzd_GrZYVE (2026-09-16, 7,299 views on 2026-11-07)",
+   "duration": 4.4,
+   "bytes": 279939,
+   "poster": "reel-03.webp",
+   "audio": false,
+   "strip_slot": 3
+  },
+  {
+   "file": "reel-04",
+   "kind": "reel",
+   "type": "motion",
+   "w": 540,
+   "h": 960,
+   "focus": "50% 50%",
+   "episode_ar": "صلة الرحم",
+   "episode_en": "Keeping ties with family",
+   "caption_ar": "رجل يحمل فانوسا في حقل أبيض، وتظهر الكلمات واحدة بعد الأخرى: جلوسك، أنسك، سهرك",
+   "caption_en": "A man holding a lantern in a white field as the words appear one by one: your company, your warmth, your evenings",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/صلة الرحم/صلة الرحم.mp4 @ 18.6s for 4.3s; published as https://www.youtube.com/shorts/aRNNTc4JFh0 (2025-08-26, 407 views on 2026-11-07)",
+   "duration": 4.33,
+   "bytes": 238965,
+   "poster": "reel-04.webp",
+   "audio": false,
+   "strip_slot": 4
+  },
+  {
+   "file": "reel-05",
+   "kind": "reel",
+   "type": "animation",
+   "w": 540,
+   "h": 960,
+   "focus": "50% 50%",
+   "episode_ar": "فما ظنكم برب العالمين",
+   "episode_en": "So what do you think of the Lord of the worlds?",
+   "caption_ar": "يتسلق إلى مقعده في الطائرة ويستقر بجانب جار نائم",
+   "caption_en": "He clambers into his plane seat and settles beside a sleeping neighbour",
+   "source": "/Volumes/Sigma Drive/الشغل 2/المدونة/مع الله/الموسم الثاني/انيميشن ٩ - الطيارة/فما ظنكم برب العالمين.mp4 @ 0.3s for 3.4s; published as https://www.youtube.com/shorts/7i7LVTd-Ntw (2026-09-21, 81,307 views on 2026-11-07)",
+   "duration": 3.42,
+   "bytes": 155360,
+   "poster": "reel-05.webp",
+   "audio": false,
+   "strip_slot": 5
+  }
+ ]
+}

@@ -1,0 +1,555 @@
+{
+ "id": "hirasathon",
+ "accent": "#A3202B",
+ "accent2": "#DE1E34",
+ "accent_source": {
+  "accent": "most common opaque colour of the wordmark in «شعار حراساثون الكامل.png»",
+  "accent2": "brightest red of the shield gradient in «شعار حراساثون الأيقوني.png»",
+  "event_screen_magenta": "#C9038D (median of the stage screen at 91.1s; the event's slide colour, not the logo)"
+ },
+ "facts": {
+  "video_duration_s": {
+   "value": 104.64,
+   "source": "ffprobe format.duration of 2 حراساثون.mp4"
+  },
+  "video_resolution": {
+   "value": "3840x2160",
+   "source": "ffprobe"
+  },
+  "video_frame_rate": {
+   "value": "29.97 (30000/1001)",
+   "source": "ffprobe"
+  },
+  "video_created": {
+   "value": "2026-02-11T11:06:55Z",
+   "source": "ffprobe container creation_time tag (export date, not the event date)"
+  },
+  "event_tagline": {
+   "value": "أول هاكاثون لتطوير قطاع الحراسات الأمنية في المملكة",
+   "source": "hall screen, 9.3–11.0s"
+  },
+  "event_dates": {
+   "value": "5-7 فبراير 2025",
+   "source": "hall screen, 9.3–11.0s"
+  },
+  "city": {
+   "value": "الرياض",
+   "source": "hall screen, 9.3–11.0s"
+  },
+  "duration_on_screen": {
+   "value": "72 ساعة",
+   "source": "title graphic, 1.0–2.8s"
+  },
+  "hashtag": {
+   "value": "#ابتكارك_درعنا",
+   "source": "hall screen 9.6s; pitch slide 81.9s"
+  },
+  "presented_by": {
+   "value": "النصبان للحراسات الأمنية / Al Nasban Security Guards",
+   "source": "end card 102.2s; stage screen 19.2s"
+  },
+  "platform": {
+   "value": "Hackathons.sa",
+   "source": "stage screens and prize cheques, 88–93s"
+  },
+  "partners": {
+   "value": {
+    "شريك ممكن": "عسس — جمعية حراس الأمن والسلامة",
+    "شريك نجاح": "ELITE Experts",
+    "شريك استراتيجي": [
+     "KACST — مدينة الملك عبدالعزيز للعلوم والتقنية",
+     "T2 Business Simplified"
+    ],
+    "شريك ضيافة": "5 logos, names not reliably legible"
+   },
+   "source": "end card 100.5–104.6s"
+  },
+  "prizes_sar": {
+   "value": {
+    "first": 5000,
+    "second": 3000,
+    "third": 2000
+   },
+   "source": "prize cheques, 87.8–93.8s"
+  },
+  "winners": {
+   "value": {
+    "first": "مُرشد",
+    "second": "حراسة تك",
+    "third": "Vertex"
+   },
+   "source": "stage screen 91.1s / 89.4s / 88.8s"
+  },
+  "pitch_seen": {
+   "value": "Vertex — إدارة الحشود: تجربة الزائر والبروتوكولات الأمنية",
+   "source": "stage screen 81.9s"
+  },
+  "last_day_screen": {
+   "value": "اليوم الأخير — أهلاً بصناع الدرع",
+   "source": "hall screen 36.1s"
+  },
+  "closing_screen": {
+   "value": "شكراً لكل عقل مبتكر وكل فكرة صنعت أثر!",
+   "source": "stage screen 87.8s"
+  },
+  "team_count": {
+   "value": null,
+   "source": "not shown; table numbers up to 15 are visible (24.1s) but no total"
+  }
+ },
+ "notes": [
+  "The edit carries a burned-in white Hirasathon bug at top right (x≈3165–3745, y≈90–295 of 3840x2160). Every still is cropped to exclude it; the loops are full frame and keep it.",
+  "crop = [x0,y0,x1,y1] in the 3840x2160 source frame.",
+  "Cover is the untinted 9:20 strip; tint and white logo are expected to be applied by the page.",
+  "Client rule: full-width photos must be cinematic (shallow depth of field, one focal point). 19–21 were picked for it and checked at 100% on the focal point; 09 and 14 are kept but hidden."
+ ],
+ "items": [
+  {
+   "file": "01-cover",
+   "kind": "cover",
+   "w": 972,
+   "h": 2160,
+   "focus": "55% 27%",
+   "caption_ar": "مشارك يعمل على مشروعه في حراساثون",
+   "caption_en": "A participant working on his project at Hirasathon",
+   "source": "43.00s",
+   "crop": [
+    1364,
+    0,
+    2336,
+    2160
+   ]
+  },
+  {
+   "file": "02-hero-speaker",
+   "kind": "hero",
+   "w": 3150,
+   "h": 1772,
+   "focus": "58% 30%",
+   "caption_ar": "متحدث على المسرح بجوار علم النصبان",
+   "caption_en": "A speaker on stage beside the Al Nasban flag",
+   "source": "19.20s",
+   "crop": [
+    0,
+    80,
+    3150,
+    1852
+   ]
+  },
+  {
+   "file": "03-title-72-hours",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "50% 50%",
+   "caption_ar": "عنوان «72 ساعة» في افتتاح الفيلم",
+   "caption_en": "The \"72 hours\" title from the film's opening",
+   "source": "2.40s",
+   "crop": [
+    240,
+    190,
+    3120,
+    1810
+   ],
+   "hide": true,
+   "hide_reason": "loop-01-opening lands on this title"
+  },
+  {
+   "file": "04-uniform-crest",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "45% 40%",
+   "caption_ar": "شعار النصبان على زي الحراسة",
+   "caption_en": "The Al Nasban crest on a guard uniform",
+   "source": "6.40s",
+   "crop": [
+    620,
+    310,
+    3500,
+    1930
+   ]
+  },
+  {
+   "file": "05-eco-drone-screen",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "45% 45%",
+   "caption_ar": "فريق يعرض فكرة Eco Drone على الحاسوب",
+   "caption_en": "A team's Eco Drone concept on a laptop",
+   "source": "14.50s",
+   "crop": [
+    760,
+    310,
+    3640,
+    1930
+   ]
+  },
+  {
+   "file": "06-team-15",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "40% 40%",
+   "caption_ar": "مشارك على الطاولة رقم 15",
+   "caption_en": "A participant at table 15",
+   "source": "24.10s",
+   "crop": [
+    160,
+    90,
+    3040,
+    1710
+   ]
+  },
+  {
+   "file": "07-team-huddle",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "45% 35%",
+   "caption_ar": "فريق يراجع عمله على الحاسوب",
+   "caption_en": "A team going over their work on a laptop",
+   "source": "27.90s",
+   "crop": [
+    270,
+    200,
+    3150,
+    1820
+   ]
+  },
+  {
+   "file": "08-mentor-round",
+   "kind": "detail",
+   "w": 3150,
+   "h": 1772,
+   "focus": "35% 35%",
+   "caption_ar": "زيارة لأحد الفرق أثناء العمل",
+   "caption_en": "Stopping by a team at work",
+   "source": "30.70s",
+   "crop": [
+    0,
+    0,
+    3150,
+    1772
+   ]
+  },
+  {
+   "file": "09-hall-last-day",
+   "kind": "wide",
+   "w": 3289,
+   "h": 1850,
+   "focus": "50% 45%",
+   "caption_ar": "القاعة في اليوم الأخير: «أهلا بصناع الدرع»",
+   "caption_en": "The hall on the last day: \"Welcome, shield makers\"",
+   "source": "36.10s",
+   "crop": [
+    96,
+    310,
+    3385,
+    2160
+   ],
+   "hide": true,
+   "hide_reason": "not cinematic enough for a full-width slot (client rule)"
+  },
+  {
+   "file": "10-team-at-work",
+   "kind": "detail",
+   "w": 3289,
+   "h": 1850,
+   "focus": "45% 40%",
+   "caption_ar": "فريق يعمل على حله",
+   "caption_en": "A team working on their solution",
+   "source": "41.20s",
+   "crop": [
+    551,
+    310,
+    3840,
+    2160
+   ]
+  },
+  {
+   "file": "11-countdown-zero",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "50% 50%",
+   "caption_ar": "انتهاء وقت تسليم المشاريع",
+   "caption_en": "The project submission clock hits zero",
+   "source": "54.30s",
+   "crop": [
+    540,
+    310,
+    3420,
+    1930
+   ],
+   "hide": true,
+   "hide_reason": "loop-02-countdown ends here"
+  },
+  {
+   "file": "12-participant-profile",
+   "kind": "detail",
+   "w": 1728,
+   "h": 2160,
+   "focus": "45% 30%",
+   "caption_ar": "مشارك يتابع العروض",
+   "caption_en": "A participant looks on",
+   "source": "57.70s",
+   "crop": [
+    1116,
+    0,
+    2844,
+    2160
+   ]
+  },
+  {
+   "file": "13-judges-room",
+   "kind": "detail",
+   "w": 2880,
+   "h": 1620,
+   "focus": "70% 45%",
+   "caption_ar": "متابعة العروض في غرفة التحكيم",
+   "caption_en": "Watching the pitches in the judging room",
+   "source": "63.70s",
+   "crop": [
+    270,
+    270,
+    3150,
+    1890
+   ]
+  },
+  {
+   "file": "14-pitch-to-judges",
+   "kind": "wide",
+   "w": 3289,
+   "h": 1850,
+   "focus": "30% 35%",
+   "caption_ar": "فريق يعرض فكرته أمام اللجنة",
+   "caption_en": "A team pitches its idea to the panel",
+   "source": "70.00s",
+   "crop": [
+    551,
+    310,
+    3840,
+    2160
+   ],
+   "hide": true,
+   "hide_reason": "not cinematic enough for a full-width slot (client rule)"
+  },
+  {
+   "file": "15-problem-statement",
+   "kind": "detail",
+   "w": 3150,
+   "h": 1772,
+   "focus": "55% 45%",
+   "caption_ar": "بيان المشكلة: «عدد ثابت من حراس الامن تحت بيئة مو ثابتة»",
+   "caption_en": "Problem statement: a fixed number of guards in a changing environment",
+   "source": "84.30s",
+   "crop": [
+    0,
+    0,
+    3150,
+    1772
+   ]
+  },
+  {
+   "file": "16-winners-cheques",
+   "kind": "detail",
+   "w": 3840,
+   "h": 1850,
+   "focus": "40% 25%",
+   "caption_ar": "الفائزون مع شيكات الجوائز",
+   "caption_en": "Winners with their prize cheques",
+   "source": "87.80s",
+   "crop": [
+    0,
+    310,
+    3840,
+    2160
+   ]
+  },
+  {
+   "file": "17-first-place",
+   "kind": "wide",
+   "w": 3150,
+   "h": 1772,
+   "focus": "50% 55%",
+   "caption_ar": "تتويج فريق «مرشد» بالمركز الأول",
+   "caption_en": "Team Murshid takes first place",
+   "source": "91.10s",
+   "crop": [
+    0,
+    0,
+    3150,
+    1772
+   ],
+   "hide": true,
+   "hide_reason": "loop-03-winners shows the first-place moment"
+  },
+  {
+   "file": "18-trophy-handover",
+   "kind": "detail",
+   "w": 3289,
+   "h": 1850,
+   "focus": "40% 40%",
+   "caption_ar": "تسليم درع حراساثون",
+   "caption_en": "Handing over the Hirasathon trophy",
+   "source": "97.35s",
+   "crop": [
+    551,
+    310,
+    3840,
+    2160
+   ],
+   "hide": true,
+   "hide_reason": "loop-04-finale is the handovers"
+  },
+  {
+   "file": "19-participant-pink-screen",
+   "kind": "wide",
+   "w": 3289,
+   "h": 1850,
+   "focus": "58% 30%",
+   "caption_ar": "مشارك يتابع الشاشة، والعرض خلفه خارج التركيز",
+   "caption_en": "A participant looks up, the stage screen soft behind him",
+   "source": "28.75s",
+   "crop": [
+    0,
+    310,
+    3289,
+    2160
+   ],
+   "variants": [
+    "19-participant-pink-screen.webp",
+    "19-participant-pink-screen-1280.webp",
+    "19-participant-pink-screen-720.webp"
+   ]
+  },
+  {
+   "file": "20-hands-on-keyboard",
+   "kind": "wide",
+   "w": 3289,
+   "h": 1850,
+   "focus": "65% 60%",
+   "caption_ar": "يد على لوحة المفاتيح أثناء العمل على المشروع",
+   "caption_en": "A hand on the keyboard during the build",
+   "source": "45.36s",
+   "crop": [
+    551,
+    310,
+    3840,
+    2160
+   ],
+   "variants": [
+    "20-hands-on-keyboard.webp",
+    "20-hands-on-keyboard-1280.webp",
+    "20-hands-on-keyboard-720.webp"
+   ]
+  },
+  {
+   "file": "21-participant-cap",
+   "kind": "wide",
+   "w": 3289,
+   "h": 1850,
+   "focus": "61% 28%",
+   "caption_ar": "مشارك يتابع زميله وهو يعمل",
+   "caption_en": "A participant watches his teammate work",
+   "source": "26.67s",
+   "crop": [
+    0,
+    310,
+    3289,
+    2160
+   ],
+   "variants": [
+    "21-participant-cap.webp",
+    "21-participant-cap-1280.webp",
+    "21-participant-cap-720.webp"
+   ]
+  },
+  {
+   "file": "loop-01-opening",
+   "kind": "loop",
+   "w": 960,
+   "h": 540,
+   "focus": "50% 50%",
+   "caption_ar": "الافتتاح: الأبواب تنفتح على عنوان «72 ساعة» وبطاقة المشارك",
+   "caption_en": "Opening: doors part onto the \"72 hours\" title and the entry badge",
+   "source": "0.00–3.70s",
+   "poster": "loop-01-opening.webp"
+  },
+  {
+   "file": "loop-02-countdown",
+   "kind": "loop",
+   "w": 960,
+   "h": 540,
+   "focus": "50% 50%",
+   "caption_ar": "العد التنازلي لتسليم المشاريع حتى الصفر",
+   "caption_en": "The submission countdown running down to zero",
+   "source": "49.90–54.90s",
+   "poster": "loop-02-countdown.webp"
+  },
+  {
+   "file": "loop-03-winners",
+   "kind": "loop",
+   "w": 960,
+   "h": 540,
+   "focus": "50% 50%",
+   "caption_ar": "إعلان المراكز الثالث والثاني والأول ثم الصورة الجماعية",
+   "caption_en": "Third, second and first place, then the group photo",
+   "source": "88.30–92.80s",
+   "poster": "loop-03-winners.webp"
+  },
+  {
+   "file": "loop-04-finale",
+   "kind": "loop",
+   "w": 960,
+   "h": 540,
+   "focus": "50% 50%",
+   "caption_ar": "تسليم الدروع بقطع سريعة ثم انتقال إلى الشعار",
+   "caption_en": "Rapid cuts of the trophy handovers, then a wipe to the logo",
+   "source": "96.28–99.63s",
+   "poster": "loop-04-finale.webp"
+  },
+  {
+   "file": "logo",
+   "kind": "logo",
+   "w": 2006,
+   "h": 755,
+   "focus": "50% 50%",
+   "caption_ar": "شعار حراساثون الكامل",
+   "caption_en": "Hirasathon full logo",
+   "source": "logo"
+  },
+  {
+   "file": "logo-white",
+   "kind": "logo",
+   "w": 2006,
+   "h": 755,
+   "focus": "50% 50%",
+   "caption_ar": "شعار حراساثون الكامل بالأبيض",
+   "caption_en": "Hirasathon full logo, white",
+   "source": "logo"
+  },
+  {
+   "file": "icon",
+   "kind": "logo",
+   "w": 1330,
+   "h": 1528,
+   "focus": "50% 50%",
+   "caption_ar": "رمز حراساثون",
+   "caption_en": "Hirasathon icon",
+   "source": "icon"
+  },
+  {
+   "file": "icon-white",
+   "kind": "logo",
+   "w": 1330,
+   "h": 1528,
+   "focus": "50% 50%",
+   "caption_ar": "رمز حراساثون بالأبيض",
+   "caption_en": "Hirasathon icon, white",
+   "source": "icon"
+  }
+ ]
+}

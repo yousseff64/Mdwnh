@@ -1,0 +1,335 @@
+{
+ "id": "ghamam",
+ "accent": "#543AC4",
+ "accent_source": {
+  "accent": "the one opaque colour of the purple title lettering «IMG_6764.PNG» (فلم المسابقة folder), the same purple as the film's own end title",
+  "darker_option": "#380820, the plum of the audience scene (07:40-08:03) if a darker tint is wanted"
+ },
+ "facts": {
+  "video_duration_s": {
+   "value": 638.72,
+   "source": "ffprobe format.duration of «فلم غمام نهائي.mp4» (10:38.7); the competition copy is the same length"
+  },
+  "picture": {
+   "value": "1920x928 inside a 1920x1080 frame (letterboxed, about 2.07:1), 23.976 fps",
+   "source": "ffprobe + cropdetect"
+  },
+  "produced_in_days": {
+   "value": "تم إنتاج الفلم في 35 يوم",
+   "source": "end card, 10:28-10:36"
+  }
+ },
+ "notes": "Frames are grabbed from the film with the letterbox bars cropped (crop=1920:928:0:76). Stills 1-3 of Art/stills/ghamam were matched to their timecodes and re-grabbed from the master film at native quality; 4 and 5 are kept hidden as repeats.",
+ "logo_source": {
+  "logo-white.webp": "IMG_6764.PNG in الشغل 2/المدونة/فلم المسابقة (the title lettering «غمام GHAMAM», purple on transparent), cropped to its alpha, recoloured white, 400 px wide; same lettering as «شعار غمام.png» in Downloads Archive - Sep 2026"
+ },
+ "items": [
+  {
+   "file": "01-cover-clouds",
+   "kind": "cover",
+   "focus": "50% 50%",
+   "caption_ar": "سحب الغروب في سماء المدينة",
+   "caption_en": "Sunset clouds over the city",
+   "w": 418,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 2:09.00",
+   "crop": [
+    751,
+    76,
+    1169,
+    1004
+   ]
+  },
+  {
+   "file": "02-hero-audience",
+   "kind": "hero",
+   "focus": "50% 50%",
+   "caption_ar": "الطالب من الخلف أمام الحضور، ونظارتان تتوهجان فوقهم خارج التركيز",
+   "caption_en": "The student seen from behind before the audience, a pair of glasses glowing out of focus above them",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 7:43.50",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "03-light-profile",
+   "kind": "wide",
+   "focus": "60% 45%",
+   "caption_ar": "الطالب جانبيا في ضوء دافئ، والجدار خلفه ضبابي",
+   "caption_en": "The student in profile in warm light, the wall behind him soft",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 1:44.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "04-phone-in-bed",
+   "kind": "wide",
+   "focus": "60% 45%",
+   "caption_ar": "الطالب في سريره ليلا، ووجهه مضاء بشاشة الهاتف",
+   "caption_en": "The student in bed at night, his face lit by his phone",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 2:39.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "05-two-boys",
+   "kind": "detail",
+   "focus": "40% 45%",
+   "caption_ar": "شابان يبتسمان للطالب وهو يحمل حقيبته",
+   "caption_en": "Two young men smile at the student, his backpack on",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 1:03.63 (= Art/stills/ghamam/1.jpg)",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "06-doodled-faces",
+   "kind": "detail",
+   "focus": "60% 55%",
+   "caption_ar": "دفتر عليه رسوم وجوه قلقة، وقلم بجانبه",
+   "caption_en": "A notepad of doodled worried faces, a pen beside it",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 2:23.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "07-professor",
+   "kind": "detail",
+   "focus": "50% 45%",
+   "caption_ar": "الأستاذ بنظارته المستديرة أمام شاشة العرض",
+   "caption_en": "The professor in his round glasses before the projector screen",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 3:45.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "08-three-chairs",
+   "kind": "detail",
+   "focus": "50% 55%",
+   "caption_ar": "ثلاثة كراس بوجوه مرسومة على وسائدها",
+   "caption_en": "Three chairs with faces on their cushions",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 4:47.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "09-cloud-sketch",
+   "kind": "detail",
+   "focus": "50% 45%",
+   "caption_ar": "رسم بالقلم لسحب بنفسجية فوق رأس الطالب",
+   "caption_en": "A pencil sketch of purple clouds over the student's head",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 5:21.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "10-typing",
+   "kind": "detail",
+   "focus": "45% 50%",
+   "caption_ar": "الطالب يكتب على الحاسوب، وبجانبه كوبان",
+   "caption_en": "The student typing at his computer, two mugs beside him",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 5:50.00 (= Art/stills/ghamam/2.jpg)",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "11-lectern",
+   "kind": "detail",
+   "focus": "60% 50%",
+   "caption_ar": "الطالب يقدم عرضه خلف المنصة",
+   "caption_en": "The student giving his presentation at the lectern",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 7:06.50 (= Art/stills/ghamam/3.jpg)",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "12-yawn",
+   "kind": "detail",
+   "focus": "55% 45%",
+   "caption_ar": "طالب يتثاءب في القاعة أثناء العرض",
+   "caption_en": "A student yawning in the hall during the presentation",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 7:39.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "13-grades-phone",
+   "kind": "detail",
+   "focus": "45% 50%",
+   "caption_ar": "قائمة الدرجات على شاشة هاتف في يد",
+   "caption_en": "A list of grades on a phone screen in someone's hand",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 9:00.00",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "14-feed",
+   "kind": "detail",
+   "hide": true,
+   "hide_reason": "a frame of loop-01-feed (Art/stills/ghamam/4.jpg)",
+   "caption_ar": "وجه الطالب بين منشورات وصور",
+   "caption_en": "The student's face among posts and pictures",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 2:34.25 (= Art/stills/ghamam/4.jpg)",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "15-audience-glasses",
+   "kind": "detail",
+   "hide": true,
+   "hide_reason": "same shot as 02-hero-audience, a second later in the pull-back (Art/stills/ghamam/5.jpg)",
+   "caption_ar": "الطالب أمام الحضور ونظارتان تتوهجان",
+   "caption_en": "The student before the audience, the glasses glowing",
+   "w": 1920,
+   "h": 928,
+   "source": "فلم غمام نهائي.mp4 @ 7:44.70 (= Art/stills/ghamam/5.jpg)",
+   "crop": [
+    0,
+    76,
+    1920,
+    1004
+   ]
+  },
+  {
+   "file": "16-painted-audience",
+   "kind": "wide",
+   "hide": true,
+   "hide_reason": "the painted plate of the hero's scene (same audience, same glowing glasses); an alternative hero at 3840 wide if the frame is not wanted",
+   "caption_ar": "الحضور ونظارتان تتوهجان في العتمة",
+   "caption_en": "The audience in the dark, a pair of glasses glowing",
+   "w": 3840,
+   "h": 2299,
+   "source": "Art/Backgrounds/ghamam.png (painted master, 3840x2299)"
+  },
+  {
+   "file": "loop-01-feed",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "منشورات وصور تتطاير حول وجه الطالب",
+   "caption_en": "Posts and pictures swirl around the student's face",
+   "w": 1280,
+   "h": 618,
+   "poster": "loop-01-feed.webp",
+   "source": "فلم غمام نهائي.mp4 150.20–155.20s (5.00 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "loop-02-shadows",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "ظلال بعيون وابتسامات مضيئة تحيط بالطالب",
+   "caption_en": "Shadow figures with glowing eyes and grins close around the student",
+   "w": 1280,
+   "h": 618,
+   "poster": "loop-02-shadows.webp",
+   "source": "فلم غمام نهائي.mp4 193.75–197.00s (3.25 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "loop-03-clock",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "عقارب الساعة تدور مسرعة على الجدار",
+   "caption_en": "Clock hands racing round on the wall",
+   "w": 1280,
+   "h": 618,
+   "poster": "loop-03-clock.webp",
+   "source": "فلم غمام نهائي.mp4 250.55–255.55s (5.00 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "loop-04-closing-in",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "الإطار يضيق على وجه الطالب في القاعة",
+   "caption_en": "The frame closes in on the student's face in the hall",
+   "w": 1280,
+   "h": 618,
+   "poster": "loop-04-closing-in.webp",
+   "source": "فلم غمام نهائي.mp4 401.60–406.55s (4.95 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "logo-white",
+   "kind": "logo",
+   "w": 400,
+   "h": 184,
+   "focus": "50% 50%",
+   "caption_ar": "شعار غمام بالأبيض",
+   "caption_en": "Ghamam title lettering, white",
+   "source": "logo"
+  }
+ ]
+}
