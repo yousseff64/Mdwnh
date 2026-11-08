@@ -1234,18 +1234,20 @@ CLIENTS = [
     (("تأصيل التعليمية", "Ta'seel"), "assets/works/taseel/logo-white.webp"),
     (("بلنز", "BLNZ"), "assets/works/blnz/logo-white.webp"),
     # the client's own list (8 November 2026), in its order. Still without a
-    # logo, so not here: مركز فقهاء، وزارة الثقافة، سراج العقارية، اكسينا،
-    # جمعية وسم الصبا، التحول التقني.
+    # logo, so not here: مركز فقهاء، وزارة الثقافة، سراج العقارية، جمعية وسم
+    # الصبا.
     (("ملعقة", "Mllaqah"), "assets/clients/mllaqah.webp"),
     (("فلق", "Falaq"), "assets/clients/falaq.webp"),
     (("مركز لطف للاستشارات التعليمية والتربوية", "Lutf Center"), "assets/clients/lutf.webp"),
     (("نادي الاعتماد الرياضي", "Al-Eetemad Club"), "assets/clients/aletemad.webp"),
     (("جمعية إجلال لرعاية الأيتام", "Ejlal Orphans' Association"), "assets/clients/ejlal.webp"),
     (("عزومة", "Azomah"), "assets/clients/azomah.webp"),
+    (("مطابخ اكسينا", "Axina Kitchens"), "assets/clients/axina.webp"),
     (("دار العز", "Dar Alezz"), "assets/clients/daralezz.webp"),
     (("جمعية منهاج لعلوم القرآن والسنة", "Minhaj Association"), "assets/clients/minhaj.webp"),
     (("جزيل", "Jazeel"), "assets/clients/jazeel.webp"),
     (("أناناس", "Ananas"), "assets/clients/ananas.webp"),
+    (("التحول التقني", "TTS"), "assets/clients/tts.webp"),
     (("ميلاف", "Milaf"), "assets/clients/milaf.webp"),
     (("جمعية صاعد لتنمية الشباب", "Saed Youth Association"), "assets/clients/saed.webp"),
     (("شركة أوقاف مركز باحثات", "Bahithat Center Endowment"), "assets/clients/bahithat.webp"),

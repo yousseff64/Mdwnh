@@ -481,7 +481,8 @@ fades (script.js; transforms only, off under reduced motion).
   medium weight (`title_name`: مع الله). No work page has a breadcrumb, and neither original links
   out to its film (client).
 - **«شركاء النجاح» is Satr's partners marquee**, brought over as it is
-  (Satr commits 59b014c and 9467a7f): 22 white marks (`CLIENTS`,
+  (Satr commits 59b014c and 9467a7f, plus اكسينا and التحول التقني): 24
+  white marks (`CLIENTS`,
   `assets/clients/`) in two rows drifting opposite ways, draggable, on the
   home page and the About page. `.cl-row` stays `direction:ltr` and the gap
   stays padding on each mark, or the loop breaks. The browser pane paints
