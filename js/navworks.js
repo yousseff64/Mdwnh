@@ -25,6 +25,12 @@ import { $, $$, clamp, el, spring, step, tick } from './util.js';
 
 const HOME = 'SIX WORKS';
 
+/* the paths in data.js are written from the site root. Pages in a
+   folder (/careers/) would read them as their own, so they are
+   resolved against this module, which always sits in /js/ */
+const ROOT = new URL('../', import.meta.url);
+const fromRoot = (path) => new URL(path, ROOT).href;
+
 export function initNavWorks() {
   const nav = $('#nav');
   const link = $('#navLinks a[href$="#work"]');
@@ -40,10 +46,10 @@ export function initNavWorks() {
 
   const card = (p, i) => {
     const mine = onPage && p.id === here;
-    const sm = p.cover.replace('.webp', '-sm.webp');
+    const sm = fromRoot(p.cover.replace('.webp', '-sm.webp'));
     return el('li', { style: `--i:${i}; --accent:${p.accent}` },
       el('a', {
-        href: `project.html?id=${p.id}`,
+        href: fromRoot(`project.html?id=${p.id}`),
         'data-latin': (PROJECT_PAGES[p.id] || {}).latin || p.name,
         'aria-current': mine ? 'page' : null
       },
