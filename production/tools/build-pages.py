@@ -498,6 +498,50 @@ WORKS = [
         did=[],
         result=None,
     ),
+    # The two below came as precut clips and a logo (November 2026). Their
+    # copy is the client's own text for each (client, date, scope, «ما قدمناه»),
+    # sent on 19 November 2026; حي الشميسي's line is its film's title card.
+    dict(
+        id="shumaisi", accent="#FFFAAE",
+        # the lettering's pale yellow washes the white logo out, so the card
+        # is tinted with the district's dark sand
+        tint="#4A3424",
+        name=("حي الشميسي", "Al-Shumaisi"),
+        kind=("فيلم وثائقي قصير", "Short documentary"),
+        kinds=["video"],
+        # the film's own title card (masters/works/shumaisi/manifest.json)
+        line=("جولة في حي الشميسي وأبرز معالمه.", "A tour of Al-Shumaisi and its landmarks."),
+        meta=[
+            (("العميل", "Client"), ("عنب", "Enab")),
+            (("التاريخ", "Date"), ("08 نوفمبر 2026", "8 November 2026")),
+            (("نطاق العمل", "Scope"), ("مونتاج", "Editing")),
+        ],
+        stats=[],
+        idea=None,
+        did_text=("بعد استلامنا للقطات اللازمة قمنا بإخراج فيلم وثائقي قصير، وحرصنا على إعادة إنتاجه بقالب مناسب للفكرة.",
+                  "Once we had the footage we needed, we made it into a short documentary, and took care to rework it in a form that suits the idea."),
+        did=[],
+        result=None,
+    ),
+    dict(
+        id="aletemad", accent="#1F7C93",
+        tint="#0F4656",   # the court's teal, held dark under the white crest
+        name=("نادي الاعتماد الرياضي", "Al-Eetemad Club"),
+        kind=("إنتاج فيديو", "Video production"),
+        kinds=["video"],
+        line=("مقابلة في ثلاث دقائق بعنوان «تدريبات الريشة».",
+              "A three-minute interview film, «Badminton Training»."),
+        meta=[
+            (("العميل", "Client"), ("نادي الاعتماد الرياضي", "Al-Eetemad Club")),
+            (("نطاق العمل", "Scope"), ("إعداد المقابلة، التصوير، المونتاج", "Preparing the interview, filming, editing")),
+        ],
+        stats=[],
+        idea=None,
+        did_text=("تولّينا إعداد المقابلة وتصويرها ومونتاجها في ثلاث دقائق بعنوان «تدريبات الريشة»، بإيقاع سريع ومرتب يُبقي المشاهد حتى النهاية.",
+                  "We prepared the interview, filmed it and edited it into three minutes titled «Badminton Training», at a quick, orderly pace that keeps the viewer to the end."),
+        did=[],
+        result=None,
+    ),
 ]
 
 BY_ID = {w["id"]: w for w in WORKS}

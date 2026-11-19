@@ -1,0 +1,152 @@
+{
+ "id": "shumaisi",
+ "accent": "#FFFAAE",
+ "facts": {
+  "title_card": {
+   "value": "حي الشميسي / جولة في حي الشميسي وأبرز معالمه",
+   "source": "title card over the landmarks, مقتطف حي الشماسي  (4).mp4 (the card itself spells it الشمسيسي)"
+  },
+  "picture": {
+   "value": "1920x928 inside 1920x1080 (letterboxed), 24 fps",
+   "source": "ffprobe + cropdetect"
+  },
+  "storefront": {
+   "value": "بيت الكبدة",
+   "source": "مقتطف حي الشماسي  (6).mp4 @ 0.10s"
+  },
+  "lower_third": {
+   "value": "فهد عبدالعزيز ...",
+   "source": "مقتطف حي الشماسي  (8).mp4 @ 0.30s, partly cut off"
+  }
+ },
+ "notes": "Eight precut clips. Four are the loops; the stills come only from the other clips or from shots the loops leave out (the storefront and the spatula close-up in clip 6 sit outside loop-04), so nothing on the page repeats. The cover is a 2:5 column of the side street in clip 1 (sky behind the lettering), which only the rail shows.",
+ "items": [
+  {
+   "file": "01-cover",
+   "kind": "cover",
+   "focus": "50% 50%",
+   "caption_ar": "شارع في حي الشميسي",
+   "caption_en": "A street in Al-Shumaisi",
+   "w": 371,
+   "h": 928,
+   "source": "مقتطف حي الشماسي  (1).mp4 @ 1.00s, crop 1920:928:0:76, then box [700, 0, 1071, 928]"
+  },
+  {
+   "file": "02-hero-saj",
+   "kind": "hero",
+   "focus": "50% 50%",
+   "caption_ar": "الكبدة على الصاج والبخار يتصاعد حولها",
+   "caption_en": "Liver on the saj, steam rising round it",
+   "w": 1920,
+   "h": 928,
+   "source": "مقتطف حي الشماسي  (6).mp4 @ 4.60s, crop 1920:928:0:76"
+  },
+  {
+   "file": "03-corridor",
+   "kind": "detail",
+   "focus": "50% 40%",
+   "caption_ar": "المقدم يمشي في ممر تجاري وفي يده الهاتف",
+   "caption_en": "The host walking down a shopping arcade, phone in hand",
+   "w": 1400,
+   "h": 677,
+   "source": "مقتطف حي الشماسي  (3).mp4 @ 3.55s, crop 1920:928:0:76"
+  },
+  {
+   "file": "04-chat",
+   "kind": "detail",
+   "focus": "50% 40%",
+   "caption_ar": "المقدم وأحد أهل الحي يضحكان أمام محل",
+   "caption_en": "The host and a local laughing outside a shop",
+   "w": 1400,
+   "h": 677,
+   "source": "مقتطف حي الشماسي  (5).mp4 @ 5.05s, crop 1920:928:0:76"
+  },
+  {
+   "file": "05-storefront",
+   "kind": "detail",
+   "focus": "50% 50%",
+   "caption_ar": "لوحة «بيت الكبدة» على واجهة المحل",
+   "caption_en": "The «Bait Al-Kabdah» sign over the shop",
+   "w": 1400,
+   "h": 677,
+   "source": "مقتطف حي الشماسي  (6).mp4 @ 0.10s, crop 1920:928:0:76"
+  },
+  {
+   "file": "06-restaurant",
+   "kind": "detail",
+   "focus": "60% 45%",
+   "caption_ar": "حديث على مائدة المطعم",
+   "caption_en": "Talking over the table at the restaurant",
+   "w": 1400,
+   "h": 677,
+   "source": "مقتطف حي الشماسي  (7).mp4 @ 4.55s, crop 1920:928:0:76"
+  },
+  {
+   "file": "07-interview",
+   "kind": "detail",
+   "focus": "60% 45%",
+   "caption_ar": "المقدم يحاور أحد كبار الحي",
+   "caption_en": "The host interviewing one of the neighbourhood's elders",
+   "w": 1400,
+   "h": 677,
+   "source": "مقتطف حي الشماسي  (8).mp4 @ 2.30s, crop 1920:928:0:76"
+  },
+  {
+   "file": "loop-01-title",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "عنوان «حي الشميسي» فوق معالم الحي",
+   "caption_en": "The «Al-Shumaisi» title over the district's landmarks",
+   "w": 960,
+   "h": 464,
+   "poster": "loop-01-title.webp",
+   "source": "مقتطف حي الشماسي  (4).mp4 0.00-3.00s (3.00 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "loop-02-streets",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "شوارع الحي وسياراته",
+   "caption_en": "The district's streets and parked cars",
+   "w": 960,
+   "h": 464,
+   "poster": "loop-02-streets.webp",
+   "source": "مقتطف حي الشماسي  (1).mp4 0.00-5.00s (5.00 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "loop-03-saj",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "الكبدة تسقط على الصاج ثم تقلب",
+   "caption_en": "Liver dropped on the saj, then turned",
+   "w": 960,
+   "h": 464,
+   "poster": "loop-03-saj.webp",
+   "source": "مقتطف حي الشماسي  (6).mp4 0.33-4.25s (3.92 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "loop-04-drive",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "الطريق من خلف زجاج السيارة",
+   "caption_en": "The road through the windscreen",
+   "w": 960,
+   "h": 464,
+   "poster": "loop-04-drive.webp",
+   "source": "مقتطف حي الشماسي  (2).mp4 0.33-5.00s (4.67 s), crop 1920:928:0:76, silent"
+  },
+  {
+   "file": "logo-white",
+   "kind": "logo",
+   "w": 657,
+   "h": 371,
+   "caption_ar": "مخطوطة حي الشميسي بالأبيض",
+   "caption_en": "Al-Shumaisi title lettering, white",
+   "source": "logo"
+  }
+ ],
+ "logo_source": {
+  "logo.png / title-logo.png / logo-white.png": "مخطوطة حي الشميسي.png (the title lettering, #FFFAAE on transparent), cropped to its alpha; logo-white is the same alpha painted paper white"
+ },
+ "sources": "The precut clips and the logo every picture here was cut from are kept, untracked, in the Mdwnh repo at production/masters/works/shumaisi/source/."
+}

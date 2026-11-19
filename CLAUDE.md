@@ -409,7 +409,7 @@ library falls behind at a third of the scroll and the wordmark drifts and
 fades (script.js; transforms only, off under reduced motion).
 
 - **Every page is generated.** `cd production && python3
-  tools/build-pages.py` writes the 22 pages (Arabic at /production, English
+  tools/build-pages.py` writes the 26 pages (Arabic at /production, English
   under /production/en) and the sitemap. All copy, both languages, and the
   `WORKS` table live in that one file. `styles.css` is inlined, minified,
   into every page: re-run the generator after any CSS edit. Bump `VER` when
@@ -422,6 +422,12 @@ fades (script.js; transforms only, off under reduced motion).
   shared with Satr keep what Satr verified (counted numbers, BLNZ's
   designer notes). Headers carry no tashkeel here: the doc's headers have
   none and this site copies the doc.
+- **حي الشميسي and نادي الاعتماد came after the doc** (November 2026) as
+  precut clips and a logo. Their copy is the client's own text for each,
+  sent separately (client, date, scope, «ما قدمناه», which fills
+  `did_text`); حي الشميسي's line is its film's title card. Each clip is
+  either a loop or the source of stills, never both, so no frame repeats
+  (the manifests say which). Satr carries the same two works.
 - **Brand:** dark by default, no toggle. `--deep #0A0A0A` page,
   `--deep-2 #040404` sunk bands (neutral blacks: the client found a blue
   black too close to Satr's navy), the brand ink `#323232` as the hairline,

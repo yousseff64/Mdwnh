@@ -1,0 +1,106 @@
+{
+ "id": "aletemad",
+ "accent": "#1F7C93",
+ "facts": {
+  "lower_third": {
+   "value": "نواف خيري الحكمي / مدرب ريشة طائرة · نادي الاعتماد",
+   "source": "مقتطف_نادي الإعتماد  (3).mp4 from 2.4s"
+  },
+  "picture": {
+   "value": "1920x972 inside 1920x1080 (letterboxed), 29.97 fps",
+   "source": "ffprobe + cropdetect"
+  },
+  "venue_banner": {
+   "value": "GREEN CLUB Recreation House",
+   "source": "hall banners, every clip"
+  }
+ },
+ "notes": "Three precut clips, each of two or more shots. The loops are the footwork shots of clip 1 and the second player's interview in clip 2; the stills come from the shots they leave out (the wide hall, the first player, the coach), so nothing on the page repeats.",
+ "items": [
+  {
+   "file": "01-cover",
+   "kind": "cover",
+   "focus": "50% 50%",
+   "caption_ar": "صالة الريشة الطائرة",
+   "caption_en": "The badminton hall",
+   "w": 389,
+   "h": 972,
+   "source": "مقتطف_نادي الإعتماد  (1).mp4 @ 0.05s, crop 1920:972:0:54, then box [1080, 0, 1469, 972]"
+  },
+  {
+   "file": "02-hero-coach",
+   "kind": "hero",
+   "focus": "60% 40%",
+   "caption_ar": "المدرب جانبيا، والصالة خلفه خارج التركيز",
+   "caption_en": "The coach in profile, the hall soft behind him",
+   "w": 1920,
+   "h": 972,
+   "source": "مقتطف_نادي الإعتماد  (3).mp4 @ 1.25s, crop 1920:972:0:54"
+  },
+  {
+   "file": "03-hall",
+   "kind": "detail",
+   "focus": "50% 50%",
+   "caption_ar": "مباراة في صالة النادي",
+   "caption_en": "A match in the club's hall",
+   "w": 1400,
+   "h": 709,
+   "source": "مقتطف_نادي الإعتماد  (1).mp4 @ 0.85s, crop 1920:972:0:54"
+  },
+  {
+   "file": "04-player",
+   "kind": "detail",
+   "focus": "70% 40%",
+   "caption_ar": "لاعب يتحدث والتدريب مستمر خلفه",
+   "caption_en": "A player talking, practice going on behind him",
+   "w": 1400,
+   "h": 709,
+   "source": "مقتطف_نادي الإعتماد  (2).mp4 @ 1.25s, crop 1920:972:0:54"
+  },
+  {
+   "file": "05-coach",
+   "kind": "detail",
+   "focus": "50% 40%",
+   "caption_ar": "نواف خيري الحكمي، مدرب الريشة الطائرة",
+   "caption_en": "Nawaf Khairi Al-Hakami, badminton coach",
+   "w": 1400,
+   "h": 709,
+   "source": "مقتطف_نادي الإعتماد  (3).mp4 @ 3.40s, crop 1920:972:0:54"
+  },
+  {
+   "file": "loop-01-footwork",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "خطوات لاعب على أرض الملعب",
+   "caption_en": "A player's footwork on court",
+   "w": 960,
+   "h": 486,
+   "poster": "loop-01-footwork.webp",
+   "source": "مقتطف_نادي الإعتماد  (1).mp4 1.24-4.95s (3.71 s), crop 1920:972:0:54, silent"
+  },
+  {
+   "file": "loop-02-court",
+   "kind": "loop",
+   "focus": "50% 50%",
+   "caption_ar": "لاعب يتحدث والمباريات تدور خلفه",
+   "caption_en": "A player talking, rallies going on behind him",
+   "w": 960,
+   "h": 486,
+   "poster": "loop-02-court.webp",
+   "source": "مقتطف_نادي الإعتماد  (2).mp4 2.75-7.75s (5.00 s), crop 1920:972:0:54, silent"
+  },
+  {
+   "file": "logo-white",
+   "kind": "logo",
+   "w": 1786,
+   "h": 2106,
+   "caption_ar": "شعار نادي الاعتماد الرياضي بالأبيض",
+   "caption_en": "Al-Eetemad Club crest, white",
+   "source": "logo"
+  }
+ ],
+ "logo_source": {
+  "logo.png / logo-white.png": "شعار نادي الاعتماد الرياضي شفاف.png (black line crest on transparent), cropped to its alpha; logo-white is the same alpha painted paper white. No title-logo.png, so the page title is the white crest"
+ },
+ "sources": "The precut clips and the logo every picture here was cut from are kept, untracked, in the Mdwnh repo at production/masters/works/aletemad/source/."
+}
